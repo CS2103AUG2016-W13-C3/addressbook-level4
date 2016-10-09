@@ -1,18 +1,26 @@
 package seedu.address.ui;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.TextStyle;
+import java.util.Date;
+import java.util.Locale;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import seedu.address.model.todo.DateRange;
+import seedu.address.model.todo.DueDate;
 import seedu.address.model.todo.ReadOnlyToDo;
 
 public class ToDoCard extends UiPart{
 
-    private static final String FXML = "ToDoListCard.fxml";
+    private static final String FXML = "eventCard.fxml";
 
     @FXML
-    private HBox cardPane;
+    private HBox eventPane;
     @FXML
     private Label titleLabel;
     @FXML
@@ -42,28 +50,50 @@ public class ToDoCard extends UiPart{
         indexLabel.setText(String.valueOf(index));
 
         if (toDo.getDateRange().isPresent()) {
-            DateRange dateRange = toDo.getDateRange().get();
-            startLabel.setText(dateRange.startDate.toString());
-            endLabel.setText(dateRange.endDate.toString());
+            final DateRange dateRange = toDo.getDateRange().get();
+            
+            final LocalDateTime start = convertToLocalDateTime(dateRange.startDate);
+            final LocalDateTime end = convertToLocalDateTime(dateRange.endDate);
+            
+            startLabel.setText(prettifyDateTime(start));
+            endLabel.setText(prettifyDateTime(end));
         } else {
             startLabel.setText("");
             endLabel.setText("");
         }
 
         if (toDo.getDueDate().isPresent()) {
-            dueLabel.setText(toDo.getDueDate().get().dueDate.toString());
+            final LocalDateTime due = convertToLocalDateTime(toDo.getDueDate().get().dueDate);
+            
+            dueLabel.setText(prettifyDateTime(due));
         } else {
             dueLabel.setText("");
         }
     }
+    
+    private String prettifyDateTime(LocalDateTime ldt) {
+        return ldt.getHour() + ":" + 
+               ldt.getMinute() + " " + 
+               ldt.getDayOfMonth() + " " + 
+               ldt.getMonth().getDisplayName(TextStyle.SHORT , Locale.ENGLISH) + " " + 
+               ldt.getYear();
+    }
+    
+    /**
+     * @param Date date
+     * @return LocalDateTime date
+     */
+    private LocalDateTime convertToLocalDateTime(Date date) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneOffset.systemDefault());
+    }
 
     public HBox getLayout() {
-        return cardPane;
+        return eventPane;
     }
 
     @Override
     public void setNode(Node node) {
-        cardPane = (HBox)node;
+        eventPane = (HBox)node;
     }
 
     @Override
