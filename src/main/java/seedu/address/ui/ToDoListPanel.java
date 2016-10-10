@@ -109,7 +109,7 @@ public class ToDoListPanel extends UiPart {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(ToDoCard.load(toDo, getIndex() + 1).getLayout());
+                setGraphic(EventCard.load(toDo, getIndex() + 1).getLayout());
             }
         }
     }

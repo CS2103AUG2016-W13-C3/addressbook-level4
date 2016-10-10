@@ -11,34 +11,28 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import seedu.address.model.todo.DateRange;
-import seedu.address.model.todo.DueDate;
 import seedu.address.model.todo.ReadOnlyToDo;
 
-public class ToDoCard extends UiPart{
+public class TaskCard extends UiPart{
 
-    private static final String FXML = "eventCard.fxml";
+    private static final String FXML = "taskCard.fxml";
 
     @FXML
-    private HBox eventPane;
+    private HBox taskPane;
     @FXML
     private Label titleLabel;
     @FXML
     private Label indexLabel;
-    @FXML
-    private Label startLabel;
-    @FXML
-    private Label endLabel;
     @FXML
     private Label dueLabel;
 
     private ReadOnlyToDo toDo;
     private int index;
 
-    public ToDoCard(){ }
+    public TaskCard(){ }
 
-    public static ToDoCard load(ReadOnlyToDo toDo, int index){
-        ToDoCard card = new ToDoCard();
+    public static TaskCard load(ReadOnlyToDo toDo, int index){
+        TaskCard card = new TaskCard();
         card.toDo = toDo;
         card.index = index;
         return UiPartLoader.loadUiPart(card);
@@ -48,19 +42,6 @@ public class ToDoCard extends UiPart{
     public void initialize() {
         titleLabel.setText(toDo.getTitle().title);
         indexLabel.setText(String.valueOf(index));
-
-        if (toDo.getDateRange().isPresent()) {
-            final DateRange dateRange = toDo.getDateRange().get();
-            
-            final LocalDateTime start = convertToLocalDateTime(dateRange.startDate);
-            final LocalDateTime end = convertToLocalDateTime(dateRange.endDate);
-            
-            startLabel.setText(prettifyDateTime(start));
-            endLabel.setText(prettifyDateTime(end));
-        } else {
-            startLabel.setText("");
-            endLabel.setText("");
-        }
 
         if (toDo.getDueDate().isPresent()) {
             final LocalDateTime due = convertToLocalDateTime(toDo.getDueDate().get().dueDate);
@@ -88,12 +69,12 @@ public class ToDoCard extends UiPart{
     }
 
     public HBox getLayout() {
-        return eventPane;
+        return taskPane;
     }
 
     @Override
     public void setNode(Node node) {
-        eventPane = (HBox)node;
+        taskPane = (HBox)node;
     }
 
     @Override

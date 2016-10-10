@@ -29,8 +29,8 @@ public class MainWindow extends UiPart {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private BrowserPanel browserPanel;
-    private ToDoListPanel personListPanel;
+    private ToDoListPanel eventPanel;
+    private ToDoListPanel taskPanel;
     private ResultDisplay resultDisplay;
     private StatusBarFooter statusBarFooter;
     private CommandBox commandBox;
@@ -53,7 +53,10 @@ public class MainWindow extends UiPart {
     private MenuItem helpMenuItem;
 
     @FXML
-    private AnchorPane personListPanelPlaceholder;
+    private AnchorPane eventListPanelPlaceholder;
+    
+    @FXML
+    private AnchorPane taskListPanelPlaceholder;
 
     @FXML
     private AnchorPane resultDisplayPlaceholder;
@@ -109,8 +112,9 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        browserPanel = BrowserPanel.load(browserPlaceholder);
-        personListPanel = ToDoListPanel.load(primaryStage, getPersonListPlaceholder(), logic.getFilteredToDoList());
+        //browserPanel = BrowserPanel.load(browserPlaceholder);
+        eventPanel = ToDoListPanel.load(primaryStage, getEventListPlaceholder(), logic.getFilteredToDoList());
+        taskPanel = ToDoListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getFilteredToDoList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), Config.DefaultToDoListFilePath);
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
@@ -128,8 +132,12 @@ public class MainWindow extends UiPart {
         return resultDisplayPlaceholder;
     }
 
-    public AnchorPane getPersonListPlaceholder() {
-        return personListPanelPlaceholder;
+    public AnchorPane getEventListPlaceholder() {
+        return eventListPanelPlaceholder;
+    }
+    
+    public AnchorPane getTaskListPlaceholder() {
+        return taskListPanelPlaceholder;
     }
 
     public void hide() {
@@ -188,14 +196,6 @@ public class MainWindow extends UiPart {
     }
 
     public ToDoListPanel getToDoListPanel() {
-        return this.personListPanel;
-    }
-
-    public void loadToDoListPage(ReadOnlyToDo toDo) {
-        browserPanel.loadPersonPage(toDo);
-    }
-
-    public void releaseResources() {
-        browserPanel.freeResources();
+        return this.eventPanel;
     }
 }
