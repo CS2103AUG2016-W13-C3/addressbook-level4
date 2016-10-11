@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/keyboardkeys.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <link rel="stylesheet" type="text/css" href="stylesheets/custom.css" media="screen">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -17,8 +18,8 @@
     <div id="container">
         <div class="inner">
             <header>
-                <h1>CommanDo</h1>
-                <h2>User Guide</h2>
+                <h1>User Guide</h1>
+                <h2>CommanDo</h2>
             </header>
             <section id="downloads" class="clearfix">
                 <a href="https://github.com/CS2103AUG2016-W13-C3/main/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
@@ -27,255 +28,335 @@
             </section>
             <hr>
             <section id="main_content">
-                <h1>
-                    <a id="user-guide" class="anchor" href="#user-guide" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>User Guide
-                </h1>
-                <ul>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#quick-start">Quick Start</a></li>
-                    <li><a href="#commands">Commands</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                    <li><a href="#command-cheatsheet">Command Cheatsheet</a></li>
-                </ul>
-                <hr>
+                <p>
+                    <ul id="table-of-contents">
+                        <li><a href="#about">What is CommanDo?</a></li>
+                        <li><a href="#quick-start">Getting Started</a></li>
+                        <li><a href="#commands">Commands</a></li>
+                        <li><a href="#faq">FAQ & Troubleshooting</a></li>
+                        <li><a href="#cheatsheet">Cheatsheet</a></li>
+                    </ul>
+                </p>
+                <h2 id="about">What is CommanDo?</h2>
 
-                <h2>
-                    <a id="about" class="anchor" href="#about" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About
-                </h2>
-                <p><em>CommanDo</em> is a task scheduler that helps you to manage the flood of things you need to do (to-do items). This application is a primarily text-based – almost all input will be through commands, using the text box at the bottom. In this guide, we will be splitting the to-do items into 2 groups: events and tasks, which are identified by the number of date time fields they require.</p>
-                <hr>
-                <h2>
-                    <a id="quick-start" class="anchor" href="#quick-start" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Start
-                </h2>
+                <p><em>You have a ton of things to do, but you really hate the amount of mouse-clicking and the complicated user interfaces you have to go through to edit a to-do list in most to-do list management software...</em></p>
+                <p>
+                    Meet <em>CommanDo</em> - it is <em>the</em> to-do list manager that keeps things clean and allows you to edit your to-do list swiftly by typing out commands, mouse-free. Commands in <em>CommanDo</em> are simple and intuitive, while providing a bit of flexibility in syntax and customizability. <em>CommanDo</em> recognizes and actively categories to-dos into 2 groups: events (to-dos with a description and a time window) and tasks (to-dos with just a description, accompanied by an optional deadline).
+                </p>
 
+                <h2 id="quick-start">Getting Started</h2>
                 <ol>
                     <li>
-                        <p>Ensure you have Java version <code>1.8.0_60</code> or later installed in your Computer (earlier versions of Java 8 will not work).</p>
+                        Ensure that you have Java version <code>1.8.0_60</code> or later on your device (<a target="_blank" href="https://java.com/en/download/help/version_manual.xml">here's how</a>). Instructions on how to install latest version of Java can be found <a target="_blank" href="https://java.com/en/download/help/download_options.xml">here.</a>
                     </li>
                     <li>
-                        <p>Download the latest <code>commando.jar</code> from the <a href="../../../releases">releases</a> tab.</p>
+                        Download the latest <code>commando.jar</code> from <em>CommanDo's</em> <a href="https://github.com/CS2103AUG2016-W13-C3/main/releases">releases</a> tab on Github.
                     </li>
                     <li>
-                        <p>Copy the file to the folder you want to use as the home folder for <em>CommanDo</em>.</p>
+                        Copy <code>commando.jar</code> to the folder you want to use as the home folder for <em>CommanDo</em>.
                     </li>
                     <li>
-                        <p>Double-click the file to start the application. The GUI should appear in a few seconds. </p>
-                    <figure>
-                        <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
-                        <figcaption>GUI Sample</figcaption>
-                    </figure>
+                        Double-click the file to start the application. <em>CommanDo's</em> window should appear in a few seconds:
+                        <figure>
+                            <img src="https://i.imgur.com/OvMZBs9.jpg" width="600">
+                            <figcaption><em>CommanDo</em> on its first launch</figcaption>
+                        </figure>
                     </li>
                     <li>
-                        <p>Type <code>help</code> and pressing <kbd class="light">Enter</kbd> will open up a link to this User Guide. This is the place where you enter commands.</p>
-                    </li>
-                    <li>
-                        <p>Refer to the <a href="#commands">Commands</a> section below for details of each command.<br></p>
-                        <hr>
-                        <h2>
-                            <a id="commands" class="anchor" href="#commands" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Commands
-                        </h2>
+                        Type <code>help</code> and press <kbd class="light">Enter</kbd> - a window will open up to show this exact guide. This is how you'll be entering commands in <em>CommanDo</em>. Refer to the <a href="#commands">Commands</a> section below for a whole list of commands.
                     </li>
                 </ol>
 
-                The first keyword in your line of command will tell the application what to do, with optional parameters after it. The following legend describes the syntax of the code used in the remainder of this guide:
-                <p>
+                <hr>
+
+                <h2 id="commands">Commands</h2>
+                <h3 id="viewing-help-help">
+                    Viewing Help: <code>help</code>
+                </h3>
+
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; help <i>[</i><b>&lt;command_word&gt;</b><i>]</i></pre>
+
+                <blockquote>
+                    <b>Understanding Command Formats</b> For each command, the first word is the <em>command word</em> that specifies the type of the command. What follows after are fields to fill in for that command. The following legend describes the syntax we used to specify command formats:
                     <ol class="indent">
                         <li>
-                            <code>&lt;&gt;</code> denotes fields to fill in
+                            <code>&lt;&gt;</code> denotes a field to fill in
                         </li>
                         <li>
-                            <code>[]</code> denotes optional
+                            <code>[]</code> denotes that the fields within it are optional
                         </li>
                         <li>
-                            <code>...</code> denotes 0 or more
+                            <code>...</code> denotes that the preceding field can be repeated (multiple values)
                         </li>
                     </ol>
-                </p>
-                <h3>
-                    <a id="viewing-help-help" class="anchor" href="#viewing-help-help" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Viewing Help: <code>help</code>
-                </h3>
-                <p> If you want to check the format of a command, you may refer to the command cheatsheet in user guide or use <code>help</code> command. </p>
-                Format:
-                <pre>&gt;&gt; help [&lt;command&gt;]</pre>
-                <p>The command <code>help</code> shows a complete list of commands and examples of how to use them properly. If <code>[&lt;command&gt;]</code> is also given, examples of how to use that command will be shown.</p>
-                <h3>
-                    <a id="adding-to-do-items-add" class="anchor" href="#adding-to-do-items-add" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding To-Do Items: <code>add</code>
-                </h3>
-                <p>As a new user, the first thing you would do is to add a to-do item. To add a to-do item in the list, you have to follow the format of <code>add</code> command.</p>
-                <p>There are some rules on the format of to-do items in In <em>CommanDo</em> To-do items must contain at minimum, a description of what it is. They may contain additional information, like tags, or a time frame. In <em>CommanDo</em>, to-do items are categorised into two types: <em>Events</em> and <em>Tasks</em>. An <em>Event</em> contains a start datetime and an end datetime which represent the time slot and duration for that event while a <em>Task</em> contains a end datetime which represents the deadline of the task. </p>
-                <h4>
-                    <a id="events" class="anchor" href="#events" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Events:
-                </h4>
-                <p><em>Events</em> are activities that are happening within a time frame. In <em>CommanDo</em>, they are to-do items with a <code>from</code> keyword and a <code>to</code> keyword. In particular, the <code>from</code> keyword must come before the <code>to</code> keyword.</p>
+                </blockquote>
 
-                Format:
-                <pre>&gt;&gt; add &lt;description&gt; from &lt;start_datetime&gt; to &lt;end_datetime&gt; [#&lt;tag&gt;...]</pre>
-                <p></p>
-                <p>There are many ways in which dates and times can be written. Some example would be <code>5 Jan 2016</code> and <code>28/12/2016 (DD/MM/YYYY)</code>. The year can dropped for convenience. The full list of accepted formats in <em>CommanDo</em> are described in FAQ section <a href="#supported-datetime-formats">below</a>.</p>
+                <span><strong>Examples:</strong></span>
+                <pre>&gt;&gt; help</pre>
+                <span><strong>What it does: </strong>Opens up this user guide.</span>
+                <pre>&gt;&gt; help <b>add</b></pre>
+                <span><strong>What it does: </strong>Opens up this user guide, jumping to the section on the <code>add</code> command.</span>
+                <pre>&gt;&gt; help <b>cheatsheet</b></pre>
+                <span><strong>What it does: </strong>Opens up this user guide, jumping to the <a href="#cheatsheet">Cheatsheet</a> section.</span>
+
+                <h3 id="adding-to-do-items-add">
+                    Adding To-Do Items: <code>add</code>
+                </h3>
+
+                <p>To manage your to-dos, the first thing you'll need to do is to add one. Each to-do item contains minimally a description, and can be have multiple tags. To-do items are categoried into 2 types: <em>Events</em> (shown in the left panel) and <em>Tasks</em> (shown in the right panel):</p>
+
                 <figure>
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/addEvent.png" width="600">
-                    <figcaption>Result of <code>add contemplate life from 5 feb 1200 to 5 feb 1300 #yolo</code></figcaption>
+                    <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
+                    <figcaption><em>CommanDo</em> at its maximum efficiency - all <em>Events</em> on the left and all <em>Tasks</em> on the right</figcaption>
                 </figure>
 
-                <pre class="header">Sample input:</pre>
-                <pre>&gt;&gt; add meeting with boss from 5 Sep 12:30 to 17:30 #important
-&gt;&gt; add meeting with Dr Tan from 30 Sep 9:00 to 10:00 #work #important
-&gt;&gt; add wild party in hostel room from 31 Dec 2016 to 1 Jan 2017 #yolo</pre>
+                <h4>Adding Events</h4>
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; add <b>&lt;description&gt;</b> from <b>&lt;start_datetime&gt;</b> to <b>&lt;end_datetime&gt;</b> <i>[</i><b>#&lt;tag&gt;</b><i>...]</i></pre>
 
-                <h4>
-                    <a id="tasks" class="anchor" href="#tasks" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tasks:
-                </h4>
-                <p>Tasks are to-do items that may be done in your own time, or have a deadline. In <em>CommanDo</em>, they are to-do items that may have a due date. A task can be something you need to do by a certain date or time, or just something you can do at your own time.</p>
-                Format:
-                <pre>&gt;&gt; add &lt;description&gt; [by &lt;due_datetime&gt;] [#&lt;tag&gt;...]</pre>
+                <p>An <em>Event</em> is an activity happening within a time frame, containing <code>start_datetime</code> and <code>end_datetime</code> fields to represent the time frame. You can also add tags prefixed with <code>#</code> to help organise your to-do list. On the interface of <em>CommanDo</em>, every <em>Event</em> from the current day onwards is listed on the left panel, in chronological order:</p>
+
+                <figure>
+                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/addEvent.png" width="600">
+                    <figcaption>Result of adding an <em>Event</em> with command: <code>add contemplate life from 5 feb 1200 to 5 feb 1300 #yolo</code></figcaption>
+                </figure>
+
+                <blockquote>
+                    <b>Datetime Formats</b> <em>CommanDo</em> supports a wide variety of date & time formats, including <code>5 Jan 2016 2300</code> and <code>28/12/2016 12pm</code> (where date is in format DD/MM/YYYY). The year can be dropped for convenience, if you mean the current year. For the full list of accepted datetime formats, refer to the section on <a href="supported-datetime-formats">supported datetime formats</a> below.
+                </blockquote>
+
+                <span><strong>Examples:</strong></span>
+                <pre>&gt;&gt; add <b>shopping with wife</b> from <b>5 Sep 1230</b> to <b>1730 #important</b></pre>
+                <pre>&gt;&gt; add <b>meeting with Dr Tan</b> from <b>30 Sep 900</b> to <b>1000 #work #important</b></pre>
+                <pre>&gt;&gt; add <b>wild party in hostel room</b> from <b>31 Dec 2016 to 1 Jan 2017 #yolo</b></pre>
+
+                <h4>Adding Tasks</h4>
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; add <b>&lt;description&gt;</b> <i>[</i>by <b>&lt;due_datetime&gt;</b><i>] [</i><b>#&lt;tag&gt;</b><i>...]</i></pre>
+
+                <p>A <em>Task</em>, on the other hand, is an activity that can be done at your own time or by some deadline. Therefore, it has an optional <code>due_datetime</code> field. Similarly, tags can be added to a <em>Task</em>. On the interface of <em>CommanDo</em>, every <em>Task</em> is listed on the right panel, with those with deadlines prioritized at the top in chronological order:</p>
+
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/addDdl.png" width="600">
-                    <figcaption>Result of <code>add plan shopping trip by 5 feb 1300 #moneytroubles</code></figcaption>
+                    <figcaption>Result of adding a <em>Task</em> with command: <code>add plan shopping trip by 5 feb 1300 #moneytroubles</code></figcaption>
                 </figure>
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/addFt.png" width="600">
-                    <figcaption>Result of <code>add walk by the beach #wat</code></figcaption>
+                    <figcaption>Result of adding a <em>Task</em> with command: <code>add walk by the beach #wat</code></figcaption>
                 </figure>
-                <pre class="header">Sample input:</pre>
-                <pre>&gt;&gt; add do Homework 10 by 23 Sep 
-&gt;&gt; add release V0.5 by 7 Nov 2359 
-&gt;&gt; add finish FYP by tomorrow 2359 
-&gt;&gt; add shop for groceries: banana, pineapple, watermelon #housework 
-&gt;&gt; add watch Lord of the Rings</pre>
-                <h3>
-                    <a id="editing-to-do-items-edit" class="anchor" href="#editing-to-do-items-edit" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Editing To-Do Items: <code>edit</code>
-                </h3>
-                <p>If you want to edit the details of a to-do item, the command <code>edit</code> edits existing to-do items by accessing their index, and providing the fields to replace. At least one of the optional parameters should be included, if not the command does nothing. If there are tags in your input, they will replace the tags stored for the target to-do item.</p>
-                <h4>
-                    <a id="events-1" class="anchor" href="#events-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Events:
-                </h4>
-                <p>To edit the details of an event, at least one of the optional parameters shown below must be provided to make a meaningful edit.</p>
-                Format:
-                <pre>&gt;&gt; edit &lt;index&gt; [description] [from &lt;start_datetime&gt;] [to &lt;end_datetime&gt;] [#&lt;tag&gt;...]</pre>
+
+                <blockquote>
+                    <b>Escaping command keywords</b> To parse commands properly, <em>CommanDo</em> uses a set of keywords such as <code>by</code>, <code>from</code>, and <code>to</code>. <em>CommanDo</em> tries its best to determine whether a word is supposed to be a keyword or part of a field, but in case of ambiguity, surround the word with <code>""</code> to tell <em>CommanDo</em> that it is to be interpreted literally. For example:
+
+                    <pre>&gt;&gt; add <b>code parser to parse "by" tomorrow</b> by <b>today</b></pre>
+                </blockquote>
+
+                <span><strong>Examples:</strong></span>
+                <pre>&gt;&gt; add <b>do Homework 10</b> by <b>23 Sep</b></pre>
+                <pre>&gt;&gt; add <b>release V0.5</b> by <b>7 Nov 2359</b></pre>
+                <pre>&gt;&gt; add <b>finish FYP</b> by <b>tomorrow 2359</b></pre>
+                <pre>&gt;&gt; add <b>shop for groceries: banana, pineapple, watermelon #housework</b></pre>
+                <pre>&gt;&gt; add <b>watch Lord of the Rings</b></pre>
+
+                <h3 id="editing-to-do-items-edit">Editing To-Do Items: <code>edit</code></h3>
+
+                <p>More often than not, you'll need to edit the fields of a to-do item after adding it, such as when you made a mistake, when an <em>Event</em> gets postponed, or when you receive more description for a <em>Task</em>.</p>
+
+                <h4>Editing Events</h4>
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; edit <b>&lt;index&gt; <i>[</i>&lt;description&gt;</b><i>]</i> <i>[</i>from <b>&lt;start_datetime&gt;</b><i>]</i> <i>[</i>to <b>&lt;end_datetime&gt;</b><i>]</i> <i>[</i><b>#&lt;tag&gt;</b><i>...]</i></pre>
+
+                <blockquote>
+                    <b>Index of To-Do Item</b> To refer to an existing to-do item in <em>CommanDo</em>, its <em>Index</em> is used, which is the number visually tagged to a to-do item on the interface. This clarified in the following figure:
+
+                    <figure>
+                        <img src="https://i.imgur.com/OvMZBs9.jpg" width="600">
+                        <figcaption><em>Index</em> of to-do item with description "do homework 10" is 1</figcaption>
+                    </figure>
+                </blockquote>
+
+                <p>By including suitable fields and their keywords, you'll be able to edit the description, time slot and tags of an <em>Event</em> with <em>Index</em> of <code>&lt;index&gt;</code>. Note that if tags are provided in an edit, the old tags will be completely replaced by the new ones. </p>
+
+                <span><strong>Examples:</strong></span>
+
+                <pre>&gt;&gt; add <b>meeting with boss</b> from <b>today 1300</b> to <b>today 1500</b> 
+&gt;&gt; edit <b>1</b> from <b>today 1400</b> to <b>today 1600 #important</b> 
+&gt;&gt; edit <b>1 #projectABC</b></pre>
+                <span><strong>What it does: </strong> adds an <em>Event</em>, then changes its time slot and adds a tag to it, then replaces a tag with another.</span>
+
+
+                <h4>Editing Tasks</h4>
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; edit <b>&lt;index&gt; <i>[</i>&lt;description&gt;</b><i>]</i> <i>[</i>by <b>&lt;due_datetime&gt;</b><i>]</i> <i>[</i><b>#&lt;tag&gt;</b><i>...]</i></pre>
+
+                <p>By including suitable fields and their keywords, you'll similarly be able to edit the description, deadline and tags of a <em>Task</em>. In addition, you can remove the deadline by entering nothing after the <code>by</code> keyword.</p>
+
+                <span><strong>Examples:</strong></span>
+
+                <pre>&gt;&gt; add <b>plan shopping trip #lunch</b>
+&gt;&gt; edit <b>1 shopping trip to IKEA</b>
+&gt;&gt; edit <b>1</b> by <b>6 feb</b>
+&gt;&gt; edit <b>1</b> by</pre>
+                <span><strong>What it does: </strong> adds an <em>Task</em> with a tag, then changes its description,  then adds a deadline to it, then removes that deadline.</span>
+
+                <pre>&gt;&gt; add <b>watch Inception</b>
+&gt;&gt; edit <b>1 watch Gravity</b>
+&gt;&gt; edit <b>1 #family</b></pre>
+                <span><strong>What it does: </strong> adds an <em>Task</em>, then changes its description,  then adds a tag to it.</span>
+
+                <h3 id="deleting-to-do-items-delete">Deleting To-Do Items: <code>delete</code></h3>
+
+                <p>If you want to delete a to-do item, whether it is an <em>Event</em> or a <em>Task</em>, use the <code>delete</code> command.</p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; delete <b>&lt;index&gt;</b></pre>
+
+                <h3 id="finishing-to-do-items-delete">Finishing To-Do Items: <code>finish</code></h3>
+
+                <p>After finishing a to-do item, mark it as done with the <code>finish</code> command! That to-do item will disappear from the interface of <em>CommanDo</em>. Note that this is an alias of the <code>delete</code> command.</p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; finish <b>&lt;index&gt;</b></pre>
+
                 <figure>
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/editEvent.png" width="600">
-                    <figcaption>Result of <code>edit 1 from 6 feb 1200 to 6 feb 1300</code></figcaption>
+                    <img src="https://i.imgur.com/OvMZBs9.jpg" width="600">
+                    <figcaption>Result of <b>finish 1</b></figcaption>
                 </figure>
-                <pre class="header">Sample input:</pre>
-                <pre>&gt;&gt; add meeting with boss from today 1300 to today 1500 
-&gt;&gt; edit 1 from today 1400 to today 1600 
-&gt;&gt; edit 2 #projectABC</pre>
-                <h4>
-                    <a id="tasks-1" class="anchor" href="#tasks-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tasks:
-                </h4>
-                <p>To edit the details of a task, at least one of the optional parameters below must be provided to make a meaningful edit. You can change or add a due date-time to a task. You can also remove the due date-time from a task by entering nothing after the <code>by</code> keyword.</p>
-                Format:
-                <pre>&gt;&gt; edit &lt;index&gt; [description] [by &lt;due_datetime&gt;] [#&lt;tag&gt;...]</pre>
-                <figure>
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/editDdl.png" width="600">
-                    <figcaption>Result of <code>edit 1 by 6 feb 1300</code></figcaption>
-                </figure>
-                <pre class="header">Sample input:</pre>
-                <pre>&gt;&gt; add plan shopping trip #lunch
-&gt;&gt; edit 2 shopping trip to IKEA
-&gt;&gt; edit 2 by 6 feb
-&gt;&gt; edit 2 by
-&gt;&gt; add watch Inception
-&gt;&gt; edit 3 watch Gravity
-&gt;&gt; edit 3 #family</pre>
-                <h3>
-                    <a id="deleting-to-do-items-delete" class="anchor" href="#deleting-to-do-items-delete" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Deleting To-Do Items: <code>delete</code>
-                </h3>
-                <p>If you have completed and wanted to delete a to-do item, you may use <code>delete</code> command. This command deletes an exsiting event or task by accessing the index of targeted to-do item and delete it from the list accordingly.</p>
-                Format: <pre>&gt;&gt; delete &lt;index&gt;</pre>
-                <figure>
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/delete.png" width="600">
-                    <figcaption>Result of <code>delete 1</code></figcaption>
-                </figure>
-                <h3>
-                    <a id="clearing-all-to-do-items-clear" class="anchor" href="#clearing-all-to-do-items-clear" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Clearing all To-Do Items: <code>clear</code>
-                </h3>
-                <p>If you want to reset the <em>CommanDo</em>, you may use <code>clear</code> command which clears all to-do items, essentially wiping your save file. <em>Use with caution</em>.</p>
-                Format: <pre>&gt;&gt; clear</pre>
+
+                <h3 id="clearing-all-to-do-items-clear">Clearing Your To-Do List: <code>clear</code></h3>
+
+                <p>If you want to reset your to-do list, use the <code>clear</code> command. <em>Use with caution</em>.</p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; clear</pre>
+
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/clear.png" width="600">
                     <figcaption>Result of <code>clear</code></figcaption>
                 </figure>
-                <h3>
-                    <a id="finding-to-do-items-find" class="anchor" href="#finding-to-do-items-find" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Finding To-Do Items: <code>find</code>
-                </h3>
-                <p>You have already built a long list of to-do items and want to read the details of one of them. You can use <code>find</code> command to achieve this. This command searches and lists all the to-do items which have descriptions or tags containing <em>all</em> of the given keywords.</p>
-                Format: <pre>&gt;&gt; find &lt;keyword&gt;...</pre>
+
+                <h3 id="finding-to-do-items-find">Finding To-Do Items: <code>find</code></h3>
+
+                <p>So you have already built a long list of to-do items, and want to search out the details of one of them by either its description or its tags. You can use the <code>find</code> command to achieve this.</p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; find <b>&lt;keyword&gt;</b><i>...</i></pre>
+
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/find.png" width="600">
                     <figcaption>Result of <code>find read</code></figcaption>
                 </figure>
+
                 <p>
-                    Here are some instructions on how to use the <code>find</code> command:
-                    <ul class="glass">
-                        <li>If you do not key in any keywords after <code>find</code>, it will show you all to-do items </li>
+                    Some details on how <code>find</code> command works:
+                    <ul id="search-logic">
+                        <li>Both <em>Events</em> and <em>Tasks</em> will be searched, in their separate panels.</li>
+                        <li>If you do not key in any keywords after <code>find</code>, all to-do items will be shown.</li>
+                        <li>Search is case insensitive – keywords <code>Chicken Egg</code> will match <code>chicken egg</code>.</li>
+                        <li>Ordering of the search keywords does not matter – keywords <code>Chicken Egg</code> will match <code> Egg Chicken</code>.</li>
+                        <li>Search keywords will match parts of words – keyword <code>chicken</code> will match <code>chickens</code>, whereas keyword <code>chickens</code> will not match <code>chicken</code>.</li>
                         <li>
-                            Case insensitive. – <code>Chicken Egg</code> will match the keyword <code>chicken egg</code>
-                        </li>
-                        <li>
-                            Ordering of the keywords does not matter. – <code>Chicken Egg</code> will match the keywords<code> Egg Chicken</code>
-                        </li> 
-                        <li>
-                            Parts of words will be matched. – <code>chickens</code> will match the keyword <code>chicken</code>, whereas <code>chicken</code> will not match the keyword <code>chickens</code>
-                        </li>
-                        <li>
-                            All keywords must be codesent. – <code>find chicken egg</code> will match the keywords <code>chicken lay egg</code> but not keywords <code>bird lay egg</code>
+                            All search keywords must be matched – keywords <code>chicken egg</code> will match <code>chicken lay egg</code> but not <code>bird lay egg</code>.
                         </li>
                     </ul>
                 </p>
-                <h3>
-                    <a id="setting-save-location-set" class="anchor" href="#setting-save-location-set" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setting Save Location: <code>set</code>
-                </h3>
-                <p>You want to save the data file somewhere else you want. By typing <code>set</code> command, it changes the location where the to-do list is saved on the local file system to the given location / path.<br /> A file path can be absolute (<code>C:/home/sally/statusReport</code>) or relative to the <code>commando.jar</code>file (<code>joe/foo/bar</code>). This applies to the next two file location relevant commands, i.e. <code>export</code> and <code>import</code>.</p>
-                Format: <pre>&gt;&gt; set storage &lt;path&gt;</pre>
-                <h3>
-                    <a id="exporting-export" class="anchor" href="#exporting-export" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Exporting: <code>export</code>
-                </h3>
-                <p>If you want to copy the data file to a local destination, you don't need to go into the folder containing your data file. Instead, <code>export</code> command exports the current to-do list as a save data file at the given location / path which saves your time.</p>
-                Format: <pre>&gt;&gt; export &lt;path&gt;</pre>
-                <h3>
-                    <a id="importing-import" class="anchor" href="#importing-import" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Importing: <code>import</code>
-                </h3>
-                <p>If you already have existing data file and want you use it in the <em>CommanDo</em>, the <code>import</code> command imports a valid save data file at the given location / path and overrides the current to-do list with the imported to-do list.</p>
-                Format: <pre>&gt;&gt; import &lt;path&gt;</pre>
-                <h3>
-                    <a id="undoing-undo" class="anchor" href="#undoing-undo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Undoing: <code>undo</code>
-                </h3>
-                <p>You accidently deleted a wrong to-do item and you want to cancel your last modification. The <em>CommanDo</em> does not support <code>ctrl + z</code> but the <code>undo</code> command undoes the last <code>add</code>, <code>edit</code>, <code>delete</code>, <code>clear</code>, <code>import</code> or <code>set storage</code>command. You may use it to recover your data.</p>
-                Format: <pre>&gt;&gt; undo</pre>
-                <h3>
-                    <a id="exiting-the-application--exit" class="anchor" href="#exiting-the-application--exit" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Exiting the Application : <code>exit</code>
-                </h3>
-                <p>Finally you have done all your work and want to close the program. You can either press the cross button or directly use <code>exit</code> command provided in <em>CommanDo</em>. This command saves all changes to to-do list and closes the application. <em>You cannot undo your last command after closing and restarting the program.</em></p>
-                Format: <pre>&gt;&gt; exit</pre>
-                <h2>
-                    <a id="faq" class="anchor" href="#faq" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>FAQ
-                </h2>
-                <h3>
-                    <a id="saving-data" class="anchor" href="#saving-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Saving data
-                </h3>
-                <p>Your to-do list is automatically saved to your file system after any command that changes the data. There is no need to save manually and there is no save command supported by <em>CommanDo</em>. </p>
-                <h3>
-                    <a id="sharing-data-across-devices" class="anchor" href="#sharing-data-across-devices" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sharing data across devices
-                </h3>
-                <p>Use the <code>export</code> command to generate a save data file, transfer the file to a 2nd device, and use the <code>import</code> command on the 2nd device to import your to-do list from that save file. Alternatively, you can use a cloud-syncing service (e.g. <a href="dropbox.com">Dropbox</a>) and the <code>set storage</code> command to sync the to-do list automatically by setting to the same storage file on both devices. </p>
-                <h3>
-                    <a id="supported-date-time-formats" class="anchor" href="#supported-date-time-formats" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported date-time formats
-                </h3>
-                <p><em>CommanDo</em> supports a wide variety of date and time formats. </p>
-                <p>A valid date-time is defined as:</p>
+
+                <span><strong>Examples:</strong></span>
+                <pre>&gt;&gt; find <b>lunch meeting</b></pre>
+                <span><strong>What it does: </strong> Filters to show only <em>Events</em> and <em>Tasks</em> with description or tags matching both <code>lunch</code> and <code>meeting</code>.</span>
+
+                <pre>&gt;&gt; find</pre>
+                <span><strong>What it does: </strong> Clears previous <code>find</code> command and shows all to-do items.</span>
+
+                <h3 id="setting-save-location-set">Setting Save Location: <code>store</code></h3>
+
+                <p>Maybe you want to save your to-do list in your <em>Dropbox</em> or <em>OneDrive</em> folder that is synced with the cloud. The <code>store</code> command lets you do exactly that - it changes the location where the to-do list data is saved on your local file system.</p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; store <b>&lt;file_path&gt;</b></pre>
+
+                <blockquote>
+                    <b>File Paths</b> A file path can be absolute (<code>C:/Users/Jim/Dropbox/work/todolist.xml</code>) or relative to the <code>commando.jar</code> file (<code>../../Dropbox/work/todolist.xml</code>). You can use any file extension you wish, but ending with <code>.xml</code> is recommended because the date file is in <em>XML</em>.
+                </blockquote>
+
+                <span><strong>Examples:</strong></span>
+                <pre>&gt;&gt; store <b>../../Dropbox/work/todolist.xml</b></pre>
+                <span><strong>What it does: </strong> Changes the default file path to store the to-do list data to <code>../../Dropbox/work/todolist.xml</code> relative to your <code>commando.jar</code>, and saves the latest data to that file.</span>
+                
+                <h3 id="exporting-export">Exporting: <code>export</code></h3>
+
+                <p>If you want to copy your to-do list data file in your current save location to another local destination, there's no need to manually do so. Instead, using the <code>export</code> command saves a copy of the current to-do list data to the specified file at <code>&lt;file_path&gt;</code>.</p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; export <b>&lt;file_path&gt;</b></pre>
+
+                <h3 id="importing-import">Importing: <code>import</code></h3>
+
+                <p>If you already have an existing to-do list data file (possibly from your other devices) and want you use it in <em>CommanDo</em>, the <code>import</code> command can import a valid data file. <em>Note that it overrides the current to-do list with the imported to-do list!</em>
+                
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; import <b>&lt;file_path&gt;</b></pre>
+
+                <h3 id="undoing-undo">Undoing: <code>undo</code></h3>
+
+                <p>Scenario: you deleted a to-do item by accident and you want to undo your last modification. Although <em>CommanDo</em> does not support <code>Ctrl + Z</code>, the <code>undo</code> command does the same: the most recent <code>add</code>, <code>edit</code>, <code>delete</code>, <code>clear</code>, <code>import</code> or <code>store</code>command would be reverted. Multiple <code>undo</code> commands can be used in succession, but note that the capacity to <code>undo</code> is lost if you close the application.</p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; undo</pre>
+
+                <h3 id="redoing-redo">Redoing: <code>redo</code></h3>
+
+                <p>Scenario: you deleted a to-do item by accident, cleverly used <code>undo</code> to restore that to-do item, but eventually realised that to-do item isn't worth keeping after all. The <code>redo</code>command reverts the most recent <code>undo</code>, can be used in sucession, but similarly loses its capacity when the application is closed.</p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; redo</pre>
+
+                <h3 id="exiting-the-application">Exiting the Application: <code>exit</code></h3>
+
+                <p>Finally, you are done with managing your to-do list and want to close the program. You can either press the cross button or directly use <code>exit</code> command provided in <em>CommanDo</em>. This command closes the application, with all the changes to your to-do list saved.</p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; exit</pre>
+                
+                <hr>
+
+                <h2 id="faq">FAQ & Troubleshooting</h2>
+
+                <h3>Clicking on <code>commando.jar</code> doesn't work or gives an error</h3>
+
+                <p>You'll need to install the latest version of Java. Refer to the <a target="_blank" href="https://java.com/en/download/help/download_options.xml">installation guide</a>.</p>
+
+                <h3>How do I save my to-do list after modifying it?</h3>
+
+                <p>Your to-do list is automatically saved to your file system after any command that changes the data. There is no need to save manually.</p>
+
+                <h3>Is sharing across devices supported?</h3>
+
+                <p><em>CommanDo</em> doesn't directly support syncing of the to-do list across devices. Instead, use the <code>export</code> command to generate a save data file, transfer the file to another device, and use the <code>import</code> command on the 2nd device to import your to-do list from that save file. Alternatively, you can use a cloud-syncing service (e.g. <a href="dropbox.com">Dropbox</a>) and the <code>store</code> command to sync the to-do list automatically by setting the save location to the same file on both devices. </p>
+
+                <h3 id="supported-date-time-formats">What date & time formats can I use in my commands?</h3>
+                
+                <p><em>CommanDo</em> supports a wide variety of date and time formats, backed by the awesome date parser library <a href="http://natty.joestelmach.com/" target="_blank">Natty</a>.</p>
+                
+                <p>A valid datetime is defined as:</p>
                 <ol>
-                    <li>A valid date.</li>
-                    <li>A valid date followed by a valid time.</li>
+                    <li>A valid date</li>
+                    <li>A valid date followed by a valid time</li>
+                    <li>A valid time (if it is not the first datetime appearing in the command)*</li>
                 </ol>
-                <p>where examples of valid dates include:</p>
+
+                <p>* In this case, the datetime will be interpreted to be on the same date as the first datetime</p>
+
+                <h4>Valid Dates</h4>
+                
                 <div class="datagrid">
                     <table>
                         <thead>
                             <tr>
-                                <th>Standard Date Notation</th>
-                                <th>With words</th>
-                                <th>Presets</th>
+                                <th>With Slashes</th>
+                                <th>With Month Word</th>
+                                <th>Relative Dates</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -315,13 +396,15 @@
                         </tbody>
                     </table>
                 </div>
-                <p>and examples of valid time include:</p>
+
+                <h4>Valid Times</h4>
+
                 <div class="datagrid">
                     <table>
                         <thead>
                             <tr>
-                                <th>Standard Time Notation</th>
-                                <th>Omitted Colons</th>
+                                <th>24 hour notation</th>
+                                <th>Using am/pm</th>
                                 <th>Presets</th>
                             </tr>
                         </thead>
@@ -330,24 +413,24 @@
                                 <td>
                                     <code>19:00</code> <em>(hh:mm)</em>
                                 </td>
-                                <td><code>2359</code></td>
+                                <td>
+                                    <code>11:59pm</code> <em>(hh:mm)pm/am</em>
+                                </td>
                                 <td>
                                     <code>morning</code> <em>(0900h by default)</em>
                                 </td>
                             </tr>
                             <tr>
+                                <td><code>0911h</code></td>
                                 <td>
                                     <code>9am</code> <em>(hh)pm/am</em>
                                 </td>
-                                <td><code>0911h</code></td>
                                 <td>
                                     <code>afternoon</code> <em>(1200h by default)</em>
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    <code>11:59pm</code> <em>(hh:mm)pm/am</em>
-                                </td>
+                                <td><code>2359</code></td>
                                 <td></td>
                                 <td>
                                     <code>evening</code> <em>(1900h by default)</em>
@@ -358,68 +441,76 @@
                 </div>
                 <hr>
                 <h2>
-                    <a id="command-cheatsheet" class="anchor" href="#command-cheatsheet" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Command Cheatsheet
+                    <a id="cheatsheet" class="anchor" href="#cheatsheet" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cheatsheet
                 </h2>
                 <div class="datagrid">
-                    <table>
+                    <table class="black">
                         <thead>
                             <tr>
-                                <th>Command</th>
-                                <th>Format</th>
+                                <th width="150px">Command</th>
+                                <th>Command Format</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>Help</td>
-                                <td><code>help [&lt;command&gt;]</code></td>
+                                <td><pre>&gt;&gt; help <i>[</i><b>&lt;command_word&gt;</b><i>]</i></pre></td>
                             </tr>
                             <tr>
                                 <td>Add Event</td>
-                                <td><code>add &lt;description&gt; from &lt;start&gt; to &lt;end&gt; [#&lt;tag&gt;...]</code></td>
+                                <td><pre>&gt;&gt; add <b>&lt;description&gt;</b> from <b>&lt;start_datetime&gt;</b> to <b>&lt;end_datetime&gt;</b> <i>[</i><b>#&lt;tag&gt;</b><i>...]</i></pre></td>
                             </tr>
                             <tr>
                                 <td>Add Task</td>
-                                <td><code>add &lt;description&gt; [by &lt;end&gt;] [#&lt;tag&gt;...]</code></td>
+                                <td><pre>&gt;&gt; add <b>&lt;description&gt;</b> <i>[</i>by <b>&lt;due_datetime&gt;</b><i>] [</i><b>#&lt;tag&gt;</b><i>...]</i></pre></td>
                             </tr>
                             <tr>
                                 <td>Edit Event</td>
-                                <td><code>edit &lt;index&gt; [description] [from &lt;start&gt;] [to &lt;end&gt;] [#&lt;tag&gt;...]</code></td>
+                                <td><pre>&gt;&gt; edit <b>&lt;index&gt; <i>[</i>&lt;description&gt;</b><i>]</i> <i>[</i>from <b>&lt;start_datetime&gt;</b><i>]</i> <i>[</i>to <b>&lt;end_datetime&gt;</b><i>]</i> <i>[</i><b>#&lt;tag&gt;</b><i>...]</i></pre></td>
                             </tr>
                             <tr>
                                 <td>Edit Task</td>
-                                <td><code>edit &lt;index&gt; [description] [by &lt;end&gt;] [#&lt;tag&gt;...]</code></td>
+                                <td><pre>&gt;&gt; edit <b>&lt;index&gt; <i>[</i>&lt;description&gt;</b><i>]</i> <i>[</i>by <b>&lt;due_datetime&gt;</b><i>]</i> <i>[</i><b>#&lt;tag&gt;</b><i>...]</i></pre></td>
                             </tr>
                             <tr>
                                 <td>Delete To-Do Item</td>
-                                <td><code>delete &lt;index&gt;</code></td>
+                                <td><pre>&gt;&gt; delete <b>&lt;index&gt;</b></pre></td>
+                            </tr>
+                            <tr>
+                                <td>Finish To-Do Item</td>
+                                <td><pre>&gt;&gt; finish <b>&lt;index&gt;</b></pre></td>
                             </tr>
                             <tr>
                                 <td>Clear</td>
-                                <td><code>clear</code></td>
+                                <td><pre>&gt;&gt; clear</pre></td>
                             </tr>
                             <tr>
                                 <td>Find</td>
-                                <td><code>find &lt;keyword&gt;...</code></td>
+                                <td><pre>&gt;&gt; find <b>&lt;keyword&gt;</b><i>...</i></pre></td>
                             </tr>
                             <tr>
                                 <td>Set Save Location</td>
-                                <td><code>set storage &lt;path&gt;</code></td>
+                                <td><pre>&gt;&gt; store <b>&lt;file_path&gt;</b></pre></td>
                             </tr>
                             <tr>
                                 <td>Export</td>
-                                <td><code>export &lt;path&gt;</code></td>
+                                <td><pre>&gt;&gt; export <b>&lt;file_path&gt;</b></pre></td>
                             </tr>
                             <tr>
                                 <td>Import</td>
-                                <td><code>import &lt;path&gt;</code></td>
+                                <td><pre>&gt;&gt; import <b>&lt;file_path&gt;</b></pre></td>
                             </tr>
                             <tr>
                                 <td>Undo</td>
-                                <td><code>undo</code></td>
+                                <td><pre>&gt;&gt; undo</pre></td>
+                            </tr>
+                            <tr>
+                                <td>Redo</td>
+                                <td><pre>&gt;&gt; redo</pre></td>
                             </tr>
                             <tr>
                                 <td>Exit</td>
-                                <td><code>exit</code></td>
+                                <td><pre>&gt;&gt; exit</pre></td>
                             </tr>
                         </tbody>
                     </table>

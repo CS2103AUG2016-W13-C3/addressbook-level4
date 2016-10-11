@@ -159,9 +159,7 @@ a.button span {
 code, pre {
   padding: 3px 3px;
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal;
-  font-size: 14px;
   color: #222;
-  margin-bottom: 9px;
 }
 
 code {
@@ -173,27 +171,6 @@ code {
 h3 code {
   font-size: inherit;
 }
-
-pre {
-  display: block;
-  overflow: auto;
-  color: #f2f2f2;
-  text-shadow: none;
-  background: #303030;
-  border: solid 2px #d1d1d1;
-  border-radius: 6px;
-}
-
-pre.header {
-  display: block;
-  overflow: auto;
-  color: #303030;
-  text-shadow: none;
-  background: #f2f2f2;
-  border: solid 1px #d1d1d1;
-  border-radius: 6px;
-}
-
 
 /* COMMON STYLES */
 
@@ -230,42 +207,26 @@ form {
 /* From http://tablestyler.com/# */
 
 .datagrid table {
-	table-layout: auto;
+	table-layout: fixed;
     border-collapse: collapse;
     text-align: left;
-    width: 1%;
-	white-space: nowrap;
 	background: #fff;
 }
-.datagrid {
-    font: normal 12px/150% Arial, Helvetica, sans-serif;
-    overflow: hidden;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-	margin-bottom: 32px;
-}
+
 .datagrid table td,
 .datagrid table th {
     padding: 6px 8px;
 }
 .datagrid table thead th {
-    background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #575757), color-stop(1, #7D7D7D));
-    background: -moz-linear-gradient( center top, #575757 5%, #7D7D7D 100%);
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#575757', endColorstr='#7D7D7D');
-    background-color: #575757;
+    background-color: #CC4444;
     color: #FFFFFF;
-    font-size: 13px;
-    font-weight: bold;
     border-left: 1px solid #A3A3A3;
 }
 .datagrid table thead th:first-child {
     border: none;
 }
 .datagrid table tbody td {
-    color: #7D7D7D;
     border-left: 2px solid #DBDBDB;
-    font-size: 12px;
     border-bottom: 1px solid #FFFFFF;
     font-weight: normal;
 }
@@ -332,24 +293,24 @@ h1 {
 }
 
 h2 {
-  margin-top: 16px;
-  margin-bottom: 16px;
   font-size: 40px;
   font-weight: bold;
   color: #303030;
 }
 
 h3 {
-  margin-top: 16px;
-  margin-bottom: 16px;
   font-size: 32px;
   font-weight: bold;
   color: #d5000d;
+  margin-bottom: 10px;
+  margin-top: 60px;
 }
 
 h4 {
   font-size: 24px;
   font-weight: bold;
+  margin-top: 40px;
+  margin-bottom: 10px;
   color: #303030;
 }
 
@@ -395,15 +356,6 @@ footer a {
 
 footer a:hover {
   color: #444;
-}
-
-figure {
-  text-align: center;
-}
-
-figcaption {
-  font-size: 14px;
-  margin-bottom: 30px;
 }
 
 /* MISC */

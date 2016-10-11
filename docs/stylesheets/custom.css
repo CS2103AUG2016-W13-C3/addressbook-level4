@@ -18,21 +18,43 @@ blockquote>b {
     padding-right: 10px;
 }
 
+
+pre {
+  color: #f2f2f2;
+  text-shadow: none;
+  background: #303030;
+  border: solid 2px #d1d1d1;
+  border-radius: 6px;
+  white-space: normal;
+  font-size: 0.9em;
+}
+
 pre b {
     color: yellow;
 }
 
 pre i {
-    color: aqua;
+    color: burlywood;
 }
 
-h4 {
-    margin-bottom: 10px;
-    margin-top: 20px;
-    font-weight: bold;
+table.black tbody {
+  background: #303030;
+  color: #FFFFFF;
 }
 
-ul#table-of-contents {
+table.black tbody td {
+    border-bottom: 0;
+}
+
+table pre {
+    white-space: normal;
+  border-radius: 0;
+  border: solid 3px #303030;
+  margin: -3px 0;
+}
+
+ul#table-of-contents,
+ul#search-logic {
     list-style: none;
     margin-left: -25px;
 }
@@ -41,7 +63,8 @@ ul#table-of-contents li {
     margin-bottom: 0;
 }
 
-ul#table-of-contents li:before {
+ul#table-of-contents li:before,
+ul#search-logic li:before {
     /*
     The desired width gets defined in two places: The element width, and background size.
     The height only gets defined once, in background size.
@@ -55,4 +78,18 @@ ul#table-of-contents li:before {
     background-size: 20px 20px;
     background-position: 0 .2em;
     padding-right: 5px;
+}
+
+
+figure {
+  text-align: center;
+}
+
+figcaption {
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+figure img {
+    margin-top: 20px;
 }
