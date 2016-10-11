@@ -121,178 +121,93 @@
                 <h2 id="design">Design</h2>
 
 
+                <h3 id="architecture-diagram">Architecture</h3>
 
-                <h3>
-                    <a id="architecture-diagram" class="anchor" href="#architecture-diagram" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Architecture Diagram
-                </h3>
+                <figure>
+                    <img src="images/Architecture.png" width="600">
+                    <figcaption>Architecture diagram for <em>CommanDo</em></figcaption>
+                </figure>
 
-                <p><img src="images/Architecture.png" width="600"><br></p>
-
-                <h3>
-                    <a id="main" class="anchor" href="#main" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Main
-                </h3>
-
-                <p><code>MainApp</code> is the entry point of the application. It is responsible for:</p>
+                <p><code>MainApp.java</code> is the entry point of the application. It is responsible for:</p>
 
                 <ul>
-                    <li>On application launch: Initializes the components in the correct sequence, and connect them up with each other</li>
-                    <li>On application exit: Shuts down the components and invokes cleanup methods where necessary</li>
+                    <li>On application launch, initializing all components in the correct sequence, and connect them up with one another.</li>
+                    <li>On application exit, shuts down all components and invokes cleanup methods where necessary.</li>
                 </ul>
 
-                <p>The application consists 4 components:</p>
+                <p>The application consists of 4 components, each with distinct roles:</p>
 
                 <ul>
                     <li>
-                        <a href="#ui-component"><strong><code>UI</code></strong></a>: The UI of the application
+                        <a href="#ui-component"><strong>UI Component</strong></a>: The UI of the application, which acts as the middleman between the user and the API provided by <strong>Logic</strong> (package <code>seedu.address.ui</code>)
                     </li>
                     <li>
-                        <a href="#logic-component"><strong><code>Logic</code></strong></a>: Executes commands from the UI, using the interfaces provided by <code>Model</code> and <code>Storage</code>
+                        <a href="#logic-component"><strong>Logic Component</strong></a>: Executes commands from the UI, using the API provided by <strong>Model</strong> and <strong>Storage</strong> (package <code>seedu.address.logic</code>)
                     </li>
                     <li>
-                        <a href="#model-component"><strong><code>Model</code></strong></a>: Holds the data of the application in-memory
+                        <a href="#model-component"><strong>Model Component</strong></a>: Defines how data is represented and holds the data of the application in-memory (package <code>seedu.address.model</code>)
                     </li>
                     <li>
-                        <a href="#storage-component"><strong><code>Storage</code></strong></a>: Reads data from, and writes data to, the file system
+                        <a href="#storage-component"><strong>Storage Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.address.storage</code>)
                     </li>
                 </ul>
 
-                <p>Each of the 4 components defines a single interface and exposes its fuctionality using a concrete class implementing that interface:</p>
+                <p>To minimize coupling and help with unit testing, the API of each component is defined by a single Java interface known publicly. This Java interface corresponds to the name of component (eg, Logic has the interface <code>Logic.java</code>). Each component then exposes its functionality using a concrete class implementing its interface, as listed below:
+                
+                    <div class="datagrid">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>UI</th>
+                                    <th>Logic</th>
+                                    <th>Model</th>
+                                    <th>Storage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>UIManager.java</code> which implements <code>UI.java</code></td>
+                                    <td><code>LogicManager.java</code> which implements <code>Logic.java</code></td>
+                                    <td><code>ModelManager.java</code> which implements <code>Model.java</code></td>
+                                    <td><code>StorageManager.java</code> which implements <code>Storage.java</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Component</th>
-                            <th>Interface</th>
-                            <th>Class</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>UI</td>
-                            <td>UI</td>
-                            <td>UIManager</td>
-                        </tr>
-                        <tr>
-                            <td>Logic</td>
-                            <td>Logic</td>
-                            <td>LogicManager</td>
-                        </tr>
-                        <tr>
-                            <td>Model</td>
-                            <td>Model</td>
-                            <td>ModelManager</td>
-                        </tr>
-                        <tr>
-                            <td>Storage</td>
-                            <td>Storage</td>
-                            <td>StorageManager</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <p> Underlying all 4 components and <code>MainApp.java</code> is the package <code>seedu.address.commons</code>. It is a collection of utility classes and application constants that are used throughout the application. The major classes affecting the architecture of the application are <code>EventsCenter.java</code> and <code>LogsCenter.java</code>.</p>
 
-                <h3>
-                    <a id="ui-component-outdated" class="anchor" href="#ui-component-outdated" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UI Component <strong><em>(OUTDATED)</em></strong>
-                </h3>
+                <h3 id="ui-component">UI Component</h3>
+                
+                <p>Details will be added as the codebase settles.</p>
 
-                <p><img src="images/UiClassDiagram.png" width="800"><br></p>
+                <h3 id="logic-component">Logic Component</h3>
 
-                <p>The UI consists of a <code>MainWindow</code> that is made up of parts e.g.<code>CommandBox</code>, <code>ResultDisplay</code>, <code>ToDoListPanel</code>, <code>StatusBarFooter</code>, <code>BrowserPanel</code> etc. All these, including the <code>MainWindow</code>, inherit from the abstract <code>UiPart</code> class and they can be loaded using the <code>UiPartLoader</code>.</p>
+                <p>Details will be added as the codebase settles.</p>
 
-                <p>The <code>UI</code> component uses <em>JavaFX</em> UI framework. The layout of these UI parts are defined in matching <code>.fxml</code> files that are in the <code>src/main/resources/view</code> folder.</p>
+                <h3 id="model-component">Model Component</h3>
 
-                <p>The <code>UI</code> component:</p>
+                <p>Details will be added as the codebase settles.</p>
 
-                <ul>
-                    <li>Executes user commands using the <code>Logic</code> component</li>
-                    <li>Binds itself to some data in the <code>Model</code> so that the UI can auto-update when data in the <code>Model</code> change</li>
-                    <li>Responds to events raised from various parts of the App and updates the UI accordingly</li>
-                </ul>
+                <h3 id="storage-component">Storage Component</h3>
 
-                <h3>
-                    <a id="logic-component-outdated" class="anchor" href="#logic-component-outdated" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Logic Component <strong><em>(OUTDATED)</em></strong>
-                </h3>
+                <p>Details will be added as the codebase settles.</p>
 
-                <p><img src="images/LogicClassDiagram.png" width="800"><br></p>
+                <h2 id="implementation">Implementation</h2>
 
-                <ol>
-                    <li>
-                        <code>Logic</code> uses the <code>Parser</code> class to parse the user command.
-                    </li>
-                    <li>This results in a <code>Command</code> object which is executed by the <code>LogicManager</code>.</li>
-                    <li>The command execution can affect the <code>Model</code> (e.g. adding a person) and/or raise events.</li>
-                    <li>The result of the command execution is encapsulated as a <code>CommandResult</code> object which is passed back to the <code>Ui</code>.</li>
-                </ol>
-
-                <p>Given below is the Sequence Diagram for interactions within the <code>Logic</code> component for the <code>execute("delete 1")</code> API call.</p>
-
-                <p><img src="images/DeletePersonSdForLogic.png" width="800"><br></p>
-
-                <h3>
-                    <a id="storage-component-outdated" class="anchor" href="#storage-component-outdated" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Storage Component <strong><em>(OUTDATED)</em></strong>
-                </h3>
-
-                <p><img src="images/StorageClassDiagram.png" width="800"></p>
-
-                <p>The <code>Storage</code> component:</p>
-
-                <ul>
-                    <li>can save <code>UserPref</code> objects in json format and read it back.</li>
-                    <li>can save the Address Book data in xml format and read it back.</li>
-                </ul>
-
-                <h3>
-                    <a id="model-component-outdated" class="anchor" href="#model-component-outdated" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Model Component <strong><em>(OUTDATED)</em></strong>
-                </h3>
-
-                <p><img src="images/ModelClassDiagram.png" width="800"></p>
-
-                <p>The <code>Model</code>:</p>
-
-                <ul>
-                    <li>stores a <code>UserPref</code> object that represents the user's preferences.</li>
-                    <li>stores the Address Book data.</li>
-                    <li>
-                        exposes a <code>UnmodifiableObservableList&lt;ReadOnlyPerson&gt;</code> that can be 'observed' e.g. the UI can be bound to this list
-                        so that the UI automatically updates when the data in the list change.
-                    </li>
-                    <li>does not depend on any of the other three components.</li>
-                </ul>
-
-                <h3>
-                    <a id="commons" class="anchor" href="#commons" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Commons
-                </h3>
-
-                <p>The <code>Commons</code> package contains a collection of classes used by all components in the application.</p>
-
-                <p>Two of those classes play important roles at the architecture level:</p>
-
-                <ul>
-                    <li>
-                        <code>EventsCenter</code> : This class (written using <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a>)
-                        is used by components to communicate with other components using events (i.e. a form of <em>Event Driven</em> design)
-                    </li>
-                    <li>
-                        <code>LogsCenter</code> : Used by components to write log messages to the application's log file.
-                    </li>
-                </ul>
-
-                <h2>
-                    <a id="implementation" class="anchor" href="#implementation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Implementation
-                </h2>
-
-                <h3>
-                    <a id="logging" class="anchor" href="#logging" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Logging
-                </h3>
+                <h3 id="event-driven-design">Event Driven Design</h3>
 
                 <p>
-                    We are using <code>java.util.logging</code> package for logging. The <code>LogsCenter</code> class is used to manage the logging levels
-                    and logging destinations.
+                    <code>EventsCenter.java</code> is written using <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a> and is used by components to communicate with other components using events.
                 </p>
 
+                <h3 id="logging">Logging</h3>
+
+                <p> We are using the <code>java.util.logging</code> package for logging. <code>LogsCenter.java</code> is used to manage the logging levels and logging destinations.</p>
+
                 <ul>
-                    <li>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#configuration">Configuration</a>)</li>
                     <li>The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</li>
-                    <li>Currently log messages are output through: <code>Console</code> and to a <code>.log</code> file</li>
+                    <li>Currently log messages are output through the console and to a <code>.log</code> file</li>
                 </ul>
 
                 <h4>
@@ -313,12 +228,6 @@
                         <code>FINE</code>: Details that is not usually noteworthy but may be useful in debugging e.g. print the actual list instead of just its size
                     </li>
                 </ul>
-
-                <h3>
-                    <a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration
-                </h3>
-
-                <p>Certain properties of the application can be controlled (e.g application name, logging level) through the configuration file (default: <code>config.json</code>).</p>
 
                 <h2>
                     <a id="testing" class="anchor" href="#testing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Testing
@@ -722,7 +631,7 @@
                     Use case ends
                 </p>
 
-                <h2 id="appendix-c-non-functional-requirements">Appendix C: Non Functional Requirement</h2>
+                <h2 id="appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</h2>
 
                 <ol>
                     <li>Should start-up in at most 3s</li>
