@@ -18,7 +18,6 @@ blockquote>b {
     padding-right: 10px;
 }
 
-
 pre {
   color: #DCDCCC;
   text-shadow: none;
@@ -29,8 +28,12 @@ pre {
   font-size: 0.9em;
 }
 
-pre b {
-    color: yellow;
+pre span {
+    color: #c3e069;
+}
+
+pre span.inputstart {
+    color: #99dfcd;
 }
 
 pre i {
@@ -40,7 +43,12 @@ pre i {
 }
 
 pre em {
-    color: aqua;
+    color: #FFFFFF;
+}
+
+code {
+    background-color: #FFFFFF;
+    color: #303030
 }
 
 table.black tbody {
