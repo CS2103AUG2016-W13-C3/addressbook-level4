@@ -17,7 +17,7 @@ import seedu.address.model.todo.ReadOnlyToDo;
 
 public class EventCard extends UiPart{
 
-    private static final String FXML = "eventCard.fxml";
+    private static final String FXML = "EventCard.fxml";
 
     @FXML
     private HBox eventPane;

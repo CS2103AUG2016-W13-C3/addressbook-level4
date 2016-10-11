@@ -16,7 +16,7 @@ import seedu.address.model.todo.ReadOnlyToDo;
 
 public class TaskCard extends UiPart{
 
-    private static final String FXML = "taskCard.fxml";
+    private static final String FXML = "TaskCard.fxml";
 
     @FXML
     private HBox taskPane;
