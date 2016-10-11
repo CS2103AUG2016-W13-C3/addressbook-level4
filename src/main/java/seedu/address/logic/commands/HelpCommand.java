@@ -5,6 +5,9 @@ import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.model.Model;
+import seedu.address.model.todo.ReadOnlyToDo;
+
+import java.util.List;
 
 /**
  * Format full help instructions for every command for display.
@@ -30,7 +33,7 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model, EventsCenter eventsCenter) {
+    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
         eventsCenter.post(new ShowHelpRequestEvent(commandWord));
         return new CommandResult(Messages.MESSAGE_HELP_WINDOW_SHOWN);
     }

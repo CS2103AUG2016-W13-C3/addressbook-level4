@@ -1,5 +1,11 @@
 package seedu.address.ui;
 
+import java.util.ArrayList;
+
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -13,7 +19,6 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.todo.ReadOnlyToDo;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -29,8 +34,9 @@ public class MainWindow extends UiPart {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private BrowserPanel browserPanel;
-    private ToDoListPanel toDoListPanel;
+
+    private EventListPanel eventPanel;
+    private TaskListPanel taskPanel;
     private ResultDisplay resultDisplay;
     private StatusBarFooter statusBarFooter;
     private CommandBox commandBox;
@@ -53,7 +59,10 @@ public class MainWindow extends UiPart {
     private MenuItem helpMenuItem;
 
     @FXML
-    private AnchorPane personListPanelPlaceholder;
+    private AnchorPane eventListPanelPlaceholder;
+    
+    @FXML
+    private AnchorPane taskListPanelPlaceholder;
 
     @FXML
     private AnchorPane resultDisplayPlaceholder;
@@ -83,9 +92,7 @@ public class MainWindow extends UiPart {
         return mainWindow;
     }
 
-    private void configure(String appTitle, String appName, UserPrefs prefs,
-                           Logic logic) {
-
+    private void configure(String appTitle, String appName, UserPrefs prefs, Logic logic) {
         // Set dependencies
         this.logic = logic;
         this.appName = appName;
@@ -109,13 +116,13 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        browserPanel = BrowserPanel.load(browserPlaceholder);
-        toDoListPanel = ToDoListPanel.load(primaryStage, getPersonListPlaceholder(), logic.getFilteredToDoList());
+        eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getObservableEventList());
+        taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getObservableTaskList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), Config.DefaultToDoListFilePath);
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
     }
-
+    
     private AnchorPane getCommandBoxPlaceholder() {
         return commandBoxPlaceholder;
     }
@@ -128,8 +135,12 @@ public class MainWindow extends UiPart {
         return resultDisplayPlaceholder;
     }
 
-    public AnchorPane getPersonListPlaceholder() {
-        return personListPanelPlaceholder;
+    public AnchorPane getEventListPlaceholder() {
+        return eventListPanelPlaceholder;
+    }
+
+    public AnchorPane getTaskListPlaceholder() {
+        return taskListPanelPlaceholder;
     }
 
     public void hide() {
@@ -162,7 +173,7 @@ public class MainWindow extends UiPart {
      */
     public GuiSettings getCurrentGuiSetting() {
         return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
-            (int) primaryStage.getX(), (int) primaryStage.getY());
+                (int) primaryStage.getX(), (int) primaryStage.getY());
     }
 
     @FXML
@@ -187,15 +198,11 @@ public class MainWindow extends UiPart {
         raise(new ExitAppRequestEvent());
     }
 
-    public ToDoListPanel getToDoListPanel() {
-        return this.toDoListPanel;
+    public EventListPanel getEventListPanel() {
+        return this.eventPanel;
     }
-
-    public void loadToDoListPage(ReadOnlyToDo toDo) {
-        browserPanel.loadPersonPage(toDo);
-    }
-
-    public void releaseResources() {
-        browserPanel.freeResources();
+    
+    public TaskListPanel getTaskListPanel() {
+        return this.taskPanel;
     }
 }

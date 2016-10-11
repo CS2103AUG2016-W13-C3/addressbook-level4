@@ -7,6 +7,9 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.Model;
 import seedu.address.model.todo.ReadOnlyToDo;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Deletes a person identified using it's last displayed index from the address book.
  */
@@ -21,24 +24,23 @@ public class DeleteCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model, EventsCenter eventsCenter) {
+    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
         assert model != null;
+        assert toDoAtIndices != null;
 
-        UnmodifiableObservableList<ReadOnlyToDo> lastShownList = model.getFilteredToDoList();
+        Optional<ReadOnlyToDo> toDoToDelete = getToDoAtIndex(toDoAtIndices, toDoIndex);
 
-        if (lastShownList.size() < toDoIndex) {
+        if (!toDoToDelete.isPresent()) {
             return new CommandResult(String.format(Messages.MESSAGE_TODO_ITEM_INDEX_INVALID, toDoIndex), true);
         }
 
-        ReadOnlyToDo toDoToDelete = lastShownList.get(toDoIndex - 1);
-
         try {
-            model.deleteToDo(toDoToDelete);
+            model.deleteToDo(toDoToDelete.get());
         } catch (IllegalValueException exception) {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.MESSAGE_TODO_DELETED, toDoToDelete.getTitle().toString()));
+        return new CommandResult(String.format(Messages.MESSAGE_TODO_DELETED, toDoToDelete.get().getTitle().toString()));
     }
 
 }

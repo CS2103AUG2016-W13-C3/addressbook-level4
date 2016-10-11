@@ -13,6 +13,8 @@ import seedu.address.model.todo.Title;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -61,37 +63,36 @@ public class EditCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model, EventsCenter eventsCenter) {
+    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
         assert model != null;
+        assert toDoAtIndices != null;
 
-        UnmodifiableObservableList<ReadOnlyToDo> lastShownList = model.getFilteredToDoList();
+        Optional<ReadOnlyToDo> toDoToEdit = getToDoAtIndex(toDoAtIndices, toDoIndex);
 
-        if (lastShownList.size() < toDoIndex) {
+        if (!toDoToEdit.isPresent()) {
             return new CommandResult(String.format(Messages.MESSAGE_TODO_ITEM_INDEX_INVALID, toDoIndex), true);
         }
 
-        ReadOnlyToDo toDoToEdit = lastShownList.get(toDoIndex - 1);
-
         try {
             if (title != null) {
-                model.editTodoTitle(toDoToEdit, title);
+                model.editTodoTitle(toDoToEdit.get(), title);
             }
 
             if (dueDate != null) {
-                model.editTodoDueDate(toDoToEdit, dueDate);
+                model.editTodoDueDate(toDoToEdit.get(), dueDate);
             }
 
             if (dateRange != null) {
-                model.editTodoDateRange(toDoToEdit, dateRange);
+                model.editTodoDateRange(toDoToEdit.get(), dateRange);
             }
 
             if (!tags.isEmpty()) {
-                model.editTodoTags(toDoToEdit, tags);
+                model.editTodoTags(toDoToEdit.get(), tags);
             }
         } catch (IllegalValueException exception) {
             return new CommandResult(exception.toString(), true);
         }
 
-        return new CommandResult(String.format(Messages.MESSAGE_TODO_EDITED, toDoToEdit.getTitle().toString()));
+        return new CommandResult(String.format(Messages.MESSAGE_TODO_EDITED, toDoToEdit.get().getTitle().toString()));
     }
 }

@@ -61,7 +61,6 @@ public class UiManager extends ComponentManager implements Ui {
     public void stop() {
         prefs.updateLastUsedGuiSetting(mainWindow.getCurrentGuiSetting());
         mainWindow.hide();
-        mainWindow.releaseResources();
     }
 
     private void showFileOperationAlertAndWait(String description, String details, Throwable cause) {
@@ -111,20 +110,19 @@ public class UiManager extends ComponentManager implements Ui {
     }
 
     @Subscribe
-    private void handleJumpToListRequestEvent(JumpToListRequestEvent event) {
+    private void handleJumpToEventListRequestEvent(JumpToListRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        mainWindow.getToDoListPanel().scrollTo(event.targetIndex);
+        mainWindow.getEventListPanel().scrollTo(event.targetIndex);
+    }
+    
+    @Subscribe
+    private void handleJumpToTaskListRequestEvent(JumpToListRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        mainWindow.getTaskListPanel().scrollTo(event.targetIndex);
     }
 
     @Subscribe
-    private void handleToDoSelectionChangedEvent(ToDoListPanelSelectionChangedEvent event){
+    private void handleToDoListPanelSelectionChangedEvent(ToDoListPanelSelectionChangedEvent event){
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        mainWindow.loadToDoListPage(event.getSelectedToDo());
-    }
-
-    @Subscribe
-    private void handleToDoListChangedEvent(ToDoListChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        mainWindow.getToDoListPanel().update();
     }
 }

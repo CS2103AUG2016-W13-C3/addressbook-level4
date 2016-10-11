@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<FlowPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox id="eventPane" fx:id="eventPane">
+         <children>
+            <GridPane HBox.hgrow="ALWAYS">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="20.0" prefWidth="20.0" />
+               </columnConstraints>
+               <children>
+                  <VBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="25.0" prefHeight="25.0" GridPane.columnIndex="0">
+                     <stylesheets>
+                        <URL value="@DarkTheme.css" />
+                        <URL value="@Extensions.css" />
+                     </stylesheets>
+                     <padding>
+                        <Insets bottom="5" left="15" right="5" top="5" />
+                     </padding>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="216.0" spacing="5">
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <Label fx:id="indexLabel" styleClass="cell_big_label" text="\$i">
+                                       <padding>
+                                          <Insets right="10.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label fx:id="titleLabel" styleClass="cell_big_label" text="\$title" />
+                                 </children>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <Label fx:id="tagsLabel" styleClass="cell_big_label" text="\$tags">
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="75.0" prefWidth="200.0" GridPane.columnIndex="1">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="startLabel" alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="175.0" styleClass=".cell_time_interval_label" text="\$start">
+                                 <padding>
+                                    <Insets right="20.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="endLabel" alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="175.0" styleClass=".cell_time_interval_label" text="\$end">
+                                 <padding>
+                                    <Insets right="20.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </GridPane>
+         </children>
+         <padding>
+            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+         </padding>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+   </padding>
+</FlowPane>
