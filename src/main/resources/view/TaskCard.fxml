@@ -9,19 +9,15 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox id="taskPane" fx:id="taskPane" xmlns="http://javafx.com/javafx/8.0.65"
-	xmlns:fx="http://javafx.com/fxml/1">
+<HBox id="taskPane" fx:id="taskPane" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<GridPane HBox.hgrow="ALWAYS">
 			<columnConstraints>
-				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
-					prefWidth="150.0" />
-				<ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0"
-					minWidth="10.0" prefWidth="10.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+				<ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="10.0" />
 			</columnConstraints>
 			<children>
-				<VBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="25.0"
-					prefHeight="25.0" GridPane.columnIndex="0">
+				<VBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="25.0" prefHeight="25.0" GridPane.columnIndex="0">
 					<stylesheets>
 						<URL value="@DarkTheme.css" />
 						<URL value="@Extensions.css" />
@@ -31,18 +27,15 @@
 					</padding>
 
 					<children>
-						<HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="216.0"
-							spacing="5">
+						<HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="216.0" spacing="5">
 							<children>
 								<HBox>
-									<Label fx:id="indexLabel" styleClass="cell_big_label"
-										text="\$i">
+									<Label fx:id="indexLabel" styleClass="cell_big_label" text="\$i">
 										<padding>
 											<Insets right="10.0" />
 										</padding>
 									</Label>
-									<Label fx:id="titleLabel" styleClass="cell_big_label"
-										text="\$title" />
+									<Label fx:id="titleLabel" styleClass="cell_big_label" text="\$title" />
 								</HBox>
 							</children>
 						</HBox>
@@ -52,8 +45,7 @@
 					<children>
 						<HBox prefHeight="100.0" prefWidth="200.0">
 							<children>
-								<Label fx:id="dueLabel" styleClass="cell_due_date_label"
-									text="\$due" />
+								<Label fx:id="dueLabel" styleClass="cell_due_date_label" text="\$due" />
 							</children>
 						</HBox>
 					</children>

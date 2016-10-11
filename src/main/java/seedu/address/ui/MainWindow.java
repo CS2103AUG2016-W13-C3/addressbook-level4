@@ -1,5 +1,11 @@
 package seedu.address.ui;
 
+import java.util.ArrayList;
+
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -29,8 +35,8 @@ public class MainWindow extends UiPart {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private ToDoListPanel eventPanel;
-    private ToDoListPanel taskPanel;
+    private EventListPanel eventPanel;
+    private TaskListPanel taskPanel;
     private ResultDisplay resultDisplay;
     private StatusBarFooter statusBarFooter;
     private CommandBox commandBox;
@@ -86,9 +92,7 @@ public class MainWindow extends UiPart {
         return mainWindow;
     }
 
-    private void configure(String appTitle, String appName, UserPrefs prefs,
-                           Logic logic) {
-
+    private void configure(String appTitle, String appName, UserPrefs prefs, Logic logic) {
         // Set dependencies
         this.logic = logic;
         this.appName = appName;
@@ -112,14 +116,13 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        //browserPanel = BrowserPanel.load(browserPlaceholder);
-        eventPanel = ToDoListPanel.load(primaryStage, getEventListPlaceholder(), logic.getFilteredToDoList());
-        taskPanel = ToDoListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getFilteredToDoList());
+        eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getFilteredToDoList());
+        taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getFilteredToDoList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), Config.DefaultToDoListFilePath);
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
     }
-
+    
     private AnchorPane getCommandBoxPlaceholder() {
         return commandBoxPlaceholder;
     }
@@ -135,7 +138,7 @@ public class MainWindow extends UiPart {
     public AnchorPane getEventListPlaceholder() {
         return eventListPanelPlaceholder;
     }
-    
+
     public AnchorPane getTaskListPlaceholder() {
         return taskListPanelPlaceholder;
     }
@@ -170,7 +173,7 @@ public class MainWindow extends UiPart {
      */
     public GuiSettings getCurrentGuiSetting() {
         return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
-            (int) primaryStage.getX(), (int) primaryStage.getY());
+                (int) primaryStage.getX(), (int) primaryStage.getY());
     }
 
     @FXML
@@ -195,7 +198,11 @@ public class MainWindow extends UiPart {
         raise(new ExitAppRequestEvent());
     }
 
-    public ToDoListPanel getToDoListPanel() {
+    public EventListPanel getEventListPanel() {
         return this.eventPanel;
+    }
+    
+    public TaskListPanel getTaskListPanel() {
+        return this.taskPanel;
     }
 }

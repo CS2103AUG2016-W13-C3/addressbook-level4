@@ -110,9 +110,15 @@ public class UiManager extends ComponentManager implements Ui {
     }
 
     @Subscribe
-    private void handleJumpToListRequestEvent(JumpToListRequestEvent event) {
+    private void handleJumpToEventListRequestEvent(JumpToListRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        mainWindow.getToDoListPanel().scrollTo(event.targetIndex);
+        mainWindow.getEventListPanel().scrollTo(event.targetIndex);
+    }
+    
+    @Subscribe
+    private void handleJumpToTaskListRequestEvent(JumpToListRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        mainWindow.getTaskListPanel().scrollTo(event.targetIndex);
     }
 
     @Subscribe
@@ -121,8 +127,14 @@ public class UiManager extends ComponentManager implements Ui {
     }
 
     @Subscribe
-    private void handleToDoListChangedEvent(ToDoListChangedEvent event) {
+    private void handleEventListChangedEvent(ToDoListChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        mainWindow.getToDoListPanel().update();
+        mainWindow.getEventListPanel().update();
+    }
+    
+    @Subscribe
+    private void handleTaskListChangedEvent(ToDoListChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        mainWindow.getTaskListPanel().update();
     }
 }

@@ -2,7 +2,11 @@ package seedu.address.ui;
 
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
@@ -21,16 +25,17 @@ import java.util.logging.Logger;
 /**
  * Panel containing the list of to-dos
  */
-public class ToDoListPanel extends UiPart {
-    private final Logger logger = LogsCenter.getLogger(ToDoListPanel.class);
-    private static final String FXML = "ToDoListPanel.fxml";
+public class TaskListPanel extends UiPart {
+    private final Logger logger = LogsCenter.getLogger(TaskListPanel.class);
+    private static final String FXML = "taskListPanel.fxml";
     private VBox panel;
     private AnchorPane placeHolderPane;
+    private ObservableList<ReadOnlyToDo> taskList;
 
     @FXML
-    private ListView<ReadOnlyToDo> toDoListView;
+    private ListView<ReadOnlyToDo> taskListView;
 
-    public ToDoListPanel() {
+    public TaskListPanel() {
         super();
     }
 
@@ -49,12 +54,12 @@ public class ToDoListPanel extends UiPart {
         this.placeHolderPane = pane;
     }
 
-    public static ToDoListPanel load(Stage primaryStage, AnchorPane toDoListPlaceholder,
+    public static TaskListPanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
                                      ObservableList<ReadOnlyToDo> toDoList) {
-        ToDoListPanel toDoListPanel =
-                UiPartLoader.loadUiPart(primaryStage, toDoListPlaceholder, new ToDoListPanel());
-        toDoListPanel.configure(toDoList);
-        return toDoListPanel;
+        TaskListPanel taskListPanel =
+                UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new TaskListPanel());
+        taskListPanel.configure(toDoList);
+        return taskListPanel;
     }
 
     private void configure(ObservableList<ReadOnlyToDo> toDos) {
@@ -63,16 +68,49 @@ public class ToDoListPanel extends UiPart {
     }
 
     private void setConnections(ObservableList<ReadOnlyToDo> toDoList) {
-        toDoListView.setItems(toDoList);
-        toDoListView.setCellFactory(listView -> new ToDoListViewCell());
+        taskList = FXCollections.observableArrayList();
+        extractEvents(toDoList);
+        
+        toDoList.addListener(new ListChangeListener<ReadOnlyToDo>() {
+            @Override
+            public void onChanged(ListChangeListener.Change<? extends ReadOnlyToDo> change) {
+                extractEvents(toDoList);
+            }
+
+        });
+        
+        taskListView.setItems(taskList);
+        taskListView.setCellFactory(listView -> new ToDoListViewCell());
         setEventHandlerForSelectionChangeEvent();
+    }
+    
+    /**
+     * Extracts tasks from a todo list
+     */
+    private void extractEvents(ObservableList<ReadOnlyToDo> toDoList) {
+        taskList.clear();
+        for (ReadOnlyToDo toDo : toDoList) {
+            if (!isEvent(toDo)) {
+                taskList.add(toDo);
+            }
+        }
+    }
+    
+    /**
+     * Returns whether a todo item contains a date range
+     */
+    private boolean isEvent(ReadOnlyToDo todo) {
+        if (todo.getDateRange().isPresent()) {
+            return true;
+        }
+        return false;
     }
 
     /**
      * Update the list and each list item
      */
     public void update() {
-        toDoListView.refresh();
+        taskListView.refresh();
     }
 
     private void addToPlaceholder() {
@@ -81,7 +119,7 @@ public class ToDoListPanel extends UiPart {
     }
 
     private void setEventHandlerForSelectionChangeEvent() {
-        toDoListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        taskListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 logger.fine("Selection in to-do list panel changed to : '" + newValue + "'");
                 raise(new ToDoListPanelSelectionChangedEvent(newValue));
@@ -91,8 +129,8 @@ public class ToDoListPanel extends UiPart {
 
     public void scrollTo(int index) {
         Platform.runLater(() -> {
-            toDoListView.scrollTo(index);
-            toDoListView.getSelectionModel().clearAndSelect(index);
+            taskListView.scrollTo(index);
+            taskListView.getSelectionModel().clearAndSelect(index);
         });
     }
 
