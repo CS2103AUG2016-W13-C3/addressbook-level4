@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.Messages;
@@ -21,7 +22,9 @@ public class ToDoList implements ReadOnlyToDoList {
 
     private final ObservableList<ToDo> list;
     {
-        list = FXCollections.observableArrayList();
+        list = FXCollections.observableArrayList(toDo -> new Observable[] {
+            toDo.getObservableValue() // track value of to-do as well
+        });
     }
 
     public ToDoList() {}

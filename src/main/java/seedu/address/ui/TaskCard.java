@@ -46,7 +46,7 @@ public class TaskCard extends UiPart{
         indexLabel.setText(String.valueOf(index));
 
         if (toDo.getDueDate().isPresent()) {
-            final LocalDateTime due = convertToLocalDateTime(toDo.getDueDate().get().dueDate);
+            final LocalDateTime due = toDo.getDueDate().get().dueDate;
             
             dueLabel.setText(prettifyDateTime(due));
         } else {

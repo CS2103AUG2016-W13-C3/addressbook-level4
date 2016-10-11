@@ -3,6 +3,10 @@ package seedu.address.model.todo;
 import java.util.Optional;
 import java.util.Set;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableStringValue;
+import javafx.beans.value.ObservableValue;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -17,18 +21,26 @@ public interface ReadOnlyToDo {
     Set<Tag> getTags();
 
     /**
+     * An observable value that changes when any of its fields are updated
+     */
+    ObservableValue getObservableValue();
+
+    /**
      * Returns true if both have the same state. (interfaces cannot override .equals)
      */
     default boolean isSameStateAs(ReadOnlyToDo other) {
         return other == this // short circuit if same object
                 || (other != null // this is first to avoid NPE below
-                && other.getTitle().equals(this.getTitle())); // state checks here onwards
+                && other.getTitle().equals(getTitle())
+                && other.getDateRange().equals(getDateRange())
+                && other.getDueDate().equals(getDueDate())
+                && other.getTags().equals(getTags())); // state checks here onwards
     }
 
     /**
-     * Formats the to-do as text, showing all details
+     * Updates and returns its value, based on the current value of its fields
      */
-    default String getAsText() {
+    default String getText() {
         final StringBuilder builder = new StringBuilder();
 
         builder.append(String.join(", ",
@@ -36,6 +48,7 @@ public interface ReadOnlyToDo {
             "Date Range: " + (getDateRange().isPresent() ? getDateRange().get().toString() : "none"),
             "Due Date: " + (getDueDate().isPresent() ? getDueDate().get().toString() : "none"),
             "Tags: " + getTags().toString()));
+
         return builder.toString();
     }
 }

@@ -52,11 +52,8 @@ public class EventCard extends UiPart{
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
             
-            final LocalDateTime start = convertToLocalDateTime(dateRange.startDate);
-            final LocalDateTime end = convertToLocalDateTime(dateRange.endDate);
-            
-            startLabel.setText(prettifyDateTime(start));
-            endLabel.setText(prettifyDateTime(end));
+            startLabel.setText(prettifyDateTime(dateRange.startDate));
+            endLabel.setText(prettifyDateTime(dateRange.endDate));
         } else {
             startLabel.setText("");
             endLabel.setText("");
@@ -81,14 +78,6 @@ public class EventCard extends UiPart{
                ldt.getYear();
     }
     
-    /**
-     * @param Date date
-     * @return LocalDateTime date
-     */
-    private LocalDateTime convertToLocalDateTime(Date date) {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneOffset.systemDefault());
-    }
-
     public HBox getLayout() {
         return eventPane;
     }

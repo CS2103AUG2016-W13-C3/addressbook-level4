@@ -179,20 +179,28 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
         public boolean run(ReadOnlyToDo toDo) {
             return titleKeyWords.stream()
-                    .filter(keyword -> check(toDo, keyword))
-                    .findAny()
-                    .isPresent();
+                    .filter(keyword -> checkForKeyword(toDo, keyword))
+                    .count() == titleKeyWords.size();
         }
         
-        private boolean check(ReadOnlyToDo toDo, String keyword){
+        private boolean checkForKeyword(ReadOnlyToDo toDo, String keyword){
+            return checkForTagKeyword(toDo, keyword) || checkForTitleKeyword(toDo, keyword);
+        }
+
+        private boolean checkForTitleKeyword(ReadOnlyToDo toDo, String keyword) {
+            return StringUtil.substringIgnoreCase(toDo.getTitle().title, keyword);
+        }
+
+        private boolean checkForTagKeyword(ReadOnlyToDo toDo, String keyword) {
             Iterator<Tag> itr = toDo.getTags().iterator();
             boolean flag = false;
             while (itr.hasNext()){
                 Tag element = itr.next();
-                if (StringUtil.substringIgnoreCase(element.tagName, keyword))
+                if (StringUtil.substringIgnoreCase(element.tagName, keyword)) {
                     flag = true;
+                }
             }
-            return flag || StringUtil.substringIgnoreCase(toDo.getTitle().title, keyword);
+            return flag;
         }
         
         @Override

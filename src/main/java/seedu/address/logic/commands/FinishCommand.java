@@ -10,13 +10,13 @@ import seedu.address.model.todo.ReadOnlyToDo;
 /**
  * Deletes a person identified using it's last displayed index from the address book.
  */
-public class DeleteCommand extends Command {
+public class FinishCommand extends Command {
 
-    public static final String COMMAND_WORD = "delete";
+    public static final String COMMAND_WORD = "finish";
 
     public final int toDoIndex;
 
-    public DeleteCommand(int toDoIndex) {
+    public FinishCommand(int toDoIndex) {
         this.toDoIndex = toDoIndex;
     }
 
@@ -38,7 +38,7 @@ public class DeleteCommand extends Command {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.MESSAGE_TODO_DELETED, toDoToDelete.getTitle().toString()));
+        return new CommandResult(String.format(Messages.MESSAGE_TODO_FINISHED, toDoToDelete.getTitle().toString()));
     }
 
 }

@@ -7,12 +7,13 @@
 *CommanDo* is developed by group CS2103T-W13-C3 as the project for CS2103T.
   
 ## Site Map
-* [User Guide](https://rawgit.com/CS2103AUG2016-W13-C3/main/gh-pages/index.html) 
-* [Developer Guide](docs/DeveloperGuide.md) 
+* [User Guide](https://cs2103aug2016-w13-c3.github.io/main/user) 
+* [Developer Guide](https://cs2103aug2016-w13-c3.github.io/main/developer) 
 * [About Us](docs/AboutUs.md)
 
 ## Acknowledgements
 
-* This application is built upon the codebase of [*AddressBook-level4*](https://github.com/nus-cs2103-AY1617S1/addressbook-level4), which was created by SE-EDU initiative at https://github.com/se-edu/
+* This application was built upon the codebase of [_AddressBook-level4_](https://github.com/nus-cs2103-AY1617S1/addressbook-level4), which had been created by [_SE-EDU initiative_](https://github.com/se-edu/)
+* We are using an awesome natural language date parser [_Natty_](http://natty.joestelmach.com/)
 
 ### Licence: [MIT](LICENSE)
