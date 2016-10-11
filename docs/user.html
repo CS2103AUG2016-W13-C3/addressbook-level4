@@ -123,7 +123,7 @@
                 </figure>
 
                 <blockquote>
-                    <b>Datetime Formats</b> <em>CommanDo</em> supports a wide variety of date & time formats, including <code>5 Jan 2016 2300</code> and <code>28/12/2016 12pm</code> (where date is in format DD/MM/YYYY). The year can be dropped for convenience, if you mean the current year. For the full list of accepted datetime formats, refer to the section on <a href="supported-datetime-formats">supported datetime formats</a> below.
+                    <b>Datetime Formats</b> <em>CommanDo</em> is pretty flexible in parsing your datetime fields, accepting formats like <code>5 Jan 2016 2300</code> and <code>28/12/2016 12pm</code> (where date is in format DD/MM/YYYY). The year can be dropped for convenience, if you mean the current year. For the full list of usable datetime formats, refer to the section on <a href="#supported-datetime-formats">supported datetime formats</a> below.
                 </blockquote>
 
                 <span><strong>Examples:</strong></span>
@@ -180,9 +180,7 @@
 
                 <span><strong>Examples:</strong></span>
 
-                <pre>&gt;&gt; add <b>meeting with boss</b> from <b>today 1300</b> to <b>today 1500</b> 
-&gt;&gt; edit <b>1</b> from <b>today 1400</b> to <b>today 1600 #important</b> 
-&gt;&gt; edit <b>1 #projectABC</b></pre>
+                <pre>&gt;&gt; add <b>meeting with boss</b> from <b>today 1300</b> to <b>today 1500</b><br/>&gt;&gt; edit <b>1</b> from <b>today 1400</b> to <b>today 1600 #important</b><br/>&gt;&gt; edit <b>1 #projectABC</b></pre>
                 <span><strong>What it does: </strong> adds an <em>Event</em>, then changes its time slot and adds a tag to it, then replaces a tag with another.</span>
 
 
@@ -194,15 +192,10 @@
 
                 <span><strong>Examples:</strong></span>
 
-                <pre>&gt;&gt; add <b>plan shopping trip #lunch</b>
-&gt;&gt; edit <b>1 shopping trip to IKEA</b>
-&gt;&gt; edit <b>1</b> by <b>6 feb</b>
-&gt;&gt; edit <b>1</b> by</pre>
+                <pre>&gt;&gt; add <b>plan shopping trip #lunch</b><br/>&gt;&gt; edit <b>1 shopping trip to IKEA</b><br/>&gt;&gt; edit <b>1</b> by <b>6 feb</b><br/>&gt;&gt; edit <b>1</b> by</pre>
                 <span><strong>What it does: </strong> adds an <em>Task</em> with a tag, then changes its description,  then adds a deadline to it, then removes that deadline.</span>
 
-                <pre>&gt;&gt; add <b>watch Inception</b>
-&gt;&gt; edit <b>1 watch Gravity</b>
-&gt;&gt; edit <b>1 #family</b></pre>
+                <pre>&gt;&gt; add <b>watch Inception</b><br/>&gt;&gt; edit <b>1 watch Gravity</b><br/>&gt;&gt; edit <b>1 #family</b></pre>
                 <span><strong>What it does: </strong> adds an <em>Task</em>, then changes its description,  then adds a tag to it.</span>
 
                 <h3 id="deleting-to-do-items-delete">Deleting To-Do Items: <code>delete</code></h3>
@@ -222,18 +215,6 @@
                 <figure>
                     <img src="https://i.imgur.com/OvMZBs9.jpg" width="600">
                     <figcaption>Result of <b>finish 1</b></figcaption>
-                </figure>
-
-                <h3 id="clearing-all-to-do-items-clear">Clearing Your To-Do List: <code>clear</code></h3>
-
-                <p>If you want to reset your to-do list, use the <code>clear</code> command. <em>Use with caution</em>.</p>
-
-                <span><strong>Command Format:</strong></span>
-                <pre>&gt;&gt; clear</pre>
-
-                <figure>
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/clear.png" width="600">
-                    <figcaption>Result of <code>clear</code></figcaption>
                 </figure>
 
                 <h3 id="finding-to-do-items-find">Finding To-Do Items: <code>find</code></h3>
@@ -268,6 +249,18 @@
 
                 <pre>&gt;&gt; find</pre>
                 <span><strong>What it does: </strong> Clears previous <code>find</code> command and shows all to-do items.</span>
+
+                <h3 id="clearing-all-to-do-items-clear">Clearing Your To-Do List: <code>clear</code></h3>
+
+                <p>If you want to reset your to-do list, use the <code>clear</code> command. <em>Use with caution</em>.</p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre>&gt;&gt; clear</pre>
+
+                <figure>
+                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/clear.png" width="600">
+                    <figcaption>Result of <code>clear</code></figcaption>
+                </figure>
 
                 <h3 id="setting-save-location-set">Setting Save Location: <code>store</code></h3>
 
@@ -307,7 +300,7 @@
 
                 <h3 id="redoing-redo">Redoing: <code>redo</code></h3>
 
-                <p>Scenario: you deleted a to-do item by accident, cleverly used <code>undo</code> to restore that to-do item, but eventually realised that to-do item isn't worth keeping after all. The <code>redo</code>command reverts the most recent <code>undo</code>, can be used in sucession, but similarly loses its capacity when the application is closed.</p>
+                <p>Scenario: you deleted a to-do item by accident, cleverly used <code>undo</code> to restore that to-do item, but eventually realised that to-do item isn't worth keeping after all. The <code>redo</code> command reverts the most recent <code>undo</code>, can be used in sucession, but similarly loses its capacity when the application is closed.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre>&gt;&gt; redo</pre>
