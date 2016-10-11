@@ -104,30 +104,6 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_finish_index() throws IllegalValueException {
-        logic.execute("add title");
-        logic.execute("add title2");
-
-        eventsCollector.reset();
-        assertFalse(wasToDoListChangedEventPosted());
-
-        assertTrue(ifToDoExists(
-            new ToDoBuilder("title2")
-                .build()));
-
-        CommandResult result = logic.execute("finish 2");
-        assertFalse(result.hasError());
-
-        assertTrue(wasToDoListChangedEventPosted());
-        assertFalse(ifToDoExists(
-            new ToDoBuilder("title2")
-                .build()));
-        assertTrue(ifToDoExists(
-            new ToDoBuilder("title")
-                .build()));
-    }
-
-    @Test
     public void execute_find_keywords() throws IllegalValueException {
         logic.execute("add title");
         logic.execute("add title2");
