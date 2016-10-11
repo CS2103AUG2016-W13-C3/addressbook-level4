@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <link rel="stylesheet" type="text/css" href="stylesheets/custom.css" media="screen">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -16,10 +17,8 @@
 <body>
     <div id="container">
         <div class="inner">
-
             <header>
-                <h1>CommanDo</h1>
-                <h2>Developer Guide</h2>
+                <h1>Developer Guide for <em>CommanDo</em></h1>
             </header>
 
             <section id="downloads" class="clearfix">
@@ -31,34 +30,54 @@
             <hr>
 
             <section id="main_content">
-                <h1>
-                    <a id="developer-guide" class="anchor" href="#developer-guide" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Developer Guide
-                </h1>
+                <p>
+                    <ul id="table-of-contents">
+                        <li><a href="#introduction">Introduction</a></li>
+                        <li><a href="#setting-up">Setting Up</a></li>
+                        <li><a href="#design">Design</a></li>
+                        <li><a href="#implementation">Implementation</a></li>
+                        <li><a href="#testing">Testing</a></li>
+                        <li><a href="#dev-ops">Dev Ops</a></li>
+                        <li><a href="#troubleshooting">Troubleshooting</a></li>
+                        <li><a href="#known-issues">Known Issues</a></li>
+                        <li><a href="#future-plans">Future Plans</a></li>
+                        <li><a href="#appendix-a-user-stories">Appendix A: User Stories</a></li>
+                        <li><a href="#appendix-b-use-cases">Appendix B: Use Cases</a></li>
+                        <li><a href="#appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</a></li>
+                        <li><a href="#appendix-d-glossary">Appendix D: Glossary</a></li>
+                        <li><a href="#appendix-e-product-survey">Appendix E: Product Survey</a></li>
+                    </ul>
+                </p>
 
-                <ul>
-                    <li><a href="#setting-up">Setting Up</a></li>
-                    <li><a href="#design">Design</a></li>
-                    <li><a href="#implementation">Implementation</a></li>
-                    <li><a href="#testing">Testing</a></li>
-                    <li><a href="#dev-ops">Dev Ops</a></li>
-                    <li><a href="#appendix-a-user-stories">Appendix A: User Stories</a></li>
-                    <li><a href="#appendix-b-use-cases">Appendix B: Use Cases</a></li>
-                    <li><a href="#appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</a></li>
-                    <li><a href="#appendix-d-glossary">Appendix D: Glossary</a></li>
-                    <li><a href="#appendix-e-product-survey">Appendix E: Product Survey</a></li>
-                </ul>
+                <h2 id="introduction">Introduction</h2>
 
-                <h2>
-                    <a id="setting-up" class="anchor" href="#setting-up" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setting Up
-                </h2>
+                <p><em>CommanDo</em> is a to-do list manager for the desktop, carefully designed for those who type fast. To-do items are displayed on a graphical user interface (GUI), split into 2 vertical lists of <em>Events</em> and <em>Tasks</em>, while the user manage their to-do list by typing commands on a text input - just like in a Command Line Interface (CLI).</p>
 
-                <h4>
-                    <a id="prerequisites" class="anchor" href="#prerequisites" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Prerequisites
-                </h4>
+                <figure>
+                    <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
+                    <figcaption><em>CommanDo</em> at its maximum efficiency</figcaption>
+                </figure>
+
+                <p>This guide describes the development of <em>CommanDo</em>, how it is currently designed and implemented at a technical level, some of the known issues, and some future plans and extensions for it.</p>
+
+                <h3>Target Users</h3>
+
+                <p>
+                    Our main target users are characterised by:
+                    <ul>
+                        <li>Prefers typing over using the mouse</li>
+                        <li>Has most to-do items coming as emails</li>
+                        <li>Updates their to-do list very often and wants speed in doing so</li>
+                    </ul>
+                </p>
+
+                <h2 id="setting-up">Setting Up</h2>
+
+                <h3 id="prerequisties">Prerequisites</h3>
 
                 <ol>
                     <li>
-                        <strong>JDK <code>1.8.0_60</code></strong> or later (Will not work with earlier version of Java 8)
+                        <strong>JDK <code>1.8.0_60</code></strong> or later (Install it <a target="_blank" href="https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html">here</a>)
                     </li>
                     <li>
                         <strong>Eclipse</strong> IDE
@@ -70,38 +89,38 @@
                         <strong>Buildship Gradle Integration</strong> plugin from the Eclipse Marketplace
                     </li>
                 </ol>
+                It is also assumed that you have some prior experience with Java, Eclipse IDE, Github/Git, some OOP and UML diagramming. This guide focuses on the use of the Eclipse IDE.
 
-                <h4>
-                    <a id="importing-the-project-into-eclipse" class="anchor" href="#importing-the-project-into-eclipse" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Importing the Project into Eclipse
-                </h4>
+                <h3 id="importing-project-into-eclipse">Importing Project into Eclipse</h3>
 
                 <ol>
-                    <li>Fork this repo, and clone the fork to your computer</li>
+                    <li>Fork this <a href="https://github.com/CS2103AUG2016-W13-C3/main">repo</a>, and clone the fork to your computer.</li>
                     <li>
                         Open Eclipse (Note: Ensure you have installed the <strong>e(fx)clipse</strong> and <strong>buildship</strong> plugins as given
-                        in the prerequisites above)
+                        in the prerequisites above).
                     </li>
                     <li>
-                        Click <code>File</code> &gt; <code>Import</code>
+                        Click <code>File</code> &gt; <code>Import</code>.
                     </li>
                     <li>
-                        Click <code>Gradle</code> &gt; <code>Gradle Project</code> &gt; <code>Next</code> &gt; <code>Next</code>
+                        Click <code>Gradle</code> &gt; <code>Gradle Project</code> &gt; <code>Next</code> &gt; <code>Next</code>.
                     </li>
-                    <li>Click <code>Browse</code>, then locate the project's directory</li>
+                    <li>Click <code>Browse</code>, then locate the project's directory.</li>
                     <li>
-                        Click <code>Finish</code>
-
-                        <ul>
-                            <li>If you are asked whether to 'keep' or 'overwrite' config files, choose to 'keep'.</li>
-                            <li>Depending on your connection speed and server load, it can even take up to 30 minutes for the set up to finish (This is because Gradle downloads library files from servers during the project set up process).</li>
-                            <li>If Eclipse auto-changed any settings files during the import process, you can discard those changes.</li>
-                        </ul>
+                        Click <code>Finish</code>.
+                        <blockquote>
+                            <ul>
+                                <li>If you are asked whether to 'keep' or 'overwrite' config files, choose to 'keep'.</li>
+                                <li>Depending on your connection speed and server load, it can even take up to 30 minutes for the set up to finish (This is because Gradle downloads library files from servers during the project set up process).</li>
+                                <li>If Eclipse auto-changed any settings files during the import process, you can discard those changes.</li>
+                            </ul>
+                        </blockquote>
                     </li>
                 </ol>
 
-                <h2>
-                    <a id="design" class="anchor" href="#design" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Design
-                </h2>
+                <h2 id="design">Design</h2>
+
+
 
                 <h3>
                     <a id="architecture-diagram" class="anchor" href="#architecture-diagram" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Architecture Diagram
@@ -412,174 +431,194 @@
                     <li>Require developers to download those libraries manually (this creates extra work for developers)</li>
                 </ol>
 
-                <h2>
-                    <a id="appendix-a-user-stories" class="anchor" href="#appendix-a-user-stories" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Appendix A: User Stories
-                </h2>
+                <h2 id="troubleshooting">Troubleshooting</h2>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Priority</th>
-                            <th align="left">As a ...</th>
-                            <th align="left">I want to ...</th>
-                            <th align="left">So that I can...</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">user</td>
-                            <td align="left">add to-do items</td>
-                            <td align="left">start viewing and managing my to-do items</td>
-                        </tr>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">user</td>
-                            <td align="left">delete to-do items</td>
-                            <td align="left">remove any outdated or invalid to-do items</td>
-                        </tr>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">user</td>
-                            <td align="left">edit title of to-do items</td>
-                            <td align="left">correct any typos or update the details of to-do items over time</td>
-                        </tr>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">user with many events</td>
-                            <td align="left">have multiple time slots for events</td>
-                            <td align="left">input for events which span multiple days</td>
-                        </tr>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">user with many events</td>
-                            <td align="left">edit time range of events and deadlines of tasks</td>
-                            <td align="left">correct any typo or update to-do items' timings after they are postponed or confirmed</td>
-                        </tr>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">user</td>
-                            <td align="left">view events and deadlines in chronological order, from the current day</td>
-                            <td align="left">figure out what events or deadlines are happening next</td>
-                        </tr>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">user</td>
-                            <td align="left">view a list of floating tasks and deadlines</td>
-                            <td align="left">figure out what I can do when I am free</td>
-                        </tr>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">user</td>
-                            <td align="left">mark off floating tasks and deadlines</td>
-                            <td align="left">dismiss pending to-dos that I have done</td>
-                        </tr>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">user</td>
-                            <td align="left">block off certain dates and times with an event</td>
-                            <td align="left">have some free time</td>
-                        </tr>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">user with many to-do items</td>
-                            <td align="left">search for to-do items by their textual content</td>
-                            <td align="left">navigate through a long list of to-do items</td>
-                        </tr>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">user</td>
-                            <td align="left">undo the most recent action</td>
-                            <td align="left">revert a mistake</td>
-                        </tr>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">user with multiple devices</td>
-                            <td align="left">export or import to-do items to a specified folder</td>
-                            <td align="left">share the to-do list across multiple devices</td>
-                        </tr>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">new user</td>
-                            <td align="left">view all possible command types</td>
-                            <td align="left">learn about the functionality of the application while using it</td>
-                        </tr>
-                        <tr>
-                            <td><code>* * *</code></td>
-                            <td align="left">new user</td>
-                            <td align="left">view the correct command syntax and sample commands after inputting a command wrongly</td>
-                            <td align="left">learn the correct command syntax while using it</td>
-                        </tr>
-                        <tr>
-                            <td><code>* *</code></td>
-                            <td align="left">user</td>
-                            <td align="left">set events as recurring</td>
-                            <td align="left">avoid having to enter identical events periodically</td>
-                        </tr>
-                        <tr>
-                            <td><code>* *</code></td>
-                            <td align="left">user</td>
-                            <td align="left">use command keywords (eg, "from", "to", "by") in titles of my to-do items</td>
-                            <td align="left">avoid having to change how I write my to-do because of the command keywords</td>
-                        </tr>
-                        <tr>
-                            <td><code>* *</code></td>
-                            <td align="left">user with many to-do items</td>
-                            <td align="left">add tags to to-do items, and search to-do items by tags</td>
-                            <td align="left">quickly determine what kind of classification the to-do items are when I skim through the list</td>
-                        </tr>
-                        <tr>
-                            <td><code>* *</code></td>
-                            <td align="left">very active user</td>
-                            <td align="left">summon the application and have it ready for input immediately via a keyboard shortcut</td>
-                            <td align="left">quickly be able to add to or remove from my to-do list when I have to</td>
-                        </tr>
-                        <tr>
-                            <td><code>* *</code></td>
-                            <td align="left">user</td>
-                            <td align="left">receive a visual confirmation of the details of the to-do item I have added/edited</td>
-                            <td align="left">be able to verify modifications to my to-do list</td>
-                        </tr>
-                        <tr>
-                            <td><code>*</code></td>
-                            <td align="left">user with upcoming events that have uncertain timings</td>
-                            <td align="left">mark events as “unconfirmed”, and manage and view them as “pending time confirmation”</td>
-                            <td align="left">better track and manage events with uncertain timings that are pending confirmation</td>
-                        </tr>
-                        <tr>
-                            <td><code>*</code></td>
-                            <td align="left">new user</td>
-                            <td align="left">view syntax highlighting of the various fields of a command while inputting, in real time</td>
-                            <td align="left">be clear about how the application parses my to-do item’s fields and avoid unintended errors in input</td>
-                        </tr>
-                        <tr>
-                            <td><code>*</code></td>
-                            <td align="left">user</td>
-                            <td align="left">customize command keywords with my own aliases</td>
-                            <td align="left">use commands that are personally more intuitive and possibly spend less time typing by having own keywords</td>
-                        </tr>
-                        <tr>
-                            <td><code>*</code></td>
-                            <td align="left">user</td>
-                            <td align="left">be flexible in the order of keywords or fields in commands</td>
-                            <td align="left">be less rigid in typing commands and possibly spend less time typing</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <h3>Eclipse reports compile errors after new commits are pulled from Git.</h3>
 
-                <p>Priorities:</p>
+                <p>It is likely that Eclipse failed to regonize the new files that appeared in the new commits. Refresh the project in Eclipse by right-clicking the project in the package explorer panel and choosing <code>Gradle</code> &gt; <code>Refresh Gradle Project</code>.</p>
 
-                <ul>
-                    <li>
-                        <code>* * *</code> - High (Must have)
-                    </li>
-                    <li>
-                        <code>* *</code> - Medium (Nice to have)
-                    </li>
-                    <li>
-                        <code>*</code> - Low (Unlikely to have)
-                    </li>
-                </ul>
+                <h3>Eclipse reports some required libraries missing.</h3>
+
+                <p>Libraries used by the project might not have been downloaded during project import, or new ones might have been added. <a href="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/UsingGradle.md">Run tests using Gradle</a> once to refresh the libraries in Eclipse</p>
+
+                <h2 id="known-issues">Known Issues</h2>
+
+                <p>No known issues, but probably unknown ones exist.</p>
+
+                <h2 id="future-plans">Future Plans</h2>
+
+                <p>To be filled in in the future.</p>
+
+                <h2 id="appendix-a-user-stories">Appendix A: User Stories</h2>
+
+                <div class="datagrid">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="80px">Priority</th>
+                                <th align="left">As a ...</th>
+                                <th align="left">I want to ...</th>
+                                <th align="left">So that I can...</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">user</td>
+                                <td align="left">add to-do items</td>
+                                <td align="left">start viewing and managing my to-do items</td>
+                            </tr>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">user</td>
+                                <td align="left">delete to-do items</td>
+                                <td align="left">remove any outdated or invalid to-do items</td>
+                            </tr>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">user</td>
+                                <td align="left">edit title of to-do items</td>
+                                <td align="left">correct any typos or update the details of to-do items over time</td>
+                            </tr>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">user with many events</td>
+                                <td align="left">have multiple time slots for events</td>
+                                <td align="left">input for events which span multiple days</td>
+                            </tr>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">user with many events</td>
+                                <td align="left">edit time range of events and deadlines of tasks</td>
+                                <td align="left">correct any typo or update to-do items' timings after they are postponed or confirmed</td>
+                            </tr>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">user</td>
+                                <td align="left">view events and deadlines in chronological order, from the current day</td>
+                                <td align="left">figure out what events or deadlines are happening next</td>
+                            </tr>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">user</td>
+                                <td align="left">view a list of floating tasks and deadlines</td>
+                                <td align="left">figure out what I can do when I am free</td>
+                            </tr>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">user</td>
+                                <td align="left">mark off floating tasks and deadlines</td>
+                                <td align="left">dismiss pending to-dos that I have done</td>
+                            </tr>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">user</td>
+                                <td align="left">block off certain dates and times with an event</td>
+                                <td align="left">have some free time</td>
+                            </tr>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">user with many to-do items</td>
+                                <td align="left">search for to-do items by their textual content</td>
+                                <td align="left">navigate through a long list of to-do items</td>
+                            </tr>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">user</td>
+                                <td align="left">undo the most recent action</td>
+                                <td align="left">revert a mistake</td>
+                            </tr>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">user with multiple devices</td>
+                                <td align="left">export or import to-do items to a specified folder</td>
+                                <td align="left">share the to-do list across multiple devices</td>
+                            </tr>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">new user</td>
+                                <td align="left">view all possible command types</td>
+                                <td align="left">learn about the functionality of the application while using it</td>
+                            </tr>
+                            <tr>
+                                <td><code>* * *</code></td>
+                                <td align="left">new user</td>
+                                <td align="left">view the correct command syntax and sample commands after inputting a command wrongly</td>
+                                <td align="left">learn the correct command syntax while using it</td>
+                            </tr>
+                            <tr>
+                                <td><code>* *</code></td>
+                                <td align="left">user</td>
+                                <td align="left">set events as recurring</td>
+                                <td align="left">avoid having to enter identical events periodically</td>
+                            </tr>
+                            <tr>
+                                <td><code>* *</code></td>
+                                <td align="left">user</td>
+                                <td align="left">use command keywords (eg, "from", "to", "by") in titles of my to-do items</td>
+                                <td align="left">avoid having to change how I write my to-do because of the command keywords</td>
+                            </tr>
+                            <tr>
+                                <td><code>* *</code></td>
+                                <td align="left">user with many to-do items</td>
+                                <td align="left">add tags to to-do items, and search to-do items by tags</td>
+                                <td align="left">quickly determine what kind of classification the to-do items are when I skim through the list</td>
+                            </tr>
+                            <tr>
+                                <td><code>* *</code></td>
+                                <td align="left">very active user</td>
+                                <td align="left">summon the application and have it ready for input immediately via a keyboard shortcut</td>
+                                <td align="left">quickly be able to add to or remove from my to-do list when I have to</td>
+                            </tr>
+                            <tr>
+                                <td><code>* *</code></td>
+                                <td align="left">user</td>
+                                <td align="left">receive a visual confirmation of the details of the to-do item I have added/edited</td>
+                                <td align="left">be able to verify modifications to my to-do list</td>
+                            </tr>
+                            <tr>
+                                <td><code>*</code></td>
+                                <td align="left">user with upcoming events that have uncertain timings</td>
+                                <td align="left">mark events as “unconfirmed”, and manage and view them as “pending time confirmation”</td>
+                                <td align="left">better track and manage events with uncertain timings that are pending confirmation</td>
+                            </tr>
+                            <tr>
+                                <td><code>*</code></td>
+                                <td align="left">new user</td>
+                                <td align="left">view syntax highlighting of the various fields of a command while inputting, in real time</td>
+                                <td align="left">be clear about how the application parses my to-do item’s fields and avoid unintended errors in input</td>
+                            </tr>
+                            <tr>
+                                <td><code>*</code></td>
+                                <td align="left">user</td>
+                                <td align="left">customize command keywords with my own aliases</td>
+                                <td align="left">use commands that are personally more intuitive and possibly spend less time typing by having own keywords</td>
+                            </tr>
+                            <tr>
+                                <td><code>*</code></td>
+                                <td align="left">user</td>
+                                <td align="left">be flexible in the order of keywords or fields in commands</td>
+                                <td align="left">be less rigid in typing commands and possibly spend less time typing</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    <strong>Priorities:</strong>
+
+                    <ul>
+                        <li>
+                            <code>* * *</code> - High (Must have)
+                        </li>
+                        <li>
+                            <code>* *</code> - Medium (Nice to have)
+                        </li>
+                        <li>
+                            <code>*</code> - Low (Unlikely to have)
+                        </li>
+                    </ul>
+                </p>
 
                 <h2>
                     <a id="appendix-b-use-cases" class="anchor" href="#appendix-b-use-cases" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Appendix B: Use Cases
@@ -592,7 +631,7 @@
                 </h3>
 
                 <p>
-                    MSS:<br><br>
+                    <h4>MSS:</h4>
                     1. User types in an <code>add</code> command with details of the to-do item<br>
                     2. Application adds the to-do item to the current to-do list<br>
                     3. Application updates the GUI to reflect the changes<br>
@@ -600,7 +639,7 @@
                 </p>
 
                 <p>
-                    Extensions:<br><br>
+                    <h4>Extensions:</h4>
                     1a. Command was not properly formatted<br>
                     1a1. Application uses GUI to report details of the error in parsing command<br>
                     1a2. Application uses GUI to show correct <code>add</code> command syntax and a sample <code>add</code> command<br>
@@ -612,15 +651,15 @@
                 </h3>
 
                 <p>
-                    MSS:<br><br>
-                    1. User types in an <code>delete</code> command with the screen index of the to-do item<br>
+                    <h4>MSS:</h4>
+                    1. User types in an <code>delete</code> command with the index of the to-do item<br>
                     2. Application deletes the to-do item to the current to-do list<br>
                     3. Application updates the GUI to reflect the changes<br>
                     Use case ends
                 </p>
 
                 <p>
-                    Extensions:<br><br>
+                    <h4>Extensions:</h4>
                     1a. Command was not properly formatted<br>
                     1a1. Application uses GUI to report details of the error in parsing command<br>
                     1a2. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command<br>
@@ -628,8 +667,8 @@
                 </p>
 
                 <p>
-                    1b. Screen index is invalid<br>
-                    1b1. Application uses GUI to report that screen index is invalid<br>
+                    1b. Index is invalid<br>
+                    1b1. Application uses GUI to report that index is invalid<br>
                     Use case ends
                 </p>
 
@@ -638,14 +677,14 @@
                 </h3>
 
                 <p>
-                    MSS:<br><br>
+                    <h4>MSS:</h4>
                     1. User types in an <code>find</code> command with a list of words to search for<br>
                     2. Application searches through the to-do list and updates the GUI to show only the matched to-do items<br>
                     Use case ends
                 </p>
 
                 <p>
-                    Extensions:<br><br>
+                    <h4>Extensions:</h4>
                     1a. No words were given<br>
                     1a1. Application updates GUI to show all to-do items<br>
                     Use case ends
@@ -662,7 +701,7 @@
                 </h3>
 
                 <p>
-                    MSS:<br><br>
+                    <h4>MSS:</h4>
                     1. User types in an <code>edit</code> command with the screen index and changed details of the to-do item<br>
                     2. Application edits the to-do item to the current to-do list<br>
                     3. Application updates the GUI to reflect the changes<br>
@@ -670,7 +709,7 @@
                 </p>
 
                 <p>
-                    Extensions:<br><br>
+                    <h4>Extensions:</h4>
                     1a. Command was not properly formatted<br>
                     1a1. Application uses GUI to report details of the error in parsing command<br>
                     1a2. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>edit</code> command<br>
@@ -683,20 +722,7 @@
                     Use case ends
                 </p>
 
-
-
-
-
-
-
-
-
-
-
-
-                <h2>
-                    <a id="appendix-c-non-functional-requirements" class="anchor" href="#appendix-c-non-functional-requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Appendix C: Non Functional Requirements
-                </h2>
+                <h2 id="appendix-c-non-functional-requirements">Appendix C: Non Functional Requirement</h2>
 
                 <ol>
                     <li>Should start-up in at most 3s</li>
@@ -713,9 +739,7 @@
                     <li>New users should not require reading of a guide to navigate GUI (excluding learning of commands) </li>
                 </ol>
 
-                <h2>
-                    <a id="appendix-d-glossary" class="anchor" href="#appendix-d-glossary" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Appendix D: Glossary
-                </h2>
+                <h2 id="appendix-d-glossary">Appendix D: Glossary</h2>
 
                 <ul>
                     <li>
@@ -725,56 +749,54 @@
                         <strong>To-do item</strong>: Event, deadline or floating task added by the user
                     </li>
                     <li>
-                        <strong>Screen index of to-do item</strong>: The number visually tagged to a to-do item on screen (changes with how to-do items are listed)
+                        <strong>Index of to-do item</strong>: The number visually tagged to a to-do item on the UI (changes with how to-do items are listed)
                     </li>
                 </ul>
 
-                <h2>
-                    <a id="appendix-e-product-survey" class="anchor" href="#appendix-e-product-survey" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Appendix E: Product Survey
-                </h2>
+                <h2 id="appendix-e-product-survey">Appendix E: Product Survey</h2>
 
                 <p>We tested a few existing to-do managers and analysed how much they would meet the needs of our target user Jim, a busy office worker who receives many to-dos by emails and prefers typing over using the mouse.</p>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Product (Reviewer)</th>
-                            <th align="left">Positive points</th>
-                            <th align="left">Negative points</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Google Keep (Zhiwen)</td>
-                            <td align="left">+ Simplicity (clear and simple UI) <br> + Easy access from anywhere <br> + Native sync and integration with Google <br> + Mark things done easily <br> + Support photos, audios and lists in content</td>
-                            <td align="left">- Unable to do text formatting <br> - Search function only supports titles <br> - Unable to prioritise activities</td>
-                        </tr>
-                        <tr>
-                            <td>Trello (Sheng Xuan)</td>
-                            <td align="left">+ Multiple platform support (Web, mobile, desktop) <br> + Due date function, which is suitable for tasks with deadlines <br> + Search by keyword of a task <br> + Archive completed tasks <br> + Check list to track the progress of each task <br> + Attachment files to a task (ie. forms to reply in a email)</td>
-                            <td align="left">- At least 2 clicks (taps) are needed to add a new task <br> - Calendar view function is not free to use. In free version, no timeline can be shown, add events happen in specific dates are not supported <br> - Unable to undo</td>
-                        </tr>
-                        <tr>
-                            <td>Anydo (Conan)</td>
-                            <td align="left">+ Able to push tasks to a later date <br> + Easily reorder tasks <br> + Easy to use interface (4 major groups) <br> + Can be used on mobile and on browser <br> + Supports double confirmation of deleting a task when complete <br> + Can add details in later</td>
-                            <td align="left">- No clear distinguishing of the 3 types of tasks <br> - No sense of timeline, just tasks to complete by the end of the day <br> - Deadlines are not shown unless the task is clicked <br> - No search function (however, you can Ctrl+F, though no content search) <br> - The other 2 group “Upcoming” and “Someday” is kind of ambiguous</td>
-                        </tr>
-                        <tr>
-                            <td>Google Calendar (Yun Chuan)</td>
-                            <td align="left">+ Able to mark as done, and undo “done” <br> + Clean, simple interface which is not cluttered <br> + Autocomplete based on crowd-sourced or history (but doesn’t feel very “intelligent”) <br> + Push notifications for reminders/events <br> + Able to repeat events <br> + Both on mobile and on website, sync-ed <br> + “All-day” events <br> + “Schedule” view lists everything in chronological order, starting from today <br> + Able to “zoom in” (day view) and “zoom out” (month view) <br> + Split into: “events” and “reminders”, events have start to end time, reminders only have a reminder time</td>
-                            <td align="left">- Online, cannot export to data file <br> - Unable to mark deadlines accurately (not an “event”) <br> - Cannot search for todos <br> - Too many screens or user actions to add a task</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                <div class="datagrid">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="100px">Product (Reviewer)</th>
+                                <th align="left">Positive points</th>
+                                <th align="left">Negative points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Google Keep (Zhiwen)</td>
+                                <td align="left">+ Simplicity (clear and simple UI) <br> + Easy access from anywhere <br> + Native sync and integration with Google <br> + Mark things done easily <br> + Support photos, audios and lists in content</td>
+                                <td align="left">- Unable to do text formatting <br> - Search function only supports titles <br> - Unable to prioritise activities</td>
+                            </tr>
+                            <tr>
+                                <td>Trello (Sheng Xuan)</td>
+                                <td align="left">+ Multiple platform support (Web, mobile, desktop) <br> + Due date function, which is suitable for tasks with deadlines <br> + Search by keyword of a task <br> + Archive completed tasks <br> + Check list to track the progress of each task <br> + Attachment files to a task (ie. forms to reply in a email)</td>
+                                <td align="left">- At least 2 clicks (taps) are needed to add a new task <br> - Calendar view function is not free to use. In free version, no timeline can be shown, add events happen in specific dates are not supported <br> - Unable to undo</td>
+                            </tr>
+                            <tr>
+                                <td>Anydo (Conan)</td>
+                                <td align="left">+ Able to push tasks to a later date <br> + Easily reorder tasks <br> + Easy to use interface (4 major groups) <br> + Can be used on mobile and on browser <br> + Supports double confirmation of deleting a task when complete <br> + Can add details in later</td>
+                                <td align="left">- No clear distinguishing of the 3 types of tasks <br> - No sense of timeline, just tasks to complete by the end of the day <br> - Deadlines are not shown unless the task is clicked <br> - No search function (however, you can Ctrl+F, though no content search) <br> - The other 2 group “Upcoming” and “Someday” is kind of ambiguous</td>
+                            </tr>
+                            <tr>
+                                <td>Google Calendar (Yun Chuan)</td>
+                                <td align="left">+ Able to mark as done, and undo “done” <br> + Clean, simple interface which is not cluttered <br> + Autocomplete based on crowd-sourced or history (but doesn’t feel very “intelligent”) <br> + Push notifications for reminders/events <br> + Able to repeat events <br> + Both on mobile and on website, sync-ed <br> + “All-day” events <br> + “Schedule” view lists everything in chronological order, starting from today <br> + Able to “zoom in” (day view) and “zoom out” (month view) <br> + Split into: “events” and “reminders”, events have start to end time, reminders only have a reminder time</td>
+                                <td align="left">- Online, cannot export to data file <br> - Unable to mark deadlines accurately (not an “event”) <br> - Cannot search for todos <br> - Too many screens or user actions to add a task</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
-
-            <footer>
-                CommanDo is maintained by <a href="https://github.com/CS2103AUG2016-W13-C3">CS2103AUG2016-W13-C3</a><br>
-                This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-            </footer>
-
-
-        </div>
+        <footer>
+            CommanDo is maintained by <a href="https://github.com/CS2103AUG2016-W13-C3">CS2103AUG2016-W13-C3</a><br>
+            This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+    </div>
     </div>
 </body>
 </html>
