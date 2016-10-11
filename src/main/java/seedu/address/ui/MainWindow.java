@@ -30,7 +30,7 @@ public class MainWindow extends UiPart {
 
     // Independent Ui parts residing in this Ui container
     private BrowserPanel browserPanel;
-    private ToDoListPanel personListPanel;
+    private ToDoListPanel toDoListPanel;
     private ResultDisplay resultDisplay;
     private StatusBarFooter statusBarFooter;
     private CommandBox commandBox;
@@ -110,7 +110,7 @@ public class MainWindow extends UiPart {
 
     void fillInnerParts() {
         browserPanel = BrowserPanel.load(browserPlaceholder);
-        personListPanel = ToDoListPanel.load(primaryStage, getPersonListPlaceholder(), logic.getFilteredToDoList());
+        toDoListPanel = ToDoListPanel.load(primaryStage, getPersonListPlaceholder(), logic.getFilteredToDoList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), Config.DefaultToDoListFilePath);
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
@@ -188,7 +188,7 @@ public class MainWindow extends UiPart {
     }
 
     public ToDoListPanel getToDoListPanel() {
-        return this.personListPanel;
+        return this.toDoListPanel;
     }
 
     public void loadToDoListPage(ReadOnlyToDo toDo) {
