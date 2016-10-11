@@ -26,7 +26,7 @@ public class DeleteCommand extends Command {
 
         UnmodifiableObservableList<ReadOnlyToDo> lastShownList = model.getFilteredToDoList();
 
-        if (lastShownList.size() < toDoIndex) {
+        if (toDoIndex - 1 < 0 || toDoIndex - 1 >= lastShownList.size()) {
             return new CommandResult(String.format(Messages.MESSAGE_TODO_ITEM_INDEX_INVALID, toDoIndex), true);
         }
 

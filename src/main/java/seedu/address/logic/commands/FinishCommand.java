@@ -26,6 +26,10 @@ public class FinishCommand extends Command {
 
         UnmodifiableObservableList<ReadOnlyToDo> lastShownList = model.getFilteredToDoList();
 
+        if (toDoIndex - 1 < 0 || toDoIndex - 1 >= lastShownList.size()) {
+            return new CommandResult(String.format(Messages.MESSAGE_TODO_ITEM_INDEX_INVALID, toDoIndex), true);
+        }
+
         if (lastShownList.size() < toDoIndex) {
             return new CommandResult(String.format(Messages.MESSAGE_TODO_ITEM_INDEX_INVALID, toDoIndex), true);
         }
