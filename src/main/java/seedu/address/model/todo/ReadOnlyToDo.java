@@ -3,6 +3,9 @@ package seedu.address.model.todo;
 import java.util.Optional;
 import java.util.Set;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableStringValue;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -17,6 +20,11 @@ public interface ReadOnlyToDo {
     Set<Tag> getTags();
 
     /**
+     * An observable value that changes when any of its fields are updated
+     */
+    ObservableStringValue getValue();
+
+    /**
      * Returns true if both have the same state. (interfaces cannot override .equals)
      */
     default boolean isSameStateAs(ReadOnlyToDo other) {
@@ -29,9 +37,9 @@ public interface ReadOnlyToDo {
     }
 
     /**
-     * Formats the to-do as text, showing all details
+     * Updates and returns its value, based on the current value of its fields
      */
-    default String getAsText() {
+    default String getText() {
         final StringBuilder builder = new StringBuilder();
 
         builder.append(String.join(", ",
@@ -39,6 +47,7 @@ public interface ReadOnlyToDo {
             "Date Range: " + (getDateRange().isPresent() ? getDateRange().get().toString() : "none"),
             "Due Date: " + (getDueDate().isPresent() ? getDueDate().get().toString() : "none"),
             "Tags: " + getTags().toString()));
+
         return builder.toString();
     }
 }
