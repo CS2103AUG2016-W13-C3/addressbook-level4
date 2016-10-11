@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import seedu.address.model.tag.Tag;
 import seedu.address.model.todo.DateRange;
 import seedu.address.model.todo.ReadOnlyToDo;
 
@@ -28,6 +29,8 @@ public class EventCard extends UiPart{
     private Label startLabel;
     @FXML
     private Label endLabel;
+    @FXML
+    private Label tagsLabel;
 
     private ReadOnlyToDo toDo;
     private int index;
@@ -57,6 +60,16 @@ public class EventCard extends UiPart{
         } else {
             startLabel.setText("");
             endLabel.setText("");
+        }
+        
+        if (!toDo.getTags().isEmpty()) {
+            String tags = "";
+            for (Tag tag : toDo.getTags()) {
+                tags += "#" + tag.tagName + " ";
+            }
+            tagsLabel.setText(tags);
+        } else {
+            tagsLabel.setText("");
         }
     }
     

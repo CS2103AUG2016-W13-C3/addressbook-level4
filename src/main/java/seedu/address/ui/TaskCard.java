@@ -25,6 +25,8 @@ public class TaskCard extends UiPart{
     private Label indexLabel;
     @FXML
     private Label dueLabel;
+    @FXML
+    private Label tagsLabel;
 
     private ReadOnlyToDo toDo;
     private int index;
