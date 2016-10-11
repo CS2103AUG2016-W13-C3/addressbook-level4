@@ -11,6 +11,7 @@ import seedu.address.model.todo.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,7 +34,7 @@ public class AddCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model, EventsCenter eventsCenter) {
+    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
         assert model != null;
 
         // Set fields if exist

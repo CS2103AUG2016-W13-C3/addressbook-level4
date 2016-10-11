@@ -3,7 +3,9 @@ package seedu.address.logic.commands;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.model.Model;
+import seedu.address.model.todo.ReadOnlyToDo;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,7 +24,7 @@ public class FindCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model, EventsCenter eventsCenter) {
+    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
         assert model != null;
 
         if (keywords.size() > 0) {

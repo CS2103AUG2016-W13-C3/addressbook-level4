@@ -1,6 +1,9 @@
 package seedu.address.model.todo;
 
-import seedu.address.commons.util.CollectionUtil;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableStringValue;
 import seedu.address.model.tag.Tag;
 
 import java.util.HashSet;
@@ -13,18 +16,24 @@ import java.util.Set;
  * Guarantees: details are present and not null, field values are validated.
  */
 public class ToDo implements ReadOnlyToDo {
-
     private Title title;
     private DueDate dueDate;
     private DateRange dateRange;
     private Set<Tag> tags;
+    private StringProperty value;
+    {
+        value = new ReadOnlyStringWrapper();
+    }
+
 
     /**
-     * Every field must be present and not null.
+     * Asserts that title is non-null
      */
     public ToDo(Title title) {
-        assert !CollectionUtil.isAnyNull(title);
+        assert title != null;
+
         this.title = title;
+        updateValue();
     }
 
     /**
@@ -36,18 +45,22 @@ public class ToDo implements ReadOnlyToDo {
     
     public void setTitle(Title title) {
         this.title = title;
+        updateValue();
     }
 
     public void setDueDate(DueDate dueDate) {
         this.dueDate = dueDate;
+        updateValue();
     }
 
     public void setDateRange(DateRange dateRange) {
         this.dateRange = dateRange;
+        updateValue();
     }
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+        updateValue();
     }
     
     public Optional<DueDate> getDueDate() {
@@ -65,7 +78,12 @@ public class ToDo implements ReadOnlyToDo {
             return tags;
         }
     }
-    
+
+    @Override
+    public ObservableStringValue getObservableValue() {
+        return value;
+    }
+
     @Override
     public Title getTitle() {
         return title;
@@ -85,6 +103,14 @@ public class ToDo implements ReadOnlyToDo {
 
     @Override
     public String toString() {
-        return getAsText();
+        return getText();
+    }
+
+    /**
+     * Called when any of its fields are updated
+     */
+    private void updateValue() {
+        value.getValue(); // Reset "invalidated" state of observable value
+        value.setValue(getText());
     }
 }

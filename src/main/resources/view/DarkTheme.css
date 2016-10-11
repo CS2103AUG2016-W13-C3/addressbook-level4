@@ -106,6 +106,16 @@
     -fx-text-fill: #010504;
 }
 
+.cell_time_interval_label {
+	-fx-font-size: 16px;
+	-fx-text-fill: blue;
+}
+
+.cell_due_date_label {
+	-fx-font-size: 16px;
+	-fx-text-fill: red;
+}
+
 .anchor-pane {
      -fx-background-color: derive(#1d1d1d, 20%);
 }

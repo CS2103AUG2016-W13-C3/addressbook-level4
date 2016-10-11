@@ -1,6 +1,7 @@
 package seedu.address.logic;
 
 import javafx.collections.ObservableList;
+import seedu.address.commons.core.IndexedItem;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.model.todo.ReadOnlyToDo;
 
@@ -15,7 +16,14 @@ public interface Logic {
      */
     CommandResult execute(String commandText);
 
-    /** Returns the filtered list of persons */
-    ObservableList<ReadOnlyToDo> getFilteredToDoList();
+    /**
+     * Returns observable list of events
+     * */
+    ObservableList<IndexedItem<ReadOnlyToDo>> getObservableEventList();
 
+    /**
+     *  Return observable list of tasks
+     *  Tasks are in chronological order, with those with DueDate on top
+     * */
+    ObservableList<IndexedItem<ReadOnlyToDo>> getObservableTaskList();
 }

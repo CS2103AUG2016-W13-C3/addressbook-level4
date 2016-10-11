@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class SequentialParser {
 
     private static final Pattern FIRST_WORD_PATTERN = Pattern.compile("^(?<word>\\S+)(?<tail>.*)$");
-    private static final Pattern FIRST_INTEGER_PATTERN = Pattern.compile("^(?<index>\\d+)(?<tail>.*)$");
+    private static final Pattern FIRST_INTEGER_PATTERN = Pattern.compile("^(?<index>-?\\d+)(?<tail>.*)$");
     private static final Pattern WORD_PATTERN = Pattern.compile("(?<word>\\S+)");
     private String input;
 
