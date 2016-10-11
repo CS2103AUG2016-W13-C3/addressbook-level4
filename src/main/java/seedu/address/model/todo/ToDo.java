@@ -1,5 +1,6 @@
 package seedu.address.model.todo;
 
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
@@ -21,7 +22,7 @@ public class ToDo implements ReadOnlyToDo {
     private Set<Tag> tags;
     private StringProperty value;
     {
-        value = new SimpleStringProperty();
+        value = new ReadOnlyStringWrapper();
     }
 
 
@@ -109,6 +110,7 @@ public class ToDo implements ReadOnlyToDo {
      * Called when any of its fields are updated
      */
     private void updateValue() {
+        value.getValue(); // Reset "invalidated" state of observable value
         value.setValue(getText());
     }
 }

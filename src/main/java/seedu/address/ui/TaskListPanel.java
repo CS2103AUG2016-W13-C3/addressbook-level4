@@ -25,7 +25,6 @@ public class TaskListPanel extends UiPart {
     private static final String FXML = "TaskListPanel.fxml";
     private VBox panel;
     private AnchorPane placeHolderPane;
-    private ObservableList<ReadOnlyToDo> taskList;
 
     @FXML
     private ListView<IndexedItem<ReadOnlyToDo>> taskListView;
