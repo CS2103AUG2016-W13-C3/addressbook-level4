@@ -107,6 +107,13 @@ public class LogicManager extends ComponentManager implements Logic {
             toDoAtIndices.add(toDo);
             return indexed;
         }).collect(Collectors.toList()));
+
+        // log events and tasks shown
+        logger.info("Events: " + observableEvents.stream().map(indexedToDo -> indexedToDo.getIndex() + ") " + indexedToDo.get().getTitle().title)
+            .collect(Collectors.joining(",")));
+
+        logger.info("Tasks: " + observableTasks.stream().map(indexedToDo -> indexedToDo.getIndex() + ") " + indexedToDo.get().getTitle().title)
+            .collect(Collectors.joining(",")));
     }
 
     /**
