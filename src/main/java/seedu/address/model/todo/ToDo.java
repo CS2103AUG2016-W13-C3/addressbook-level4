@@ -79,7 +79,7 @@ public class ToDo implements ReadOnlyToDo {
     }
 
     @Override
-    public ObservableStringValue getValue() {
+    public ObservableStringValue getObservableValue() {
         return value;
     }
 

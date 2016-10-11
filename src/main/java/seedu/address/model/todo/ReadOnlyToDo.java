@@ -6,6 +6,7 @@ import java.util.Set;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
+import javafx.beans.value.ObservableValue;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -22,7 +23,7 @@ public interface ReadOnlyToDo {
     /**
      * An observable value that changes when any of its fields are updated
      */
-    ObservableStringValue getValue();
+    ObservableValue getObservableValue();
 
     /**
      * Returns true if both have the same state. (interfaces cannot override .equals)
