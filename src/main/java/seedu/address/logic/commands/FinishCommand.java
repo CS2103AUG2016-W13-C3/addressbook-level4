@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Deletes a person identified using it's last displayed index from the address book.
+ * Marks a to-do item as done
  */
 public class FinishCommand extends Command {
 
