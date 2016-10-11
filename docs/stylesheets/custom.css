@@ -20,10 +20,10 @@ blockquote>b {
 
 
 pre {
-  color: #f2f2f2;
+  color: #DCDCCC;
   text-shadow: none;
-  background: #303030;
-  border: solid 2px #d1d1d1;
+  background: #3F3F3F;
+  border: solid 3px #101010;
   border-radius: 6px;
   white-space: normal;
   font-size: 0.9em;
@@ -34,7 +34,13 @@ pre b {
 }
 
 pre i {
-    color: burlywood;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+    color: #CEDF99;
+}
+
+pre em {
+    color: aqua;
 }
 
 table.black tbody {

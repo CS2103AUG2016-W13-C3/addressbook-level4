@@ -1,3 +1,27 @@
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Roboto Light'), local('Roboto-Light'), url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-tfSpn0qi1SFdUfVtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Space Mono'), local('SpaceMono-Regular'), url(https://fonts.gstatic.com/s/spacemono/v1/adVweg3BJhE6r8jYmXseHfk_vArhqVIZ0nv9q090hN8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -15,7 +39,7 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	font: inherit;
+	font-family:'Roboto';
 	font-size: 100%;
 	vertical-align: baseline;
 	border: 0;
@@ -39,7 +63,7 @@ q:before, q:after {
 
 /* LAYOUT STYLES */
 body {
-  font-family: Tahoma, Geneva, sans-serif;
+  font-family: 'Roboto SemiLight', sans-serif;
   font-size: 1em;
   line-height: 1.5;
   color: #1d1d1d;
@@ -60,7 +84,6 @@ header {
 }
 
 header h1 {
-  font-family: Tahoma, Geneva, sans-serif;
   font-size: 48px; font-weight: 900;
   line-height: 1.2;
   color: #303030;
@@ -157,15 +180,16 @@ a.button span {
 }
 
 code, pre {
-  padding: 3px 3px;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal;
-  color: #222;
+  padding-left: 3px;
+  padding-right: 3px;
+  font-family: 'Space Mono';
+  color: #303030;
 }
 
 code {
-  background-color: #dcdcdc;
-  border: solid 2px #d1d1d1;
-  border-radius: 3px;
+  background-color: #fdfdfd;
+  border: solid 3px #7D7D7D;
+  border-radius: 6px;
 }
 
 h3 code {
@@ -326,7 +350,7 @@ h6 {
 
 p {
   margin-bottom: 20px;
-  font-weight: 300;
+  font-weight: inherit;
 }
 
 a {
