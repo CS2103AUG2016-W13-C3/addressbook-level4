@@ -17,8 +17,7 @@
     <div id="container">
         <div class="inner">
             <header>
-                <h1>User Guide</h1>
-                <h2>CommanDo</h2>
+                <h1>User Guide for <em>CommanDo</em></h1>
             </header>
             <section id="downloads" class="clearfix">
                 <a href="https://github.com/CS2103AUG2016-W13-C3/main/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
@@ -43,10 +42,17 @@
                     Meet <em>CommanDo</em> - it is <em>the</em> to-do list manager that keeps things clean and allows you to edit your to-do list swiftly by typing out commands, mouse-free. Commands in <em>CommanDo</em> are simple and intuitive, while providing a bit of flexibility in syntax and customizability. <em>CommanDo</em> recognizes and actively categories to-dos into 2 groups: events (to-dos with a description and a time window) and tasks (to-dos with just a description, accompanied by an optional deadline).
                 </p>
 
+                <figure>
+                    <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
+                    <figcaption><em>CommanDo</em> at its maximum efficiency</figcaption>
+                </figure>
+
+                <p>This guide explains how to install, use and troubleshoot <em>CommanDo</em>.</p>
+
                 <h2 id="quick-start">Getting Started</h2>
                 <ol>
                     <li>
-                        Ensure that you have Java version <code>1.8.0_60</code> or later on your device (<a target="_blank" href="https://java.com/en/download/help/version_manual.xml">here's how</a>). Instructions on how to install latest version of Java can be found <a target="_blank" href="https://java.com/en/download/help/download_options.xml">here.</a>
+                        Ensure that you have Java version <code>1.8.0_60</code> or later on your device (<a target="_blank" href="https://java.com/en/download/help/version_manual.xml">here's how</a>). Instructions on how to install latest version of Java can be found <a target="_blank" href="https://java.com/en/download/help/download_options.xml">here</a>.
                     </li>
                     <li>
                         Download the latest <code>commando.jar</code> from <em>CommanDo's</em> <a href="https://github.com/CS2103AUG2016-W13-C3/main/releases">releases</a> tab on Github.
@@ -107,7 +113,7 @@
 
                 <figure>
                     <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
-                    <figcaption><em>CommanDo</em> at its maximum efficiency - all <em>Events</em> on the left and all <em>Tasks</em> on the right</figcaption>
+                    <figcaption>On <em>CommanDo</em>, all <em>Events</em> are on the left and all <em>Tasks</em> are on the right</figcaption>
                 </figure>
 
                 <h4>Adding Events</h4>
@@ -224,6 +230,8 @@
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> find <span>&lt;keyword&gt;</span>...</pre>
 
+                <p>After doing the search, use the <code>find</code> command again without any keywords to show all to-do items.</p>
+
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/find.png" width="600">
                     <figcaption>Result of <code>find read</code></figcaption>
@@ -233,7 +241,6 @@
                     Some details on how <code>find</code> command works:
                     <ul id="search-logic">
                         <li>Both <em>Events</em> and <em>Tasks</em> will be searched, in their separate panels.</li>
-                        <li>If you do not key in any keywords after <code>find</code>, all to-do items will be shown.</li>
                         <li>Search is case insensitive – keywords <code>Chicken Egg</code> will match <code>chicken egg</code>.</li>
                         <li>Ordering of the search keywords does not matter – keywords <code>Chicken Egg</code> will match <code> Egg Chicken</code>.</li>
                         <li>Search keywords will match parts of words – keyword <code>chicken</code> will match <code>chickens</code>, whereas keyword <code>chickens</code> will not match <code>chicken</code>.</li>
@@ -316,7 +323,7 @@
 
                 <h2 id="faq">FAQ & Troubleshooting</h2>
 
-                <h3>Clicking on <code>commando.jar</code> doesn't work or gives an error</h3>
+                <h3>Clicking on <code>commando.jar</code> doesn't work or gives an error.</h3>
 
                 <p>You'll need to install the latest version of Java. Refer to the <a target="_blank" href="https://java.com/en/download/help/download_options.xml">installation guide</a>.</p>
 
@@ -327,6 +334,14 @@
                 <h3>Is sharing across devices supported?</h3>
 
                 <p><em>CommanDo</em> doesn't directly support syncing of the to-do list across devices. Instead, use the <code>export</code> command to generate a save data file, transfer the file to another device, and use the <code>import</code> command on the 2nd device to import your to-do list from that save file. Alternatively, you can use a cloud-syncing service (e.g. <a href="dropbox.com">Dropbox</a>) and the <code>store</code> command to sync the to-do list automatically by setting the save location to the same file on both devices. </p>
+
+                <h3>My commands keep giving me an error and I have no idea what is wrong.</h3>
+
+                <p>When the format of your command is invalid, <em>CommanDo</em> will tell you the nature of the error and display the correct command format in the command feedback box just below the command input. <em>CommanDo</em> relies on a specific command syntax to understand your commands, in which the first word in your command is the <em>command word</em>. Based on the <em>command word</em>, refer to the appropriate section under <a href="#commands">Commands</a>, read up on the command format for that command, and try out some of the given sample commands.</p>
+
+                <h3>I keep forgetting how to use certain commands.</h3>
+
+                <p>The <code>help</code> command (explained in the section <a href="#viewing-help-help">above</a>) can be used to quickly summon this guide or a relevant section of this guide when you need it. Alternatively, you can just try typing your command - if it is invalid, <em>CommanDo</em> will display the correct command format for that command in the command feedback box just below the command input. This might be helpful for you to correctively learn the command format.</p>
 
                 <h3 id="supported-date-time-formats">What date & time formats can I use in my commands?</h3>
                 
@@ -433,9 +448,7 @@
                     </table>
                 </div>
                 <hr>
-                <h2>
-                    <a id="cheatsheet" class="anchor" href="#cheatsheet" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cheatsheet
-                </h2>
+                <h2 id="cheatsheet">Cheatsheet</h2>
                 <div class="datagrid">
                     <table class="black">
                         <thead>
