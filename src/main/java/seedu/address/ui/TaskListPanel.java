@@ -1,11 +1,7 @@
 package seedu.address.ui;
 
 import javafx.application.Platform;
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
@@ -14,6 +10,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import seedu.address.commons.core.IndexedItem;
 import seedu.address.commons.events.ui.ToDoListPanelSelectionChangedEvent;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.todo.ReadOnlyToDo;
@@ -25,13 +22,13 @@ import java.util.logging.Logger;
  */
 public class TaskListPanel extends UiPart {
     private final Logger logger = LogsCenter.getLogger(TaskListPanel.class);
-    private static final String FXML = "taskListPanel.fxml";
+    private static final String FXML = "TaskListPanel.fxml";
     private VBox panel;
     private AnchorPane placeHolderPane;
     private ObservableList<ReadOnlyToDo> taskList;
 
     @FXML
-    private ListView<ReadOnlyToDo> taskListView;
+    private ListView<IndexedItem<ReadOnlyToDo>> taskListView;
 
     public TaskListPanel() {
         super();
@@ -53,62 +50,22 @@ public class TaskListPanel extends UiPart {
     }
 
     public static TaskListPanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
-                                     ObservableList<ReadOnlyToDo> toDoList) {
+                                     ObservableList<IndexedItem<ReadOnlyToDo>> list) {
         TaskListPanel taskListPanel =
                 UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new TaskListPanel());
-        taskListPanel.configure(toDoList);
+        taskListPanel.configure(list);
         return taskListPanel;
     }
 
-    private void configure(ObservableList<ReadOnlyToDo> toDos) {
+    private void configure(ObservableList<IndexedItem<ReadOnlyToDo>> toDos) {
         setConnections(toDos);
         addToPlaceholder();
     }
 
-    private void setConnections(ObservableList<ReadOnlyToDo> toDoList) {
-        taskList = FXCollections.observableArrayList();
-        extractEvents(toDoList);
-        
-        toDoList.addListener(new ListChangeListener<ReadOnlyToDo>() {
-            @Override
-            public void onChanged(ListChangeListener.Change<? extends ReadOnlyToDo> change) {
-                extractEvents(toDoList);
-            }
-
-        });
-        
-        taskListView.setItems(taskList);
+    private void setConnections(ObservableList<IndexedItem<ReadOnlyToDo>> list) {
+        taskListView.setItems(list);
         taskListView.setCellFactory(listView -> new ToDoListViewCell());
         setEventHandlerForSelectionChangeEvent();
-    }
-    
-    /**
-     * Extracts tasks from a todo list
-     */
-    private void extractEvents(ObservableList<ReadOnlyToDo> toDoList) {
-        taskList.clear();
-        for (ReadOnlyToDo toDo : toDoList) {
-            if (!isEvent(toDo)) {
-                taskList.add(toDo);
-            }
-        }
-    }
-    
-    /**
-     * Returns whether a todo item contains a date range
-     */
-    private boolean isEvent(ReadOnlyToDo todo) {
-        if (todo.getDateRange().isPresent()) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Update the list and each list item
-     */
-    public void update() {
-        taskListView.refresh();
     }
 
     private void addToPlaceholder() {
@@ -120,7 +77,7 @@ public class TaskListPanel extends UiPart {
         taskListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 logger.fine("Selection in to-do list panel changed to : '" + newValue + "'");
-                raise(new ToDoListPanelSelectionChangedEvent(newValue));
+                raise(new ToDoListPanelSelectionChangedEvent(newValue.get()));
             }
         });
     }
@@ -132,20 +89,20 @@ public class TaskListPanel extends UiPart {
         });
     }
 
-    class ToDoListViewCell extends ListCell<ReadOnlyToDo> {
+    class ToDoListViewCell extends ListCell<IndexedItem<ReadOnlyToDo>> {
 
         public ToDoListViewCell() {
         }
 
         @Override
-        protected void updateItem(ReadOnlyToDo toDo, boolean empty) {
+        protected void updateItem(IndexedItem<ReadOnlyToDo> toDo, boolean empty) {
             super.updateItem(toDo, empty);
 
             if (empty || toDo == null) {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(EventCard.load(toDo, getIndex() + 1).getLayout());
+                setGraphic(TaskCard.load(toDo.get(), toDo.getIndex()).getLayout());
             }
         }
     }

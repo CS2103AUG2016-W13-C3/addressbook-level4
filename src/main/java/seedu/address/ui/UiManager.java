@@ -122,19 +122,7 @@ public class UiManager extends ComponentManager implements Ui {
     }
 
     @Subscribe
-    private void handlePersonPanelSelectionChangedEvent(ToDoListPanelSelectionChangedEvent event){
+    private void handleToDoListPanelSelectionChangedEvent(ToDoListPanelSelectionChangedEvent event){
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-    }
-
-    @Subscribe
-    private void handleEventListChangedEvent(ToDoListChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        mainWindow.getEventListPanel().update();
-    }
-    
-    @Subscribe
-    private void handleTaskListChangedEvent(ToDoListChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        mainWindow.getTaskListPanel().update();
     }
 }

@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import seedu.address.model.tag.Tag;
 import seedu.address.model.todo.ReadOnlyToDo;
 
 public class TaskCard extends UiPart{
@@ -47,10 +48,20 @@ public class TaskCard extends UiPart{
 
         if (toDo.getDueDate().isPresent()) {
             final LocalDateTime due = toDo.getDueDate().get().dueDate;
-            
+
             dueLabel.setText(prettifyDateTime(due));
         } else {
             dueLabel.setText("");
+        }
+
+        if (!toDo.getTags().isEmpty()) {
+            String tags = "";
+            for (Tag tag : toDo.getTags()) {
+                tags += "#" + tag.tagName + " ";
+            }
+            tagsLabel.setText(tags);
+        } else {
+            tagsLabel.setText("");
         }
     }
     
@@ -60,14 +71,6 @@ public class TaskCard extends UiPart{
                ldt.getDayOfMonth() + " " + 
                ldt.getMonth().getDisplayName(TextStyle.SHORT , Locale.ENGLISH) + " " + 
                ldt.getYear();
-    }
-    
-    /**
-     * @param Date date
-     * @return LocalDateTime date
-     */
-    private LocalDateTime convertToLocalDateTime(Date date) {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneOffset.systemDefault());
     }
 
     public HBox getLayout() {

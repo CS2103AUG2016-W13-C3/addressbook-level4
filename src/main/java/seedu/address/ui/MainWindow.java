@@ -19,7 +19,6 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.todo.ReadOnlyToDo;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -116,8 +115,8 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getFilteredToDoList());
-        taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getFilteredToDoList());
+        eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getObservableEventList());
+        taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getObservableTaskList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), Config.DefaultToDoListFilePath);
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
