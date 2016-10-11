@@ -4,6 +4,9 @@ import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.model.Model;
+import seedu.address.model.todo.ReadOnlyToDo;
+
+import java.util.List;
 
 /**
  * Terminates the program
@@ -18,7 +21,7 @@ public class ExitCommand extends Command {
      * Asserts that {@code eventsCenter} is non-null
      */
     @Override
-    public CommandResult execute(Model model, EventsCenter eventsCenter) {
+    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
         assert eventsCenter != null;
 
         eventsCenter.post(new ExitAppRequestEvent());
