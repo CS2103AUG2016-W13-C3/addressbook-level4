@@ -49,16 +49,13 @@
                                 <li><a href="#logic-api">Logic API</a></li>
                                 <li><a href="#model-api">Model API</a></li>
                                 <li><a href="#storage-api">Storage API</a></li>
-                                <li><a href="#event-driven-design">Event Driven Design</a></li>
+
                             </ul>
                         </li>
                         <li>
                             <a href="#implementation">Implementation</a>
                             <ul>
-                                <li><a href="#ui-component">UI Component</a></li>
-                                <li><a href="#logic-component">Logic Component</a></li>
-                                <li><a href="#model-component">Model Component</a></li>
-                                <li><a href="#storage-component">Storage Component</a></li>
+                                <li><a href="#event-driven-design">Event Driven Design</a></li>
                                 <li><a href="#logging">Logging</a></li>
                             </ul>
                         </li>
@@ -191,16 +188,16 @@
 
                 <ul>
                     <li>
-                        <a href="#ui-component"><strong>UI Component</strong></a>: The UI of the application, which acts as the middleman between the user and the API provided by <strong>Logic</strong> (package <code>seedu.address.ui</code>)
+                        <a href="#ui-api"><strong>UI Component</strong></a>: The UI of the application, which acts as the middleman between the user and the API provided by <strong>Logic</strong> (package <code>seedu.address.ui</code>)
                     </li>
                     <li>
-                        <a href="#logic-component"><strong>Logic Component</strong></a>: Executes commands from the UI, using the API provided by <strong>Model</strong> and <strong>Storage</strong> (package <code>seedu.address.logic</code>)
+                        <a href="#logic-api"><strong>Logic Component</strong></a>: Executes commands from the UI, using the API provided by <strong>Model</strong> and <strong>Storage</strong> (package <code>seedu.address.logic</code>)
                     </li>
                     <li>
-                        <a href="#model-component"><strong>Model Component</strong></a>: Defines how data is represented and holds the data of the application in-memory (package <code>seedu.address.model</code>)
+                        <a href="#model-api"><strong>Model Component</strong></a>: Defines how data is represented and holds the data of the application in-memory (package <code>seedu.address.model</code>)
                     </li>
                     <li>
-                        <a href="#storage-component"><strong>Storage Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.address.storage</code>)
+                        <a href="#storage-api"><strong>Storage Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.address.storage</code>)
                     </li>
                 </ul>
 
@@ -243,7 +240,7 @@
 
                 <p>(Step-by-step description on the flow of execution)</p>
 
-                <h3 id="ui-api">UI API</h3>
+                <h3 id="ui-api">UI API and Component</h3>
 
                 <figure>
                     <img src="images/UI API.png" max-width="600">
@@ -254,7 +251,7 @@
                     (Description about what the API does to be filled in here)
                 </p>
 
-                <h3 id="logic-api">Logic API</h3>
+                <h3 id="logic-api">Logic API and Component</h3>
 
                 <figure>
                     <img src="images/Logic API.png" max-width="600">
@@ -265,7 +262,7 @@
                     (Description about what the API does to be filled in here)
                 </p>
 
-                <h3 id="model-api">Model API</h3>
+                <h3 id="model-api">Model API and Component</h3>
 
                 <figure>
                     <img src="images/Model API 1.png" max-width="600">
@@ -278,7 +275,7 @@
                     (Description about what the API does to be filled in here)
                 </p>
 
-                <h3 id="storage-api">Storage API</h3>
+                <h3 id="storage-api">Storage API and Component</h3>
 
                 <figure>
                     <img src="images/Storage API.png" max-width="600">
@@ -288,6 +285,9 @@
                 <p>
                     (Description about what the API does to be filled in here)
                 </p>
+
+                   
+                <h2 id="implementation">Commons Implementation</h2>
 
                 <h3 id="event-driven-design">Event Driven Design</h3>
 
@@ -307,20 +307,6 @@
                     <img src="https://i.imgur.com/OvMZBs9.jpg" width="600">
                     <figcaption>Sequence Diagram of command <code>exit</code></figcaption>
                 </figure>
-
-                <h2 id="implementation">Implementation</h2>
-
-                <h3 id="ui-component">UI Component</h3>
-                <p>(Description about impplementation of this component)</p>
-
-                <h3 id="logic-component">Logic Component</h3>
-                <p>(Description about impplementation of this component)</p>
-
-                <h3 id="model-component">Model Component</h3>
-                <p>(Description about impplementation of this component)</p>
-
-                <h3 id="storage-component">Storage Component</h3>
-                <p>(Description about impplementation of this component)</p>
 
                 <h3 id="logging">Logging</h3>
 
