@@ -14,7 +14,7 @@
 		<GridPane HBox.hgrow="ALWAYS">
 			<columnConstraints>
 				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-				<ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="10.0" />
+				<ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0" minWidth="10.0" prefWidth="10.0" />
 			</columnConstraints>
 			<children>
 				<VBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="25.0" prefHeight="25.0" GridPane.columnIndex="0">
@@ -54,8 +54,11 @@
 					<children>
 						<HBox prefHeight="100.0" prefWidth="200.0">
 							<children>
-								<Label fx:id="dueLabel" styleClass="cell_due_date_label" text="\$due" />
+								<Label fx:id="dueLabel" alignment="BOTTOM_RIGHT" prefHeight="38.0" prefWidth="175.0" styleClass="cell_due_date_label" text="\$due" />
 							</children>
+							<padding>
+                                <Insets right="20.0" />
+                            </padding>
 						</HBox>
 					</children>
 				</VBox>

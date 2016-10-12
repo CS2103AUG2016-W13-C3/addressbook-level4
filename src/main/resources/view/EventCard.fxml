@@ -58,19 +58,13 @@
                      <children>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="startLabel" alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="175.0" styleClass=".cell_time_interval_label" text="\$start">
-                                 <padding>
-                                    <Insets right="20.0" />
-                                 </padding>
+                              <Label fx:id="startLabel" alignment="BOTTOM_LEFT" prefHeight="38.0" prefWidth="175.0" styleClass=".cell_time_interval_label" text="\$start">
                               </Label>
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="endLabel" alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="175.0" styleClass=".cell_time_interval_label" text="\$end">
-                                 <padding>
-                                    <Insets right="20.0" />
-                                 </padding>
+                              <Label fx:id="endLabel" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="175.0" styleClass=".cell_time_interval_label" text="\$end">
                               </Label>
                            </children>
                         </HBox>
