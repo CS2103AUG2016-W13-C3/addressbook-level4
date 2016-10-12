@@ -73,6 +73,11 @@ ul#search-logic {
     margin-left: -25px;
 }
 
+ul#table-of-contents ul {
+    list-style: none;
+    margin-left: 0;
+}
+
 ul#table-of-contents li {
     margin-bottom: 0;
 }
