@@ -3,6 +3,7 @@ package seedu.address.ui;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Date;
 import java.util.Locale;
@@ -16,6 +17,7 @@ import seedu.address.model.todo.ReadOnlyToDo;
 
 public class TaskCard extends UiPart{
 
+    private DateTimeFormatter formatter;
     private static final String FXML = "TaskCard.fxml";
 
     @FXML
@@ -43,6 +45,8 @@ public class TaskCard extends UiPart{
 
     @FXML
     public void initialize() {
+        formatter = DateTimeFormatter.ofPattern("HH:mma dd/MM/yyyy");
+        
         titleLabel.setText(toDo.getTitle().title);
         indexLabel.setText(String.valueOf(index));
 
@@ -66,11 +70,7 @@ public class TaskCard extends UiPart{
     }
     
     private String prettifyDateTime(LocalDateTime ldt) {
-        return ldt.getHour() + ":" + 
-               ldt.getMinute() + " " + 
-               ldt.getDayOfMonth() + " " + 
-               ldt.getMonth().getDisplayName(TextStyle.SHORT , Locale.ENGLISH) + " " + 
-               ldt.getYear();
+        return formatter.format(ldt);
     }
 
     public HBox getLayout() {
