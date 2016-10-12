@@ -33,19 +33,51 @@
                 <p>
                     <ul id="table-of-contents">
                         <li><a href="#introduction">Introduction</a></li>
+                        <li>
+                            <a href="#development">Development</a>
+                            <ul>
+                                <li><a href="#target-users">Target Users</a></li>
+                                <li><a href="#features">Features</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#setting-up">Setting Up</a></li>
-                        <li><a href="#design">Design</a></li>
-                        <li><a href="#implementation">Implementation</a></li>
+                        <li>
+                            <a href="#design">Design</a>
+                            <ul>
+                                <li><a href="#architecture">Architecture</a></li>
+                                <li><a href="#ui-api">UI API</a></li>
+                                <li><a href="#logic-api">Logic API</a></li>
+                                <li><a href="#model-api">Model API</a></li>
+                                <li><a href="#storage-api">Storage API</a></li>
+                                <li><a href="#event-driven-design">Event Driven Design</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#implementation">Implementation</a>
+                            <ul>
+                                <li><a href="#ui-component">UI Component</a></li>
+                                <li><a href="#logic-component">Logic Component</a></li>
+                                <li><a href="#model-component">Model Component</a></li>
+                                <li><a href="#storage-component">Storage Component</a></li>
+                                <li><a href="#logging">Logging</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#testing">Testing</a></li>
                         <li><a href="#dev-ops">Dev Ops</a></li>
                         <li><a href="#troubleshooting">Troubleshooting</a></li>
                         <li><a href="#known-issues">Known Issues</a></li>
                         <li><a href="#future-plans">Future Plans</a></li>
-                        <li><a href="#appendix-a-user-stories">Appendix A: User Stories</a></li>
-                        <li><a href="#appendix-b-use-cases">Appendix B: Use Cases</a></li>
-                        <li><a href="#appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</a></li>
-                        <li><a href="#appendix-d-glossary">Appendix D: Glossary</a></li>
-                        <li><a href="#appendix-e-product-survey">Appendix E: Product Survey</a></li>
+                        <li>
+                            <a href="#appendices">Appendices</a>
+                            <ul>
+                                <li><a href="#appendix-a-user-stories">Appendix A: User Stories</a></li>
+                                <li><a href="#appendix-b-use-cases">Appendix B: Use Cases</a></li>
+                                <li><a href="#appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</a></li>
+                                <li><a href="#appendix-d-glossary">Appendix D: Glossary</a></li>
+                                <li><a href="#appendix-e-product-survey">Appendix E: Product Survey</a></li>
+                            </ul>
+                        </li>
+
                     </ul>
                 </p>
 
@@ -60,16 +92,35 @@
 
                 <p>This guide describes the development of <em>CommanDo</em>, how it is currently designed and implemented at a technical level, some of the known issues, and some future plans and extensions for it.</p>
 
-                <h3>Target Users</h3>
+
+                <h2 id="development">Development</h2>
+
+                <h3 id="target-users">Target Users</h3>
 
                 <p>
-                    Our main target users are characterised by:
+                    Our main target users ("Jim") are characterised by:
                     <ul>
                         <li>Prefers typing over using the mouse</li>
                         <li>Has most to-do items coming as emails</li>
                         <li>Updates their to-do list very often and wants speed in doing so</li>
+                        <li>Wants to capture the idea of deadlines in their to-dos</li>
                     </ul>
                 </p>
+
+                <p>Our <a href="#appendix-e-product-survey">Product Survey</a> has revealed that many of the existing to-do list managers are unable to satisfy the needs of our main target users, especially in terms of speed of entry and absence of concept of deadlines.</p>
+
+                <h3 id="features">Features</h3>
+
+                <p>In summary, we are focusing on these features:</p>
+                <ol>
+                    <li>2 types of to-dos: events and tasks, displayed in separate panels in chronological order</li>
+                    <li>Command-line style input, with commands as short, as flexible and as intuitive as possible</li>
+                    <li>Able to search through to-dos easily, empowered by a tagging system</li>
+                    <li>Undoing and redoing to-do list operations</li>
+                    <li>Importing and exporting to-do list to a human-readable data file</li>
+                </ol>
+                
+                <p>The full list of features is outlined in our <a href="#appendix-a-user-stories">User Stories</a>. To ensure that the interface is user-friendly and the codebase stays maintainable, we also set ourselves some <a href="#appendix-c-non-functional-requirements">Non-Functional Requirements</a>.</p>
 
                 <h2 id="setting-up">Setting Up</h2>
 
@@ -120,6 +171,7 @@
 
                 <h2 id="design">Design</h2>
 
+                <p>This section explains the high level design of the application.</p>
 
                 <h3 id="architecture-diagram">Architecture</h3>
 
@@ -152,8 +204,9 @@
                     </li>
                 </ul>
 
-                <p>To minimize coupling and help with unit testing, the API of each component is defined by a single Java interface known publicly. This Java interface corresponds to the name of component (eg, Logic has the interface <code>Logic.java</code>). Each component then exposes its functionality using a concrete class implementing its interface, as listed below:
-                
+                <p>
+                    To minimize coupling and help with unit testing, the API of each component is defined by a single Java interface known publicly. This Java interface corresponds to the name of component (eg, <em>Logic</em> has the interface <code>Logic.java</code>). Each component then exposes its functionality using a concrete class implementing its interface, as listed below:
+
                     <div class="datagrid">
                         <table>
                             <thead>
@@ -175,45 +228,107 @@
                         </table>
                     </div>
 
-                    <p> Underlying all 4 components and <code>MainApp.java</code> is the package <code>seedu.address.commons</code>. It is a collection of utility classes and application constants that are used throughout the application. The major classes affecting the architecture of the application are <code>EventsCenter.java</code> and <code>LogsCenter.java</code>.</p>
+                    <blockquote>
+                        Note that for the <em>Model</em> component, besides the API defined by <code>Model.java</code>, it also contains data structures such as <code>UserPrefs.java</code> and <code>ReadOnlyToDo.java</code> that the other components are dependent on. Such dependencies are listed in the later section <a href="#model-api">Model API</a>
+                    </blockquote>
 
-                <h3 id="ui-component">UI Component</h3>
-                
-                <p>Details will be added as the codebase settles.</p>
+                <p>Underlying all 4 components is the package <code>seedu.address.commons</code>. It is a collection of utility classes and application constants that are used throughout the application. We also use <a href="#event-driven-design">Event Driven Design</a> for components to communicate with one another.</p>
 
-                <h3 id="logic-component">Logic Component</h3>
+                <h4>What happens in a command execution</h4>
 
-                <p>Details will be added as the codebase settles.</p>
+                <figure>
+                    <img src="https://i.imgur.com/OvMZBs9.jpg" width="600">
+                    <figcaption>Sequence Diagram of command <code>add plan shopping trip #lunch</code></figcaption>
+                </figure>
 
-                <h3 id="model-component">Model Component</h3>
+                <p>(Step-by-step description on the flow of execution)</p>
 
-                <p>Details will be added as the codebase settles.</p>
+                <h3 id="ui-api">UI API</h3>
 
-                <h3 id="storage-component">Storage Component</h3>
+                <figure>
+                    <img src="images/UI API.png" max-width="600">
+                    <figcaption>API of UI component</figcaption>
+                </figure>
 
-                <p>Details will be added as the codebase settles.</p>
+                <p>
+                    (Description about what the API does to be filled in here)
+                </p>
 
-                <h2 id="implementation">Implementation</h2>
+                <h3 id="logic-api">Logic API</h3>
+
+                <figure>
+                    <img src="images/Logic API.png" max-width="600">
+                    <figcaption>API of Logic component</figcaption>
+                </figure>
+
+                <p>
+                    (Description about what the API does to be filled in here)
+                </p>
+
+                <h3 id="model-api">Model API</h3>
+
+                <figure>
+                    <img src="images/Model API 1.png" max-width="600">
+                    <img src="images/Model API 2.png" max-width="600">
+                    <img src="images/Model API 3.png" max-width="600">
+                    <figcaption>API of Model component</figcaption>
+                </figure>
+
+                <p>
+                    (Description about what the API does to be filled in here)
+                </p>
+
+                <h3 id="storage-api">Storage API</h3>
+
+                <figure>
+                    <img src="images/Storage API.png" max-width="600">
+                    <figcaption>API of Storage component</figcaption>
+                </figure>
+
+                <p>
+                    (Description about what the API does to be filled in here)
+                </p>
 
                 <h3 id="event-driven-design">Event Driven Design</h3>
 
                 <p>
-                    <code>EventsCenter.java</code> is written using <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a> and is used by components to communicate with other components using events.
+                    For components to inform one another that something has happened, we use <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a>, packaged in <code>EventsCenter.java</code> within <code>seedu.address.commons</code>. This is especially important for lower-level components to communicate with higher-level components that it should not be dependent on.
                 </p>
+
+                <blockquote>
+                    All events should extend <code>BaseEvent.java</code> and be placed in package <code>seedu.address.commons.events</code>.
+                </blockquote>
+
+                <p>
+                    An example is the posting of <code>ExitAppRequestEvent</code> by <strong>Logic</strong> to inform <code>MainApp.java</code> to close the window:
+                </p>
+
+                <figure>
+                    <img src="https://i.imgur.com/OvMZBs9.jpg" width="600">
+                    <figcaption>Sequence Diagram of command <code>exit</code></figcaption>
+                </figure>
+
+                <h2 id="implementation">Implementation</h2>
+
+                <h3 id="ui-component">UI Component</h3>
+                <p>(Description about impplementation of this component)</p>
+
+                <h3 id="logic-component">Logic Component</h3>
+                <p>(Description about impplementation of this component)</p>
+
+                <h3 id="model-component">Model Component</h3>
+                <p>(Description about impplementation of this component)</p>
+
+                <h3 id="storage-component">Storage Component</h3>
+                <p>(Description about impplementation of this component)</p>
 
                 <h3 id="logging">Logging</h3>
 
-                <p> We are using the <code>java.util.logging</code> package for logging. <code>LogsCenter.java</code> is used to manage the logging levels and logging destinations.</p>
+                <p> We are using the <code>java.util.logging</code> package for logging. <code>LogsCenter.java</code> is used to manage the logging levels and logging destinations. The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level. </p>
 
-                <ul>
-                    <li>The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</li>
-                    <li>Currently log messages are output through the console and to a <code>.log</code> file</li>
-                </ul>
+                <p>Currently log messages are output through the console and to a <code>.log</code> file.</p>
 
-                <h4>
-                    <a id="logging-levels" class="anchor" href="#logging-levels" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Logging Levels
-                </h4>
-
+                <h4>Logging Levels</h4>
                 <ul>
                     <li>
                         <code>SEVERE</code>: Critical problem detected which may possibly cause the termination of the application
@@ -229,15 +344,23 @@
                     </li>
                 </ul>
 
-                <h2>
-                    <a id="testing" class="anchor" href="#testing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Testing
-                </h2>
+                <h2 id="testing">Testing</h2>
 
-                <p>Tests can be found in the <code>./src/test/java</code> folder.</p>
+                <p>Tests can be found in the test folder (<code>./src/test/java</code>). We aim to maximise our test coverage, so every class written should be accompanied by a corresponding test class in a similar path within this test folder.</p>
 
-                <h3>
-                    <a id="in-eclipse" class="anchor" href="#in-eclipse" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>In Eclipse
-                </h3>
+                <h3 id="running-tests">Running Tests</h3>
+
+                <p>Tests can be run in 2 ways:</p>
+
+                <ol>
+                    <li>
+                        <strong>In Eclipse - </strong> Right-click on the <code>./src/test/java</code> folder and choose <code>Run as</code> &gt; <code>JUnit Test</code>. To run a subset of tests, you can right-click on a test package, test class, or a test instead.
+                    </li>
+
+                    <li>
+                        <strong>Using Gradle - </strong> See <a href="UsingGradle.md">UsingGradle.md</a> for how to run tests using Gradle.
+                    </li>
+                </ol>
 
                 <blockquote>
                     <p>
@@ -246,54 +369,37 @@
                     </p>
                 </blockquote>
 
-                <ul>
-                    <li>
-                        To run all tests, right-click on the <code>src/test/java</code> folder and choose <code>Run as</code> &gt; <code>JUnit Test</code>
-                    </li>
-                    <li>To run a subset of tests, you can right-click on a test package, test class, or a test and choose to run as a JUnit test.</li>
-                </ul>
 
-                <h3>
-                    <a id="using-gradle" class="anchor" href="#using-gradle" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using Gradle
-                </h3>
-
-                <ul>
-                    <li>See <a href="UsingGradle.md">UsingGradle.md</a> for how to run tests using Gradle.</li>
-                </ul>
-
-                <p>We have two types of tests:</p>
+                <h3 id="types-of-tests">Types of Tests</h3>
 
                 <ol>
-                    <li><p><strong>GUI Tests</strong> - These are <em>System Tests</em> that test the entire App by simulating user actions on the GUI. These are in the <code>guitests</code> package.</p></li>
-                    <li>
-                        <p><strong>Non-GUI Tests</strong> - These are tests not involving the GUI. They include,</p>
+                    <li><strong>GUI Tests - </strong>These are <em>System Tests</em> that test the entire application by simulating user actions on the GUI. These are in the <code>guitests</code> package.</li>
 
-                        <ol>
-                            <li>
-                                <em>Unit tests</em> targeting the lowest level methods/classes. <br>
-                                e.g. <code>seedu.address.commons.UrlUtilTest</code>
-                            </li>
-                            <li>
-                                <em>Integration tests</em> that are checking the integration of multiple code units
-                                (those code units are assumed to be working).<br>
-                                e.g. <code>seedu.address.storage.StorageManagerTest</code>
-                            </li>
-                            <li>
-                                Hybrids of unit and integration tests. These test are checking multiple code units as well as
-                                how the are connected together.<br>
-                                e.g. <code>seedu.address.logic.LogicManagerTest</code>
-                            </li>
-                        </ol>
+                    <blockquote>
+                        <strong>Headless GUI Testing</strong> Thanks to the <a href="https://github.com/TestFX/TestFX">TestFX</a> library we use, our GUI tests can be run in the <em>headless</em> mode. In the headless mode, GUI tests do not show up on the screen. That means you can do other things on your device while the tests are running. See <a href="UsingGradle.md#running-tests">UsingGradle.md</a> to learn how to run tests in headless mode.
+                    </blockquote>
+
+                    <li>
+                        <strong>Non-GUI Tests - </strong>They include:
+                        <p>
+                            <ol>
+                                <li>
+                                    <strong>Unit tests</strong> targeting the lowest-level methods/classes. <br>
+                                    E.g. <code>seedu.address.commons.UrlUtilTest</code>
+                                </li>
+                                <li>
+                                    <strong>Integration tests</strong> that are checking the integration of multiple code units (those code units are assumed to be working).<br>
+                                    E.g. <code>seedu.address.storage.StorageManagerTest</code>
+                                </li>
+                                <li>
+                                    <strong>Hybrids</strong> test multiple code units as well as how the are connected together.<br>
+                                    E.g. <code>seedu.address.logic.LogicManagerTest</code>
+                                </li>
+                            </ol>
+                        </p>
                     </li>
                 </ol>
 
-                <h3>
-                    <a id="headless-gui-testing" class="anchor" href="#headless-gui-testing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Headless GUI Testing
-                </h3>
-
-                <p>Thanks to the <a href="https://github.com/TestFX/TestFX">TestFX</a> library we use, our GUI tests can be run in the <em>headless</em> mode. In the headless mode, GUI tests do not show up on the screen. That means the developer can do other things on the Computer while the tests are running.</p>
-
-                <p>See <a href="UsingGradle.md#running-tests">UsingGradle.md</a> to learn how to run tests in headless mode.</p>
 
                 <h2>
                     <a id="dev-ops" class="anchor" href="#dev-ops" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dev Ops
@@ -358,7 +464,9 @@
 
                 <p>To be filled in in the future.</p>
 
-                <h2 id="appendix-a-user-stories">Appendix A: User Stories</h2>
+                <h2 id="appendices">Appendices</h2>
+
+                <h3 id="appendix-a-user-stories">Appendix A: User Stories</h3>
 
                 <div class="datagrid">
                     <table>
@@ -529,46 +637,45 @@
                     </ul>
                 </p>
 
-                <h2>
-                    <a id="appendix-b-use-cases" class="anchor" href="#appendix-b-use-cases" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Appendix B: Use Cases
-                </h2>
+                <h3 id="appendix-b-use-cases">Appendix B: Use Cases</h3>
 
                 <p>In all the listed use cases, the <strong>System</strong> is our application and the <strong>Actor</strong> is the user.</p>
 
-                <h3>
+                <h4>
                     <a id="uc01---add-to-do-item" class="anchor" href="#uc01---add-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC01 - Add to-do item
-                </h3>
+                </h4>
 
+                <span><strong>MSS:</strong></span>
                 <p>
-                    <h4>MSS:</h4>
                     1. User types in an <code>add</code> command with details of the to-do item<br>
                     2. Application adds the to-do item to the current to-do list<br>
                     3. Application updates the GUI to reflect the changes<br>
                     Use case ends
                 </p>
 
+                <span><strong>Extensions:</strong></span>
                 <p>
-                    <h4>Extensions:</h4>
                     1a. Command was not properly formatted<br>
                     1a1. Application uses GUI to report details of the error in parsing command<br>
                     1a2. Application uses GUI to show correct <code>add</code> command syntax and a sample <code>add</code> command<br>
                     Use case ends
                 </p>
 
-                <h3>
+                <h4>
                     <a id="uc02---delete-to-do-item" class="anchor" href="#uc02---delete-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC02 - Delete to-do item
-                </h3>
+                </h4>
 
+                <span><strong>MSS:</strong></span>
                 <p>
-                    <h4>MSS:</h4>
                     1. User types in an <code>delete</code> command with the index of the to-do item<br>
                     2. Application deletes the to-do item to the current to-do list<br>
                     3. Application updates the GUI to reflect the changes<br>
                     Use case ends
                 </p>
 
+
+                <span><strong>Extensions:</strong></span>
                 <p>
-                    <h4>Extensions:</h4>
                     1a. Command was not properly formatted<br>
                     1a1. Application uses GUI to report details of the error in parsing command<br>
                     1a2. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command<br>
@@ -581,19 +688,19 @@
                     Use case ends
                 </p>
 
-                <h3>
+                <h4>
                     <a id="uc03---find-to-do-items" class="anchor" href="#uc03---find-to-do-items" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC03 - Find to-do items
-                </h3>
+                </h4>
 
+                <span><strong>MSS:</strong></span>
                 <p>
-                    <h4>MSS:</h4>
                     1. User types in an <code>find</code> command with a list of words to search for<br>
                     2. Application searches through the to-do list and updates the GUI to show only the matched to-do items<br>
                     Use case ends
                 </p>
 
+                <span><strong>Extensions:</strong></span>
                 <p>
-                    <h4>Extensions:</h4>
                     1a. No words were given<br>
                     1a1. Application updates GUI to show all to-do items<br>
                     Use case ends
@@ -605,20 +712,20 @@
                     Use case ends
                 </p>
 
-                <h3>
+                <h4>
                     <a id="uc04---edit-to-do-item" class="anchor" href="#uc04---edit-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC04 - Edit to-do item
-                </h3>
+                </h4>
 
+                <span><strong>MSS:</strong></span>
                 <p>
-                    <h4>MSS:</h4>
                     1. User types in an <code>edit</code> command with the screen index and changed details of the to-do item<br>
                     2. Application edits the to-do item to the current to-do list<br>
                     3. Application updates the GUI to reflect the changes<br>
                     Use case ends
                 </p>
 
+                <span><strong>Extensions:</strong></span>
                 <p>
-                    <h4>Extensions:</h4>
                     1a. Command was not properly formatted<br>
                     1a1. Application uses GUI to report details of the error in parsing command<br>
                     1a2. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>edit</code> command<br>
@@ -631,7 +738,7 @@
                     Use case ends
                 </p>
 
-                <h2 id="appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</h2>
+                <h3 id="appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</h3>
 
                 <ol>
                     <li>Should start-up in at most 3s</li>
@@ -648,7 +755,7 @@
                     <li>New users should not require reading of a guide to navigate GUI (excluding learning of commands) </li>
                 </ol>
 
-                <h2 id="appendix-d-glossary">Appendix D: Glossary</h2>
+                <h3 id="appendix-d-glossary">Appendix D: Glossary</h3>
 
                 <ul>
                     <li>
@@ -662,10 +769,9 @@
                     </li>
                 </ul>
 
-                <h2 id="appendix-e-product-survey">Appendix E: Product Survey</h2>
+                <h3 id="appendix-e-product-survey">Appendix E: Product Survey</h3>
 
-                <p>We tested a few existing to-do managers and analysed how much they would meet the needs of our target user Jim, a busy office worker who receives many to-dos by emails and prefers typing over using the mouse.</p>
-
+                <p>We tested a few existing to-do managers and analysed how much they would meet the needs of our main target users</p>
 
                 <div class="datagrid">
                     <table>
@@ -701,11 +807,11 @@
                     </table>
                 </div>
             </section>
-        <footer>
-            CommanDo is maintained by <a href="https://github.com/CS2103AUG2016-W13-C3">CS2103AUG2016-W13-C3</a><br>
-            This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
-    </div>
+            <footer>
+                CommanDo is maintained by <a href="https://github.com/CS2103AUG2016-W13-C3">CS2103AUG2016-W13-C3</a><br>
+                This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+            </footer>
+        </div>
     </div>
 </body>
 </html>
