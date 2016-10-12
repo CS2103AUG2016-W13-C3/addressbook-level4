@@ -1,4 +1,4 @@
-# CommanDo V0.0
+# CommanDo
 
 <img src="docs/images/Ui.png" width="600"><br>
 
