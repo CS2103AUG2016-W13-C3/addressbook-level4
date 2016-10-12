@@ -1,3 +1,7 @@
 body, #container {
     background: none white;
 }
+
+h2 {
+    page-break-before: always;
+}
