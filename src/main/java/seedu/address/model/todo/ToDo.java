@@ -44,21 +44,29 @@ public class ToDo implements ReadOnlyToDo {
     }
     
     public void setTitle(Title title) {
+        assert title != null;
+        
         this.title = title;
         updateValue();
     }
 
     public void setDueDate(DueDate dueDate) {
+        assert dueDate != null;
+        
         this.dueDate = dueDate;
         updateValue();
     }
 
     public void setDateRange(DateRange dateRange) {
+        assert dateRange != null;
+        
         this.dateRange = dateRange;
         updateValue();
     }
 
     public void setTags(Set<Tag> tags) {
+        assert tags != null;
+        
         this.tags = tags;
         updateValue();
     }
