@@ -58,18 +58,21 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void resetData(ReadOnlyToDoList newToDoList) {
         toDoList.resetData(newToDoList);
+        logger.info("[Model][ToDoList changed][TodoList Reset]: " + newToDoList.toString());
         indicateToDoListChanged();
     }
 
     @Override
     public synchronized void deleteToDo(ReadOnlyToDo toDo) throws IllegalValueException {
         toDoList.remove(toDo);
+        logger.info("[Model][ToDoList changed][Todo Deleted]: " + toDo.toString());
         indicateToDoListChanged();
     }
 
     @Override
     public synchronized void addToDo(ToDo toDo) {
         toDoList.add(toDo);
+        logger.info("[Model][ToDoList changed][Todo Added]: " + toDo.toString());
         updateFilteredListToShowAll();
         indicateToDoListChanged();
     }
@@ -88,6 +91,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void editTodoTitle(ReadOnlyToDo todo, Title title) throws IllegalValueException {
         toDoList.editTitle(todo, title);
+        logger.info("[Model][ToDoList changed][Todo title Edited]: " + todo.toString());
         updateFilteredListToShowAll();
         indicateToDoListChanged();
     }
@@ -95,6 +99,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void editTodoDateRange(ReadOnlyToDo todo, DateRange dateRange) throws IllegalValueException {
         toDoList.editDateRange(todo, dateRange);
+        logger.info("[Model][ToDoList changed][Todo daterange Edited]: " + todo.toString());
         updateFilteredListToShowAll();
         indicateToDoListChanged();
     }
@@ -102,6 +107,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void editTodoDueDate(ReadOnlyToDo todo, DueDate dueDates) throws IllegalValueException {
         toDoList.editDueDate(todo, dueDates);
+        logger.info("[Model][ToDoList changed][Todo duedate Edited]: " + todo.toString());
         updateFilteredListToShowAll();
         indicateToDoListChanged();
     }
@@ -109,6 +115,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void editTodoTags(ReadOnlyToDo todo, Set<Tag> tags) throws IllegalValueException {
         toDoList.editTags(todo, tags);
+        logger.info("[Model][ToDoList changed][Todo tags Edited]: " + todo.toString());
         updateFilteredListToShowAll();
         indicateToDoListChanged();
     }
