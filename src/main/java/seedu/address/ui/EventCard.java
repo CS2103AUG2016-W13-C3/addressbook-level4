@@ -48,21 +48,15 @@ public class EventCard extends UiPart{
 
     @FXML
     public void initialize() {
-        formatter = DateTimeFormatter.ofPattern("HH:mma dd/MM/yyyy");
-        
         titleLabel.setText(toDo.getTitle().title);
         indexLabel.setText(String.valueOf(index));
 
-        if (toDo.getDateRange().isPresent()) {
-            final DateRange dateRange = toDo.getDateRange().get();
-            
-            startLabel.setText(prettifyDateTime(dateRange.startDate));
-            endLabel.setText(prettifyDateTime(dateRange.endDate));
-        } else {
-            startLabel.setText("");
-            endLabel.setText("");
-        }
-        
+        setLabelContent();
+        setLabelStyle();
+        setLabelTags();
+    }
+
+    private void setLabelTags() {
         if (!toDo.getTags().isEmpty()) {
             String tags = "";
             for (Tag tag : toDo.getTags()) {
@@ -73,8 +67,30 @@ public class EventCard extends UiPart{
             tagsLabel.setText("");
         }
     }
+
+    private void setLabelStyle() {
+        startLabel.setStyle("-fx-text-fill: #053a8e; -fx-font-family: Microsoft Yahei Light");
+        endLabel.setStyle("-fx-text-fill: #053a8e; -fx-font-family: Microsoft Yahei Light");
+    }
+    
+    private void setLabelContent() {
+        if (toDo.getDateRange().isPresent()) {
+            final DateRange dateRange = toDo.getDateRange().get();
+            
+            startLabel.setText(prettifyDateTime(dateRange.startDate) + " - ");
+            endLabel.setText(prettifyDateTime(dateRange.endDate));
+        } else {
+            startLabel.setText("");
+            endLabel.setText("");
+        }
+    }
     
     private String prettifyDateTime(LocalDateTime ldt) {
+        String dateTimePattern = "d MMM HH:mm";
+        if (ldt.getYear() != LocalDateTime.now().getYear()) {
+            dateTimePattern = "d MMM yyyy HH:mm";
+        }
+        formatter = DateTimeFormatter.ofPattern(dateTimePattern);
         return formatter.format(ldt);
     }
     

@@ -30,12 +30,14 @@
 						<HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="216.0" spacing="5">
 							<children>
 								<HBox>
-									<Label fx:id="indexLabel" styleClass="cell_big_label" text="\$i">
-										<padding>
-											<Insets right="10.0" />
-										</padding>
-									</Label>
-									<Label fx:id="titleLabel" styleClass="cell_big_label" text="\$title" />
+									<children>
+										<Label fx:id="indexLabel" styleClass="cell_big_label" text="\$i">
+											<padding>
+												<Insets right="10.0" />
+											</padding>
+										</Label>
+										<Label fx:id="titleLabel" styleClass="cell_big_label" text="\$title" />
+									</children>
 								</HBox>
 								<HBox>
 									<children>
@@ -50,14 +52,14 @@
 						</HBox>
 					</children>
 				</VBox>
-				<VBox prefHeight="75.0" prefWidth="200.0" GridPane.columnIndex="1">
+				<VBox prefHeight="50.0" prefWidth="200.0" GridPane.columnIndex="1">
 					<children>
 						<HBox prefHeight="100.0" prefWidth="200.0">
 							<children>
-								<Label fx:id="dueLabel" alignment="BOTTOM_RIGHT" prefHeight="38.0" prefWidth="175.0" styleClass="cell_due_date_label" text="\$due" />
+								<Label fx:id="dueLabel" alignment="BOTTOM_RIGHT" prefHeight="50.0" prefWidth="175.0" styleClass="cell_due_date_label" text="\$due" />
 							</children>
 							<padding>
-                                <Insets right="20.0" />
+                                <Insets right="10.0" />
                             </padding>
 						</HBox>
 					</children>

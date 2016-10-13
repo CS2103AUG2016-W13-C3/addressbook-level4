@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.todo.ReadOnlyToDo;
 
@@ -50,14 +51,12 @@ public class TaskCard extends UiPart{
         titleLabel.setText(toDo.getTitle().title);
         indexLabel.setText(String.valueOf(index));
 
-        if (toDo.getDueDate().isPresent()) {
-            final LocalDateTime due = toDo.getDueDate().get().dueDate;
+        setLabelContent();
+        setLabelStyle();
+        setLabelTags();
+    }
 
-            dueLabel.setText(prettifyDateTime(due));
-        } else {
-            dueLabel.setText("");
-        }
-
+    private void setLabelTags() {
         if (!toDo.getTags().isEmpty()) {
             String tags = "";
             for (Tag tag : toDo.getTags()) {
@@ -68,8 +67,27 @@ public class TaskCard extends UiPart{
             tagsLabel.setText("");
         }
     }
+
+    private void setLabelStyle() {
+        dueLabel.setStyle("-fx-text-fill: red");
+    }
+
+    private void setLabelContent() {
+        if (toDo.getDueDate().isPresent()) {
+            final LocalDateTime due = toDo.getDueDate().get().dueDate;
+            
+            dueLabel.setText("by " + prettifyDateTime(due));
+        } else {
+            dueLabel.setText("");
+        }
+    }
     
     private String prettifyDateTime(LocalDateTime ldt) {
+        String dateTimePattern = "d MMM HH:mm";
+        if (ldt.getYear() != LocalDateTime.now().getYear()) {
+            dateTimePattern = "d MMM yyyy HH:mm";
+        }
+        formatter = DateTimeFormatter.ofPattern(dateTimePattern);
         return formatter.format(ldt);
     }
 
