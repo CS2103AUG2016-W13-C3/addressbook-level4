@@ -1,14 +1,23 @@
 package seedu.address.ui;
 
+import java.util.HashMap;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -30,6 +39,10 @@ public class MainWindow extends UiPart {
     public static final int MIN_WIDTH = 740;
     private static double X_OFFSET = 0;
     private static double Y_OFFSET = 0;
+    
+    KeyCombination altE = KeyCodeCombination.keyCombination("Alt+E");
+    KeyCombination altH = KeyCodeCombination.keyCombination("Alt+H");
+    KeyCombination altC = KeyCodeCombination.keyCombination("Alt+C");
 
     private Logic logic;
 
@@ -50,7 +63,7 @@ public class MainWindow extends UiPart {
     private String appName;
 
     @FXML
-    private MenuBar menuBar;
+    private HBox titleBar;
     
     @FXML
     private AnchorPane browserPlaceholder;
@@ -59,7 +72,13 @@ public class MainWindow extends UiPart {
     private AnchorPane commandBoxPlaceholder;
 
     @FXML
-    private MenuItem helpMenuItem;
+    private Menu exitMenu;
+    
+    @FXML
+    private Menu helpMenu;
+    
+    @FXML
+    private Menu creditMenu;
 
     @FXML
     private AnchorPane eventListPanelPlaceholder;
@@ -108,31 +127,56 @@ public class MainWindow extends UiPart {
         setWindowMinSize();
         setWindowDefaultSize(prefs);
         
-        menuBar.setOnMousePressed(new EventHandler<MouseEvent>() {
+        setDraggable(titleBar);
+        scene = new Scene(rootLayout);
+        setKeyBindings();
+        
+        primaryStage.setScene(scene);
+        helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl);
+    }
+
+    /**
+     * Sets the 3 keyboard shortcuts that trigger their respective functions:
+     * Alt + E = Exit the app
+     * Alt + H = Open help in window
+     * Alt + C = Open credits in window
+     */
+    private void setKeyBindings() {
+        scene.getAccelerators().put(altE, new Runnable() {
+            @Override
+            public void run() {
+                handleExit();
+            }
+        });
+        scene.getAccelerators().put(altH, new Runnable() {
+            @Override
+            public void run() {
+                handleHelp();
+            }
+        });
+        scene.getAccelerators().put(altC, new Runnable() {
+            @Override
+            public void run() {
+                handleCredits();
+            }
+        });
+    }
+
+    private void setDraggable(HBox bar) {
+        bar.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 X_OFFSET = event.getSceneX();
                 Y_OFFSET = event.getSceneY();
             }
         });
-        menuBar.setOnMouseDragged(new EventHandler<MouseEvent>() {
+        bar.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 primaryStage.setX(event.getScreenX() - X_OFFSET);
                 primaryStage.setY(event.getScreenY() - Y_OFFSET);
             }
         });
-        
-        scene = new Scene(rootLayout);
-        primaryStage.setScene(scene);
-
-        helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl);
-
-        setAccelerators();
-    }
-
-    private void setAccelerators() {
-        helpMenuItem.setAccelerator(KeyCombination.valueOf("F1"));
     }
 
     void fillInnerParts() {
@@ -196,6 +240,11 @@ public class MainWindow extends UiPart {
                 (int) primaryStage.getX(), (int) primaryStage.getY());
     }
 
+    @FXML
+    public void handleCredits() {
+        helpWindow.visit(Config.AboutUsUrl);
+    }
+    
     @FXML
     public void handleHelp() {
         showHelpForCommand("");

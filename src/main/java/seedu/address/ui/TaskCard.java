@@ -1,18 +1,13 @@
 package seedu.address.ui;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
-import java.util.Date;
-import java.util.Locale;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.todo.ReadOnlyToDo;
 
@@ -23,6 +18,8 @@ public class TaskCard extends UiPart{
 
     @FXML
     private HBox taskPane;
+    @FXML
+    private GridPane taskPaneInner;
     @FXML
     private Label titleLabel;
     @FXML
@@ -49,7 +46,7 @@ public class TaskCard extends UiPart{
         formatter = DateTimeFormatter.ofPattern("HH:mma dd/MM/yyyy");
         
         titleLabel.setText(toDo.getTitle().title);
-        indexLabel.setText(String.valueOf(index));
+        indexLabel.setText(String.valueOf(index) + ". ");
 
         setLabelContent();
         setLabelStyle();
@@ -69,13 +66,15 @@ public class TaskCard extends UiPart{
     }
 
     private void setLabelStyle() {
-        dueLabel.setStyle("-fx-text-fill: red");
+        taskPane.setStyle("-fx-background-color: #FFFFFF");
+        taskPaneInner.setStyle("-fx-background-color: #DCDCDC");
+        dueLabel.setStyle("-fx-text-fill: #FF0000; -fx-font-family: Microsoft Yahei Light");
+        indexLabel.setStyle("-fx-font-family: Lucida Sans Unicode");
     }
 
     private void setLabelContent() {
         if (toDo.getDueDate().isPresent()) {
             final LocalDateTime due = toDo.getDueDate().get().dueDate;
-            
             dueLabel.setText("by " + prettifyDateTime(due));
         } else {
             dueLabel.setText("");

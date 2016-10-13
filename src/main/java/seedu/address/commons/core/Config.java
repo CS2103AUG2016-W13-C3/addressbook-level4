@@ -13,7 +13,8 @@ public class Config {
     public static final Level LogLevel = Level.INFO;
     public static String DefaultUserPrefsFilePath = "preferences.json";
     public static String DefaultToDoListFilePath = "data/todos.xml";
-    public static String UserGuideUrl = "https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/UserGuide.md";
+    public static String UserGuideUrl = "https://cs2103aug2016-w13-c3.github.io/main/user";
+    public static String AboutUsUrl = "https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/AboutUs.md";
     private static Map<String, String> CommandWordsToUserGuideAnchors = new HashMap<String, String>() {{
         put("cheatsheet", "command-cheatsheet");
     }};

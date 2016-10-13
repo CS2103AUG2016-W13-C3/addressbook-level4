@@ -123,6 +123,7 @@
 .anchor-pane-with-border {
      -fx-background-color: derive(#1d1d1d, 20%);
      -fx-border-color: derive(#1d1d1d, 10%);
+     -fx-border-radius: 1px;
      -fx-border-top-width: 1px;
 }
 
@@ -280,6 +281,11 @@
 
 .scroll-bar:horizontal .increment-arrow, .scroll-bar:horizontal .decrement-arrow {
     -fx-padding: 8 1 8 1;
+}
+
+.menu:disabled, .menu:focused {
+  -fx-opacity: 1.0;
+  -fx-background-color: transparent;
 }
 
 #cardPane {

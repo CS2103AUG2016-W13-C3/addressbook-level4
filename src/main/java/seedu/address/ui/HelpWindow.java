@@ -62,7 +62,11 @@ public class HelpWindow extends UiPart {
      * Shows a window that navigates to help url, anchored at `#{@param anchor}`
      */
     public void show(String anchor) {
-        browser.getEngine().load(url + "#" + anchor);
+        visit(url + "#" + anchor);
+    }
+    
+    public void visit(String url) {
+        browser.getEngine().load(url);
         dialogStage.show();
     }
 }

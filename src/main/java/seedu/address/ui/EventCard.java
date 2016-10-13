@@ -1,16 +1,12 @@
 package seedu.address.ui;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
-import java.util.Date;
-import java.util.Locale;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.todo.DateRange;
@@ -23,6 +19,8 @@ public class EventCard extends UiPart{
 
     @FXML
     private HBox eventPane;
+    @FXML
+    private GridPane eventPaneInner;
     @FXML
     private Label titleLabel;
     @FXML
@@ -69,15 +67,17 @@ public class EventCard extends UiPart{
     }
 
     private void setLabelStyle() {
+        eventPane.setStyle("-fx-background-color: #FFFFFF");
+        eventPaneInner.setStyle("-fx-background-color: #DCDCDC");
         startLabel.setStyle("-fx-text-fill: #053a8e; -fx-font-family: Microsoft Yahei Light");
         endLabel.setStyle("-fx-text-fill: #053a8e; -fx-font-family: Microsoft Yahei Light");
+        indexLabel.setStyle("-fx-font-family: Lucida Sans Unicode");
     }
     
     private void setLabelContent() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
-            
-            startLabel.setText(prettifyDateTime(dateRange.startDate) + " - ");
+            startLabel.setText(prettifyDateTime(dateRange.startDate) + " To ");
             endLabel.setText(prettifyDateTime(dateRange.endDate));
         } else {
             startLabel.setText("");
