@@ -1,19 +1,17 @@
 package seedu.address.ui;
 
-import java.util.ArrayList;
-
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
@@ -30,6 +28,8 @@ public class MainWindow extends UiPart {
     private static final String FXML = "MainWindow.fxml";
     public static final int MIN_HEIGHT = 600;
     public static final int MIN_WIDTH = 740;
+    private static double X_OFFSET = 0;
+    private static double Y_OFFSET = 0;
 
     private Logic logic;
 
@@ -49,6 +49,9 @@ public class MainWindow extends UiPart {
 
     private String appName;
 
+    @FXML
+    private MenuBar menuBar;
+    
     @FXML
     private AnchorPane browserPlaceholder;
 
@@ -86,7 +89,7 @@ public class MainWindow extends UiPart {
     }
 
     public static MainWindow load(Stage primaryStage, UserPrefs prefs, Logic logic) {
-
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         MainWindow mainWindow = UiPartLoader.loadUiPart(primaryStage, new MainWindow());
         mainWindow.configure(Config.ApplicationTitle, Config.ApplicationName, prefs, logic);
         return mainWindow;
@@ -100,9 +103,26 @@ public class MainWindow extends UiPart {
 
         // Configure the UI
         setTitle(appTitle);
+        
         setIcon(ICON);
         setWindowMinSize();
         setWindowDefaultSize(prefs);
+        
+        menuBar.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                X_OFFSET = event.getSceneX();
+                Y_OFFSET = event.getSceneY();
+            }
+        });
+        menuBar.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                primaryStage.setX(event.getScreenX() - X_OFFSET);
+                primaryStage.setY(event.getScreenY() - Y_OFFSET);
+            }
+        });
+        
         scene = new Scene(rootLayout);
         primaryStage.setScene(scene);
 
