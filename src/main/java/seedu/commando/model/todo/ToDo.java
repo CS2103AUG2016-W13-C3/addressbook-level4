@@ -1,10 +1,8 @@
 package seedu.commando.model.todo;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
-import seedu.commando.model.tag.Tag;
 
 import java.util.HashSet;
 import java.util.Objects;

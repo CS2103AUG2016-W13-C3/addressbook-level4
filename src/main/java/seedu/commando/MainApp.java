@@ -14,6 +14,8 @@ import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.logic.LogicManager;
 import seedu.commando.model.*;
+import seedu.commando.model.todo.ReadOnlyToDoList;
+import seedu.commando.model.todo.ToDoList;
 import seedu.commando.storage.Storage;
 import seedu.commando.storage.StorageManager;
 import seedu.commando.ui.Ui;

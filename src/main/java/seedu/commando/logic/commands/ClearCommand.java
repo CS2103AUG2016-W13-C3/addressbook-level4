@@ -3,7 +3,7 @@ package seedu.commando.logic.commands;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.model.Model;
-import seedu.commando.model.ToDoList;
+import seedu.commando.model.todo.ToDoList;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
 import java.util.List;

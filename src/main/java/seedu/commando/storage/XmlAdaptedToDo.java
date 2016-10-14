@@ -1,7 +1,7 @@
 package seedu.commando.storage;
 
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.tag.Tag;
+import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.DueDate;
 import seedu.commando.model.todo.ReadOnlyToDo;

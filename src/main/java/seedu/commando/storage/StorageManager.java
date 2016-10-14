@@ -7,7 +7,7 @@ import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.events.model.ToDoListChangedEvent;
 import seedu.commando.commons.events.storage.DataSavingExceptionEvent;
 import seedu.commando.commons.exceptions.DataConversionException;
-import seedu.commando.model.ReadOnlyToDoList;
+import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.UserPrefs;
 
 import java.io.IOException;

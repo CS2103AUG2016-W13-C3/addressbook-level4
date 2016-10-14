@@ -8,7 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import seedu.commando.model.tag.Tag;
+import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
 public class TaskCard extends UiPart{

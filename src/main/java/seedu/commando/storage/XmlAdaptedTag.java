@@ -1,8 +1,7 @@
 package seedu.commando.storage;
 
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.commons.util.CollectionUtil;
-import seedu.commando.model.tag.Tag;
+import seedu.commando.model.todo.Tag;
 
 import javax.xml.bind.annotation.XmlValue;
 

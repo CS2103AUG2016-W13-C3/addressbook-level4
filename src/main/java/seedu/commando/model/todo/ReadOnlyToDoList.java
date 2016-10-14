@@ -1,4 +1,4 @@
-package seedu.commando.model;
+package seedu.commando.model.todo;
 
 import java.util.List;
 

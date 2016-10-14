@@ -2,10 +2,9 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.Model;
-import seedu.commando.model.tag.Tag;
+import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.DueDate;
 import seedu.commando.model.todo.ReadOnlyToDo;

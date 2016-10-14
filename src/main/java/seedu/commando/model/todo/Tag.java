@@ -1,4 +1,4 @@
-package seedu.commando.model.tag;
+package seedu.commando.model.todo;
 
 
 import seedu.commando.commons.core.Messages;

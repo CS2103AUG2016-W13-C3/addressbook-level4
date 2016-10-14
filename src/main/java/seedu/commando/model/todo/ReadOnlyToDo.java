@@ -3,11 +3,7 @@ package seedu.commando.model.todo;
 import java.util.Optional;
 import java.util.Set;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableStringValue;
 import javafx.beans.value.ObservableValue;
-import seedu.commando.model.tag.Tag;
 
 /**
  * A read-only immutable interface for a to-do

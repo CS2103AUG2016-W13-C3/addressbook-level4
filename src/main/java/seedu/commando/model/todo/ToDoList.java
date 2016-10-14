@@ -1,16 +1,10 @@
-package seedu.commando.model;
+package seedu.commando.model.todo;
 
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.tag.Tag;
-import seedu.commando.model.todo.DateRange;
-import seedu.commando.model.todo.DueDate;
-import seedu.commando.model.todo.ReadOnlyToDo;
-import seedu.commando.model.todo.Title;
-import seedu.commando.model.todo.ToDo;
 
 import java.util.*;
 import java.util.stream.Collectors;

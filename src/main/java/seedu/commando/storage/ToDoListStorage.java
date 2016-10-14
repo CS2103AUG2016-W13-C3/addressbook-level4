@@ -1,13 +1,14 @@
 package seedu.commando.storage;
 
 import seedu.commando.commons.exceptions.DataConversionException;
-import seedu.commando.model.ReadOnlyToDoList;
+import seedu.commando.model.todo.ReadOnlyToDoList;
+import seedu.commando.model.todo.ToDoList;
 
 import java.io.IOException;
 import java.util.Optional;
 
 /**
- * Represents a storage for {@link seedu.commando.model.ToDoList}.
+ * Represents a storage for {@link ToDoList}.
  */
 public interface ToDoListStorage {
 

@@ -2,7 +2,7 @@ package seedu.commando.testutil;
 
 
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.ToDoList;
+import seedu.commando.model.todo.ToDoList;
 import seedu.commando.model.todo.ToDo;
 
 import java.time.LocalDateTime;

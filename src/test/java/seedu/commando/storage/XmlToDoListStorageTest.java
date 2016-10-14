@@ -9,10 +9,8 @@ import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.exceptions.DataConversionException;
 import seedu.commando.commons.util.FileUtil;
-import seedu.commando.model.ReadOnlyToDoList;
-import seedu.commando.model.ToDoList;
-import seedu.commando.model.todo.ReadOnlyToDo;
-import seedu.commando.storage.XmlToDoListStorage;
+import seedu.commando.model.todo.ReadOnlyToDoList;
+import seedu.commando.model.todo.ToDoList;
 import seedu.commando.testutil.ToDoBuilder;
 import seedu.commando.testutil.ToDoListBuilder;
 

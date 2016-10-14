@@ -2,12 +2,7 @@ package seedu.commando.model;
 
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.tag.Tag;
-import seedu.commando.model.todo.DateRange;
-import seedu.commando.model.todo.DueDate;
-import seedu.commando.model.todo.ReadOnlyToDo;
-import seedu.commando.model.todo.Title;
-import seedu.commando.model.todo.ToDo;
+import seedu.commando.model.todo.*;
 
 import java.util.Set;
 

@@ -7,16 +7,10 @@ import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.events.model.ToDoListChangedEvent;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.commons.util.StringUtil;
-import seedu.commando.model.tag.Tag;
-import seedu.commando.model.todo.DateRange;
-import seedu.commando.model.todo.DueDate;
-import seedu.commando.model.todo.ReadOnlyToDo;
-import seedu.commando.model.todo.Title;
-import seedu.commando.model.todo.ToDo;
+import seedu.commando.model.todo.*;
 
 import java.util.Iterator;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 /**
