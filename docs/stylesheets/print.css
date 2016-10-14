@@ -5,3 +5,7 @@ body, #container {
 h2 {
     page-break-before: always;
 }
+
+.pagebreak {
+    page-break-before: always;
+}
