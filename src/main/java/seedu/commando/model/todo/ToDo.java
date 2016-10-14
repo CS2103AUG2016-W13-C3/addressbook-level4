@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Represents a to-do
@@ -18,9 +19,11 @@ public class ToDo implements ReadOnlyToDo {
     private DueDate dueDate;
     private DateRange dateRange;
     private Set<Tag> tags;
+    private boolean isFinished;
     private StringProperty value;
     {
         value = new ReadOnlyStringWrapper();
+        isFinished = false;
     }
 
 
@@ -35,10 +38,27 @@ public class ToDo implements ReadOnlyToDo {
     }
 
     /**
-     * Copy constructor.
+     * Copy constructor
      */
-    public ToDo(ReadOnlyToDo source) {
-        this(source.getTitle());
+    public ToDo(ReadOnlyToDo toDo) {
+        assert toDo != null;
+
+        this.title = new Title(toDo.getTitle());
+
+        if (toDo.getDueDate().isPresent()) {
+            this.dueDate = new DueDate(toDo.getDueDate().get());
+        }
+
+        if (toDo.getDateRange().isPresent()) {
+            this.dateRange = new DateRange(toDo.getDateRange().get());
+        }
+
+        if (toDo.getTags().size() > 0) {
+            this.tags = toDo.getTags().stream().map(Tag::new).collect(Collectors.toSet());
+        }
+
+        this.isFinished = toDo.isFinished();
+        updateValue();
     }
     
     public void setTitle(Title title) {
@@ -68,6 +88,12 @@ public class ToDo implements ReadOnlyToDo {
         this.tags = tags;
         updateValue();
     }
+
+    public void setIsFinished(boolean isFinished) {
+        this.isFinished = isFinished;
+
+        updateValue();
+    }
     
     public Optional<DueDate> getDueDate() {
         return Optional.ofNullable(dueDate);
@@ -83,6 +109,11 @@ public class ToDo implements ReadOnlyToDo {
         } else {
             return tags;
         }
+    }
+
+    @Override
+    public boolean isFinished() {
+        return isFinished;
     }
 
     @Override
@@ -104,12 +135,12 @@ public class ToDo implements ReadOnlyToDo {
 
     @Override
     public int hashCode() {
-        return Objects.hash(title);
+        return Objects.hash(value.getValue());
     }
 
     @Override
     public String toString() {
-        return getText();
+        return value.getValue();
     }
 
     /**

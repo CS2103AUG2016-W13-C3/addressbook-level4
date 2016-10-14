@@ -9,7 +9,7 @@ import seedu.commando.commons.exceptions.IllegalValueException;
  */
 public class Title {
 
-    public static final String TITLE_VALIDATION_REGEX = ".+";
+    private static final String TITLE_VALIDATION_REGEX = ".+";
 
     public final String title;
 
@@ -23,14 +23,22 @@ public class Title {
         }
 
         title = title.trim();
-
         this.title = title;
+    }
+
+    /**
+     * Copy constructor
+     */
+    public Title(Title title) {
+        assert isValid(title.title); // should already have been checked
+
+        this.title = title.title;
     }
 
     /**
      * Returns true if a given string is a valid title
      */
-    public static boolean isValid(String title) {
+    private static boolean isValid(String title) {
         return title != null && title.matches(TITLE_VALIDATION_REGEX);
     }
 

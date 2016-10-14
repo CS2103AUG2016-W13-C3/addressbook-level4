@@ -10,7 +10,7 @@ import seedu.commando.commons.exceptions.IllegalValueException;
  */
 public class Tag {
 
-    public static final String TAG_VALIDATION_REGEX = "\\p{Alnum}+";
+    private static final String TAG_VALIDATION_REGEX = "\\p{Alnum}+";
 
     public String tagName;
 
@@ -25,6 +25,15 @@ public class Tag {
 
         name = name.trim();
         this.tagName = name;
+    }
+
+    /**
+     * Copy constructor
+     */
+    public Tag(Tag tag) {
+        assert isValid(tag.tagName); // should already have been checked
+
+        this.tagName = tag.tagName;
     }
 
     /**

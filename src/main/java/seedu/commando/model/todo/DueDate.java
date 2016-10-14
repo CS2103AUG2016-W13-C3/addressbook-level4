@@ -26,7 +26,16 @@ public class DueDate {
         this.dueDate = dueDate;
     }
 
-    public static boolean isValid(LocalDateTime dueDate) {
+    /**
+     * Copy constructor
+     */
+    public DueDate(DueDate dueDate) {
+        assert isValid(dueDate.dueDate); // should already have been checked
+
+        this.dueDate = dueDate.dueDate;
+    }
+
+    private static boolean isValid(LocalDateTime dueDate) {
         return dueDate != null;
     }
 

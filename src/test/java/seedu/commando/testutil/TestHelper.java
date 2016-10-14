@@ -5,6 +5,11 @@ import seedu.commando.commons.events.ui.ShowHelpRequestEvent;
 import seedu.commando.model.Model;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Collection of convenience methods for testing
  */
@@ -31,4 +36,26 @@ public class TestHelper {
     public static boolean ifToDoExistsFiltered(Model model, ReadOnlyToDo readOnlyToDo) {
         return model.getFilteredToDoList().contains(readOnlyToDo);
     }
+
+    /**
+     * Constructs a list from {@param values}
+     */
+    public static <T> List<T> ListOf(T... values) {
+        List<T> list = new LinkedList<>();
+        for (T value : values) {
+            list.add(value);
+        }
+        return list;
+    }
+    /**
+     * Constructs a set from {@param values}
+     */
+    public static <T> Set<T> SetOf(T... values) {
+        Set<T> set = new HashSet<>();
+        for (T value : values) {
+            set.add(value);
+        }
+        return set;
+    }
+
 }

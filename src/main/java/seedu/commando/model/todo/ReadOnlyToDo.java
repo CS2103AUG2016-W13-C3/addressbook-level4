@@ -15,6 +15,7 @@ public interface ReadOnlyToDo {
     Optional<DateRange> getDateRange();
     Optional<DueDate> getDueDate();
     Set<Tag> getTags();
+    boolean isFinished();
 
     /**
      * An observable value that changes when any of its fields are updated
@@ -30,7 +31,8 @@ public interface ReadOnlyToDo {
                 && other.getTitle().equals(getTitle())
                 && other.getDateRange().equals(getDateRange())
                 && other.getDueDate().equals(getDueDate())
-                && other.getTags().equals(getTags())); // state checks here onwards
+                && other.getTags().equals(getTags())
+                && other.isFinished() == isFinished()); // state checks here onwards
     }
 
     /**
