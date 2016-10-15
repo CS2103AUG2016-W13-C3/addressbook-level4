@@ -4,38 +4,36 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javafx.stage.Screen;
+
 /**
  * A Serializable class that contains the GUI settings.
  */
 public class GuiSettings implements Serializable {
 
-    private static final double DEFAULT_HEIGHT = 600;
-    private static final double DEFAULT_WIDTH = 740;
+    public static final double MAX_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
+    public static final double MAX_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
+    private static final double DEFAULT_HEIGHT = MAX_HEIGHT * (3 / 4);
+    private static final double DEFAULT_WIDTH = MAX_WIDTH * (3 / 4);
 
-    private Double windowWidth;
-    private Double windowHeight;
     private Point windowCoordinates;
 
     public GuiSettings() {
-        this.windowWidth = DEFAULT_WIDTH;
-        this.windowHeight = DEFAULT_HEIGHT;
         this.windowCoordinates = null; // null represent no coordinates
     }
 
-    public GuiSettings(Double windowWidth, Double windowHeight, int xPosition, int yPosition) {
-        this.windowWidth = windowWidth;
-        this.windowHeight = windowHeight;
+    public GuiSettings(int xPosition, int yPosition) {
         this.windowCoordinates = new Point(xPosition, yPosition);
     }
 
     public Double getWindowWidth() {
-        return windowWidth;
+        return DEFAULT_WIDTH;
     }
 
     public Double getWindowHeight() {
-        return windowHeight;
+        return DEFAULT_HEIGHT;
     }
-
+    
     public Point getWindowCoordinates() {
         return windowCoordinates;
     }
@@ -51,22 +49,20 @@ public class GuiSettings implements Serializable {
 
         GuiSettings o = (GuiSettings)other;
 
-        return Objects.equals(windowWidth, o.windowWidth)
-                && Objects.equals(windowHeight, o.windowHeight)
-                && Objects.equals(windowCoordinates.x, o.windowCoordinates.x)
+        return Objects.equals(windowCoordinates.x, o.windowCoordinates.x)
                 && Objects.equals(windowCoordinates.y, o.windowCoordinates.y);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(windowWidth, windowHeight, windowCoordinates);
+        return Objects.hash(windowCoordinates);
     }
 
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("Width : " + windowWidth + "\n");
-        sb.append("Height : " + windowHeight + "\n");
+        sb.append("Width : " + MAX_WIDTH + "\n");
+        sb.append("Height : " + MAX_HEIGHT + "\n");
         sb.append("Position : " + windowCoordinates);
         return sb.toString();
     }

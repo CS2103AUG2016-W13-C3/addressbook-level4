@@ -64,7 +64,7 @@ public class JsonUserPrefsStorageTest {
     @Test
     public void readUserPrefs_fileInOrder_successfullyRead() throws DataConversionException {
         UserPrefs expected = new UserPrefs();
-        expected.setGuiSettings(1000, 500, 300, 100);
+        expected.setGuiSettings(300, 100);
         UserPrefs actual = readUserPrefs("TypicalUserPref.json").get();
         assertEquals(expected, actual);
     }
@@ -78,7 +78,7 @@ public class JsonUserPrefsStorageTest {
     @Test
     public void readUserPrefs_extraValuesInFile_extraValuesIgnored() throws DataConversionException {
         UserPrefs expected = new UserPrefs();
-        expected.setGuiSettings(1000, 500, 300, 100);
+        expected.setGuiSettings(300, 100);
         UserPrefs actual = readUserPrefs("ExtraValuesUserPref.json").get();
 
         assertEquals(expected, actual);
@@ -104,7 +104,7 @@ public class JsonUserPrefsStorageTest {
     public void saveUserPrefs_allInOrder_success() throws DataConversionException, IOException {
 
         UserPrefs original = new UserPrefs();
-        original.setGuiSettings(1200, 200, 0, 2);
+        original.setGuiSettings(0, 2);
 
         String pefsFilePath = testFolder.getRoot() + File.separator + "TempPrefs.json";
         JsonUserPrefsStorage jsonUserPrefsStorage = new JsonUserPrefsStorage(pefsFilePath);
@@ -115,7 +115,7 @@ public class JsonUserPrefsStorageTest {
         assertEquals(original, readBack);
 
         //Try saving when the file exists
-        original.setGuiSettings(5, 5, 5, 5);
+        original.setGuiSettings(5, 5);
         jsonUserPrefsStorage.saveUserPrefs(original);
         readBack = jsonUserPrefsStorage.readUserPrefs().get();
         assertEquals(original, readBack);
