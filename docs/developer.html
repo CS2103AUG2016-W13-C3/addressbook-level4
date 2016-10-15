@@ -633,136 +633,152 @@
                 </h4>
 
                 <span><strong>MSS:</strong></span>
-                <ol>
-                    <li> User types in an <code>add</code> command with details of the to-do item including the title and timeframe</li>
-                    <li> Application adds the event to the current to-do list</li>
-                    <li> Application updates the GUI to reflect the changes<br>
-                    Use case ends</li>
-                </ol>
+                <ul>
+                    <li>1. User types in an <code>add</code> command with details of the to-do item including the title and timeframe</li>
+                    <li>2. Application adds the event to the current to-do list</li>
+                    <li>3. Application updates the GUI to reflect the changes</li>
+                    <li><i>*Use case ends</i></li>
+                </ul>
 
                 <span><strong>Extensions:</strong></span>
 
-                <p>
+                <ul>
+                    <li>1a. Command was not properly formatted</li>
+                    <ul>
+                        <li>a. Application uses GUI to report details of the error in parsing command</li>
+                        <li>b. Application uses GUI to show correct <code>add</code> command syntax and a sample <code>add</code> command</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
-                &nbsp;&nbsp;&nbsp;&nbsp; 1a. Command was not properly formatted<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1a1. Application uses GUI to report details of the error in parsing command<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1a2. Application uses GUI to show correct <code>add</code> command syntax and a sample <code>add</code> command<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use case ends
-                </p>
-
-                <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;1b. Title contains keywords (i.e. "from", "to") as description or the timeframe does not match the time format<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1b1. Application considers all to be title and adds the to-do item as task to the current to-do list<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use case ends
-                </p>
+                <ul>
+                    <li>1b. Title contains keywords (i.e. "from", "to") as description or the timeframe does not match the time format</li>
+                    <ul>
+                        <li>a. Application considers all to be title and adds the to-do item as task to the current to-do list<br></li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
                 <h4>
                     <a id="uc01---add-to-do-item-task" class="anchor" href="#uc01---add-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC01 - Add to-do item (Task)
                 </h4>
 
                 <span><strong>MSS:</strong></span>
-                <ol>
-                    <li> User types in an <code>add</code> command with details of the to-do item</li>
-                    <li> Application adds the task item to the current to-do list</li>
-                    <li> Application updates the GUI to reflect the changes<br>
-                    Use case ends</li>
-                </ol>
+                <ul>
+                    <li>1. User types in an <code>add</code> command with details of the to-do item</li>
+                    <li>2. Application adds the task item to the current to-do list</li>
+                    <li>3. Application updates the GUI to reflect the changes</li>
+                    <li><i>*Use case ends</i></li>
+                </ul>
 
                 <span><strong>Extensions:</strong></span>
 
-                <p>
+                <ul>
+                    <li>1a. Command was not properly formatted</li>
+                    <ul>
+                        <li>a. Application uses GUI to report details of the error in parsing command</li>
+                        <li>b. Application uses GUI to show correct <code>add</code> command syntax and a sample <code>add</code> command</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
-                &nbsp;&nbsp;&nbsp;&nbsp; 1a. Command was not properly formatted<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1a1. Application uses GUI to report details of the error in parsing command<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1a2. Application uses GUI to show correct <code>add</code> command syntax and a sample <code>add</code> command<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use case ends
-                </p>
-
-                <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;1b. Title contains keywords (i.e. "by") as description or the deadline does not match the time format<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1b1. Application considers all to be title and adds the task item to the current to-do list<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use case ends
-                </p>
+                <ul>
+                    <li>1b. Title contains keywords (i.e. "by") as description or the deadline does not match the time format</li>
+                    <ul>
+                        <li>a. Application considers all to be title and adds the task item to the current to-do list</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
                 <h4>
                     <a id="uc02---delete-to-do-item" class="anchor" href="#uc02---delete-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC02 - Delete to-do item
                 </h4>
 
                 <span><strong>MSS:</strong></span>
-                <ol>
-                    <li> User types in a <code>delete</code> command with the index of the to-do item</li>
-                    <li> Application deletes the to-do item to the current to-do list</li>
-                    <li> Application updates the GUI to reflect the changes<br>
-                    Use case ends</li>
-                </ol>
+                <ul>
+                    <li>1. User types in a <code>delete</code> command with the index of the to-do item</li>
+                    <li>2. Application deletes the to-do item to the current to-do list</li>
+                    <li>3. Application updates the GUI to reflect the changes</li>
+                    <li><i>*Use case ends</i></li>
+                </ul>
 
 
                 <span><strong>Extensions:</strong></span>
 
-                <p>
+                <ul>
+                    <li>1a. Command was not properly formatted</li>
+                    <ul>
+                        <li>a. Application uses GUI to report details of the error in parsing command</li>
+                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
-                &nbsp;&nbsp;&nbsp;&nbsp;1a. Command was not properly formatted<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1a1. Application uses GUI to report details of the error in parsing command<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1a2. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use case ends
-
-                </p>
-
-                <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;1b. The index of the to-do item is invalid<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1b1. Application uses GUI to report that index is invalid<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use case ends
-                </p>
+                <ul>
+                    <li>1b. The index of the to-do item is invalid</li>
+                    <ul>
+                        <li>a. Application uses GUI to report that index is invalid</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
                 <h4>
                     <a id="uc03---find-to-do-items" class="anchor" href="#uc03---find-to-do-items" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC03 - Find to-do items
                 </h4>
 
                 <span><strong>MSS:</strong></span>
-                <ol>
-                    <li>User types in a <code>find</code> command with a list of words to search for</li>
-                    <li>Application searches through the to-do list and updates the GUI to show only the matched to-do items<br>
-                    Use case ends</li>
-                </ol>
+                <ul>
+                    <li>1. User types in a <code>find</code> command with a list of words to search for</li>
+                    <li>2. Application searches through the to-do list and updates the GUI to show only the matched to-do items</li>
+                    <li><i>*Use case ends</i></li>
+                </ul>
 
                 <span><strong>Extensions:</strong></span>
-                <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;1a. No words were given<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1a1. Application updates GUI to show all to-do items<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use case ends
-                </p>
+                <ul>
+                    <li>1a. No words were given</li>
+                    <ul>
+                        <li>a. Application updates GUI to show all to-do items</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
-                <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;2a. No to-do items matched<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;2a1. Application uses GUI to report that no to-do items were matched<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use case ends
-                </p>
+                <ul>
+                    <li>2a. No to-do items matched</li>
+                    <ul>
+                        <li>a. Application uses GUI to report that no to-do items were matched</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
                 <h4>
                     <a id="uc04---edit-to-do-item" class="anchor" href="#uc04---edit-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC04 - Edit to-do item
                 </h4>
 
                 <span><strong>MSS:</strong></span>
-                <ol>
-                    <li> User types in an <code>edit</code> command with the index of the to-do item and changed details of the to-do item</li>
-                    <li> Application edits the to-do item to the current to-do list</li>
-                    <li> Application updates the GUI to reflect the changes<br>
-                    Use case ends </li>
-                </ol>
+                <ul>
+                    <li>1. User types in an <code>edit</code> command with the index of the to-do item and changed details of the to-do item</li>
+                    <li>2. Application edits the to-do item to the current to-do list</li>
+                    <li>3. Application updates the GUI to reflect the changes</li>
+                    <li><i>*Use case ends</i></li>
+                </ul>
 
                 <span><strong>Extensions:</strong></span>
-                <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;1a. Command was not properly formatted<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1a1. Application uses GUI to report details of the error in parsing command<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1a2. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>edit</code> command<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use case ends
-                </p>
+                <ul>
+                    <li> 1a. Command was not properly formatted</li>
+                    <ul>
+                        <li>a. Application uses GUI to report details of the error in parsing command</li>
+                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>edit</code> command</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
-                <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;1b. The index of the to-do item is invalid<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;1b1. Application uses GUI to report that the index of the to-do item is invalid<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use case ends
-                </p>
+                <ul>
+                    <li>1b. The index of the to-do item is invalid</li>
+                    <ul>
+                        <li>a. Application uses GUI to report that the index of the to-do item is invalid</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
                 <h3 id="appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</h3>
 
