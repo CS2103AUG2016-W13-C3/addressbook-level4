@@ -8,7 +8,6 @@ import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.ToDo;
-import sun.plugin2.message.Message;
 
 import java.util.Collections;
 import java.util.List;
