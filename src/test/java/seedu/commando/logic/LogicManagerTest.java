@@ -10,8 +10,6 @@ import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.events.ui.ExitAppRequestEvent;
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.logic.Logic;
-import seedu.commando.logic.LogicManager;
 import seedu.commando.logic.commands.*;
 import seedu.commando.model.Model;
 import seedu.commando.model.ModelManager;
@@ -78,17 +76,17 @@ public class LogicManagerTest {
 
     @Test
     public void execute_clear() {
-        logic.execute("add title from 10 Jan 1994 12:00 to 21 Jan 1994 13:00");
+        logic.execute("add value from 10 Jan 1994 12:00 to 21 Jan 1994 13:00");
         logic.execute("add title2 #tag1 #tag2");
 
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDoList().size() == 2);
+        assertTrue(model.getToDoList().getToDos().size() == 2);
 
         CommandResult result = logic.execute("clear");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDoList().size() == 0);
+        assertTrue(model.getToDoList().getToDos().size() == 0);
     }
 
     @Test

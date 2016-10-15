@@ -72,7 +72,7 @@ public class CommandFactory {
         // Extract tags
         List<String> tags = sequentialParser.extractPrefixedWords(TAG_PREFIX);
 
-        // Try to find title
+        // Try to find value
         Optional<String> title = sequentialParser.extractText(
             KEYWORD_DATERANGE_START,
             KEYWORD_DATERANGE_END,
@@ -213,7 +213,7 @@ public class CommandFactory {
             }
         }
 
-        // Extract title
+        // Extract value
         Optional<String> title = sequentialParser.extractText(
             KEYWORD_DATERANGE_START,
             KEYWORD_DATERANGE_END,

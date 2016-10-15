@@ -12,54 +12,54 @@ public class Tag {
 
     private static final String TAG_VALIDATION_REGEX = "\\p{Alnum}+";
 
-    public String tagName;
+    public final String value;
 
     /**
      * Validates given tag name.
      * @throws IllegalValueException if the given tag name string is invalid.
      */
-    public Tag(String name) throws IllegalValueException {
-        if (!isValid(name)) {
+    public Tag(String value) throws IllegalValueException {
+        if (!isValid(value)) {
             throw new IllegalValueException(Messages.MESSAGE_TODO_TAG_CONSTRAINTS);
         }
 
-        name = name.trim();
-        this.tagName = name;
+        value = value.trim();
+        this.value = value;
     }
 
     /**
      * Copy constructor
      */
     public Tag(Tag tag) {
-        assert isValid(tag.tagName); // should already have been checked
+        assert isValid(tag.value); // should already have been checked
 
-        this.tagName = tag.tagName;
+        this.value = tag.value;
     }
 
     /**
      * Returns true if a given string is a valid tag name.
      */
-    public static boolean isValid(String tag) {
-        return tag != null && tag.matches(TAG_VALIDATION_REGEX);
+    public static boolean isValid(String value) {
+        return value != null && value.matches(TAG_VALIDATION_REGEX);
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof Tag // instanceof handles nulls
-                && this.tagName.equals(((Tag) other).tagName)); // state check
+                && this.value.equals(((Tag) other).value)); // state check
     }
 
     @Override
     public int hashCode() {
-        return tagName.hashCode();
+        return value.hashCode();
     }
 
     /**
      * Format state as text for viewing.
      */
     public String toString() {
-        return '[' + tagName + ']';
+        return '[' + value + ']';
     }
 
 }

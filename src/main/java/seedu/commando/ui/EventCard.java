@@ -46,7 +46,7 @@ public class EventCard extends UiPart{
 
     @FXML
     public void initialize() {
-        titleLabel.setText(toDo.getTitle().title);
+        titleLabel.setText(toDo.getTitle().value);
         indexLabel.setText(String.valueOf(index));
 
         setLabelContent();
@@ -58,7 +58,7 @@ public class EventCard extends UiPart{
         if (!toDo.getTags().isEmpty()) {
             String tags = "";
             for (Tag tag : toDo.getTags()) {
-                tags += "#" + tag.tagName + " ";
+                tags += "#" + tag.value + " ";
             }
             tagsLabel.setText(tags);
         } else {

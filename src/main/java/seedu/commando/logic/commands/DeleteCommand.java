@@ -5,8 +5,10 @@ import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.Model;
+import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +37,10 @@ public class DeleteCommand extends Command {
         }
 
         try {
-            model.deleteToDo(toDoToDelete.get());
+            model.changeToDoList(new ToDoListChange(
+                Collections.emptyList(),
+                Collections.singletonList(toDoToDelete.get())
+            ));
         } catch (IllegalValueException exception) {
             return new CommandResult(exception.getMessage(), true);
         }

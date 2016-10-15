@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static seedu.commando.testutil.TestHelper.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -92,14 +94,14 @@ public class SequentialParserTest {
     @Test
     public void extractWords_1Word()  {
         sequentialParser.setInput("1Word");
-        assertEquals(ListOf("1Word"), sequentialParser.extractWords());
+        assertEquals(Arrays.asList("1Word"), sequentialParser.extractWords());
         assertEquals("", sequentialParser.getInput());
     }
 
     @Test
     public void extractWords_2Words()  {
         sequentialParser.setInput("2 words");
-        assertEquals(ListOf("2", "words"), sequentialParser.extractWords());
+        assertEquals(Arrays.asList("2", "words"), sequentialParser.extractWords());
         assertEquals("", sequentialParser.getInput());
     }
 
@@ -138,49 +140,49 @@ public class SequentialParserTest {
     @Test
     public void extractPrefixedWords_allTags()  {
         sequentialParser.setInput("#tag1 #tag2 #tag3");
-        assertEquals(ListOf("tag1", "tag2", "tag3"), sequentialParser.extractPrefixedWords("#"));
+        assertEquals(Arrays.asList("tag1", "tag2", "tag3"), sequentialParser.extractPrefixedWords("#"));
         assertEquals("", sequentialParser.getInput().trim());
     }
 
     @Test
     public void extractPrefixedWords_tagsWithOtherWords()  {
         sequentialParser.setInput("other #tag1 #tag2 words");
-        assertEquals(ListOf("tag1", "tag2"), sequentialParser.extractPrefixedWords("#"));
-        assertEquals(ListOf("other", "words"), sequentialParser.extractWords());
+        assertEquals(Arrays.asList("tag1", "tag2"), sequentialParser.extractPrefixedWords("#"));
+        assertEquals(Arrays.asList("other", "words"), sequentialParser.extractWords());
     }
 
     @Test
     public void extractTextFromIndex_indexWithKeywords()  {
         sequentialParser.setInput("Index with with keywords");
         assertEquals("th", sequentialParser.extractTextFromIndex(8, "with", "keywords").orElse(""));
-        assertEquals(ListOf("Index", "wi", "with", "keywords"), sequentialParser.extractWords());
+        assertEquals(Arrays.asList("Index", "wi", "with", "keywords"), sequentialParser.extractWords());
     }
 
     @Test
     public void extractTextFromIndex_indexWithoutKeywords()  {
         sequentialParser.setInput("index without keywords");
         assertEquals("out keywords", sequentialParser.extractTextFromIndex(10).orElse(""));
-        assertEquals(ListOf("index", "with"), sequentialParser.extractWords());
+        assertEquals(Arrays.asList("index", "with"), sequentialParser.extractWords());
     }
 
     @Test
     public void extractTextAfterKeyword_keyword()  {
         sequentialParser.setInput("extract text after keyword");
         assertEquals("keyword", sequentialParser.extractTextAfterKeyword("after").orElse(""));
-        assertEquals(ListOf("extract","text"), sequentialParser.extractWords());
+        assertEquals(Arrays.asList("extract","text"), sequentialParser.extractWords());
     }
 
     @Test
     public void extractTextAfterKeyword_keywordNotFound()  {
         sequentialParser.setInput("keyword not found");
         assertTrue(!sequentialParser.extractTextAfterKeyword("key").isPresent());
-        assertEquals(ListOf("keyword", "not", "found"), sequentialParser.extractWords());
+        assertEquals(Arrays.asList("keyword", "not", "found"), sequentialParser.extractWords());
     }
 
     @Test
     public void extractTextAfterKeyword_caseInsensitive()  {
         sequentialParser.setInput("case InSensitive keyword");
         assertEquals("keyword", sequentialParser.extractTextAfterKeyword("iNsensitive").orElse(""));
-        assertEquals(ListOf("case"), sequentialParser.extractWords());
+        assertEquals(Arrays.asList("case"), sequentialParser.extractWords());
     }
 }

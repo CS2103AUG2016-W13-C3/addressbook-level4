@@ -10,6 +10,7 @@ import seedu.commando.commons.util.StringUtil;
 import seedu.commando.model.todo.*;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -21,7 +22,7 @@ public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final ToDoList toDoList;
-    private final FilteredList<ToDo> filteredToDos;
+    private final FilteredList<ReadOnlyToDo> filteredToDos;
     private final UserPrefs userPrefs;
 
     /**
@@ -50,70 +51,47 @@ public class ModelManager extends ComponentManager implements Model {
     //================================================================================
 
     @Override
-    public void resetData(ReadOnlyToDoList newToDoList) {
-        toDoList.resetData(newToDoList);
-        logger.info("[Model][ToDoList changed][TodoList Reset]: " + newToDoList.toString());
-        indicateToDoListChanged();
-    }
-
-    @Override
-    public synchronized void deleteToDo(ReadOnlyToDo toDo) throws IllegalValueException {
-        toDoList.remove(toDo);
-        logger.info("[Model][ToDoList changed][Todo Deleted]: " + toDo.toString());
-        indicateToDoListChanged();
-    }
-
-    @Override
-    public synchronized void addToDo(ToDo toDo) {
-        toDoList.add(toDo);
-        logger.info("[Model][ToDoList changed][Todo Added]: " + toDo.toString());
-        updateFilteredListToShowAll();
-        indicateToDoListChanged();
-    }
-    
-    @Override
     public ReadOnlyToDoList getToDoList() {
         return toDoList;
     }
 
-    
+    @Override
+    public synchronized void changeToDoList(ToDoListChange change) throws IllegalValueException {
+        for (ReadOnlyToDo toDoToDelete : change.getDeletedToDos()) {
+            toDoList.remove(toDoToDelete);
+            logger.info("[Model][ToDoList changed][Deleted]: " + toDoToDelete);
+        }
+
+        for (ReadOnlyToDo toDoToAdd : change.getAddedToDos()) {
+            toDoList.add(toDoToAdd);
+            logger.info("[Model][ToDoList changed][Added]: " + toDoToAdd);
+        }
+
+        updateFilteredListToShowAll();
+        indicateToDoListChanged();
+    }
+
+    @Override
+    public boolean undoToDoList() {
+        return false;
+    }
+
+    @Override
+    public boolean redoToDoList() {
+        return false;
+    }
+
+    @Override
+    public List<ToDoListChange> getToDoListChanges() {
+        return null;
+    }
+
+
     /** Raises an event to indicate the model has changed */
     private void indicateToDoListChanged() {
         raise(new ToDoListChangedEvent(toDoList));
     }
-    
-    @Override
-    public void editTodoTitle(ReadOnlyToDo todo, Title title) throws IllegalValueException {
-        toDoList.editTitle(todo, title);
-        logger.info("[Model][ToDoList changed][Todo title Edited]: " + todo.toString());
-        updateFilteredListToShowAll();
-        indicateToDoListChanged();
-    }
 
-    @Override
-    public void editTodoDateRange(ReadOnlyToDo todo, DateRange dateRange) throws IllegalValueException {
-        toDoList.editDateRange(todo, dateRange);
-        logger.info("[Model][ToDoList changed][Todo daterange Edited]: " + todo.toString());
-        updateFilteredListToShowAll();
-        indicateToDoListChanged();
-    }
-
-    @Override
-    public void editTodoDueDate(ReadOnlyToDo todo, DueDate dueDates) throws IllegalValueException {
-        toDoList.editDueDate(todo, dueDates);
-        logger.info("[Model][ToDoList changed][Todo duedate Edited]: " + todo.toString());
-        updateFilteredListToShowAll();
-        indicateToDoListChanged();
-    }
-
-    @Override
-    public void editTodoTags(ReadOnlyToDo todo, Set<Tag> tags) throws IllegalValueException {
-        toDoList.editTags(todo, tags);
-        logger.info("[Model][ToDoList changed][Todo tags Edited]: " + todo.toString());
-        updateFilteredListToShowAll();
-        indicateToDoListChanged();
-    }
-    
     //================================================================================
     // Filtering to-do list operations
     //================================================================================
@@ -189,7 +167,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
 
         private boolean checkForTitleKeyword(ReadOnlyToDo toDo, String keyword) {
-            return StringUtil.substringIgnoreCase(toDo.getTitle().title, keyword);
+            return StringUtil.substringIgnoreCase(toDo.getTitle().value, keyword);
         }
 
         private boolean checkForTagKeyword(ReadOnlyToDo toDo, String keyword) {
@@ -197,7 +175,7 @@ public class ModelManager extends ComponentManager implements Model {
             boolean flag = false;
             while (itr.hasNext()){
                 Tag element = itr.next();
-                if (StringUtil.substringIgnoreCase(element.tagName, keyword)) {
+                if (StringUtil.substringIgnoreCase(element.value, keyword)) {
                     flag = true;
                 }
             }
@@ -210,5 +188,4 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
-    
 }

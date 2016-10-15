@@ -27,7 +27,7 @@ public class TestHelper {
      * Checks if a to-do exists in the model
      */
     public static boolean ifToDoExists(Model model, ReadOnlyToDo readOnlyToDo) {
-        return model.getToDoList().getToDoList().contains(readOnlyToDo);
+        return model.getToDoList().getToDos().contains(readOnlyToDo);
     }
 
     /**
@@ -37,16 +37,6 @@ public class TestHelper {
         return model.getFilteredToDoList().contains(readOnlyToDo);
     }
 
-    /**
-     * Constructs a list from {@param values}
-     */
-    public static <T> List<T> ListOf(T... values) {
-        List<T> list = new LinkedList<>();
-        for (T value : values) {
-            list.add(value);
-        }
-        return list;
-    }
     /**
      * Constructs a set from {@param values}
      */

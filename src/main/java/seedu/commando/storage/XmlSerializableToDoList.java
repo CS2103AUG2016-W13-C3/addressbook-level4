@@ -31,11 +31,11 @@ public class XmlSerializableToDoList implements ReadOnlyToDoList {
      * Conversion
      */
     public XmlSerializableToDoList(ReadOnlyToDoList src) {
-        toDos.addAll(src.getToDoList().stream().map(XmlAdaptedToDo::new).collect(Collectors.toList()));
+           toDos.addAll(src.getToDos().stream().map(XmlAdaptedToDo::new).collect(Collectors.toList()));
     }
 
     @Override
-    public List<ReadOnlyToDo> getToDoList() {
+    public List<ReadOnlyToDo> getToDos() {
         return toDos.stream().map(p -> {
             try {
                 return p.toModelType();

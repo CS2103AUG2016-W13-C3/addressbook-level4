@@ -77,10 +77,10 @@ public class XmlToDoListStorageTest {
 
         // Modify data, overwrite exiting file, and read back
         xmlStorage.saveToDoList(original, filePath);
-        original.add(new ToDoBuilder("title")
+        original.add(new ToDoBuilder("value")
             .withTags("tag1", "tag2").build()
         );
-        original.remove(original.getToDoList().get(0));
+        original.remove(original.getToDos().get(0));
         xmlStorage.saveToDoList(original, filePath);
         ReadOnlyToDoList readBack = xmlStorage.readToDoList(filePath).get();
         assertEquals(original, new ToDoList(readBack));

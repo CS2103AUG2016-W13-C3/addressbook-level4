@@ -28,7 +28,7 @@ public class ToDo implements ReadOnlyToDo {
 
 
     /**
-     * Asserts that title is non-null
+     * Asserts that value is non-null
      */
     public ToDo(Title title) {
         assert title != null;
@@ -107,7 +107,7 @@ public class ToDo implements ReadOnlyToDo {
         if (tags == null) {
             return new HashSet<>();
         } else {
-            return tags;
+            return new HashSet<>(tags);
         }
     }
 

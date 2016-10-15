@@ -1,5 +1,9 @@
 package seedu.commando.model.todo;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -7,6 +11,9 @@ import org.junit.rules.ExpectedException;
 import seedu.commando.commons.exceptions.IllegalValueException;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -21,18 +28,18 @@ public class ToDoTest {
 
     @Before
     public void setup() throws IllegalValueException {
-        defaultToDo = new ToDo(new Title("title"));
+        defaultToDo = new ToDo(new Title("value"));
     }
 
     @Test
     public void ToDo() throws IllegalValueException {
-        ToDo toDo = new ToDo(new Title("title"));
-        assertEquals(toDo.getTitle(), new Title("title"));
+        ToDo toDo = new ToDo(new Title("value"));
+        assertEquals(toDo.getTitle(), new Title("value"));
     }
 
     @Test
     public void ToDoCopy() throws IllegalValueException {
-        ToDo toDo = new ToDo(new Title("title"));
+        ToDo toDo = new ToDo(new Title("value"));
         toDo.setTags(SetOf(new Tag("tag1"), new Tag("tag2")));
         toDo.setIsFinished(true);
         toDo.setDateRange(new DateRange(
@@ -49,8 +56,8 @@ public class ToDoTest {
 
     @Test
     public void setTitle() throws IllegalValueException {
-        defaultToDo.setTitle(new Title("set title"));
-        assertEquals(defaultToDo.getTitle(), new Title("set title"));
+        defaultToDo.setTitle(new Title("set value"));
+        assertEquals(defaultToDo.getTitle(), new Title("set value"));
     }
 
     @Test
@@ -89,5 +96,33 @@ public class ToDoTest {
         assertFalse(defaultToDo.isFinished());
         defaultToDo.setIsFinished(true);
         assertTrue(defaultToDo.isFinished());
+    }
+
+    @Test
+    public void getObservableValue_allFields() throws IllegalValueException {
+        List<String> changes = new LinkedList<>();
+        defaultToDo.getObservableValue().addListener((observable, oldValue, newValue) -> {
+            changes.add(newValue);
+        });
+
+        defaultToDo.setTitle(new Title("new value"));
+        assertTrue(changes.size() == 1);
+
+        defaultToDo.setDateRange(new DateRange(
+            LocalDateTime.of(2001, 10, 8, 12, 59),
+            LocalDateTime.of(2002, 10, 8, 11, 59)
+        ));
+        assertTrue(changes.size() == 2);
+
+        defaultToDo.setDueDate(new DueDate(
+            LocalDateTime.of(2001, 10, 8, 12, 59)
+        ));
+        assertTrue(changes.size() == 3);
+
+        defaultToDo.setTags(SetOf(new Tag("tag1"), new Tag("tag2")));
+        assertTrue(changes.size() == 4);
+
+        defaultToDo.setIsFinished(true);
+        assertTrue(changes.size() == 5);
     }
 }

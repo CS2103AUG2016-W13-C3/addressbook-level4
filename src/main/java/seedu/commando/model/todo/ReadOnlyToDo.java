@@ -42,10 +42,11 @@ public interface ReadOnlyToDo {
         final StringBuilder builder = new StringBuilder();
 
         builder.append(String.join(", ",
-            "Title: " + getTitle().toString(),
-            "Date Range: " + (getDateRange().isPresent() ? getDateRange().get().toString() : "none"),
-            "Due Date: " + (getDueDate().isPresent() ? getDueDate().get().toString() : "none"),
-            "Tags: " + getTags().toString()));
+            "Title: " + getTitle(),
+            "Date Range: " + (getDateRange().isPresent() ? getDateRange().get() : "none"),
+            "Due Date: " + (getDueDate().isPresent() ? getDueDate().get() : "none"),
+            "Tags: " + getTags(),
+            "Is Finished: " + isFinished()));
 
         return builder.toString();
     }

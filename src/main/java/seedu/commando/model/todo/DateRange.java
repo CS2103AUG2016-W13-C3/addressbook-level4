@@ -17,7 +17,7 @@ public class DateRange {
 
     /**
      * Constructor for a date range
-     * @throws IllegalValueException if given title is invalid
+     * @throws IllegalValueException if given value is invalid
      */
     public DateRange(LocalDateTime startDate, LocalDateTime endDate) throws IllegalValueException {
         if (!isValid(startDate, endDate)) {

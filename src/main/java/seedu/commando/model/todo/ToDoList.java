@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  */
 public class ToDoList implements ReadOnlyToDoList {
 
-    private final ObservableList<ToDo> list;
+    private final ObservableList<ReadOnlyToDo> list;
     {
         list = FXCollections.observableArrayList(toDo -> new Observable[] {
             toDo.getObservableValue() // track value of to-do as well
@@ -24,7 +24,7 @@ public class ToDoList implements ReadOnlyToDoList {
     public ToDoList() {}
 
     public ToDoList(ReadOnlyToDoList listToBeCopied) {
-        resetData(listToBeCopied);
+        reset(listToBeCopied.getToDos());
     }
 
     //================================================================================
@@ -32,15 +32,21 @@ public class ToDoList implements ReadOnlyToDoList {
     //================================================================================
 
     /**
-     * Adds a to-do to the list
-     * To-do is not copied, but is added to the list by reference
+     * Adds a deep copy of the to-do to the list
      */
-    public void add(ToDo toDo) {
+    public void add(ReadOnlyToDo toDo) {
         assert toDo != null;
-        list.add(toDo);
+
+        list.add(new ToDo(toDo));
     }
 
+    /**
+     * Removes the to-do that is equals to {@param toDo}
+     * @throws IllegalValueException if not found
+     */
     public boolean remove(ReadOnlyToDo toDo) throws IllegalValueException {
+        assert toDo != null;
+
         if (list.remove(toDo)) {
             return true;
         } else {
@@ -48,72 +54,26 @@ public class ToDoList implements ReadOnlyToDoList {
         }
     }
 
-    public void setToDos(List<ToDo> ToDos) {
-        list.setAll(ToDos);
-    }
-
     /**
-     * Empties the list and sets it to a shallow clone (fields are references to original)
-     * of the {@param newToDos}
+     * Clears the list and sets it to a deep copy of {@param newToDos}
      */
-    public void resetData(Collection<? extends ReadOnlyToDo> newToDos) {
-        setToDos(newToDos.stream().map(readOnlyToDo -> {
-            final ToDo todo = new ToDo(readOnlyToDo.getTitle());
-
-            // Set fields if present
-            readOnlyToDo.getDateRange().ifPresent(todo::setDateRange);
-            readOnlyToDo.getDueDate().ifPresent(todo::setDueDate);
-            todo.setTags(readOnlyToDo.getTags());
-
-            return todo;
-        }).collect(Collectors.toList()));
+    public void reset(List<ReadOnlyToDo> newToDos) {
+        List<ToDo> toDos = new LinkedList<>();
+        newToDos.forEach(toDo -> toDos.add(new ToDo(toDo)));
+        list.setAll(toDos);
     }
 
-    public void resetData(ReadOnlyToDoList newData) {
-        resetData(newData.getToDoList());
-    }
-
-    public void editTitle(ReadOnlyToDo todo, Title title) throws IllegalValueException {
-        getToDo(todo).setTitle(title);
-    }
-
-    public void editDateRange(ReadOnlyToDo todo, DateRange dateRange) throws IllegalValueException {
-        getToDo(todo).setDateRange(dateRange);
-    }
-
-    public void editDueDate(ReadOnlyToDo todo, DueDate dueDates) throws IllegalValueException {
-        getToDo(todo).setDueDate(dueDates);
-    }
-
-    public void editTags(ReadOnlyToDo todo, Set<Tag> tags) throws IllegalValueException {
-        getToDo(todo).setTags(tags);
-    }
-    
-    
     //================================================================================
     // Utility methods
     //================================================================================
 
-    public ToDo getToDo(ReadOnlyToDo todo) throws IllegalValueException {
-        int idx = list.indexOf(todo);
-        if (idx == -1){
-            throw new IllegalValueException(String.format(Messages.MESSAGE_TODO_NOT_FOUND, todo.toString()));
-        }
-        return list.get(idx);
-    }
-    
-    public ObservableList<ToDo> getToDos() {
-        return list;
-    }
-
     @Override
     public String toString() {
-        return list.stream().map((toDo) -> toDo.toString()).collect(Collectors.joining(", "));
+        return list.stream().map(ReadOnlyToDo::toString).collect(Collectors.joining(", "));
     }
 
-    @Override
-    public List<ReadOnlyToDo> getToDoList() {
-        return Collections.unmodifiableList(list);
+    public ObservableList<ReadOnlyToDo> getToDos() {
+        return list;
     }
 
     @Override
