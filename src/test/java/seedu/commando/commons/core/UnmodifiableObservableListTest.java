@@ -1,4 +1,4 @@
-package seedu.commando.model;
+package seedu.commando.commons.core;
 
 import javafx.collections.FXCollections;
 import junit.framework.AssertionFailedError;
@@ -33,7 +33,6 @@ public class UnmodifiableObservableListTest {
 
     @Test
     public void mutatingMethods_disabled() {
-
         final Class<UnsupportedOperationException> ex = UnsupportedOperationException.class;
 
         assertThrows(ex, () -> list.add(0, 2));

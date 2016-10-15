@@ -36,16 +36,4 @@ public class TestHelper {
     public static boolean ifToDoExistsFiltered(Model model, ReadOnlyToDo readOnlyToDo) {
         return model.getFilteredToDoList().contains(readOnlyToDo);
     }
-
-    /**
-     * Constructs a set from {@param values}
-     */
-    public static <T> Set<T> SetOf(T... values) {
-        Set<T> set = new HashSet<>();
-        for (T value : values) {
-            set.add(value);
-        }
-        return set;
-    }
-
 }

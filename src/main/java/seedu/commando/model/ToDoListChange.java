@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Represents a change in a to-do list
+ * An immutable representation of a change in a to-do list
  */
 public class ToDoListChange {
 
@@ -27,6 +27,13 @@ public class ToDoListChange {
 
     public List<ReadOnlyToDo> getDeletedToDos() {
         return new LinkedList<>(deletedToDos);
+    }
+
+    /**
+     * Get the reverse of this change
+     */
+    public ToDoListChange getReverseChange() {
+        return new ToDoListChange(deletedToDos, addedToDos);
     }
 
     @Override

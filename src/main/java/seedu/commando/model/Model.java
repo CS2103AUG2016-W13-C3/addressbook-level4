@@ -5,6 +5,7 @@ import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -23,16 +24,16 @@ public interface Model {
     /** Redos the last undo to the to-do list, returns true if successful */
     boolean redoToDoList();
 
-    /** Gets a list of the to-do list changes. excluding those undone */
-    List<ToDoListChange> getToDoListChanges();
+    /** Gets the last to-do list change, considering undos and redos, if it exists */
+    Optional<ToDoListChange> getLastToDoListChange();
 
     /** Returns the filtered to-do list as an {@code UnmodifiableObservableList<ReadOnlyToDo>} */
     UnmodifiableObservableList<ReadOnlyToDo> getFilteredToDoList();
 
     /** Updates the filter of the filtered to-do list to show all to-dos */
-    void updateFilteredListToShowAll();
+    void clearToDoListFilter();
 
     /** Updates the filter of the filtered to-do list to filter by the given keywords */
-    void updateFilteredToDoList(Set<String> keywords);
+    void updateToDoListFilter(Set<String> keywords);
 
 }

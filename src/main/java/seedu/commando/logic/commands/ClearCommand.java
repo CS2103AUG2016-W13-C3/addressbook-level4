@@ -26,7 +26,6 @@ public class ClearCommand extends Command {
         assert model != null;
 
         try {
-
             // Delete all to-dos
             model.changeToDoList(new ToDoListChange(
                 Collections.emptyList(),

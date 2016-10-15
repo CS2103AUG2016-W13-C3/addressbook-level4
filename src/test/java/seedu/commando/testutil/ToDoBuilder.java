@@ -49,6 +49,12 @@ public class ToDoBuilder {
         return this;
     }
 
+    public ToDoBuilder isFinished(boolean isFinished) {
+        toDo.setIsFinished(isFinished);
+
+        return this;
+    }
+
     public ToDo build() {
         return toDo;
     }

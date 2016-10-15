@@ -4,6 +4,7 @@ import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.commando.commons.core.Messages;
+import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 
 import java.util.*;
@@ -15,10 +16,12 @@ import java.util.stream.Collectors;
 public class ToDoList implements ReadOnlyToDoList {
 
     private final ObservableList<ReadOnlyToDo> list;
+    private final UnmodifiableObservableList<ReadOnlyToDo> protectedList;
     {
         list = FXCollections.observableArrayList(toDo -> new Observable[] {
             toDo.getObservableValue() // track value of to-do as well
         });
+        protectedList = new UnmodifiableObservableList<>(list);
     }
 
     public ToDoList() {}
@@ -72,8 +75,8 @@ public class ToDoList implements ReadOnlyToDoList {
         return list.stream().map(ReadOnlyToDo::toString).collect(Collectors.joining(", "));
     }
 
-    public ObservableList<ReadOnlyToDo> getToDos() {
-        return list;
+    public UnmodifiableObservableList<ReadOnlyToDo> getToDos() {
+        return protectedList;
     }
 
     @Override

@@ -9,9 +9,7 @@ import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.commons.util.StringUtil;
 import seedu.commando.model.todo.*;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -23,6 +21,15 @@ public class ModelManager extends ComponentManager implements Model {
 
     private final ToDoList toDoList;
     private final FilteredList<ReadOnlyToDo> filteredToDos;
+    private final UnmodifiableObservableList<ReadOnlyToDo> protectedFilteredToDos;
+    private final ArrayList<ToDoListChange> toDoListChanges; // excludes undo and redo changes
+    private int undoChangeIndex;
+    private ToDoListChange lastToDoListChange;
+    {
+        toDoListChanges = new ArrayList<>();
+        undoChangeIndex = -1; // invariant: changes[index] is the next change to undo
+    }
+
     private final UserPrefs userPrefs;
 
     /**
@@ -40,6 +47,7 @@ public class ModelManager extends ComponentManager implements Model {
         this.toDoList = new ToDoList(toDoList);
         this.userPrefs = userPrefs;
         filteredToDos = new FilteredList<>(this.toDoList.getToDos());
+        protectedFilteredToDos = new UnmodifiableObservableList<>(filteredToDos);
     }
 
     public ModelManager() {
@@ -57,6 +65,17 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public synchronized void changeToDoList(ToDoListChange change) throws IllegalValueException {
+        applyToDoListChange(change);
+        toDoListChanges.add(change);
+        undoChangeIndex = toDoListChanges.size() - 1; // reset undo index to this change
+
+        lastToDoListChange = change;
+
+        clearToDoListFilter();
+        indicateToDoListChanged();
+    }
+
+    private void applyToDoListChange(ToDoListChange change) throws IllegalValueException {
         for (ReadOnlyToDo toDoToDelete : change.getDeletedToDos()) {
             toDoList.remove(toDoToDelete);
             logger.info("[Model][ToDoList changed][Deleted]: " + toDoToDelete);
@@ -66,26 +85,67 @@ public class ModelManager extends ComponentManager implements Model {
             toDoList.add(toDoToAdd);
             logger.info("[Model][ToDoList changed][Added]: " + toDoToAdd);
         }
-
-        updateFilteredListToShowAll();
-        indicateToDoListChanged();
     }
 
     @Override
     public boolean undoToDoList() {
-        return false;
+        if (undoChangeIndex == -1) {
+            return false; // Nothing else to undo
+        }
+
+        assert undoChangeIndex >= 0 && undoChangeIndex < toDoListChanges.size();
+
+        // Undo change = reverse of change
+        ToDoListChange undoChange = toDoListChanges.get(undoChangeIndex).getReverseChange();
+        try {
+            applyToDoListChange(undoChange);
+        } catch (IllegalValueException exception) {
+            assert false; // Undo should always work
+            return false; // Undo failed
+        }
+
+        // Decrement undo index
+        undoChangeIndex --;
+
+        lastToDoListChange = undoChange;
+
+        clearToDoListFilter();
+        indicateToDoListChanged();
+
+        return true;
     }
 
     @Override
     public boolean redoToDoList() {
-        return false;
+        if (undoChangeIndex == toDoListChanges.size() - 1) {
+            return false; // No undos to redo
+        }
+        assert undoChangeIndex >= -1 && undoChangeIndex < toDoListChanges.size() - 1;
+
+        // Redo change = change
+        ToDoListChange redoChange = toDoListChanges.get(undoChangeIndex + 1);
+        try {
+            applyToDoListChange(redoChange);
+        } catch (IllegalValueException exception) {
+            assert false; // Redo should always work
+            return false; // Redo failed
+        }
+
+        // Increment undo index
+        undoChangeIndex ++;
+
+        lastToDoListChange = redoChange;
+
+        clearToDoListFilter();
+        indicateToDoListChanged();
+
+        return true;
     }
 
     @Override
-    public List<ToDoListChange> getToDoListChanges() {
-        return null;
+    public Optional<ToDoListChange> getLastToDoListChange() {
+        return Optional.ofNullable(lastToDoListChange);
     }
-
 
     /** Raises an event to indicate the model has changed */
     private void indicateToDoListChanged() {
@@ -98,16 +158,16 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public UnmodifiableObservableList<ReadOnlyToDo> getFilteredToDoList() {
-        return new UnmodifiableObservableList<>(filteredToDos);
+        return protectedFilteredToDos;
     }
 
     @Override
-    public void updateFilteredListToShowAll() {
+    public void clearToDoListFilter() {
         filteredToDos.setPredicate(null);
     }
 
     @Override
-    public void updateFilteredToDoList(Set<String> keywords){
+    public void updateToDoListFilter(Set<String> keywords){
         updateFilteredToDoList(new PredicateExpression(new TitleQualifier(keywords)));
     }
 

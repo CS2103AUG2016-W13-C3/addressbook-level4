@@ -1,5 +1,7 @@
 package seedu.commando.storage;
 
+import javafx.collections.FXCollections;
+import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.ReadOnlyToDo;
@@ -35,8 +37,8 @@ public class XmlSerializableToDoList implements ReadOnlyToDoList {
     }
 
     @Override
-    public List<ReadOnlyToDo> getToDos() {
-        return toDos.stream().map(p -> {
+    public UnmodifiableObservableList<ReadOnlyToDo> getToDos() {
+        List<ReadOnlyToDo> list = toDos.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (IllegalValueException e) {
@@ -45,5 +47,9 @@ public class XmlSerializableToDoList implements ReadOnlyToDoList {
                 return null;
             }
         }).collect(Collectors.toCollection(ArrayList::new));
+
+        return new UnmodifiableObservableList<>(
+            FXCollections.observableList(list)
+        );
     }
 }
