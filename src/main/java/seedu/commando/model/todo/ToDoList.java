@@ -26,8 +26,15 @@ public class ToDoList implements ReadOnlyToDoList {
 
     public ToDoList() {}
 
+    /**
+     * Copy constructor
+     */
     public ToDoList(ReadOnlyToDoList listToBeCopied) {
         reset(listToBeCopied.getToDos());
+    }
+
+    public ToDoList(List<ReadOnlyToDo> listToBeCopied) {
+        reset(listToBeCopied);
     }
 
     //================================================================================
@@ -72,7 +79,7 @@ public class ToDoList implements ReadOnlyToDoList {
 
     @Override
     public String toString() {
-        return list.stream().map(ReadOnlyToDo::toString).collect(Collectors.joining(", "));
+        return getText();
     }
 
     public UnmodifiableObservableList<ReadOnlyToDo> getToDos() {

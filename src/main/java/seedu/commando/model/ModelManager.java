@@ -44,7 +44,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         logger.fine("Initializing with to-do list: " + toDoList + " and user prefs: " + userPrefs);
 
-        this.toDoList = new ToDoList(toDoList);
+        this.toDoList = new ToDoList(toDoList.getToDos());
         this.userPrefs = userPrefs;
         filteredToDos = new FilteredList<>(this.toDoList.getToDos());
         protectedFilteredToDos = new UnmodifiableObservableList<>(filteredToDos);

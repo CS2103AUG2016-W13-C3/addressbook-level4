@@ -62,7 +62,6 @@ public class StorageManagerTest {
         storageManager.saveToDoList(original);
         ReadOnlyToDoList retrieved = storageManager.readToDoList().get();
         assertEquals(original, new ToDoList(retrieved));
-        // More extensive testing of AddressBook saving/reading is done in XmlToDoListStorageTest
     }
 
     @Test

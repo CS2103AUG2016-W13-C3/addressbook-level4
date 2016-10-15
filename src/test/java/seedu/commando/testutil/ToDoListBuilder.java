@@ -41,6 +41,7 @@ public class ToDoListBuilder {
             )
             .add(
                 new ToDoBuilder("valid title 2")
+                    .isFinished(true)
                     .build()
             ).build();
     }

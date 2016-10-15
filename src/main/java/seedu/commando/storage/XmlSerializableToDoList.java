@@ -1,7 +1,5 @@
 package seedu.commando.storage;
 
-import javafx.collections.FXCollections;
-import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.ReadOnlyToDo;
@@ -16,10 +14,11 @@ import java.util.stream.Collectors;
  * An Immutable ToDoList that is serializable to XML format
  */
 @XmlRootElement(name = "todolist")
-public class XmlSerializableToDoList implements ReadOnlyToDoList {
+public class XmlSerializableToDoList {
 
     @XmlElement
     private List<XmlAdaptedToDo> toDos;
+
     {
         toDos = new ArrayList<>();
     }
@@ -27,29 +26,23 @@ public class XmlSerializableToDoList implements ReadOnlyToDoList {
     /**
      * Empty constructor required for marshalling
      */
-    public XmlSerializableToDoList() {}
+    public XmlSerializableToDoList() {
+    }
 
     /**
      * Conversion
      */
-    public XmlSerializableToDoList(ReadOnlyToDoList src) {
-           toDos.addAll(src.getToDos().stream().map(XmlAdaptedToDo::new).collect(Collectors.toList()));
+    public XmlSerializableToDoList(ReadOnlyToDoList toDos) {
+        this.toDos.addAll(toDos.getToDos().stream().map(XmlAdaptedToDo::new).collect(Collectors.toList()));
     }
 
-    @Override
-    public UnmodifiableObservableList<ReadOnlyToDo> getToDos() {
-        List<ReadOnlyToDo> list = toDos.stream().map(p -> {
-            try {
-                return p.toModelType();
-            } catch (IllegalValueException e) {
-                e.printStackTrace();
-                //TODO: better error handling
-                return null;
-            }
-        }).collect(Collectors.toCollection(ArrayList::new));
+    public List<ReadOnlyToDo> getToDos() throws IllegalValueException {
+        List<ReadOnlyToDo> list = new ArrayList<>();
 
-        return new UnmodifiableObservableList<>(
-            FXCollections.observableList(list)
-        );
+        for (XmlAdaptedToDo xmlAdaptedToDo : toDos) {
+            list.add(xmlAdaptedToDo.toModelType());
+        }
+
+        return list;
     }
 }

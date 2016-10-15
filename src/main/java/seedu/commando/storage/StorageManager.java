@@ -23,14 +23,14 @@ public class StorageManager extends ComponentManager implements Storage {
     private ToDoListStorage toDoListStorage;
     private UserPrefsStorage userPrefsStorage;
 
+    public StorageManager(String toDoListFilePath, String userPrefsFilePath) {
+        this(new XmlToDoListStorage(toDoListFilePath), new JsonUserPrefsStorage(userPrefsFilePath));
+    }
+
     public StorageManager(ToDoListStorage toDoListStorage, UserPrefsStorage userPrefsStorage) {
         super();
         this.toDoListStorage = toDoListStorage;
         this.userPrefsStorage = userPrefsStorage;
-    }
-
-    public StorageManager(String toDoListFilePath, String userPrefsFilePath) {
-        this(new XmlToDoListStorage(toDoListFilePath), new JsonUserPrefsStorage(userPrefsFilePath));
     }
 
     //================================================================================
@@ -77,7 +77,6 @@ public class StorageManager extends ComponentManager implements Storage {
         logger.fine("Attempting to write to data file: " + filePath);
         toDoListStorage.saveToDoList(toDoList, filePath);
     }
-
 
     @Override
     @Subscribe
