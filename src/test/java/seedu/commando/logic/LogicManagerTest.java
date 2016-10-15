@@ -131,6 +131,36 @@ public class LogicManagerTest {
             new ToDoBuilder("somethingelse")
                 .build()));
     }
+    
+    @Test
+    public void execute_undo() {
+        logic.execute("add title");
+        logic.execute("add title 2");
+        logic.execute("add test 3");
+        logic.execute("delete 2");
+        logic.execute("edit 1 titlereplaced");
+        
+        eventsCollector.reset();
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(model.getToDoList().getToDos().size() == 2);
+        
+        CommandResult result = logic.execute("undo");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(model.getToDoList().getToDos().size() == 2);
+        
+        result = logic.execute("undo");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(model.getToDoList().getToDos().size() == 3);
+        
+        result = logic.execute("undo");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(model.getToDoList().getToDos().size() == 2);
+
+
+    }
 
     @Test
     public void execute_exit()  {
