@@ -11,7 +11,6 @@ import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.Logic;
 import seedu.commando.logic.LogicManager;
-import seedu.commando.logic.commands.CommandResult;
 import seedu.commando.model.Model;
 import seedu.commando.model.ModelManager;
 import seedu.commando.storage.StorageManager;
@@ -62,7 +61,7 @@ public class DeleteCommandTest {
         CommandResult result = logic.execute("delete 2");
         assertTrue(result.hasError());
 
-        assertEquals(String.format(Messages.MESSAGE_TODO_ITEM_INDEX_INVALID, 2), result.getFeedback());
+        assertEquals(String.format(Messages.TODO_ITEM_INDEX_INVALID, 2), result.getFeedback());
     }
 
     @Test
@@ -70,7 +69,7 @@ public class DeleteCommandTest {
         CommandResult result = logic.execute("delete 0");
         assertTrue(result.hasError());
 
-        assertEquals(String.format(Messages.MESSAGE_TODO_ITEM_INDEX_INVALID, 0), result.getFeedback());
+        assertEquals(String.format(Messages.TODO_ITEM_INDEX_INVALID, 0), result.getFeedback());
     }
 
     @Test
@@ -78,7 +77,7 @@ public class DeleteCommandTest {
         CommandResult result = logic.execute("delete -1");
         assertTrue(result.hasError());
 
-        assertEquals(String.format(Messages.MESSAGE_TODO_ITEM_INDEX_INVALID, -1), result.getFeedback());
+        assertEquals(String.format(Messages.TODO_ITEM_INDEX_INVALID, -1), result.getFeedback());
     }
 
     @Test
@@ -86,7 +85,7 @@ public class DeleteCommandTest {
         CommandResult result = logic.execute("delete missing index");
         assertTrue(result.hasError());
 
-        assertEquals(Messages.MESSAGE_MISSING_TODO_ITEM_INDEX, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_ITEM_INDEX, result.getFeedback());
     }
 
     @Test

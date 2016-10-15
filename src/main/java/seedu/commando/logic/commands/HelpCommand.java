@@ -35,6 +35,6 @@ public class HelpCommand extends Command {
     @Override
     public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
         eventsCenter.post(new ShowHelpRequestEvent(commandWord));
-        return new CommandResult(Messages.MESSAGE_HELP_WINDOW_SHOWN);
+        return new CommandResult(Messages.HELP_WINDOW_SHOWN);
     }
 }

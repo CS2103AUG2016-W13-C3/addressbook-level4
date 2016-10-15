@@ -20,9 +20,9 @@ public class RedoCommand extends Command {
         assert model != null;
         
         if (!model.redoToDoList())
-            return new CommandResult(Messages.MESSAGE_COMMAND_REDONE_FAIL, true);
+            return new CommandResult(Messages.REDID_COMMAND_FAIL, true);
         
-        return new CommandResult(Messages.MESSAGE_COMMAND_REDONE);
+        return new CommandResult(Messages.REDID_COMMAND);
     }
 
 }

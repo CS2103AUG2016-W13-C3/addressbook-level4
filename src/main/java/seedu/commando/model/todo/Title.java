@@ -19,7 +19,7 @@ public class Title {
      */
     public Title(String value) throws IllegalValueException {
         if (!isValid(value)) {
-            throw new IllegalValueException(Messages.MESSAGE_TODO_TITLE_CONSTRAINTS);
+            throw new IllegalValueException(Messages.TODO_TITLE_CONSTRAINTS);
         }
 
         value = value.trim();

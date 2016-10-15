@@ -59,7 +59,7 @@ public class AddCommand extends Command {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.MESSAGE_TODO_ADDED, toDo.getTitle().toString()));
+        return new CommandResult(String.format(Messages.TODO_ADDED, toDo.getTitle().toString()));
     }
 
     public void setDueDate(LocalDateTime dueDate) throws IllegalValueException {

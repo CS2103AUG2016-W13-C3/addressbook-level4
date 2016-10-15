@@ -1,7 +1,6 @@
 package seedu.commando.model.todo;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
@@ -21,7 +20,7 @@ public class DateRange {
      */
     public DateRange(LocalDateTime startDate, LocalDateTime endDate) throws IllegalValueException {
         if (!isValid(startDate, endDate)) {
-            throw new IllegalValueException(Messages.MESSAGE_TODO_DATERANGE_CONSTRAINTS);
+            throw new IllegalValueException(Messages.TODO_DATERANGE_CONSTRAINTS);
         }
 
         this.startDate = startDate;

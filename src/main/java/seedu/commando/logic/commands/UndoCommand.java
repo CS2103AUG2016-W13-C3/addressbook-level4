@@ -23,9 +23,9 @@ public class UndoCommand extends Command{
         assert model != null;
         
         if (!model.undoToDoList())
-            return new CommandResult(Messages.MESSAGE_COMMAND_UNDONE_FAIL, true);
+            return new CommandResult(Messages.UNDID_COMMAND_FAIL, true);
         
-        return new CommandResult(Messages.MESSAGE_COMMAND_UNDONE);
+        return new CommandResult(Messages.UNDID_COMMAND);
     }
     
 

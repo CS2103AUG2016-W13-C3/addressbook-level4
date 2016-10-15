@@ -1,6 +1,5 @@
 package seedu.commando.logic.commands;
 
-import com.google.common.collect.Lists;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
@@ -64,7 +63,7 @@ public class EditCommand extends Command {
         Optional<ReadOnlyToDo> toDoToEdit = getToDoAtIndex(toDoAtIndices, toDoIndex);
 
         if (!toDoToEdit.isPresent()) {
-            return new CommandResult(String.format(Messages.MESSAGE_TODO_ITEM_INDEX_INVALID, toDoIndex), true);
+            return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex), true);
         }
 
         // Copy original to-do
@@ -87,7 +86,7 @@ public class EditCommand extends Command {
         }
 
         if (newToDo.equals(toDoToEdit.get())) {
-            return new CommandResult(Messages.MESSAGE_TODO_NO_EDITS, true);
+            return new CommandResult(Messages.TODO_NO_EDITS, true);
         }
 
         try {
@@ -99,6 +98,6 @@ public class EditCommand extends Command {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.MESSAGE_TODO_EDITED, newToDo.getTitle().toString()));
+        return new CommandResult(String.format(Messages.TODO_EDITED, newToDo.getTitle().toString()));
     }
 }

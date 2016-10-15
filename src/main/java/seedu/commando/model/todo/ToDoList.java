@@ -8,7 +8,6 @@ import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Represents a list of to-dos
@@ -60,7 +59,7 @@ public class ToDoList implements ReadOnlyToDoList {
         if (list.remove(toDo)) {
             return true;
         } else {
-            throw new IllegalValueException(String.format(Messages.MESSAGE_TODO_NOT_FOUND, toDo.toString()));
+            throw new IllegalValueException(String.format(Messages.TODO_NOT_FOUND, toDo.toString()));
         }
     }
 

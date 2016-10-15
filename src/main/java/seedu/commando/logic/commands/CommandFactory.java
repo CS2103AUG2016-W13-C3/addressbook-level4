@@ -6,7 +6,6 @@ import seedu.commando.logic.parser.DateTimeParser;
 import seedu.commando.logic.parser.SequentialParser;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,7 +38,7 @@ public class CommandFactory {
         Optional<String> commandWord = sequentialParser.extractFirstWord();
 
         if (!commandWord.isPresent()) {
-            return new InvalidCommand(Messages.MESSAGE_MISSING_COMMAND_WORD);
+            return new InvalidCommand(Messages.MISSING_COMMAND_WORD);
         }
 
         switch (commandWord.get()) {
@@ -64,7 +63,7 @@ public class CommandFactory {
             case RedoCommand.COMMAND_WORD:
                 return buildRedoCommand();
             default:
-                return new InvalidCommand(Messages.MESSAGE_UNKNOWN_COMMAND);
+                return new InvalidCommand(Messages.UNKNOWN_COMMAND);
         }
     }
 
@@ -84,14 +83,14 @@ public class CommandFactory {
         );
 
         if (!title.isPresent()) {
-            return new InvalidCommand(Messages.MESSAGE_MISSING_TODO_TITLE);
+            return new InvalidCommand(Messages.MISSING_TODO_TITLE);
         }
 
         AddCommand command;
         try {
             command = new AddCommand(title.get());
         } catch (IllegalValueException exception) {
-            return new InvalidCommand(Messages.MESSAGE_TODO_TITLE_CONSTRAINTS);
+            return new InvalidCommand(Messages.TODO_TITLE_CONSTRAINTS);
         }
 
         // Put in tags
@@ -131,18 +130,18 @@ public class CommandFactory {
 
         if (startDateString.isPresent() || startDateString.isPresent()) {
             if (endDateString.isPresent() && !startDateString.isPresent()) {
-                return new InvalidCommand(Messages.MESSAGE_MISSING_TODO_DATERANGE_START);
+                return new InvalidCommand(Messages.MISSING_TODO_DATERANGE_START);
             } else if (startDateString.isPresent() && !endDateString.isPresent()) {
-                return new InvalidCommand(Messages.MESSAGE_MISSING_TODO_DATERANGE_END);
+                return new InvalidCommand(Messages.MISSING_TODO_DATERANGE_END);
             }
 
             Optional<LocalDateTime> startDate = dateTimeParser.parseDateTime(startDateString.orElse(""));
             Optional<LocalDateTime> endDate = dateTimeParser.parseDateTime(endDateString.orElse(""));
 
             if (!startDate.isPresent()) {
-                return new InvalidCommand(Messages.MESSAGE_TODO_DATERANGE_START_INVALID_FORMAT);
+                return new InvalidCommand(Messages.TODO_DATERANGE_START_INVALID_FORMAT);
             } else if (!endDate.isPresent()) {
-                return new InvalidCommand(Messages.MESSAGE_TODO_DATERANGE_END_INVALID_FORMAT);
+                return new InvalidCommand(Messages.TODO_DATERANGE_END_INVALID_FORMAT);
             }
 
             // Here, startDate and endDate exist and are valid
@@ -160,7 +159,7 @@ public class CommandFactory {
         // Try to find index
         Optional<Integer> index = sequentialParser.extractFirstInteger();
         if (!index.isPresent()) {
-            return new InvalidCommand(Messages.MESSAGE_MISSING_TODO_ITEM_INDEX);
+            return new InvalidCommand(Messages.MISSING_TODO_ITEM_INDEX);
         }
 
         return new DeleteCommand(index.get());
@@ -169,7 +168,7 @@ public class CommandFactory {
     private Command buildFinishCommand(){
         Optional<Integer> index = sequentialParser.extractFirstInteger();
         if (!index.isPresent()) {
-            return new InvalidCommand(Messages.MESSAGE_MISSING_TODO_ITEM_INDEX);
+            return new InvalidCommand(Messages.MISSING_TODO_ITEM_INDEX);
         }
 
         return new FinishCommand(index.get());
@@ -201,7 +200,7 @@ public class CommandFactory {
         // Try to find index
         Optional<Integer> index = sequentialParser.extractFirstInteger();
         if (!index.isPresent()) {
-            return new InvalidCommand(Messages.MESSAGE_MISSING_TODO_ITEM_INDEX);
+            return new InvalidCommand(Messages.MISSING_TODO_ITEM_INDEX);
         }
 
         EditCommand command = new EditCommand(index.get());
@@ -241,7 +240,7 @@ public class CommandFactory {
         Optional<LocalDateTime> dueDate = dateTimeParser.parseDateTime(dueDateString.orElse(""));
 
         if (dueDateString.isPresent() && !dueDate.isPresent()) {
-            return new InvalidCommand(Messages.MESSAGE_TODO_DUEDATE_INVALID_FORMAT);
+            return new InvalidCommand(Messages.TODO_DUEDATE_INVALID_FORMAT);
         }
 
         if (dueDate.isPresent()) {
@@ -264,18 +263,18 @@ public class CommandFactory {
 
         if (startDateString.isPresent() || startDateString.isPresent()) {
             if (endDateString.isPresent() && !startDateString.isPresent()) {
-                return new InvalidCommand(Messages.MESSAGE_MISSING_TODO_DATERANGE_START);
+                return new InvalidCommand(Messages.MISSING_TODO_DATERANGE_START);
             } else if (startDateString.isPresent() && !endDateString.isPresent()) {
-                return new InvalidCommand(Messages.MESSAGE_MISSING_TODO_DATERANGE_END);
+                return new InvalidCommand(Messages.MISSING_TODO_DATERANGE_END);
             }
 
             Optional<LocalDateTime> startDate = dateTimeParser.parseDateTime(startDateString.orElse(""));
             Optional<LocalDateTime> endDate = dateTimeParser.parseDateTime(endDateString.orElse(""));
 
             if (!startDate.isPresent()) {
-                return new InvalidCommand(Messages.MESSAGE_TODO_DATERANGE_START_INVALID_FORMAT);
+                return new InvalidCommand(Messages.TODO_DATERANGE_START_INVALID_FORMAT);
             } else if (!endDate.isPresent()) {
-                return new InvalidCommand(Messages.MESSAGE_TODO_DATERANGE_END_INVALID_FORMAT);
+                return new InvalidCommand(Messages.TODO_DATERANGE_END_INVALID_FORMAT);
             }
 
             // Here, startDate and endDate exist and are valid

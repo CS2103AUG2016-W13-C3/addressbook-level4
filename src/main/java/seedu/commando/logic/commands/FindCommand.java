@@ -29,10 +29,10 @@ public class FindCommand extends Command {
 
         if (keywords.size() > 0) {
             model.updateToDoListFilter(keywords);
-            return new CommandResult(String.format(Messages.MESSAGE_FIND, model.getFilteredToDoList().size()));
+            return new CommandResult(String.format(Messages.FIND, model.getFilteredToDoList().size()));
         } else {
             model.clearToDoListFilter();
-            return new CommandResult(Messages.MESSAGE_CLEAR_FIND);
+            return new CommandResult(Messages.CLEAR_FIND);
         }
     }
 }

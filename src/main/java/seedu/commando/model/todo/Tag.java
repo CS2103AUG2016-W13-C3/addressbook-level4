@@ -20,7 +20,7 @@ public class Tag {
      */
     public Tag(String value) throws IllegalValueException {
         if (!isValid(value)) {
-            throw new IllegalValueException(Messages.MESSAGE_TODO_TAG_CONSTRAINTS);
+            throw new IllegalValueException(Messages.TODO_TAG_CONSTRAINTS);
         }
 
         value = value.trim();

@@ -64,14 +64,14 @@ public class LogicManagerTest {
     public void execute_emptyString() {
         CommandResult result = logic.execute("");
         assertTrue(result.hasError());
-        assertEquals(Messages.MESSAGE_MISSING_COMMAND_WORD, result.getFeedback());
+        assertEquals(Messages.MISSING_COMMAND_WORD, result.getFeedback());
     }
 
     @Test
     public void execute_unknownCommand() {
         CommandResult result = logic.execute("unknownCommand");
         assertTrue(result.hasError());
-        assertEquals(Messages.MESSAGE_UNKNOWN_COMMAND, result.getFeedback());
+        assertEquals(Messages.UNKNOWN_COMMAND, result.getFeedback());
     }
 
     @Test
@@ -100,7 +100,7 @@ public class LogicManagerTest {
         CommandResult result = logic.execute("finish 2");
         assertTrue(result.hasError());
 
-        assertEquals(String.format(Messages.MESSAGE_TODO_ITEM_INDEX_INVALID, 2), result.getFeedback());
+        assertEquals(String.format(Messages.TODO_ITEM_INDEX_INVALID, 2), result.getFeedback());
     }
 
     @Test
@@ -165,7 +165,7 @@ public class LogicManagerTest {
         
         result = logic.execute("undo");
         assertTrue(result.hasError());
-        assertEquals(Messages.MESSAGE_COMMAND_UNDONE_FAIL, result.getFeedback());
+        assertEquals(Messages.UNDID_COMMAND_FAIL, result.getFeedback());
 
 
     }
@@ -187,7 +187,7 @@ public class LogicManagerTest {
         
         result = logic.execute("redo");
         assertTrue(result.hasError());
-        assertEquals(Messages.MESSAGE_COMMAND_REDONE_FAIL, result.getFeedback());
+        assertEquals(Messages.REDID_COMMAND_FAIL, result.getFeedback());
 
     }
 

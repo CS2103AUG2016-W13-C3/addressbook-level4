@@ -2,7 +2,6 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListChange;
@@ -33,7 +32,7 @@ public class DeleteCommand extends Command {
         Optional<ReadOnlyToDo> toDoToDelete = getToDoAtIndex(toDoAtIndices, toDoIndex);
 
         if (!toDoToDelete.isPresent()) {
-            return new CommandResult(String.format(Messages.MESSAGE_TODO_ITEM_INDEX_INVALID, toDoIndex), true);
+            return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex), true);
         }
 
         try {
@@ -45,7 +44,7 @@ public class DeleteCommand extends Command {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.MESSAGE_TODO_DELETED, toDoToDelete.get().getTitle().toString()));
+        return new CommandResult(String.format(Messages.TODO_DELETED, toDoToDelete.get().getTitle().toString()));
     }
 
 }
