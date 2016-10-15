@@ -14,6 +14,6 @@ public interface ReadOnlyToDoList {
      * Updates and returns its value, based on the current value of its fields
      */
     default String getText() {
-        return getToDos().stream().map(ReadOnlyToDo::toString).collect(Collectors.joining(", "));
+        return "[" + getToDos().stream().map(ReadOnlyToDo::toString).collect(Collectors.joining(", ")) + "]";
     }
 }

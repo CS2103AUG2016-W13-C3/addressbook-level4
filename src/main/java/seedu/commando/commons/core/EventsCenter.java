@@ -38,7 +38,7 @@ public class EventsCenter {
      * Posts an event to the event bus.
      */
     public <E extends BaseEvent> EventsCenter post(E event) {
-        logger.info("------[Event Posted] " + event.getClass().getCanonicalName() + ": " + event.toString());
+        logger.info("Posted " + event);
         eventBus.post(event);
         return this;
     }
