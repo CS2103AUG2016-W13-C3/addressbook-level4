@@ -43,7 +43,7 @@
 											</padding>
 										</Label>
 										<Label fx:id="titleLabel" styleClass="cell_big_label"
-											text="\$title" />
+											text="\$value" />
 									</children>
 								</HBox>
 								<HBox>

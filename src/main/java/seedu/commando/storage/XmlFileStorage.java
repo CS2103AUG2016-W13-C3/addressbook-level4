@@ -30,8 +30,8 @@ public class XmlFileStorage {
         throws DataConversionException, FileNotFoundException {
         try {
             return XmlUtil.getDataFromFile(file, XmlSerializableToDoList.class);
-        } catch (JAXBException e) {
-            throw new DataConversionException(e);
+        } catch (JAXBException exception) {
+            throw new DataConversionException(exception);
         }
     }
 }

@@ -2,12 +2,16 @@ package seedu.commando.storage;
 
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.exceptions.DataConversionException;
+import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.commons.util.FileUtil;
-import seedu.commando.model.ReadOnlyToDoList;
+import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.ReadOnlyToDoList;
+import seedu.commando.model.todo.ToDoList;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -39,11 +43,19 @@ public class XmlToDoListStorage implements ToDoListStorage {
         if (!toDoListFile.exists()) {
             logger.info("To-do list data file "  + toDoListFile + " not found");
             return Optional.empty();
+        } else {
+            logger.info("Using to-do list data file " + toDoListFile);
         }
 
-        ReadOnlyToDoList toDoListOptional = XmlFileStorage.loadDataFromSaveFile(new File(filePath));
+        XmlSerializableToDoList xmlToDoList = XmlFileStorage.loadDataFromSaveFile(new File(filePath));
 
-        return Optional.of(toDoListOptional);
+        try {
+            ToDoList toDoList = new ToDoList(xmlToDoList.getToDos());
+            return Optional.of(toDoList);
+
+        } catch (IllegalValueException exception) {
+            throw new DataConversionException(exception);
+        }
     }
 
     /**
@@ -74,6 +86,8 @@ public class XmlToDoListStorage implements ToDoListStorage {
      */
     @Override
     public void saveToDoList(ReadOnlyToDoList toDoList) throws IOException {
+        assert toDoList != null;
+
         saveToDoList(toDoList, filePath);
     }
 }

@@ -30,7 +30,7 @@ public class XmlUtil {
         assert classToConvert != null;
 
         if (!FileUtil.isFileExists(file)) {
-            throw new FileNotFoundException("File not found : " + file.getAbsolutePath());
+            throw new FileNotFoundException("File not found: " + file.getAbsolutePath());
         }
 
         JAXBContext context = JAXBContext.newInstance(classToConvert);

@@ -1,7 +1,7 @@
 package seedu.commando.commons.events.model;
 
 import seedu.commando.commons.events.BaseEvent;
-import seedu.commando.model.ReadOnlyToDoList;
+import seedu.commando.model.todo.ReadOnlyToDoList;
 
 /**
  * Indicates to-do list in the model has changed

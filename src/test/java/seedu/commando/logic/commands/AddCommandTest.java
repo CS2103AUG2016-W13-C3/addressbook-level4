@@ -11,7 +11,6 @@ import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.Logic;
 import seedu.commando.logic.LogicManager;
-import seedu.commando.logic.commands.CommandResult;
 import seedu.commando.model.Model;
 import seedu.commando.model.ModelManager;
 import seedu.commando.storage.StorageManager;
@@ -62,7 +61,7 @@ public class AddCommandTest {
     public void execute_add_missingTitle() {
         CommandResult result = logic.execute("add");
         assertTrue(result.hasError());
-        assertEquals(Messages.MESSAGE_MISSING_TODO_TITLE, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_TITLE, result.getFeedback());
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }

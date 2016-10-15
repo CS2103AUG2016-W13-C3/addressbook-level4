@@ -25,6 +25,6 @@ public class ExitCommand extends Command {
         assert eventsCenter != null;
 
         eventsCenter.post(new ExitAppRequestEvent());
-        return new CommandResult(Messages.MESSAGE_EXIT_APPLICATION);
+        return new CommandResult(Messages.EXIT_APPLICATION);
     }
 }

@@ -1,15 +1,14 @@
 package seedu.commando.model.todo;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
-import seedu.commando.model.tag.Tag;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Represents a to-do
@@ -20,14 +19,16 @@ public class ToDo implements ReadOnlyToDo {
     private DueDate dueDate;
     private DateRange dateRange;
     private Set<Tag> tags;
+    private boolean isFinished;
     private StringProperty value;
     {
         value = new ReadOnlyStringWrapper();
+        isFinished = false;
     }
 
 
     /**
-     * Asserts that title is non-null
+     * Asserts that value is non-null
      */
     public ToDo(Title title) {
         assert title != null;
@@ -37,10 +38,27 @@ public class ToDo implements ReadOnlyToDo {
     }
 
     /**
-     * Copy constructor.
+     * Copy constructor
      */
-    public ToDo(ReadOnlyToDo source) {
-        this(source.getTitle());
+    public ToDo(ReadOnlyToDo toDo) {
+        assert toDo != null;
+
+        this.title = new Title(toDo.getTitle());
+
+        if (toDo.getDueDate().isPresent()) {
+            this.dueDate = new DueDate(toDo.getDueDate().get());
+        }
+
+        if (toDo.getDateRange().isPresent()) {
+            this.dateRange = new DateRange(toDo.getDateRange().get());
+        }
+
+        if (toDo.getTags().size() > 0) {
+            this.tags = toDo.getTags().stream().map(Tag::new).collect(Collectors.toSet());
+        }
+
+        this.isFinished = toDo.isFinished();
+        updateValue();
     }
     
     public void setTitle(Title title) {
@@ -70,6 +88,12 @@ public class ToDo implements ReadOnlyToDo {
         this.tags = tags;
         updateValue();
     }
+
+    public void setIsFinished(boolean isFinished) {
+        this.isFinished = isFinished;
+
+        updateValue();
+    }
     
     public Optional<DueDate> getDueDate() {
         return Optional.ofNullable(dueDate);
@@ -83,8 +107,13 @@ public class ToDo implements ReadOnlyToDo {
         if (tags == null) {
             return new HashSet<>();
         } else {
-            return tags;
+            return new HashSet<>(tags);
         }
+    }
+
+    @Override
+    public boolean isFinished() {
+        return isFinished;
     }
 
     @Override
@@ -106,12 +135,12 @@ public class ToDo implements ReadOnlyToDo {
 
     @Override
     public int hashCode() {
-        return Objects.hash(title);
+        return Objects.hash(value.getValue());
     }
 
     @Override
     public String toString() {
-        return getText();
+        return value.getValue();
     }
 
     /**
