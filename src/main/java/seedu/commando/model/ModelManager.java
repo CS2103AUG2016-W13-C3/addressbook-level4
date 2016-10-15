@@ -76,15 +76,10 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     private void applyToDoListChange(ToDoListChange change) throws IllegalValueException {
-        for (ReadOnlyToDo toDoToDelete : change.getDeletedToDos()) {
-            toDoList.remove(toDoToDelete);
-            logger.info("[Model][ToDoList changed][Deleted]: " + toDoToDelete);
-        }
+        toDoList.remove(change.getDeletedToDos());
+        toDoList.add(change.getAddedToDos());
 
-        for (ReadOnlyToDo toDoToAdd : change.getAddedToDos()) {
-            toDoList.add(toDoToAdd);
-            logger.info("[Model][ToDoList changed][Added]: " + toDoToAdd);
-        }
+        logger.info(change.toString());
     }
 
     @Override

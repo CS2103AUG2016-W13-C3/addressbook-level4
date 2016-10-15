@@ -41,26 +41,35 @@ public class ToDoList implements ReadOnlyToDoList {
     //================================================================================
 
     /**
-     * Adds a deep copy of the to-do to the list
+     * @see #add(List<ReadOnlyToDo>)
      */
     public void add(ReadOnlyToDo toDo) {
-        assert toDo != null;
+        add(Collections.singletonList(toDo));
+    }
+    /**
+     * @see #remove(List<ReadOnlyToDo>)
+     */
+    public void remove(ReadOnlyToDo toDo) {
+        add(Collections.singletonList(toDo));
+    }
 
-        list.add(new ToDo(toDo));
+
+    /**
+     * Adds deep copies of each of the to-dos in {@param toDos}
+     */
+    public void add(List<ReadOnlyToDo> toDos) {
+        assert toDos != null;
+
+        list.addAll(toDos);
     }
 
     /**
-     * Removes the to-do that is equals to {@param toDo}
-     * @throws IllegalValueException if not found
+     * Removes all to-dos that correspond to any of {@param toDos}
      */
-    public boolean remove(ReadOnlyToDo toDo) throws IllegalValueException {
-        assert toDo != null;
+    public void remove(List<ReadOnlyToDo> toDos) {
+        assert toDos != null;
 
-        if (list.remove(toDo)) {
-            return true;
-        } else {
-            throw new IllegalValueException(String.format(Messages.TODO_NOT_FOUND, toDo.toString()));
-        }
+        list.removeAll(toDos);
     }
 
     /**

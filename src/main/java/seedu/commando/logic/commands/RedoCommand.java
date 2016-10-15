@@ -19,10 +19,11 @@ public class RedoCommand extends Command {
     public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
         assert model != null;
         
-        if (!model.redoToDoList())
+        if (model.redoToDoList()) {
+            return new CommandResult(Messages.REDID_COMMAND);
+        } else {
             return new CommandResult(Messages.REDID_COMMAND_FAIL, true);
-        
-        return new CommandResult(Messages.REDID_COMMAND);
+        }
     }
 
 }
