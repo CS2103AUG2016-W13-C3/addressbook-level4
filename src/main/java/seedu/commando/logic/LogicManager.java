@@ -89,7 +89,7 @@ public class LogicManager extends ComponentManager implements Logic {
             assert task1.getDueDate().isPresent();
             assert task2.getDueDate().isPresent();
 
-            return task1.getDueDate().get().dueDate.compareTo(task2.getDueDate().get().dueDate);
+            return task1.getDueDate().get().value.compareTo(task2.getDueDate().get().value);
         });
 
         toDoAtIndices.clear();
@@ -109,10 +109,10 @@ public class LogicManager extends ComponentManager implements Logic {
         }).collect(Collectors.toList()));
 
         // log events and tasks shown
-        logger.info("Events: " + observableEvents.stream().map(indexedToDo -> indexedToDo.getIndex() + ") " + indexedToDo.get().getTitle().title)
+        logger.info("Events: " + observableEvents.stream().map(indexedToDo -> indexedToDo.getIndex() + ") " + indexedToDo.get().getTitle().value)
             .collect(Collectors.joining(",")));
 
-        logger.info("Tasks: " + observableTasks.stream().map(indexedToDo -> indexedToDo.getIndex() + ") " + indexedToDo.get().getTitle().title)
+        logger.info("Tasks: " + observableTasks.stream().map(indexedToDo -> indexedToDo.getIndex() + ") " + indexedToDo.get().getTitle().value)
             .collect(Collectors.joining(",")));
     }
 

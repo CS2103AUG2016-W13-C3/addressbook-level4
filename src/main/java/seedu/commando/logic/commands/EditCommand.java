@@ -1,21 +1,16 @@
 package seedu.commando.logic.commands;
 
+import com.google.common.collect.Lists;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.Model;
-import seedu.commando.model.tag.Tag;
-import seedu.commando.model.todo.DateRange;
-import seedu.commando.model.todo.DueDate;
-import seedu.commando.model.todo.ReadOnlyToDo;
-import seedu.commando.model.todo.Title;
+import seedu.commando.model.ToDoListChange;
+import seedu.commando.model.todo.*;
+import sun.plugin2.message.Message;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Edits a to-do in the current to-do list
@@ -73,26 +68,38 @@ public class EditCommand extends Command {
             return new CommandResult(String.format(Messages.MESSAGE_TODO_ITEM_INDEX_INVALID, toDoIndex), true);
         }
 
-        try {
-            if (title != null) {
-                model.editTodoTitle(toDoToEdit.get(), title);
-            }
+        // Copy original to-do
+        ToDo newToDo = new ToDo(toDoToEdit.get());
 
-            if (dueDate != null) {
-                model.editTodoDueDate(toDoToEdit.get(), dueDate);
-            }
-
-            if (dateRange != null) {
-                model.editTodoDateRange(toDoToEdit.get(), dateRange);
-            }
-
-            if (!tags.isEmpty()) {
-                model.editTodoTags(toDoToEdit.get(), tags);
-            }
-        } catch (IllegalValueException exception) {
-            return new CommandResult(exception.toString(), true);
+        if (title != null) {
+            newToDo.setTitle(title);
         }
 
-        return new CommandResult(String.format(Messages.MESSAGE_TODO_EDITED, toDoToEdit.get().getTitle().toString()));
+        if (dueDate != null) {
+            newToDo.setDueDate(dueDate);
+        }
+
+        if (dateRange != null) {
+            newToDo.setDateRange(dateRange);
+        }
+
+        if (!tags.isEmpty()) {
+            newToDo.setTags(tags);
+        }
+
+        if (newToDo.equals(toDoToEdit.get())) {
+            return new CommandResult(Messages.MESSAGE_TODO_NO_EDITS, true);
+        }
+
+        try {
+            model.changeToDoList(new ToDoListChange(
+                Collections.singletonList(newToDo),
+                Collections.singletonList(toDoToEdit.get())
+            ));
+        } catch (IllegalValueException exception) {
+            return new CommandResult(exception.getMessage(), true);
+        }
+
+        return new CommandResult(String.format(Messages.MESSAGE_TODO_EDITED, newToDo.getTitle().toString()));
     }
 }

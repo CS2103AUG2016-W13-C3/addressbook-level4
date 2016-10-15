@@ -3,11 +3,7 @@ package seedu.commando.model.todo;
 import java.util.Optional;
 import java.util.Set;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableStringValue;
 import javafx.beans.value.ObservableValue;
-import seedu.commando.model.tag.Tag;
 
 /**
  * A read-only immutable interface for a to-do
@@ -19,6 +15,7 @@ public interface ReadOnlyToDo {
     Optional<DateRange> getDateRange();
     Optional<DueDate> getDueDate();
     Set<Tag> getTags();
+    boolean isFinished();
 
     /**
      * An observable value that changes when any of its fields are updated
@@ -34,7 +31,8 @@ public interface ReadOnlyToDo {
                 && other.getTitle().equals(getTitle())
                 && other.getDateRange().equals(getDateRange())
                 && other.getDueDate().equals(getDueDate())
-                && other.getTags().equals(getTags())); // state checks here onwards
+                && other.getTags().equals(getTags())
+                && other.isFinished() == isFinished()); // state checks here onwards
     }
 
     /**
@@ -44,10 +42,11 @@ public interface ReadOnlyToDo {
         final StringBuilder builder = new StringBuilder();
 
         builder.append(String.join(", ",
-            "Title: " + getTitle().toString(),
-            "Date Range: " + (getDateRange().isPresent() ? getDateRange().get().toString() : "none"),
-            "Due Date: " + (getDueDate().isPresent() ? getDueDate().get().toString() : "none"),
-            "Tags: " + getTags().toString()));
+            "Title: " + getTitle(),
+            "Date Range: " + (getDateRange().isPresent() ? getDateRange().get() : "none"),
+            "Due Date: " + (getDueDate().isPresent() ? getDueDate().get() : "none"),
+            "Tags: " + getTags(),
+            "Is Finished: " + isFinished()));
 
         return builder.toString();
     }

@@ -1,16 +1,13 @@
 package seedu.commando.testutil;
 
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.tag.Tag;
+import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.DueDate;
 import seedu.commando.model.todo.Title;
 import seedu.commando.model.todo.ToDo;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,6 +45,12 @@ public class ToDoBuilder {
         }
 
         toDo.setTags(tagsSet);
+
+        return this;
+    }
+
+    public ToDoBuilder isFinished(boolean isFinished) {
+        toDo.setIsFinished(isFinished);
 
         return this;
     }

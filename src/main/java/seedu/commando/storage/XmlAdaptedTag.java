@@ -1,8 +1,7 @@
 package seedu.commando.storage;
 
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.commons.util.CollectionUtil;
-import seedu.commando.model.tag.Tag;
+import seedu.commando.model.todo.Tag;
 
 import javax.xml.bind.annotation.XmlValue;
 
@@ -25,7 +24,7 @@ public class XmlAdaptedTag {
      * @param source future changes to this will not affect the created
      */
     public XmlAdaptedTag(Tag source) {
-        tagName = source.tagName;
+        tagName = source.value;
     }
 
     /**

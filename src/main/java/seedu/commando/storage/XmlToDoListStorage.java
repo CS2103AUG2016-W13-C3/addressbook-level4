@@ -3,7 +3,7 @@ package seedu.commando.storage;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.exceptions.DataConversionException;
 import seedu.commando.commons.util.FileUtil;
-import seedu.commando.model.ReadOnlyToDoList;
+import seedu.commando.model.todo.ReadOnlyToDoList;
 
 import java.io.File;
 import java.io.FileNotFoundException;

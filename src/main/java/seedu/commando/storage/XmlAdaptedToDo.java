@@ -1,7 +1,7 @@
 package seedu.commando.storage;
 
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.tag.Tag;
+import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.DueDate;
 import seedu.commando.model.todo.ReadOnlyToDo;
@@ -47,10 +47,10 @@ public class XmlAdaptedToDo {
      * @param source future changes to this will not affect the created XmlAdaptedToDo
      */
     public XmlAdaptedToDo(ReadOnlyToDo source) {
-        title = source.getTitle().title;
+        title = source.getTitle().value;
 
         if (source.getDueDate().isPresent()) {
-            dueDate = dateFormatter.format(source.getDueDate().get().dueDate);
+            dueDate = dateFormatter.format(source.getDueDate().get().value);
         }
 
         if (source.getDateRange().isPresent()) {
@@ -79,7 +79,7 @@ public class XmlAdaptedToDo {
         }
         todo.setTags(toDoTags);
 
-        // Check if the dueDate is empty
+        // Check if the value is empty
         if (dueDate != null){
         	try {
                 todo.setDueDate(new DueDate(LocalDateTime.parse(dueDate, dateFormatter)));

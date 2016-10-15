@@ -2,14 +2,14 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.Model;
-import seedu.commando.model.tag.Tag;
+import seedu.commando.model.ToDoListChange;
+import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +50,15 @@ public class AddCommand extends Command {
             toDo.setTags(tags);
         }
 
-        model.addToDo(toDo);
+        try {
+            model.changeToDoList(new ToDoListChange(
+                Collections.singletonList(toDo),
+                Collections.emptyList()
+            ));
+        } catch (IllegalValueException exception) {
+            return new CommandResult(exception.getMessage(), true);
+        }
+
         return new CommandResult(String.format(Messages.MESSAGE_TODO_ADDED, toDo.getTitle().toString()));
     }
 

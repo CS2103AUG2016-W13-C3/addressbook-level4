@@ -17,7 +17,7 @@ public class DateRange {
 
     /**
      * Constructor for a date range
-     * @throws IllegalValueException if given title is invalid
+     * @throws IllegalValueException if given value is invalid
      */
     public DateRange(LocalDateTime startDate, LocalDateTime endDate) throws IllegalValueException {
         if (!isValid(startDate, endDate)) {
@@ -27,17 +27,23 @@ public class DateRange {
         this.startDate = startDate;
         this.endDate = endDate;
     }
-    
-    public static boolean isValid(LocalDateTime startDate, LocalDateTime endDate) {
+
+    /**
+     * Copy constructor
+     */
+    public DateRange(DateRange dateRange) {
+        assert isValid(dateRange.startDate, dateRange.endDate); // should already have been checked
+
+        this.startDate = dateRange.startDate;
+        this.endDate = dateRange.endDate;
+    }
+
+    private static boolean isValid(LocalDateTime startDate, LocalDateTime endDate) {
         if (CollectionUtil.isAnyNull(startDate, endDate)) {
             return false;
         }
 
-        if (endDate.compareTo(startDate) >= 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return (endDate.compareTo(startDate) >= 0);
     }
     
     @Override

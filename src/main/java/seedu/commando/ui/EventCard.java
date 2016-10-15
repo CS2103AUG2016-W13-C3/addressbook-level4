@@ -8,7 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import seedu.commando.model.tag.Tag;
+import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
@@ -46,7 +46,7 @@ public class EventCard extends UiPart{
 
     @FXML
     public void initialize() {
-        titleLabel.setText(toDo.getTitle().title);
+        titleLabel.setText(toDo.getTitle().value);
         indexLabel.setText(String.valueOf(index));
 
         setLabelContent();
@@ -58,7 +58,7 @@ public class EventCard extends UiPart{
         if (!toDo.getTags().isEmpty()) {
             String tags = "";
             for (Tag tag : toDo.getTags()) {
-                tags += "#" + tag.tagName + " ";
+                tags += "#" + tag.value + " ";
             }
             tagsLabel.setText(tags);
         } else {
