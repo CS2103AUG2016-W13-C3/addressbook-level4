@@ -50,7 +50,7 @@ public class ToDoList implements ReadOnlyToDoList {
      * @see #remove(List<ReadOnlyToDo>)
      */
     public void remove(ReadOnlyToDo toDo) {
-        add(Collections.singletonList(toDo));
+        remove(Collections.singletonList(toDo));
     }
 
 

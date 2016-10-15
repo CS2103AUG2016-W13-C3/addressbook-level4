@@ -86,10 +86,4 @@ public class ToDoListTest {
         toDoList.remove(toDoListItem1);
         assertFalse(toDoList.getToDos().contains(toDoListItem1));
     }
-
-    @Test
-    public void remove_missing() throws IllegalValueException {
-        exception.expect(IllegalValueException.class);
-        toDoList.remove(toDoList2Item1);
-    }
 }
