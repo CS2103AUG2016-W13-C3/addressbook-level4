@@ -61,6 +61,8 @@ public class CommandFactory {
                 return buildEditCommand();
             case UndoCommand.COMMAND_WORD:
                 return buildUndoCommand();
+            case RedoCommand.COMMAND_WORD:
+                return buildRedoCommand();
             default:
                 return new InvalidCommand(Messages.MESSAGE_UNKNOWN_COMMAND);
         }
@@ -289,5 +291,9 @@ public class CommandFactory {
     
     private Command buildUndoCommand(){
         return new UndoCommand();
+    }
+    
+    private Command buildRedoCommand(){
+        return new RedoCommand();
     }
 }
