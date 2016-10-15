@@ -6,8 +6,11 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -36,11 +39,11 @@ public class MainWindow extends UiPart {
     KeyCombination altH = KeyCodeCombination.keyCombination("Alt+H");
     KeyCombination altC = KeyCodeCombination.keyCombination("Alt+C");
     KeyCombination altM = KeyCodeCombination.keyCombination("Alt+M");
+    KeyCombination enter = KeyCodeCombination.keyCombination("Enter");
 
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-
     private EventListPanel eventPanel;
     private TaskListPanel taskPanel;
     private ResultDisplay resultDisplay;
@@ -48,6 +51,9 @@ public class MainWindow extends UiPart {
     private CommandBox commandBox;
     private UserPrefs userPrefs;
     private HelpWindow helpWindow;
+    
+    // Textfield of commandBox
+    private TextField commandField;
 
     // Handles to elements of this Ui container
     private VBox rootLayout;
@@ -162,6 +168,14 @@ public class MainWindow extends UiPart {
                 toggleWindowSize();
             }
         });
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent key) {
+                if (key.getCode() == KeyCode.CONTROL) {
+                    commandField.requestFocus();
+                }
+            }
+        });
     }
 
     private void setDraggable(HBox bar) {
@@ -187,6 +201,8 @@ public class MainWindow extends UiPart {
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), Config.DefaultToDoListFilePath);
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
+        commandField = (TextField) commandBoxPlaceholder.lookup("#commandTextField");
+        commandField.requestFocus();
     }
     
     private AnchorPane getCommandBoxPlaceholder() {
