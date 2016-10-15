@@ -169,6 +169,27 @@ public class LogicManagerTest {
 
 
     }
+    
+    @Test
+    public void execute_redo() {
+        logic.execute("add title");
+        logic.execute("add tilte2");
+        logic.execute("undo");
+        
+        eventsCollector.reset();
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(model.getToDoList().getToDos().size() == 1);
+        
+        CommandResult result = logic.execute("redo");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(model.getToDoList().getToDos().size() == 2);
+        
+        result = logic.execute("redo");
+        assertTrue(result.hasError());
+        assertEquals(Messages.MESSAGE_COMMAND_REDONE_FAIL, result.getFeedback());
+
+    }
 
     @Test
     public void execute_exit()  {
