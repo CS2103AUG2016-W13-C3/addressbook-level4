@@ -30,4 +30,5 @@ public class Messages {
     public static final String MESSAGE_EXIT_APPLICATION = "Exiting application...";
     public static final String MESSAGE_TODO_LIST_CLEARED = "Cleared to-do list!";
     public static final String MESSAGE_HELP_WINDOW_SHOWN = "Opened help window.";
+    public static final String MESSAGE_COMMAND_UNDONE = "Undone the last command entered.";
 }
