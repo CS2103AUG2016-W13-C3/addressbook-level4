@@ -135,29 +135,37 @@ public class LogicManagerTest {
     @Test
     public void execute_undo() {
         logic.execute("add title");
-        logic.execute("add title 2");
         logic.execute("add test 3");
         logic.execute("delete 2");
         logic.execute("edit 1 titlereplaced");
         
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 2);
+        assertTrue(model.getToDoList().getToDos().size() == 1);
         
         CommandResult result = logic.execute("undo");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 2);
-        
-        result = logic.execute("undo");
-        assertFalse(result.hasError());
-        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 3);
+        assertTrue(model.getToDoList().getToDos().size() == 1);
         
         result = logic.execute("undo");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
         assertTrue(model.getToDoList().getToDos().size() == 2);
+        
+        result = logic.execute("undo");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(model.getToDoList().getToDos().size() == 1);
+        
+        result = logic.execute("undo");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(model.getToDoList().getToDos().size() == 0);
+        
+        result = logic.execute("undo");
+        assertTrue(result.hasError());
+        assertEquals(Messages.MESSAGE_COMMAND_UNDONE_FAIL, result.getFeedback());
 
 
     }

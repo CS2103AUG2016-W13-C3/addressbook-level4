@@ -22,7 +22,8 @@ public class UndoCommand extends Command{
     public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
         assert model != null;
         
-        model.undoToDoList();
+        if (!model.undoToDoList())
+            return new CommandResult(Messages.MESSAGE_COMMAND_UNDONE_FAIL, true);
         
         return new CommandResult(Messages.MESSAGE_COMMAND_UNDONE);
     }
