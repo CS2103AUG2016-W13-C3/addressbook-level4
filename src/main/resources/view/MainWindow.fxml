@@ -34,9 +34,9 @@
       				</MenuBar>
 					</children>
 				</FlowPane>
-            <Button fx:id="minimizeButton" mnemonicParsing="false" onMouseClicked="#setMinimized" prefHeight="37.0" prefWidth="40.0" style="-fx-background-color: #303030; -fx-border-color: #303030;" text="－" textOverrun="CLIP" />
-            <Button fx:id="toggleSizeButton" mnemonicParsing="false" onMouseClicked="#toggleWindowSize" prefHeight="37.0" prefWidth="40.0" style="-fx-background-color: #303030; -fx-border-color: #303030;" text="❐" textOverrun="CLIP" />
-            <Button fx:id="exitButton" mnemonicParsing="false" onMouseClicked="#handleExit" prefHeight="37.0" prefWidth="40.0" style="-fx-background-color: #303030; -fx-border-color: #303030;" text="✕" textOverrun="CLIP" />
+            <Button fx:id="minimizeButton" mnemonicParsing="false" onMouseClicked="#setMinimized" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #303030; -fx-border-color: #303030;" text="－" textOverrun="CLIP" />
+            <Button fx:id="toggleSizeButton" mnemonicParsing="false" onMouseClicked="#toggleWindowSize" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #303030; -fx-border-color: #303030;" text="❐" textOverrun="CLIP" />
+            <Button fx:id="exitButton" mnemonicParsing="false" onMouseClicked="#handleExit" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #303030; -fx-border-color: #303030;" text="✕" textOverrun="CLIP" />
 			</children>
 		</HBox>
 		<SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.4" VBox.vgrow="ALWAYS">

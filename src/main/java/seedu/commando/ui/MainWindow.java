@@ -254,10 +254,10 @@ public class MainWindow extends UiPart {
     protected void toggleWindowSize() {
         if (!isMaximized) {
             primaryStage.setMaximized(true);
-            toggleSizeButton.setText("⬜");
+            toggleSizeButton.setText("❐");
         } else {
             primaryStage.setMaximized(false);
-            toggleSizeButton.setText("❐");
+            toggleSizeButton.setText("⬜");
         }
         isMaximized = !isMaximized;
     }
