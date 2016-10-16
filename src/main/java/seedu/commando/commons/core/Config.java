@@ -8,16 +8,31 @@ import java.util.logging.Level;
  * Collection of static, application-specific config constants used globally
  */
 public class Config {
+	public static final String DefaultConfigFilePath = "config.json";
     public static final String ApplicationTitle = "CommanDo";
     public static final String ApplicationName = "CommanDo";
     public static final Level LogLevel = Level.INFO;
-    public static String DefaultUserPrefsFilePath = "preferences.json";
-    public static String DefaultToDoListFilePath = "data/todos.xml";
+    private String userPrefsFilePath = "preferences.json";
+    private String toDoListFilePath = "data/todos.xml";
     public static String UserGuideUrl = "https://cs2103aug2016-w13-c3.github.io/main/user";
     public static String AboutUsUrl = "https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/AboutUs.md";
     private static Map<String, String> CommandWordsToUserGuideAnchors = new HashMap<String, String>() {{
         put("cheatsheet", "command-cheatsheet");
     }};
+    public Config(){	
+    }
+    public String getUserPrefsFilePath(){
+    	return userPrefsFilePath;
+    }
+    public void setUserPrefsFilePath(String userPrefsFilePath){
+    	this.userPrefsFilePath = userPrefsFilePath;
+    }
+    public String getToDoListFilePath(){
+    	return toDoListFilePath;
+    }
+    public void setToDoListFilePath(String toDoListFilePath){
+    	this.toDoListFilePath = toDoListFilePath;
+    }
 
     /**
      * Returns anchor name for heading of {@param commandWord}on user guide at {@param UserGuideUrl}

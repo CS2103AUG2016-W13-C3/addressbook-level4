@@ -30,11 +30,13 @@ public class UiManager extends ComponentManager implements Ui {
     private Logic logic;
     private UserPrefs prefs;
     private MainWindow mainWindow;
+    private Config config;
 
-    public UiManager(Logic logic, UserPrefs prefs) {
+    public UiManager(Logic logic, Config config, UserPrefs prefs) {
         super();
         this.logic = logic;
         this.prefs = prefs;
+        this.config = config;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class UiManager extends ComponentManager implements Ui {
         primaryStage.getIcons().add(getImage(ICON_APPLICATION));
 
         try {
-            mainWindow = MainWindow.load(primaryStage, prefs, logic);
+            mainWindow = MainWindow.load(primaryStage, config, prefs, logic);
             mainWindow.show(); // This should be called before creating other UI parts
             mainWindow.fillInnerParts();
 

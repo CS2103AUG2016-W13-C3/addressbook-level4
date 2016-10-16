@@ -54,6 +54,7 @@ public class MainWindow extends UiPart {
     private StatusBarFooter statusBarFooter;
     private CommandBox commandBox;
     private UserPrefs userPrefs;
+    private Config config;
     private HelpWindow helpWindow;
 
     // Handles to elements of this Ui container
@@ -107,18 +108,19 @@ public class MainWindow extends UiPart {
         return FXML;
     }
 
-    public static MainWindow load(Stage primaryStage, UserPrefs prefs, Logic logic) {
+    public static MainWindow load(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
         primaryStage.initStyle(StageStyle.UNDECORATED);
         MainWindow mainWindow = UiPartLoader.loadUiPart(primaryStage, new MainWindow());
-        mainWindow.configure(Config.ApplicationTitle, Config.ApplicationName, prefs, logic);
+        mainWindow.configure(Config.ApplicationTitle, Config.ApplicationName, config, prefs, logic);
         return mainWindow;
     }
 
-    private void configure(String appTitle, String appName, UserPrefs prefs, Logic logic) {
+    private void configure(String appTitle, String appName, Config config, UserPrefs prefs, Logic logic) {
         // Set dependencies
         this.logic = logic;
         this.appName = appName;
         this.userPrefs = prefs;
+        this.config = config;
 
         // Configure the UI
         setTitle(appTitle);
@@ -183,7 +185,7 @@ public class MainWindow extends UiPart {
         eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getObservableEventList());
         taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getObservableTaskList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
-        statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), Config.DefaultToDoListFilePath);
+        statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getToDoListFilePath());
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
     }
     
