@@ -29,7 +29,7 @@ public class AddCommand extends Command {
     public LocalDateTime dateRangeStart;
     public LocalDateTime dateRangeEnd;
     public LocalDateTime dueDate;
-    public Set<String> tags;
+    public Set<String> tags = Collections.emptySet();
 
     public AddCommand(String title) {
         assert title != null;

@@ -150,11 +150,21 @@ public class CommandFactory {
     }
 
     private Command buildFindCommand() {
-        // Try to find keywords
-        List<String> words = sequentialParser.extractWords();
+        FindCommand command = new FindCommand();
 
-        // Convert to set
-        return new FindCommand(words.stream().collect(Collectors.toSet()));
+        // Extract tags
+        List<String> tags = sequentialParser.extractPrefixedWords(TAG_PREFIX, true);
+        if (!tags.isEmpty()) {
+            command.tags = tags.stream().collect(Collectors.toSet());
+        }
+
+        // Try to find keywords
+        List<String> keywords = sequentialParser.extractWords();
+        if (!keywords.isEmpty()) {
+            command.keywords = keywords.stream().collect(Collectors.toSet());
+        }
+
+        return command;
     }
 
     private Command buildClearCommand() {

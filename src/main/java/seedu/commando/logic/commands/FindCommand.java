@@ -6,23 +6,19 @@ import seedu.commando.logic.UiLogic;
 import seedu.commando.model.Model;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 /**
- * Finds and lists all persons in address book whose name contains any of the argument keywords.
- * Keyword matching is case sensitive.
+ * Updates the filter for to-do list to show only to-do items containing all
+ * of the keywords and tags (case insensitive)
  */
 public class FindCommand extends Command {
     public static final String COMMAND_WORD = "find";
 
-    private final Set<String> keywords;
-
-    public FindCommand(Set<String> keywords) {
-        assert keywords != null;
-
-        this.keywords = keywords;
-    }
+    public Set<String> keywords = Collections.emptySet();
+    public Set<String> tags = Collections.emptySet();
 
     /**
      * Asserts that {@code uiLogic} is non-null
@@ -31,12 +27,13 @@ public class FindCommand extends Command {
     public CommandResult execute(EventsCenter eventsCenter, UiLogic uiLogic, Model model) {
         assert uiLogic != null;
 
-        if (keywords.size() > 0) {
-            uiLogic.setToDoListFilter(keywords);
-            return new CommandResult(String.format(Messages.FIND, uiLogic.getObservableEvents().size(), uiLogic.getObservableTasks().size()));
-        } else {
+        // if no keywords or tags are provided, clear find
+        if (keywords.isEmpty() && tags.isEmpty()) {
             uiLogic.clearToDoListFilter();
             return new CommandResult(Messages.CLEAR_FIND);
         }
+
+        uiLogic.setToDoListFilter(keywords, tags);
+        return new CommandResult(String.format(Messages.FIND, uiLogic.getObservableEvents().size(), uiLogic.getObservableTasks().size()));
     }
 }

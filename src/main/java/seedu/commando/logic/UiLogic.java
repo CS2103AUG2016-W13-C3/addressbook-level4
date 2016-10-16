@@ -9,7 +9,6 @@ import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.util.StringUtil;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.ReadOnlyToDoList;
-import seedu.commando.model.todo.Tag;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -63,9 +62,13 @@ public class UiLogic {
 
     /**
      * Sets a filter on the to-do list
+     * Asserts {@param keywords} and {@param tags} to be non-null
      */
-    public void setToDoListFilter(Set<String> keywords) {
-        filteredToDoList.setPredicate(toDo -> ifMatchesFilter(toDo, keywords));
+    public void setToDoListFilter(Set<String> keywords, Set<String> tags) {
+        assert keywords != null;
+        assert tags != null;
+
+        filteredToDoList.setPredicate(toDo -> ifMatchesFilter(toDo, keywords, tags));
     }
 
     /**
@@ -173,29 +176,19 @@ public class UiLogic {
     //  Private methods for filtering
     //================================================================================
 
-    private boolean ifMatchesFilter(ReadOnlyToDo toDo, Set<String> keywords) {
-        return keywords.stream()
-            .filter(keyword -> checkForKeyword(toDo, keyword))
-            .count() == keywords.size();
+    private boolean ifMatchesFilter(ReadOnlyToDo toDo, Set<String> keywords, Set<String> tags) {
+        return (keywords.stream()
+            .allMatch(keyword -> checkForKeyword(toDo, keyword))) // contains all keywords
+            && (tags.stream()
+            .allMatch(tag -> checkForTag(toDo, tag))); // and has all the tags
     }
 
     private boolean checkForKeyword(ReadOnlyToDo toDo, String keyword) {
-        return checkForTagKeyword(toDo, keyword) || checkForTitleKeyword(toDo, keyword);
+        return StringUtil.substringIgnoreCase(toDo.getTitle().value, keyword) ||
+            toDo.getTags().stream().anyMatch(toDoTag -> StringUtil.substringIgnoreCase(toDoTag.value, keyword));
     }
 
-    private boolean checkForTitleKeyword(ReadOnlyToDo toDo, String keyword) {
-        return StringUtil.substringIgnoreCase(toDo.getTitle().value, keyword);
-    }
-
-    private boolean checkForTagKeyword(ReadOnlyToDo toDo, String keyword) {
-        Iterator<Tag> itr = toDo.getTags().iterator();
-        boolean flag = false;
-        while (itr.hasNext()) {
-            Tag element = itr.next();
-            if (StringUtil.substringIgnoreCase(element.value, keyword)) {
-                flag = true;
-            }
-        }
-        return flag;
+    private boolean checkForTag(ReadOnlyToDo toDo, String tag) {
+        return toDo.getTags().stream().anyMatch(toDoTag -> toDoTag.value.equalsIgnoreCase(tag));
     }
 }

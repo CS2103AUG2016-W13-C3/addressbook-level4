@@ -9,7 +9,6 @@ import org.junit.rules.TemporaryFolder;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.events.ui.ExitAppRequestEvent;
-import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.commands.*;
 import seedu.commando.model.Model;
 import seedu.commando.model.ModelManager;
@@ -26,6 +25,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.commando.testutil.TestHelper.*;
 
+/**
+ * Contains tests for LogicManager
+ * More tests for specific command words might also be in {@link seedu.commando.logic.commands}
+ */
 public class LogicManagerTest {
 
     /**
@@ -101,35 +104,6 @@ public class LogicManagerTest {
         assertTrue(result.hasError());
 
         assertEquals(String.format(Messages.TODO_ITEM_INDEX_INVALID, 2), result.getFeedback());
-    }
-
-    @Test
-    public void execute_find_keywords() throws IllegalValueException {
-        logic.execute("add title");
-        logic.execute("add title2");
-        logic.execute("add title 3");
-        logic.execute("add somethingelse");
-
-        eventsCollector.reset();
-        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-
-        CommandResult result = logic.execute("find title");
-        assertFalse(result.hasError());
-
-        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-
-        assertTrue(ifToDoExistsFiltered(logic,
-            new ToDoBuilder("title")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
-            new ToDoBuilder("title2")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
-            new ToDoBuilder("title 3")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(logic,
-            new ToDoBuilder("somethingelse")
-                .build()));
     }
     
     @Test
