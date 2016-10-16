@@ -130,11 +130,17 @@ public class SequentialParser {
         for (Matcher matcher = WORD_PATTERN.matcher(input);
              matcher.find(); ) {
 
-            String word = matcher.group("word");
+            String rawWord = matcher.group("word");
 
             // Check prefix of word
-            if (word.indexOf(prefix) == 0) {
-                words.add(ifRemovePrefix ? word.substring(prefix.length()) : word); // Add without prefix
+            if (rawWord.indexOf(prefix) == 0) {
+                String word = ifRemovePrefix ? rawWord.substring(prefix.length()) : rawWord;
+
+                // Add word only if it doesn't reduce to empty string
+                if (!word.trim().isEmpty()) {
+                    words.add(word);
+                }
+
                 input = input.substring(0, matcher.start())
                     + input.substring(matcher.end()); // Remove matched word from input
 

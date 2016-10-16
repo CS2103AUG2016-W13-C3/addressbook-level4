@@ -135,4 +135,13 @@ public class AddCommandTest {
                 )
                 .build()));
     }
+
+    @Test
+    public void execute_add_emptyTag() throws IllegalValueException {
+        logic.execute("add title #    ");
+
+        assertTrue(ifToDoExists(model,
+            new ToDoBuilder("title")
+                .build()));
+    }
 }
