@@ -41,39 +41,32 @@
                             </ul>
                         </li>
                         <li><a href="#setting-up">Setting Up</a></li>
-                        <li>
-                            <a href="#design">Design</a>
-                            <ul>
-                                <li><a href="#architecture">Architecture</a></li>
-                                <li><a href="#ui-api">UI API</a></li>
-                                <li><a href="#logic-api">Logic API</a></li>
-                                <li><a href="#model-api">Model API</a></li>
-                                <li><a href="#storage-api">Storage API</a></li>
-
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#implementation">Implementation</a>
-                            <ul>
-                                <li><a href="#event-driven-design">Event Driven Design</a></li>
-                                <li><a href="#logging">Logging</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="#design">Design</a></li>
+                        <ul>
+                            <li><a href="#architecture">Architecture</a></li>
+                            <li><a href="#ui-api">UI API</a></li>
+                            <li><a href="#logic-api">Logic API</a></li>
+                            <li><a href="#model-api">Model API</a></li>
+                            <li><a href="#storage-api">Storage API</a></li>
+                        </ul>
+                        <li><a href="#implementation">Implementation</a></li>
+                        <ul>
+                            <li><a href="#event-driven-design">Event Driven Design</a></li>
+                            <li><a href="#logging">Logging</a></li>
+                        </ul>
                         <li><a href="#testing">Testing</a></li>
                         <li><a href="#dev-ops">Dev Ops</a></li>
                         <li><a href="#troubleshooting">Troubleshooting</a></li>
                         <li><a href="#known-issues">Known Issues</a></li>
                         <li><a href="#future-plans">Future Plans</a></li>
-                        <li>
-                            <a href="#appendices">Appendices</a>
-                            <ul>
-                                <li><a href="#appendix-a-user-stories">Appendix A: User Stories</a></li>
-                                <li><a href="#appendix-b-use-cases">Appendix B: Use Cases</a></li>
-                                <li><a href="#appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</a></li>
-                                <li><a href="#appendix-d-glossary">Appendix D: Glossary</a></li>
-                                <li><a href="#appendix-e-product-survey">Appendix E: Product Survey</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="#appendices">Appendices</a></li>
+                        <ul>
+                            <li><a href="#appendix-a-user-stories">Appendix A: User Stories</a></li>
+                            <li><a href="#appendix-b-use-cases">Appendix B: Use Cases</a></li>
+                            <li><a href="#appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</a></li>
+                            <li><a href="#appendix-d-glossary">Appendix D: Glossary</a></li>
+                            <li><a href="#appendix-e-product-survey">Appendix E: Product Survey</a></li>
+                        </ul>
 
                     </ul>
                 </p>
@@ -187,16 +180,16 @@
 
                 <ul>
                     <li>
-                        <a href="#ui-api"><strong>UI Component</strong></a>: The UI of the application, which acts as the middleman between the user and the API provided by <strong>Logic</strong> (package <code>seedu.address.ui</code>)
+                        <a href="#ui-api"><strong>UI Component</strong></a>: The UI of the application, which acts as the middleman between the user and the API provided by <strong>Logic</strong> (package <code>seedu.commando.ui</code>)
                     </li>
                     <li>
-                        <a href="#logic-api"><strong>Logic Component</strong></a>: Executes commands from the UI, using the API provided by <strong>Model</strong> and <strong>Storage</strong> (package <code>seedu.address.logic</code>)
+                        <a href="#logic-api"><strong>Logic Component</strong></a>: Executes commands from the UI, using the API provided by <strong>Model</strong> and <strong>Storage</strong> (package <code>seedu.commando.logic</code>)
                     </li>
                     <li>
-                        <a href="#model-api"><strong>Model Component</strong></a>: Defines how data is represented and holds the data of the application in-memory (package <code>seedu.address.model</code>)
+                        <a href="#model-api"><strong>Model Component</strong></a>: Defines how data is represented and holds the data of the application in-memory (package <code>seedu.commando.model</code>)
                     </li>
                     <li>
-                        <a href="#storage-api"><strong>Storage Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.address.storage</code>)
+                        <a href="#storage-api"><strong>Storage Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.commando.storage</code>)
                     </li>
                 </ul>
 
@@ -228,7 +221,7 @@
                         Note that for the <em>Model</em> component, besides the API defined by <code>Model.java</code>, it also contains data structures such as <code>UserPrefs.java</code> and <code>ReadOnlyToDo.java</code> that the other components are dependent on. Such dependencies are listed in the later section <a href="#model-api">Model API</a>
                     </blockquote>
 
-                <p>Underlying all 4 components is the package <code>seedu.address.commons</code>. It is a collection of utility classes and application constants that are used throughout the application. We also use <a href="#event-driven-design">Event Driven Design</a> for components to communicate with one another.</p>
+                <p>Underlying all 4 components is the package <code>seedu.commando.commons</code>. It is a collection of utility classes and application constants that are used throughout the application. We also use <a href="#event-driven-design">Event Driven Design</a> for components to communicate with one another.</p>
 
                 <h4>What happens in a command execution</h4>
 
@@ -291,11 +284,11 @@
                 <h3 id="event-driven-design">Event Driven Design</h3>
 
                 <p>
-                    For components to inform one another that something has happened, we use <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a>, packaged in <code>EventsCenter.java</code> within <code>seedu.address.commons</code>. This is especially important for lower-level components to communicate with higher-level components that it should not be dependent on.
+                    For components to inform one another that something has happened, we use <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a>, packaged in <code>EventsCenter.java</code> within <code>seedu.commando.commons</code>. This is especially important for lower-level components to communicate with higher-level components that it should not be dependent on.
                 </p>
 
                 <blockquote>
-                    All events should extend <code>BaseEvent.java</code> and be placed in package <code>seedu.address.commons.events</code>.
+                    All events should extend <code>BaseEvent.java</code> and be placed in package <code>seedu.commando.commons.events</code>.
                 </blockquote>
 
                 <p>
@@ -370,15 +363,15 @@
                             <ol>
                                 <li type=i>
                                     <strong>Unit tests:</strong> targeting the lowest-level methods/classes. <br>
-                                    E.g. <code>seedu.address.commons.UrlUtilTest</code>
+                                    E.g. <code>seedu.commando.commons.UrlUtilTest</code>
                                 </li>
                                 <li type=i>
                                     <strong>Integration tests:</strong> checking the integration of multiple code units (those code units are assumed to be working).<br>
-                                    E.g. <code>seedu.address.storage.StorageManagerTest</code>
+                                    E.g. <code>seedu.commando.storage.StorageManagerTest</code>
                                 </li>
                                 <li type=i>
                                     <strong>Hybrid tests:</strong> testing multiple code units as well as how the are connected together.<br>
-                                    E.g. <code>seedu.address.logic.LogicManagerTest</code>
+                                    E.g. <code>seedu.commando.logic.LogicManagerTest</code>
                                 </li>
                             </ol>
                         </p>

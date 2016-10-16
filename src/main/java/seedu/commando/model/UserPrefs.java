@@ -50,5 +50,4 @@ public class UserPrefs {
     public String toString(){
         return guiSettings.toString();
     }
-
 }

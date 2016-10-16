@@ -30,24 +30,22 @@
                     <ul id="table-of-contents">
                         <li><a href="#about">What is CommanDo?</a></li>
                         <li><a href="#quick-start">Getting Started</a></li>
-                        <li>
-                            <a href="#commands">Commands</a>
-                            <ul>
-                                <li><a href="#viewing-help-help">Viewing Help</a></li>
-                                <li><a href="#adding-to-do-items-add">Adding To-Do Items</a></li>
-                                <li><a href="#editing-to-do-items-edit">Editing To-Do Items</a></li>
-                                <li><a href="#deleting-to-do-items-delete">Deleting To-Do Items</a></li>
-                                <li><a href="#finishing-to-do-items-finish">Finishing To-Do Items</a></li>
-                                <li><a href="#finding-to-do-items-find">Finding To-Do Items</a></li>
-                                <li><a href="#clearing-your-to-do-list-clear">Clearing Your To-Do List</a></li>
-                                <li><a href="#setting-save-location-store">Setting Save Location</a></li>
-                                <li><a href="#exporting-export">Exporting</a></li>
-                                <li><a href="#importing-import">Importing</a></li>
-                                <li><a href="undoing-undo">Undoing</a></li>
-                                <li><a href="redoing-redo">Redoing</a></li>
-                                <li><a href="exiting-the-application-exit">Exiting the Application</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="#commands">Commands</a></li>
+                        <ul>
+                            <li><a href="#viewing-help-help">Viewing Help</a></li>
+                            <li><a href="#adding-to-do-items-add">Adding To-Do Items</a></li>
+                            <li><a href="#editing-to-do-items-edit">Editing To-Do Items</a></li>
+                            <li><a href="#deleting-to-do-items-delete">Deleting To-Do Items</a></li>
+                            <li><a href="#finishing-to-do-items-finish">Finishing To-Do Items</a></li>
+                            <li><a href="#finding-to-do-items-find">Finding To-Do Items</a></li>
+                            <li><a href="#clearing-your-to-do-list-clear">Clearing Your To-Do List</a></li>
+                            <li><a href="#setting-save-location-store">Setting Save Location</a></li>
+                            <li><a href="#exporting-export">Exporting</a></li>
+                            <li><a href="#importing-import">Importing</a></li>
+                            <li><a href="undoing-undo">Undoing</a></li>
+                            <li><a href="redoing-redo">Redoing</a></li>
+                            <li><a href="exiting-the-application-exit">Exiting the Application</a></li>
+                        </ul>
                         <li><a href="#faq">FAQ & Troubleshooting</a></li>
                         <li><a href="#cheatsheet">Cheatsheet</a></li>
                     </ul>
@@ -141,7 +139,7 @@
 
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/addEvent.png" width="600">
-                    <figcaption>Result of adding an <em>Event</em> with command: 
+                    <figcaption>Result of adding an <em>Event</em> with command:
                     <code>add contemplate life from 5 feb 1200 to 5 feb 1300 #yolo</code></figcaption>
                 </figure>
 
@@ -300,7 +298,7 @@
                 <span><strong>Examples:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> store <span>../../Dropbox/work/todolist.xml</span></pre>
                 <span><strong>What it does: </strong> Changes the default file path to store the to-do list data to <code>../../Dropbox/work/todolist.xml</code> relative to your <code>commando.jar</code>, and saves the latest data to that file.</span>
-                
+
                 <h3 id="exporting-export">Exporting: <code>export</code></h3>
 
                 <p>If you want to copy your to-do list data file in your current save location to another local destination, there's no need to manually do so. Instead, using the <code>export</code> command saves a copy of the current to-do list data to the specified file at <code>&lt;file_path&gt;</code>.</p>
@@ -311,7 +309,7 @@
                 <h3 id="importing-import">Importing: <code>import</code></h3>
 
                 <p>If you already have an existing to-do list data file (possibly from your other devices) and want you use it in <em>CommanDo</em>, the <code>import</code> command can import a valid data file. <em>Note that it overrides the current to-do list with the imported to-do list!</em>
-                
+
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> import <span>&lt;file_path&gt;</span></pre>
 
@@ -335,7 +333,7 @@
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> exit</pre>
-                
+
                 <hr>
 
                 <h2 id="faq">FAQ & Troubleshooting</h2>
@@ -361,9 +359,9 @@
                 <p>The <code>help</code> command (explained in the section <a href="#viewing-help-help">above</a>) can be used to quickly summon this guide or a relevant section of this guide when you need it. Alternatively, you can just try typing your command - if it is invalid, <em>CommanDo</em> will display the correct command format for that command in the command feedback box just below the command input. This might be helpful for you to correctively learn the command format.</p>
 
                 <h3 id="supported-date-time-formats">6. What date & time formats can I use in my commands?</h3>
-                
+
                 <p><em>CommanDo</em> supports a wide variety of date and time formats, backed by the awesome date parser library <a href="http://natty.joestelmach.com/" target="_blank">Natty</a>.</p>
-                
+
                 <p>A valid datetime is defined as:</p>
                 <ol>
                     <li>A valid date</li>
@@ -374,7 +372,7 @@
                 <p>* In this case, the datetime will be interpreted to be on the same date as the first datetime</p>
 
                 <h4>Valid Dates</h4>
-                
+
                 <div class="datagrid">
                     <table>
                         <thead>

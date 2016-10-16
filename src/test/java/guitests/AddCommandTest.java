@@ -35,7 +35,7 @@
 //
 //        //invalid command
 //        commandBox.runCommand("adds Johnny");
-//        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+//        assertResultMessage(Messages.UNKNOWN_COMMAND);
 //    }
 //
 //    private void assertAddSuccess(TestPerson personToAdd, TestPerson... currentList) {

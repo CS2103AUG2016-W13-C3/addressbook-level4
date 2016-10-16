@@ -7,20 +7,14 @@ import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.events.model.ToDoListChangedEvent;
 import seedu.commando.commons.events.storage.DataSavingExceptionEvent;
-import seedu.commando.model.ReadOnlyToDoList;
-import seedu.commando.model.ToDoList;
+import seedu.commando.model.todo.ReadOnlyToDoList;
+import seedu.commando.model.todo.ToDoList;
 import seedu.commando.model.UserPrefs;
-import seedu.commando.storage.JsonUserPrefsStorage;
-import seedu.commando.storage.Storage;
-import seedu.commando.storage.StorageManager;
-import seedu.commando.storage.XmlToDoListStorage;
 import seedu.commando.testutil.EventsCollector;
-import seedu.commando.testutil.ToDoBuilder;
 import seedu.commando.testutil.ToDoListBuilder;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -68,7 +62,6 @@ public class StorageManagerTest {
         storageManager.saveToDoList(original);
         ReadOnlyToDoList retrieved = storageManager.readToDoList().get();
         assertEquals(original, new ToDoList(retrieved));
-        // More extensive testing of AddressBook saving/reading is done in XmlToDoListStorageTest
     }
 
     @Test

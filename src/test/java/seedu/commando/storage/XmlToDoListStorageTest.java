@@ -9,10 +9,8 @@ import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.exceptions.DataConversionException;
 import seedu.commando.commons.util.FileUtil;
-import seedu.commando.model.ReadOnlyToDoList;
-import seedu.commando.model.ToDoList;
-import seedu.commando.model.todo.ReadOnlyToDo;
-import seedu.commando.storage.XmlToDoListStorage;
+import seedu.commando.model.todo.ReadOnlyToDoList;
+import seedu.commando.model.todo.ToDoList;
 import seedu.commando.testutil.ToDoBuilder;
 import seedu.commando.testutil.ToDoListBuilder;
 
@@ -79,10 +77,10 @@ public class XmlToDoListStorageTest {
 
         // Modify data, overwrite exiting file, and read back
         xmlStorage.saveToDoList(original, filePath);
-        original.add(new ToDoBuilder("title")
+        original.add(new ToDoBuilder("value")
             .withTags("tag1", "tag2").build()
         );
-        original.remove(original.getToDoList().get(0));
+        original.remove(original.getToDos().get(0));
         xmlStorage.saveToDoList(original, filePath);
         ReadOnlyToDoList readBack = xmlStorage.readToDoList(filePath).get();
         assertEquals(original, new ToDoList(readBack));

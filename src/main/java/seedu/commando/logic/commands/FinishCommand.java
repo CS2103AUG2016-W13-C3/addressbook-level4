@@ -2,11 +2,13 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.Model;
+import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.ToDo;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,16 +33,27 @@ public class FinishCommand extends Command {
         Optional<ReadOnlyToDo> toDoToFinish = getToDoAtIndex(toDoAtIndices, toDoIndex);
 
         if (!toDoToFinish.isPresent()) {
-            return new CommandResult(String.format(Messages.MESSAGE_TODO_ITEM_INDEX_INVALID, toDoIndex), true);
+            return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex), true);
         }
 
+        if (toDoToFinish.get().isFinished()) {
+            return new CommandResult(String.format(Messages.TODO_ALREADY_FINISHED, toDoToFinish.get().getTitle().toString()), true);
+        }
+
+        // Mark as finished
+        ToDo finishedToDo = new ToDo(toDoToFinish.get());
+        finishedToDo.setIsFinished(true);
+
         try {
-            model.deleteToDo(toDoToFinish.get());
+            model.changeToDoList(new ToDoListChange(
+                Collections.singletonList(finishedToDo),
+                Collections.singletonList(toDoToFinish.get())
+            ));
         } catch (IllegalValueException exception) {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.MESSAGE_TODO_FINISHED, toDoToFinish.get().getTitle().toString()));
+        return new CommandResult(String.format(Messages.TODO_FINISHED, toDoToFinish.get().getTitle().toString()));
     }
 
 }

@@ -5,6 +5,11 @@ import seedu.commando.commons.events.ui.ShowHelpRequestEvent;
 import seedu.commando.model.Model;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Collection of convenience methods for testing
  */
@@ -22,7 +27,7 @@ public class TestHelper {
      * Checks if a to-do exists in the model
      */
     public static boolean ifToDoExists(Model model, ReadOnlyToDo readOnlyToDo) {
-        return model.getToDoList().getToDoList().contains(readOnlyToDo);
+        return model.getToDoList().getToDos().contains(readOnlyToDo);
     }
 
     /**

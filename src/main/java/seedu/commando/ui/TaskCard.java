@@ -8,7 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import seedu.commando.model.tag.Tag;
+import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
 public class TaskCard extends UiPart{
@@ -45,7 +45,7 @@ public class TaskCard extends UiPart{
     public void initialize() {
         formatter = DateTimeFormatter.ofPattern("HH:mma dd/MM/yyyy");
         
-        titleLabel.setText(toDo.getTitle().title);
+        titleLabel.setText(toDo.getTitle().value);
         indexLabel.setText(String.valueOf(index) + ". ");
 
         setLabelContent();
@@ -57,7 +57,7 @@ public class TaskCard extends UiPart{
         if (!toDo.getTags().isEmpty()) {
             String tags = "";
             for (Tag tag : toDo.getTags()) {
-                tags += "#" + tag.tagName + " ";
+                tags += "#" + tag.value + " ";
             }
             tagsLabel.setText(tags);
         } else {
@@ -74,7 +74,7 @@ public class TaskCard extends UiPart{
 
     private void setLabelContent() {
         if (toDo.getDueDate().isPresent()) {
-            final LocalDateTime due = toDo.getDueDate().get().dueDate;
+            final LocalDateTime due = toDo.getDueDate().get().value;
             dueLabel.setText("by " + prettifyDateTime(due));
         } else {
             dueLabel.setText("");

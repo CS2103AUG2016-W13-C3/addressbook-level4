@@ -15,7 +15,7 @@ public class DataSavingExceptionEvent extends BaseEvent {
 
     @Override
     public String toString(){
-        return exception.toString();
+        return getClass().getSimpleName() + " with exception: " +exception.toString();
     }
 
 }

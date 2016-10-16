@@ -2,50 +2,38 @@ package seedu.commando.model;
 
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.tag.Tag;
-import seedu.commando.model.todo.DateRange;
-import seedu.commando.model.todo.DueDate;
-import seedu.commando.model.todo.ReadOnlyToDo;
-import seedu.commando.model.todo.Title;
-import seedu.commando.model.todo.ToDo;
+import seedu.commando.model.todo.*;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
  * The API of the Model component.
  */
 public interface Model {
-    /** Clears existing backing model and replaces with the provided new data */
-    void resetData(ReadOnlyToDoList newToDoList);
-
     /** Returns the to-do list */
     ReadOnlyToDoList getToDoList();
 
-    /** Deletes the given to-do */
-    void deleteToDo(ReadOnlyToDo toDo) throws IllegalValueException;
+    /** Changes the to-do list */
+    void changeToDoList(ToDoListChange change) throws IllegalValueException;
 
-    /** Adds the given to-do */
-    void addToDo(ToDo toDo);
-    
-    /** Edits the title of given to-do */
-    void editTodoTitle(ReadOnlyToDo todo, Title title) throws IllegalValueException;
-    
-    /** Edits the Date Range of given to-do */
-    void editTodoDateRange(ReadOnlyToDo todo, DateRange dateRange) throws IllegalValueException;
-    
-    /** Edits the Due date of given to-do */
-    void editTodoDueDate(ReadOnlyToDo todo, DueDate dueDates) throws IllegalValueException;    
+    /** Undos the last change to the to-do list, returns true if successful */
+    boolean undoToDoList();
 
-    /** Edits the tags of given to-do */
-    void editTodoTags(ReadOnlyToDo todo, Set<Tag> tags) throws IllegalValueException;
-      
+    /** Redos the last undo to the to-do list, returns true if successful */
+    boolean redoToDoList();
+
+    /** Gets the last to-do list change, considering undos and redos, if it exists */
+    Optional<ToDoListChange> getLastToDoListChange();
+
     /** Returns the filtered to-do list as an {@code UnmodifiableObservableList<ReadOnlyToDo>} */
     UnmodifiableObservableList<ReadOnlyToDo> getFilteredToDoList();
 
     /** Updates the filter of the filtered to-do list to show all to-dos */
-    void updateFilteredListToShowAll();
+    void clearToDoListFilter();
 
     /** Updates the filter of the filtered to-do list to filter by the given keywords */
-    void updateFilteredToDoList(Set<String> keywords);
+    void updateToDoListFilter(Set<String> keywords);
 
 }

@@ -1,7 +1,6 @@
 package seedu.commando.model.todo;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
@@ -12,39 +11,48 @@ import seedu.commando.commons.exceptions.IllegalValueException;
  */
 public class DueDate {
 
-    public final LocalDateTime dueDate;
+    public final LocalDateTime value;
 
     /**
      * Constructor for a due date
-     * @throws IllegalValueException if given title is invalid
+     * @throws IllegalValueException if given value is invalid
      */
-    public DueDate(LocalDateTime dueDate) throws IllegalValueException {
-        if (!isValid(dueDate)) {
-            throw new IllegalValueException(Messages.MESSAGE_TODO_DUEDATE_CONSTRAINTS);
+    public DueDate(LocalDateTime value) throws IllegalValueException {
+        if (!isValid(value)) {
+            throw new IllegalValueException(Messages.TODO_DUEDATE_CONSTRAINTS);
         }
 
-        this.dueDate = dueDate;
+        this.value = value;
     }
 
-    public static boolean isValid(LocalDateTime dueDate) {
-        return dueDate != null;
+    /**
+     * Copy constructor
+     */
+    public DueDate(DueDate dueDate) {
+        assert isValid(dueDate.value); // should already have been checked
+
+        this.value = dueDate.value;
+    }
+
+    private static boolean isValid(LocalDateTime value) {
+        return value != null;
     }
 
     @Override
     public String toString() {
-        return this.dueDate.toString();
+        return this.value.toString();
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof DueDate // instanceof handles nulls
-                && (dueDate.equals(((DueDate) other).dueDate))); // state check
+                && (value.equals(((DueDate) other).value))); // state check
     }
 
     @Override
     public int hashCode() {
-        return dueDate.hashCode();
+        return value.hashCode();
     }
 
 }
