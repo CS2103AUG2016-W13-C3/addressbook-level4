@@ -9,7 +9,7 @@ import seedu.commando.commons.util.CollectionUtil;
 
 /**
  * Represents the Date Range of a to-do
- * Guarantees: immutable; is valid as declared in {@link #isValid(LocalDateTime, LocalDateTime)}
+ * Is valid as declared in {@link #isValid(LocalDateTime, LocalDateTime)}
  */
 public class DateRange {
 

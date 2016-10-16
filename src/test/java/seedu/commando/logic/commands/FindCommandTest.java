@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.core.EventsCenter;
-import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.Logic;
 import seedu.commando.logic.LogicManager;
@@ -85,7 +84,7 @@ public class FindCommandTest {
 
     @Test
     public void execute_find_tagsWithKeywords() throws IllegalValueException {
-        logic.execute("add title #tag"); // case insensitivity
+        logic.execute("add title #tag");
         logic.execute("add somethingelse");
 
         eventsCollector.reset();

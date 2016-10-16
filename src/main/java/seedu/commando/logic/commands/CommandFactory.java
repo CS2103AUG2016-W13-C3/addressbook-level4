@@ -35,6 +35,7 @@ public class CommandFactory {
      * @throws IllegalValueException if the command is invalid
      */
     public Command build(String inputString) throws IllegalValueException {
+        dateTimeParser.resetContext(); // reset any contextual info from last command
         sequentialParser.setInput(inputString);
 
         // Check if command word exists

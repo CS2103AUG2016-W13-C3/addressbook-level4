@@ -185,4 +185,31 @@ public class EditCommandTest {
                 .build()));
     }
 
+    @Test
+    public void execute_edit_invalidDateRange() throws IllegalValueException {
+        logic.execute("add title from 11 Dec 2016 to 12 Dec 2016");
+        eventsCollector.reset();
+        String command = "edit 1 from 10 Dec 2017 11:59 to 11 Apr 2016 23:10";
+        CommandResult result = logic.execute(command);
+        assertTrue(result.hasError());
+        assertEquals(Messages.TODO_DATERANGE_CONSTRAINTS, result.getFeedback());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
+
+    @Test
+    public void execute_edit_inferredDateFromStart() throws IllegalValueException {
+        logic.execute("add title from 11 Dec 2016 to 12 Dec 2016");
+        String command = "edit 1 from 10 Dec 2016 3pm to 7pm";
+        CommandResult result = logic.execute(command);
+        assertFalse(result.hasError());
+
+        assertTrue(ifToDoExists(model,
+            new ToDoBuilder("title")
+                .withDateRange(
+                    LocalDateTime.of(2016, 12, 10, 15, 0),
+                    LocalDateTime.of(2016, 12, 10, 19, 0)
+                )
+                .build()));
+    }
+
 }

@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 /**
  * Represents a to-do
- * Guarantees: details are present and not null, field values are validated.
  */
 public class ToDo implements ReadOnlyToDo {
     private Title title;

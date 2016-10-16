@@ -7,7 +7,6 @@ import javafx.beans.value.ObservableValue;
 
 /**
  * A read-only immutable interface for a to-do
- * Implementations should guarantee: details are present and not null, field values are validated.
  */
 public interface ReadOnlyToDo {
 

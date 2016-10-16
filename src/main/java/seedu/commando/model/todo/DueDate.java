@@ -7,7 +7,7 @@ import seedu.commando.commons.exceptions.IllegalValueException;
 
 /**
  * Represents the Due date of a to-do
- * Guarantees: immutable; is valid as declared in {@link #isValid(LocalDateTime)}
+ * is valid as declared in {@link #isValid(LocalDateTime)}
  */
 public class DueDate {
 
