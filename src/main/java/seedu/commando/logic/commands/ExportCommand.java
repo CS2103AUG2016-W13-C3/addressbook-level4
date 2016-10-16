@@ -35,7 +35,7 @@ public class ExportCommand extends Command {
 		}
 		//Check if the destination file already exists (avoid overwriting important data);
 		if(file.exists()){
-			return new CommandResult(String.format(Messages.EXPORT_COOMAND_FILE_EXIST, path),true);
+			return new CommandResult(String.format(Messages.EXPORT_COMMAND_FILE_EXIST, path),true);
 		}
 
 		XmlToDoListStorage export = new XmlToDoListStorage(file.getPath());
@@ -44,7 +44,7 @@ public class ExportCommand extends Command {
 		} catch (IOException e) {
 			return new CommandResult(e.getMessage(), true);
 		}
-		return new CommandResult(String.format(Messages.EXPORT_COOMAND, path));
+		return new CommandResult(String.format(Messages.EXPORT_COMMAND, path));
 	}
 
 }

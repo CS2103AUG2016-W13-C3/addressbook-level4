@@ -36,6 +36,6 @@ public class Messages {
     public static final String UNDID_COMMAND_FAIL = "Nothing more to undo!";
     public static final String REDID_COMMAND = "Redid the last undo command.";
     public static final String REDID_COMMAND_FAIL = "Nothing more to redo!";
-    public static final String EXPORT_COOMAND = "Export the storage file to: %1$s.";
-    public static final String EXPORT_COOMAND_FILE_EXIST = "Failed to Export the storage file to %1$s : destination file exits";
+    public static final String EXPORT_COMMAND = "Export the storage file to: %1$s.";
+    public static final String EXPORT_COMMAND_FILE_EXIST = "Failed to Export the storage file to %1$s : destination file exits";
 }
