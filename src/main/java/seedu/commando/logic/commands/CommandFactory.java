@@ -63,15 +63,26 @@ public class CommandFactory {
             case RedoCommand.COMMAND_WORD:
                 return buildRedoCommand();
             case ExportCommand.COMMAND_WORD:
-            	return bulidExportCommand();
             	return buildExportCommand();
+            case ImportCommand.COMMAND_WORD:
+            	return buildImportCommand();
             default:
                 return new InvalidCommand(Messages.UNKNOWN_COMMAND);
         }
     }
 
-    private Command bulidExportCommand() {
-    private Command buildExportCommand() {
+    private Command buildImportCommand() {
+    	//Extract the file path
+    	String path = sequentialParser.getInput().trim();
+    	if(path.isEmpty()){
+    		return new InvalidCommand(Messages.MISSING_IMPORT_PATH);
+    	}
+    	ImportCommand command;
+    	command = new ImportCommand(path);
+		return command;
+	}
+
+	private Command buildExportCommand() {
     	//Extract the file path
     	String path = sequentialParser.getInput().trim();
     	if(path.isEmpty()){
