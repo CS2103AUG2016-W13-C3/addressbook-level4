@@ -14,11 +14,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class DateTimeParserTest {
-    private DateTimeParser dateTimeParser = new DateTimeParser();
+    private DateTimeParser dateTimeParser;
     private LocalDateTime now = LocalDateTime.now();
 
     @Before
     public void setup() {
+        dateTimeParser = new DateTimeParser();
     }
 
     @After
@@ -59,6 +60,34 @@ public class DateTimeParserTest {
                 DateTimeParser.DefaultLocalTime.getHour(),
                 DateTimeParser.DefaultLocalTime.getMinute()),
             dateTimeParser.parseDateTime("28 Feb 2016").orElse(null)
+        );
+    }
+
+    @Test
+    public void parseDateTime_inferDateFromPreviousParse()  {
+        // In multiple parses, date should be inferred from previous parse
+        dateTimeParser.parseDateTime("10 Jan 2016 10am");
+
+        assertEquals(
+            LocalDateTime.of(2016, 1, 10, 23, 0),
+            dateTimeParser.parseDateTime("11pm").orElse(null)
+        );
+
+        assertEquals(
+            LocalDateTime.of(2016, 1, 10, 11, 11),
+            dateTimeParser.parseDateTime("1111").orElse(null)
+        );
+    }
+
+    @Test
+    public void resetContext_inferredDate()  {
+        dateTimeParser.parseDateTime("10 Jan 2016 10am");
+
+        dateTimeParser.resetContext();
+
+        assertEquals(
+            LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 23, 0),
+            dateTimeParser.parseDateTime("11pm").orElse(null)
         );
     }
 

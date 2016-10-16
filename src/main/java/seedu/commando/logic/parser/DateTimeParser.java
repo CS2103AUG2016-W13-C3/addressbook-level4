@@ -15,12 +15,21 @@ public class DateTimeParser {
     public static final LocalTime DefaultLocalTime = LocalTime.NOON;
 
     private Parser parser = new Parser();
+    private LocalDate lastLocalDate; // Date of last parsed datetime
+
+    /**
+     * Resets any contextual info used based on history of parsing
+     */
+    public void resetContext() {
+        lastLocalDate = null;
+    }
 
     /**
      * Gets the first datetime encountered in text
      * Works based on {@link com.joestelmach.natty.Parser}, but:
      * - Converted to `LocalDateTime`
      * - If time is deemed as "inferred" (in natty), time = {@link #DefaultLocalTime}
+     * - If date is "inferred" and there were previous parses, date = {@link #lastLocalDate}
      * - Seconds field is always set to 0 (ignored)
      */
     public Optional<LocalDateTime> parseDateTime(String text) {
@@ -44,6 +53,14 @@ public class DateTimeParser {
 
         LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zoneId);
 
+        // Check if date is inferred
+        if (dateGroup.isDateInferred() && lastLocalDate != null) {
+            localDateTime = LocalDateTime.of(
+                lastLocalDate,
+                localDateTime.toLocalTime()
+            );
+        }
+
         // Check if time is inferred
         if (dateGroup.isTimeInferred()) {
             localDateTime = LocalDateTime.of(
@@ -54,6 +71,9 @@ public class DateTimeParser {
 
         // Reset seconds
         localDateTime = localDateTime.withSecond(0);
+
+        // Remember last date parsed
+        lastLocalDate = localDateTime.toLocalDate();
 
         return localDateTime;
     }
