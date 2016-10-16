@@ -62,12 +62,24 @@ public class CommandFactory {
                 return buildUndoCommand();
             case RedoCommand.COMMAND_WORD:
                 return buildRedoCommand();
+            case ExportCommand.COMMAND_WORD:
+            	return bulidExportCommand();
             default:
                 return new InvalidCommand(Messages.UNKNOWN_COMMAND);
         }
     }
 
-    private Command buildExitCommand() {
+    private Command bulidExportCommand() {
+    	//Extract the file path
+    	String path = sequentialParser.getInput().trim();
+    	if(path.isEmpty()){
+    		return new InvalidCommand(Messages.MISSING_EXPORT_PATH);
+    	}
+    	ExportCommand command;
+    	command = new ExportCommand(path);
+		return command;
+	}
+	private Command buildExitCommand() {
         return new ExitCommand();
     }
 

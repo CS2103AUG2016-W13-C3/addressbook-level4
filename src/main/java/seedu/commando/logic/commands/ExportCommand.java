@@ -1,0 +1,50 @@
+package seedu.commando.logic.commands;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import seedu.commando.commons.core.EventsCenter;
+import seedu.commando.commons.core.Messages;
+import seedu.commando.model.Model;
+import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.storage.XmlToDoListStorage;
+
+public class ExportCommand extends Command {
+
+	public static final String COMMAND_WORD = "export";
+
+	private String path;
+
+	public ExportCommand(String inputPath) {
+		assert inputPath != null;
+		this.path = inputPath;
+	}
+
+	/**
+	 * Asserts that {@code model} are non-null
+	 */
+	@Override
+	public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
+		assert model != null;
+		File file = new File(path);
+		
+		//Check if the path has a file name to save
+		if(path.endsWith("\\")){
+			return new CommandResult(Messages.MISSING_EXPORT_FILE,true);
+		}
+		//Check if the destination file already exists (avoid overwriting important data);
+		if(file.exists()){
+			return new CommandResult(String.format(Messages.EXPORT_COOMAND_FILE_EXIST, path),true);
+		}
+
+		XmlToDoListStorage export = new XmlToDoListStorage(file.getPath());
+		try {
+			export.saveToDoList(model.getToDoList(),file.getPath());
+		} catch (IOException e) {
+			return new CommandResult(e.getMessage(), true);
+		}
+		return new CommandResult(String.format(Messages.EXPORT_COOMAND, path));
+	}
+
+}
