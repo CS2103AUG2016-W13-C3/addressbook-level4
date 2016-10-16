@@ -71,7 +71,6 @@ public class ModelManager extends ComponentManager implements Model {
 
         lastToDoListChange = change;
 
-        clearToDoListFilter();
         indicateToDoListChanged();
     }
 
@@ -104,7 +103,6 @@ public class ModelManager extends ComponentManager implements Model {
 
         lastToDoListChange = undoChange;
 
-        clearToDoListFilter();
         indicateToDoListChanged();
 
         return true;
@@ -131,7 +129,6 @@ public class ModelManager extends ComponentManager implements Model {
 
         lastToDoListChange = redoChange;
 
-        clearToDoListFilter();
         indicateToDoListChanged();
 
         return true;
@@ -145,102 +142,6 @@ public class ModelManager extends ComponentManager implements Model {
     /** Raises an event to indicate the model has changed */
     private void indicateToDoListChanged() {
         raise(new ToDoListChangedEvent(toDoList));
-    }
-
-    //================================================================================
-    // Filtering to-do list operations
-    //================================================================================
-
-    @Override
-    public UnmodifiableObservableList<ReadOnlyToDo> getFilteredToDoList() {
-        return protectedFilteredToDos;
-    }
-
-    @Override
-    public void clearToDoListFilter() {
-        filteredToDos.setPredicate(null);
-    }
-
-    @Override
-    public void updateToDoListFilter(Set<String> keywords){
-        updateFilteredToDoList(new PredicateExpression(new TitleQualifier(keywords)));
-    }
-
-    private void updateFilteredToDoList(Expression expression) {
-        filteredToDos.setPredicate(expression::satisfies);
-    }
-    
-    //================================================================================
-    //  Inner classes/interfaces used for filtering
-    //================================================================================
-
-    interface Expression {
-        boolean satisfies(ReadOnlyToDo toDo);
-        String toString();
-    }
-
-    private class PredicateExpression implements Expression {
-
-        private final Qualifier qualifier;
-
-        PredicateExpression(Qualifier qualifier) {
-            this.qualifier = qualifier;
-        }
-
-        @Override
-        public boolean satisfies(ReadOnlyToDo toDo) {
-            return qualifier.run(toDo);
-        }
-
-        @Override
-        public String toString() {
-            return qualifier.toString();
-        }
-    }
-
-    interface Qualifier {
-        boolean run(ReadOnlyToDo toDo);
-        String toString();
-    }
-
-    private class TitleQualifier implements Qualifier {
-        private Set<String> titleKeyWords;
-
-        TitleQualifier(Set<String> titleKeyWords) {
-            this.titleKeyWords = titleKeyWords;
-        }
-
-        @Override
-        public boolean run(ReadOnlyToDo toDo) {
-            return titleKeyWords.stream()
-                    .filter(keyword -> checkForKeyword(toDo, keyword))
-                    .count() == titleKeyWords.size();
-        }
-        
-        private boolean checkForKeyword(ReadOnlyToDo toDo, String keyword){
-            return checkForTagKeyword(toDo, keyword) || checkForTitleKeyword(toDo, keyword);
-        }
-
-        private boolean checkForTitleKeyword(ReadOnlyToDo toDo, String keyword) {
-            return StringUtil.substringIgnoreCase(toDo.getTitle().value, keyword);
-        }
-
-        private boolean checkForTagKeyword(ReadOnlyToDo toDo, String keyword) {
-            Iterator<Tag> itr = toDo.getTags().iterator();
-            boolean flag = false;
-            while (itr.hasNext()){
-                Tag element = itr.next();
-                if (StringUtil.substringIgnoreCase(element.value, keyword)) {
-                    flag = true;
-                }
-            }
-            return flag;
-        }
-        
-        @Override
-        public String toString() {
-            return "Title = " + String.join(", ", titleKeyWords);
-        }
     }
 
 }

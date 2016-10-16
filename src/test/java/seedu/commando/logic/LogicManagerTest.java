@@ -118,16 +118,16 @@ public class LogicManagerTest {
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertTrue(ifToDoExistsFiltered(model,
+        assertTrue(ifToDoExistsFiltered(logic,
             new ToDoBuilder("title")
                 .build()));
-        assertTrue(ifToDoExistsFiltered(model,
+        assertTrue(ifToDoExistsFiltered(logic,
             new ToDoBuilder("title2")
                 .build()));
-        assertTrue(ifToDoExistsFiltered(model,
+        assertTrue(ifToDoExistsFiltered(logic,
             new ToDoBuilder("title 3")
                 .build()));
-        assertFalse(ifToDoExistsFiltered(model,
+        assertFalse(ifToDoExistsFiltered(logic,
             new ToDoBuilder("somethingelse")
                 .build()));
     }
@@ -166,8 +166,6 @@ public class LogicManagerTest {
         result = logic.execute("undo");
         assertTrue(result.hasError());
         assertEquals(Messages.UNDID_COMMAND_FAIL, result.getFeedback());
-
-
     }
     
     @Test

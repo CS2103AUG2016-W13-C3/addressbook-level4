@@ -27,13 +27,4 @@ public interface Model {
     /** Gets the last to-do list change, considering undos and redos, if it exists */
     Optional<ToDoListChange> getLastToDoListChange();
 
-    /** Returns the filtered to-do list as an {@code UnmodifiableObservableList<ReadOnlyToDo>} */
-    UnmodifiableObservableList<ReadOnlyToDo> getFilteredToDoList();
-
-    /** Updates the filter of the filtered to-do list to show all to-dos */
-    void clearToDoListFilter();
-
-    /** Updates the filter of the filtered to-do list to filter by the given keywords */
-    void updateToDoListFilter(Set<String> keywords);
-
 }

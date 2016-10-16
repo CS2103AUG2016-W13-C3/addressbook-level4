@@ -1,7 +1,7 @@
 package seedu.commando.logic;
 
 import javafx.collections.ObservableList;
-import seedu.commando.commons.core.IndexedItem;
+import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.logic.commands.CommandResult;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
@@ -18,12 +18,13 @@ public interface Logic {
 
     /**
      * Returns observable list of events
+     * Events are in chronological order
      * */
-    ObservableList<IndexedItem<ReadOnlyToDo>> getObservableEventList();
+    UnmodifiableObservableList<UiToDo> getObservableEventList();
 
     /**
      *  Return observable list of tasks
      *  Tasks are in chronological order, with those with DueDate on top
      * */
-    ObservableList<IndexedItem<ReadOnlyToDo>> getObservableTaskList();
+    UnmodifiableObservableList<UiToDo> getObservableTaskList();
 }
