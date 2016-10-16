@@ -15,7 +15,8 @@ import java.util.Set;
  * of the keywords and tags (case insensitive)
  */
 public class FindCommand extends Command {
-    public static final String COMMAND_WORD = "find";
+    public static final String
+        COMMAND_WORD = "find";
 
     public Set<String> keywords = Collections.emptySet();
     public Set<String> tags = Collections.emptySet();
@@ -24,8 +25,8 @@ public class FindCommand extends Command {
      * Asserts that {@code uiLogic} is non-null
      */
     @Override
-    public CommandResult execute(EventsCenter eventsCenter, UiLogic uiLogic, Model model) {
-        assert uiLogic != null;
+    public CommandResult execute() throws NoContextException {
+        UiLogic uiLogic = getUiLogic();
 
         // if no keywords or tags are provided, clear find
         if (keywords.isEmpty() && tags.isEmpty()) {

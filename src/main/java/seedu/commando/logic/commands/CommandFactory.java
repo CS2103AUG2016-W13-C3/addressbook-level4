@@ -12,8 +12,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Maps and builds commands from input strings, using {@link SequentialParser}
+ * Maps and builds commands from input strings, using {@link SequentialParser} and {@link DateTimeParser}
  * In charge of splitting up input strings to required parts for commands
+ * Doesn't set context for commands
  */
 public class CommandFactory {
     public static final String KEYWORD_DATERANGE_START = "from";

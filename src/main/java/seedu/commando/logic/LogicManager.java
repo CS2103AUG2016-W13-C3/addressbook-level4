@@ -45,10 +45,14 @@ public class LogicManager extends ComponentManager implements Logic {
 
         try {
             Command command = commandFactory.build(commandText);
-            CommandResult result = command.execute(eventsCenter, uiLogic, model);
+            command.setContext(new Command.Context(eventsCenter, uiLogic, model));
+            CommandResult result = command.execute();
             return result;
         } catch (IllegalValueException exception) {
             // Something went wrong in command execution
+            return new CommandResult(exception.getMessage(), true);
+        } catch (Command.NoContextException exception) {
+            assert false; // There should always be a context
             return new CommandResult(exception.getMessage(), true);
         }
     }

@@ -19,8 +19,8 @@ public class ClearCommand extends Command {
     public ClearCommand() {}
 
     @Override
-    public CommandResult execute(EventsCenter eventsCenter, UiLogic uiLogic, Model model) {
-        assert model != null;
+    public CommandResult execute() throws NoContextException {
+        Model model = getModel();
 
         try {
             // Delete all to-dos

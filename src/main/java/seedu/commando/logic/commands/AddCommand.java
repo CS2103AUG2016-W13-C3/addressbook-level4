@@ -38,10 +38,9 @@ public class AddCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(EventsCenter eventsCenter, UiLogic uiLogic, Model model)
-        throws IllegalValueException {
-
-        assert model != null;
+    public CommandResult execute()
+        throws IllegalValueException, NoContextException {
+        Model model = getModel();
 
         // Create the to-do to add
         ToDo toDo = new ToDo(new Title(title));

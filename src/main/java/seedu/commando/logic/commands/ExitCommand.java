@@ -18,12 +18,9 @@ public class ExitCommand extends Command {
 
     public ExitCommand() {}
 
-    /**
-     * Asserts that {@code eventsCenter} is non-null
-     */
     @Override
-    public CommandResult execute(EventsCenter eventsCenter, UiLogic uiLogic, Model model) {
-        assert eventsCenter != null;
+    public CommandResult execute() throws NoContextException {
+        EventsCenter eventsCenter = getEventsCenter();
 
         eventsCenter.post(new ExitAppRequestEvent());
         return new CommandResult(Messages.EXIT_APPLICATION);

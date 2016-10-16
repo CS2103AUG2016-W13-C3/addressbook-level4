@@ -1,9 +1,7 @@
 package seedu.commando.logic;
 
-import javafx.collections.ObservableList;
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.logic.commands.CommandResult;
-import seedu.commando.model.todo.ReadOnlyToDo;
 
 /**
  * API of the Logic component

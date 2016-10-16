@@ -1,22 +1,18 @@
 package seedu.commando.logic.commands;
 
-import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.logic.UiLogic;
 import seedu.commando.model.Model;
 
 /**
  * Undo the last command
  */
-public class UndoCommand extends Command{
+public class UndoCommand extends Command {
 
     public static final String COMMAND_WORD = "undo";
 
-    public UndoCommand(){ }
-    
     @Override
-    public CommandResult execute(EventsCenter eventsCenter, UiLogic uiLogic, Model model) {
-        assert model != null;
+    public CommandResult execute() throws NoContextException {
+        Model model = getModel();
         
         if (model.undoToDoList()) {
             return new CommandResult(Messages.UNDID_COMMAND);

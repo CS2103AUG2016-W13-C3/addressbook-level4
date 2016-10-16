@@ -27,14 +27,11 @@ public class FinishCommand extends Command {
         this.toDoIndex = toDoIndex;
     }
 
-    /**
-     * Asserts that {@param uiLogic} and {@param model} is non-null
-     */
     @Override
-    public CommandResult execute(EventsCenter eventsCenter, UiLogic uiLogic, Model model)
-        throws IllegalValueException {
-        assert model != null;
-        assert uiLogic != null;
+    public CommandResult execute()
+        throws IllegalValueException, NoContextException {
+        Model model = getModel();
+        UiLogic uiLogic = getUiLogic();
 
         Optional<UiToDo> toDoToFinish = uiLogic.getToDoAtIndex(toDoIndex);
 
