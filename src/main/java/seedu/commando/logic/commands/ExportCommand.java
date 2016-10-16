@@ -38,9 +38,9 @@ public class ExportCommand extends Command {
 			return new CommandResult(String.format(Messages.EXPORT_COMMAND_FILE_EXIST, path),true);
 		}
 
-		XmlToDoListStorage export = new XmlToDoListStorage(file.getPath());
+		XmlToDoListStorage export = new XmlToDoListStorage(path);
 		try {
-			export.saveToDoList(model.getToDoList(),file.getPath());
+			export.saveToDoList(model.getToDoList(),path);
 		} catch (IOException e) {
 			return new CommandResult(e.getMessage(), true);
 		}
