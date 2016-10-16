@@ -41,46 +41,39 @@
                             </ul>
                         </li>
                         <li><a href="#setting-up">Setting Up</a></li>
-                        <li>
-                            <a href="#design">Design</a>
-                            <ul>
-                                <li><a href="#architecture">Architecture</a></li>
-                                <li><a href="#ui-api">UI API</a></li>
-                                <li><a href="#logic-api">Logic API</a></li>
-                                <li><a href="#model-api">Model API</a></li>
-                                <li><a href="#storage-api">Storage API</a></li>
-
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#implementation">Implementation</a>
-                            <ul>
-                                <li><a href="#event-driven-design">Event Driven Design</a></li>
-                                <li><a href="#logging">Logging</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="#design">Design</a></li>
+                        <ul>
+                            <li><a href="#architecture">Architecture</a></li>
+                            <li><a href="#ui-api">UI API</a></li>
+                            <li><a href="#logic-api">Logic API</a></li>
+                            <li><a href="#model-api">Model API</a></li>
+                            <li><a href="#storage-api">Storage API</a></li>
+                        </ul>
+                        <li><a href="#implementation">Implementation</a></li>
+                        <ul>
+                            <li><a href="#event-driven-design">Event Driven Design</a></li>
+                            <li><a href="#logging">Logging</a></li>
+                        </ul>
                         <li><a href="#testing">Testing</a></li>
                         <li><a href="#dev-ops">Dev Ops</a></li>
                         <li><a href="#troubleshooting">Troubleshooting</a></li>
                         <li><a href="#known-issues">Known Issues</a></li>
                         <li><a href="#future-plans">Future Plans</a></li>
-                        <li>
-                            <a href="#appendices">Appendices</a>
-                            <ul>
-                                <li><a href="#appendix-a-user-stories">Appendix A: User Stories</a></li>
-                                <li><a href="#appendix-b-use-cases">Appendix B: Use Cases</a></li>
-                                <li><a href="#appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</a></li>
-                                <li><a href="#appendix-d-glossary">Appendix D: Glossary</a></li>
-                                <li><a href="#appendix-e-product-survey">Appendix E: Product Survey</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="#appendices">Appendices</a></li>
+                        <ul>
+                            <li><a href="#appendix-a-user-stories">Appendix A: User Stories</a></li>
+                            <li><a href="#appendix-b-use-cases">Appendix B: Use Cases</a></li>
+                            <li><a href="#appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</a></li>
+                            <li><a href="#appendix-d-glossary">Appendix D: Glossary</a></li>
+                            <li><a href="#appendix-e-product-survey">Appendix E: Product Survey</a></li>
+                        </ul>
 
                     </ul>
                 </p>
 
                 <h2 id="introduction">Introduction</h2>
 
-                <p><em>CommanDo</em> is a to-do list manager for the desktop, carefully designed for those who type fast. To-do items are displayed on a graphical user interface (GUI), split into 2 vertical lists of <em>Events</em> and <em>Tasks</em>, while the user manage their to-do list by typing commands on a text input - just like in a Command Line Interface (CLI).</p>
+                <p><em>CommanDo</em> is a to-do list manager. It is designed to cater for the needs of people who type fast. To-do items are displayed on a graphical user interface (GUI), split into 2 vertical lists of <em>Events</em> and <em>Tasks</em>, while the user manage their to-do list by typing commands on a text input - just like in a Command Line Interface (CLI).</p>
 
                 <figure>
                     <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
@@ -94,12 +87,12 @@
                 <h3 id="target-users">Target Users</h3>
 
                 <p>
-                    Our main target users ("Jim") are characterised by:
+                    Our main target users ("Jim") are characterised by people who...
                     <ul>
-                        <li>Prefers typing over using the mouse</li>
-                        <li>Has most to-do items coming as emails</li>
-                        <li>Updates their to-do list very often and wants speed in doing so</li>
-                        <li>Wants to capture the idea of deadlines in their to-dos</li>
+                        <li>Prefer typing over using the mouse</li>
+                        <li>Have most to-do items coming as emails</li>
+                        <li>Update their to-do list very often and wants speed in doing so</li>
+                        <li>Want to capture the idea of deadlines in their to-do items</li>
                     </ul>
                 </p>
 
@@ -115,7 +108,7 @@
                     <li>Undoing and redoing to-do list operations</li>
                     <li>Importing and exporting to-do list to a human-readable data file</li>
                 </ol>
-                
+
                 <p>The full list of features is outlined in our <a href="#appendix-a-user-stories">User Stories</a>. To ensure that the interface is user-friendly and the codebase stays maintainable, we also set ourselves some <a href="#appendix-c-non-functional-requirements">Non-Functional Requirements</a>.</p>
 
                 <h2 id="setting-up">Setting Up</h2>
@@ -187,16 +180,16 @@
 
                 <ul>
                     <li>
-                        <a href="#ui-api"><strong>UI Component</strong></a>: The UI of the application, which acts as the middleman between the user and the API provided by <strong>Logic</strong> (package <code>seedu.address.ui</code>)
+                        <a href="#ui-api"><strong>UI Component</strong></a>: The UI of the application, which acts as the middleman between the user and the API provided by <strong>Logic</strong> (package <code>seedu.commando.ui</code>)
                     </li>
                     <li>
-                        <a href="#logic-api"><strong>Logic Component</strong></a>: Executes commands from the UI, using the API provided by <strong>Model</strong> and <strong>Storage</strong> (package <code>seedu.address.logic</code>)
+                        <a href="#logic-api"><strong>Logic Component</strong></a>: Executes commands from the UI, using the API provided by <strong>Model</strong> and <strong>Storage</strong> (package <code>seedu.commando.logic</code>)
                     </li>
                     <li>
-                        <a href="#model-api"><strong>Model Component</strong></a>: Defines how data is represented and holds the data of the application in-memory (package <code>seedu.address.model</code>)
+                        <a href="#model-api"><strong>Model Component</strong></a>: Defines how data is represented and holds the data of the application in-memory (package <code>seedu.commando.model</code>)
                     </li>
                     <li>
-                        <a href="#storage-api"><strong>Storage Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.address.storage</code>)
+                        <a href="#storage-api"><strong>Storage Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.commando.storage</code>)
                     </li>
                 </ul>
 
@@ -228,7 +221,7 @@
                         Note that for the <em>Model</em> component, besides the API defined by <code>Model.java</code>, it also contains data structures such as <code>UserPrefs.java</code> and <code>ReadOnlyToDo.java</code> that the other components are dependent on. Such dependencies are listed in the later section <a href="#model-api">Model API</a>
                     </blockquote>
 
-                <p>Underlying all 4 components is the package <code>seedu.address.commons</code>. It is a collection of utility classes and application constants that are used throughout the application. We also use <a href="#event-driven-design">Event Driven Design</a> for components to communicate with one another.</p>
+                <p>Underlying all 4 components is the package <code>seedu.commando.commons</code>. It is a collection of utility classes and application constants that are used throughout the application. We also use <a href="#event-driven-design">Event Driven Design</a> for components to communicate with one another.</p>
 
                 <h4>What happens in a command execution</h4>
 
@@ -285,17 +278,17 @@
                     (Description about what the API does to be filled in here)
                 </p>
 
-                   
+
                 <h2 id="implementation">Commons Implementation</h2>
 
                 <h3 id="event-driven-design">Event Driven Design</h3>
 
                 <p>
-                    For components to inform one another that something has happened, we use <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a>, packaged in <code>EventsCenter.java</code> within <code>seedu.address.commons</code>. This is especially important for lower-level components to communicate with higher-level components that it should not be dependent on.
+                    For components to inform one another that something has happened, we use <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a>, packaged in <code>EventsCenter.java</code> within <code>seedu.commando.commons</code>. This is especially important for lower-level components to communicate with higher-level components that it should not be dependent on.
                 </p>
 
                 <blockquote>
-                    All events should extend <code>BaseEvent.java</code> and be placed in package <code>seedu.address.commons.events</code>.
+                    All events should extend <code>BaseEvent.java</code> and be placed in package <code>seedu.commando.commons.events</code>.
                 </blockquote>
 
                 <p>
@@ -319,13 +312,13 @@
                         <code>SEVERE</code>: Critical problem detected which may possibly cause the termination of the application
                     </li>
                     <li>
-                        <code>WARNING</code>: Can continue, but with caution
+                        <code>WARNING</code>: Actions that can be continued, but with caution
                     </li>
                     <li>
                         <code>INFO</code>: Information showing the noteworthy actions by the application
                     </li>
                     <li>
-                        <code>FINE</code>: Details that is not usually noteworthy but may be useful in debugging e.g. print the actual list instead of just its size
+                        <code>FINE</code>: Details that are not usually noteworthy but may be useful in debugging e.g. print the actual list instead of just its size
                     </li>
                 </ul>
 
@@ -358,7 +351,7 @@
                 <h3 id="types-of-tests">Types of Tests</h3>
 
                 <ol>
-                    <li><strong>GUI Tests - </strong>These are <em>System Tests</em> that test the entire application by simulating user actions on the GUI. These are in the <code>guitests</code> package.</li>
+                    <li><strong>GUI Tests - </strong>They are <em>System Tests</em> that test the entire application by simulating user actions on the GUI. These are in the <code>guitests</code> package.</li>
 
                     <blockquote>
                         <strong>Headless GUI Testing</strong> Thanks to the <a href="https://github.com/TestFX/TestFX">TestFX</a> library we use, our GUI tests can be run in the <em>headless</em> mode. In the headless mode, GUI tests do not show up on the screen. That means you can do other things on your device while the tests are running. See <a href="UsingGradle.md#running-tests">UsingGradle.md</a> to learn how to run tests in headless mode.
@@ -368,17 +361,17 @@
                         <strong>Non-GUI Tests - </strong>They include:
                         <p>
                             <ol>
-                                <li>
-                                    <strong>Unit tests</strong> targeting the lowest-level methods/classes. <br>
-                                    E.g. <code>seedu.address.commons.UrlUtilTest</code>
+                                <li type=i>
+                                    <strong>Unit tests:</strong> targeting the lowest-level methods/classes. <br>
+                                    E.g. <code>seedu.commando.commons.UrlUtilTest</code>
                                 </li>
-                                <li>
-                                    <strong>Integration tests</strong> that are checking the integration of multiple code units (those code units are assumed to be working).<br>
-                                    E.g. <code>seedu.address.storage.StorageManagerTest</code>
+                                <li type=i>
+                                    <strong>Integration tests:</strong> checking the integration of multiple code units (those code units are assumed to be working).<br>
+                                    E.g. <code>seedu.commando.storage.StorageManagerTest</code>
                                 </li>
-                                <li>
-                                    <strong>Hybrids</strong> test multiple code units as well as how the are connected together.<br>
-                                    E.g. <code>seedu.address.logic.LogicManagerTest</code>
+                                <li type=i>
+                                    <strong>Hybrid tests:</strong> testing multiple code units as well as how the are connected together.<br>
+                                    E.g. <code>seedu.commando.logic.LogicManagerTest</code>
                                 </li>
                             </ol>
                         </p>
@@ -439,7 +432,7 @@
 
                 <h3>Eclipse reports some required libraries missing.</h3>
 
-                <p>Libraries used by the project might not have been downloaded during project import, or new ones might have been added. <a href="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/UsingGradle.md">Run tests using Gradle</a> once to refresh the libraries in Eclipse</p>
+                <p>Libraries used by the project might not have been downloaded during project import, or new ones might have been added. <a href="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/UsingGradle.md">Run tests using Gradle</a> once to refresh the libraries in Eclipse.</p>
 
                 <h2 id="known-issues">Known Issues</h2>
 
@@ -622,106 +615,163 @@
                     </ul>
                 </p>
 
+                <div class="pagebreak"> </div>
+
                 <h3 id="appendix-b-use-cases">Appendix B: Use Cases</h3>
 
                 <p>In all the listed use cases, the <strong>System</strong> is our application and the <strong>Actor</strong> is the user.</p>
 
                 <h4>
-                    <a id="uc01---add-to-do-item" class="anchor" href="#uc01---add-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC01 - Add to-do item
+                    <a id="uc01---add-to-do-item-event" class="anchor" href="#uc01---add-to-do-item-event" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC01 - Add to-do item (Event)
                 </h4>
 
                 <span><strong>MSS:</strong></span>
-                <p>
-                    1. User types in an <code>add</code> command with details of the to-do item<br>
-                    2. Application adds the to-do item to the current to-do list<br>
-                    3. Application updates the GUI to reflect the changes<br>
-                    Use case ends
-                </p>
+                <ul>
+                    <li>1. User types in an <code>add</code> command with details of the to-do item including the title and timeframe</li>
+                    <li>2. Application adds the event to the current to-do list</li>
+                    <li>3. Application updates the GUI to reflect the changes</li>
+                    <li><i>*Use case ends</i></li>
+                </ul>
 
                 <span><strong>Extensions:</strong></span>
-                <p>
-                    1a. Command was not properly formatted<br>
-                    1a1. Application uses GUI to report details of the error in parsing command<br>
-                    1a2. Application uses GUI to show correct <code>add</code> command syntax and a sample <code>add</code> command<br>
-                    Use case ends
-                </p>
+
+                <ul>
+                    <li>1a. Command was not properly formatted</li>
+                    <ul>
+                        <li>a. Application uses GUI to report details of the error in parsing command</li>
+                        <li>b. Application uses GUI to show correct <code>add</code> command syntax and a sample <code>add</code> command</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
+
+                <ul>
+                    <li>1b. Title contains keywords (i.e. "from", "to") as description or the timeframe does not match the time format</li>
+                    <ul>
+                        <li>a. Application considers all to be title and adds the to-do item as task to the current to-do list<br></li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
+
+                <h4>
+                    <a id="uc01---add-to-do-item-task" class="anchor" href="#uc01---add-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC01 - Add to-do item (Task)
+                </h4>
+
+                <span><strong>MSS:</strong></span>
+                <ul>
+                    <li>1. User types in an <code>add</code> command with details of the to-do item</li>
+                    <li>2. Application adds the task item to the current to-do list</li>
+                    <li>3. Application updates the GUI to reflect the changes</li>
+                    <li><i>*Use case ends</i></li>
+                </ul>
+
+                <span><strong>Extensions:</strong></span>
+
+                <ul>
+                    <li>1a. Command was not properly formatted</li>
+                    <ul>
+                        <li>a. Application uses GUI to report details of the error in parsing command</li>
+                        <li>b. Application uses GUI to show correct <code>add</code> command syntax and a sample <code>add</code> command</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
+
+                <ul>
+                    <li>1b. Title contains keywords (i.e. "by") as description or the deadline does not match the time format</li>
+                    <ul>
+                        <li>a. Application considers all to be title and adds the task item to the current to-do list</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
                 <h4>
                     <a id="uc02---delete-to-do-item" class="anchor" href="#uc02---delete-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC02 - Delete to-do item
                 </h4>
 
                 <span><strong>MSS:</strong></span>
-                <p>
-                    1. User types in an <code>delete</code> command with the index of the to-do item<br>
-                    2. Application deletes the to-do item to the current to-do list<br>
-                    3. Application updates the GUI to reflect the changes<br>
-                    Use case ends
-                </p>
+                <ul>
+                    <li>1. User types in a <code>delete</code> command with the index of the to-do item</li>
+                    <li>2. Application deletes the to-do item to the current to-do list</li>
+                    <li>3. Application updates the GUI to reflect the changes</li>
+                    <li><i>*Use case ends</i></li>
+                </ul>
 
 
                 <span><strong>Extensions:</strong></span>
-                <p>
-                    1a. Command was not properly formatted<br>
-                    1a1. Application uses GUI to report details of the error in parsing command<br>
-                    1a2. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command<br>
-                    Use case ends
-                </p>
 
-                <p>
-                    1b. Index is invalid<br>
-                    1b1. Application uses GUI to report that index is invalid<br>
-                    Use case ends
-                </p>
+                <ul>
+                    <li>1a. Command was not properly formatted</li>
+                    <ul>
+                        <li>a. Application uses GUI to report details of the error in parsing command</li>
+                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
+
+                <ul>
+                    <li>1b. The index of the to-do item is invalid</li>
+                    <ul>
+                        <li>a. Application uses GUI to report that index is invalid</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
                 <h4>
                     <a id="uc03---find-to-do-items" class="anchor" href="#uc03---find-to-do-items" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC03 - Find to-do items
                 </h4>
 
                 <span><strong>MSS:</strong></span>
-                <p>
-                    1. User types in an <code>find</code> command with a list of words to search for<br>
-                    2. Application searches through the to-do list and updates the GUI to show only the matched to-do items<br>
-                    Use case ends
-                </p>
+                <ul>
+                    <li>1. User types in a <code>find</code> command with a list of words to search for</li>
+                    <li>2. Application searches through the to-do list and updates the GUI to show only the matched to-do items</li>
+                    <li><i>*Use case ends</i></li>
+                </ul>
 
                 <span><strong>Extensions:</strong></span>
-                <p>
-                    1a. No words were given<br>
-                    1a1. Application updates GUI to show all to-do items<br>
-                    Use case ends
-                </p>
+                <ul>
+                    <li>1a. No words were given</li>
+                    <ul>
+                        <li>a. Application updates GUI to show all to-do items</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
-                <p>
-                    2a. No to-do items matched<br>
-                    2a1. Application uses GUI to report that no to-do items were matched<br>
-                    Use case ends
-                </p>
+                <ul>
+                    <li>2a. No to-do items matched</li>
+                    <ul>
+                        <li>a. Application uses GUI to report that no to-do items were matched</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
                 <h4>
                     <a id="uc04---edit-to-do-item" class="anchor" href="#uc04---edit-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC04 - Edit to-do item
                 </h4>
 
                 <span><strong>MSS:</strong></span>
-                <p>
-                    1. User types in an <code>edit</code> command with the screen index and changed details of the to-do item<br>
-                    2. Application edits the to-do item to the current to-do list<br>
-                    3. Application updates the GUI to reflect the changes<br>
-                    Use case ends
-                </p>
+                <ul>
+                    <li>1. User types in an <code>edit</code> command with the index of the to-do item and changed details of the to-do item</li>
+                    <li>2. Application edits the to-do item to the current to-do list</li>
+                    <li>3. Application updates the GUI to reflect the changes</li>
+                    <li><i>*Use case ends</i></li>
+                </ul>
 
                 <span><strong>Extensions:</strong></span>
-                <p>
-                    1a. Command was not properly formatted<br>
-                    1a1. Application uses GUI to report details of the error in parsing command<br>
-                    1a2. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>edit</code> command<br>
-                    Use case ends
-                </p>
+                <ul>
+                    <li> 1a. Command was not properly formatted</li>
+                    <ul>
+                        <li>a. Application uses GUI to report details of the error in parsing command</li>
+                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>edit</code> command</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
-                <p>
-                    1b. Screen index is invalid<br>
-                    1b1. Application uses GUI to report that screen index is invalid<br>
-                    Use case ends
-                </p>
+                <ul>
+                    <li>1b. The index of the to-do item is invalid</li>
+                    <ul>
+                        <li>a. Application uses GUI to report that the index of the to-do item is invalid</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
 
                 <h3 id="appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</h3>
 
@@ -776,17 +826,17 @@
                             <tr>
                                 <td>Trello (Sheng Xuan)</td>
                                 <td align="left">+ Multiple platform support (Web, mobile, desktop) <br> + Due date function, which is suitable for tasks with deadlines <br> + Search by keyword of a task <br> + Archive completed tasks <br> + Check list to track the progress of each task <br> + Attachment files to a task (ie. forms to reply in a email)</td>
-                                <td align="left">- At least 2 clicks (taps) are needed to add a new task <br> - Calendar view function is not free to use. In free version, no timeline can be shown, add events happen in specific dates are not supported <br> - Unable to undo</td>
+                                <td align="left">- At least 2 clicks (taps) are needed to add a new task <br> - Calendar view function is not free to use. In free version, no timeline is provided. Adding events that happen in specific dates are not supported <br> - Unable to undo</td>
                             </tr>
                             <tr>
                                 <td>Anydo (Conan)</td>
                                 <td align="left">+ Able to push tasks to a later date <br> + Easily reorder tasks <br> + Easy to use interface (4 major groups) <br> + Can be used on mobile and on browser <br> + Supports double confirmation of deleting a task when complete <br> + Can add details in later</td>
-                                <td align="left">- No clear distinguishing of the 3 types of tasks <br> - No sense of timeline, just tasks to complete by the end of the day <br> - Deadlines are not shown unless the task is clicked <br> - No search function (however, you can Ctrl+F, though no content search) <br> - The other 2 group “Upcoming” and “Someday” is kind of ambiguous</td>
+                                <td align="left">- No clear distinguishing of the 3 types of tasks <br> - No sense of timeline, just tasks to complete by the end of the day <br> - Deadlines are not shown unless the task is clicked <br> - No search function (however, you can Ctrl+F, though no content search) <br> - The other 2 groups “Upcoming” and “Someday” is kind of ambiguous</td>
                             </tr>
                             <tr>
                                 <td>Google Calendar (Yun Chuan)</td>
                                 <td align="left">+ Able to mark as done, and undo “done” <br> + Clean, simple interface which is not cluttered <br> + Autocomplete based on crowd-sourced or history (but doesn’t feel very “intelligent”) <br> + Push notifications for reminders/events <br> + Able to repeat events <br> + Both on mobile and on website, sync-ed <br> + “All-day” events <br> + “Schedule” view lists everything in chronological order, starting from today <br> + Able to “zoom in” (day view) and “zoom out” (month view) <br> + Split into: “events” and “reminders”, events have start to end time, reminders only have a reminder time</td>
-                                <td align="left">- Online, cannot export to data file <br> - Unable to mark deadlines accurately (not an “event”) <br> - Cannot search for todos <br> - Too many screens or user actions to add a task</td>
+                                <td align="left">- Online, cannot export to data file <br> - Unable to mark deadlines accurately (not an “event”) <br> - Cannot search for to-do items <br> - Too many screens or user actions to add a task</td>
                             </tr>
                         </tbody>
                     </table>

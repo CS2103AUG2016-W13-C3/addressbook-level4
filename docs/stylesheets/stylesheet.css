@@ -39,7 +39,7 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	font-family:'Roboto';
+	font-family:'Roboto', Arial, sans-serif;
 	font-size: 100%;
 	vertical-align: baseline;
 	border: 0;
@@ -63,7 +63,7 @@ q:before, q:after {
 
 /* LAYOUT STYLES */
 body {
-  font-family: 'Roboto SemiLight', sans-serif;
+  font-family: 'Roboto SemiLight', Arial, sans-serif;
   font-size: 1em;
   line-height: 1.5;
   color: #1d1d1d;
@@ -174,7 +174,7 @@ a.button span {
 code, pre {
   padding-left: 3px;
   padding-right: 3px;
-  font-family: 'Anonymous Pro';
+  font-family: 'Anonymous Pro', Consolas;
   color: #303030;
 }
 

@@ -13,7 +13,8 @@ public class UndoCommand extends Command {
     @Override
     public CommandResult execute() throws NoContextException {
         Model model = getModel();
-        
+
+        //check if there is undo action taken
         if (model.undoToDoList()) {
             return new CommandResult(Messages.UNDID_COMMAND);
         } else {

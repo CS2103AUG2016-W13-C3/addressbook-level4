@@ -1,5 +1,5 @@
-﻿ul > li, ol > li {
-   margin-bottom: 10px;
+﻿ul {
+    list-style-type: none;
 }
 
 blockquote {

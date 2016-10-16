@@ -30,24 +30,22 @@
                     <ul id="table-of-contents">
                         <li><a href="#about">What is CommanDo?</a></li>
                         <li><a href="#quick-start">Getting Started</a></li>
-                        <li>
-                            <a href="#commands">Commands</a>
-                            <ul>
-                                <li><a href="#viewing-help-help">Viewing Help</a></li>
-                                <li><a href="#adding-to-do-items-add">Adding To-Do Items</a></li>
-                                <li><a href="#editing-to-do-items-edit">Editing To-Do Items</a></li>
-                                <li><a href="#deleting-to-do-items-delete">Deleting To-Do Items</a></li>
-                                <li><a href="#finishing-to-do-items-finish">Finishing To-Do Items</a></li>
-                                <li><a href="#finding-to-do-items-find">Finding To-Do Items</a></li>
-                                <li><a href="#clearing-your-to-do-list-clear">Clearing Your To-Do List</a></li>
-                                <li><a href="#setting-save-location-store">Setting Save Location</a></li>
-                                <li><a href="#exporting-export">Exporting</a></li>
-                                <li><a href="#importing-import">Importing</a></li>
-                                <li><a href="undoing-undo">Undoing</a></li>
-                                <li><a href="redoing-redo">Redoing</a></li>
-                                <li><a href="exiting-the-application-exit">Exiting the Application</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="#commands">Commands</a></li>
+                        <ul>
+                            <li><a href="#viewing-help-help">Viewing Help</a></li>
+                            <li><a href="#adding-to-do-items-add">Adding To-Do Items</a></li>
+                            <li><a href="#editing-to-do-items-edit">Editing To-Do Items</a></li>
+                            <li><a href="#deleting-to-do-items-delete">Deleting To-Do Items</a></li>
+                            <li><a href="#finishing-to-do-items-finish">Finishing To-Do Items</a></li>
+                            <li><a href="#finding-to-do-items-find">Finding To-Do Items</a></li>
+                            <li><a href="#clearing-your-to-do-list-clear">Clearing Your To-Do List</a></li>
+                            <li><a href="#setting-save-location-store">Setting Save Location</a></li>
+                            <li><a href="#exporting-export">Exporting</a></li>
+                            <li><a href="#importing-import">Importing</a></li>
+                            <li><a href="undoing-undo">Undoing</a></li>
+                            <li><a href="redoing-redo">Redoing</a></li>
+                            <li><a href="exiting-the-application-exit">Exiting the Application</a></li>
+                        </ul>
                         <li><a href="#faq">FAQ & Troubleshooting</a></li>
                         <li><a href="#cheatsheet">Cheatsheet</a></li>
                     </ul>
@@ -141,7 +139,7 @@
 
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/addEvent.png" width="600">
-                    <figcaption>Result of adding an <em>Event</em> with command: 
+                    <figcaption>Result of adding an <em>Event</em> with command:
                     <code>add contemplate life from 5 feb 1200 to 5 feb 1300 #yolo</code></figcaption>
                 </figure>
 
@@ -191,7 +189,7 @@
                 <pre><span class="inputstart">&gt;&gt;</span> edit <span>&lt;index&gt; [&lt;description&gt;</span>] [from <span>&lt;start_datetime&gt;</span>] [to <span>&lt;end_datetime&gt;</span>] [#<span>&lt;tag&gt;</span>...]</pre>
 
                 <blockquote>
-                    <b>Index of To-Do Item</b> To refer to an existing to-do item in <em>CommanDo</em>, its <em>Index</em> is used, which is the number visually tagged to a to-do item on the interface. This clarified in the following figure:
+                    <b>Index of To-Do Item</b> To refer to an existing to-do item in <em>CommanDo</em>, its <em>Index</em> is used, which is the number visually tagged to a to-do item on the interface. This is clarified in the following figure:
 
                     <figure>
                         <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/index.png" width="600">
@@ -300,7 +298,7 @@
                 <span><strong>Examples:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> store <span>../../Dropbox/work/todolist.xml</span></pre>
                 <span><strong>What it does: </strong> Changes the default file path to store the to-do list data to <code>../../Dropbox/work/todolist.xml</code> relative to your <code>commando.jar</code>, and saves the latest data to that file.</span>
-                
+
                 <h3 id="exporting-export">Exporting: <code>export</code></h3>
 
                 <p>If you want to copy your to-do list data file in your current save location to another local destination, there's no need to manually do so. Instead, using the <code>export</code> command saves a copy of the current to-do list data to the specified file at <code>&lt;file_path&gt;</code>.</p>
@@ -311,7 +309,7 @@
                 <h3 id="importing-import">Importing: <code>import</code></h3>
 
                 <p>If you already have an existing to-do list data file (possibly from your other devices) and want you use it in <em>CommanDo</em>, the <code>import</code> command can import a valid data file. <em>Note that it overrides the current to-do list with the imported to-do list!</em>
-                
+
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> import <span>&lt;file_path&gt;</span></pre>
 
@@ -335,35 +333,35 @@
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> exit</pre>
-                
+
                 <hr>
 
                 <h2 id="faq">FAQ & Troubleshooting</h2>
 
-                <h3>Clicking on <code>commando.jar</code> doesn't work or gives an error.</h3>
+                <h3>1. Clicking on <code>commando.jar</code> doesn't work or gives an error.</h3>
 
                 <p>You'll need to install the latest version of Java. Refer to the <a target="_blank" href="https://java.com/en/download/help/download_options.xml">installation guide</a>.</p>
 
-                <h3>How do I save my to-do list after modifying it?</h3>
+                <h3>2. How do I save my to-do list after modifying it?</h3>
 
                 <p>Your to-do list is automatically saved to your file system after any command that changes the data. There is no need to save manually.</p>
 
-                <h3>Is sharing across devices supported?</h3>
+                <h3>3. Is sharing across devices supported?</h3>
 
                 <p><em>CommanDo</em> doesn't directly support syncing of the to-do list across devices. Instead, use the <code>export</code> command to generate a save data file, transfer the file to another device, and use the <code>import</code> command on the 2nd device to import your to-do list from that save file. Alternatively, you can use a cloud-syncing service (e.g. <a href="dropbox.com">Dropbox</a>) and the <code>store</code> command to sync the to-do list automatically by setting the save location to the same file on both devices. </p>
 
-                <h3>My commands keep giving me an error and I have no idea what is wrong.</h3>
+                <h3>4. My commands keep giving me an error and I have no idea what is wrong.</h3>
 
                 <p>When the format of your command is invalid, <em>CommanDo</em> will tell you the nature of the error and display the correct command format in the command feedback box just below the command input. <em>CommanDo</em> relies on a specific command syntax to understand your commands, in which the first word in your command is the <em>command word</em>. Based on the <em>command word</em>, refer to the appropriate section under <a href="#commands">Commands</a>, read up on the command format for that command, and try out some of the given sample commands.</p>
 
-                <h3>I keep forgetting how to use certain commands.</h3>
+                <h3>5. I keep forgetting how to use certain commands.</h3>
 
                 <p>The <code>help</code> command (explained in the section <a href="#viewing-help-help">above</a>) can be used to quickly summon this guide or a relevant section of this guide when you need it. Alternatively, you can just try typing your command - if it is invalid, <em>CommanDo</em> will display the correct command format for that command in the command feedback box just below the command input. This might be helpful for you to correctively learn the command format.</p>
 
-                <h3 id="supported-date-time-formats">What date & time formats can I use in my commands?</h3>
-                
+                <h3 id="supported-date-time-formats">6. What date & time formats can I use in my commands?</h3>
+
                 <p><em>CommanDo</em> supports a wide variety of date and time formats, backed by the awesome date parser library <a href="http://natty.joestelmach.com/" target="_blank">Natty</a>.</p>
-                
+
                 <p>A valid datetime is defined as:</p>
                 <ol>
                     <li>A valid date</li>
@@ -374,7 +372,7 @@
                 <p>* In this case, the datetime will be interpreted to be on the same date as the first datetime</p>
 
                 <h4>Valid Dates</h4>
-                
+
                 <div class="datagrid">
                     <table>
                         <thead>
