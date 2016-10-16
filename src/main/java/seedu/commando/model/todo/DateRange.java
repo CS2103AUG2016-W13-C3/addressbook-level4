@@ -1,6 +1,7 @@
 package seedu.commando.model.todo;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
@@ -47,7 +48,7 @@ public class DateRange {
     
     @Override
     public String toString() {
-        return this.startDate.toString() + " " + this.endDate.toString();
+        return startDate + " - " + endDate;
     }
 
     @Override
@@ -60,7 +61,7 @@ public class DateRange {
 
     @Override
     public int hashCode() {
-        return startDate.hashCode() + endDate.hashCode();
+        return Objects.hash(startDate, endDate);
     }
 
 }

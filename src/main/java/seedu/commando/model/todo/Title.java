@@ -4,24 +4,16 @@ import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 
 /**
- * Represents the value of a to-do
- * Guarantees: immutable; is valid as declared in {@link #isValid(String)}
+ * Represents the title of a to-do
  */
 public class Title {
-
-    private static final String TITLE_VALIDATION_REGEX = ".+";
 
     public final String value;
 
     /**
      * Constructor for a value
-     * @throws IllegalValueException if given value is invalid
      */
-    public Title(String value) throws IllegalValueException {
-        if (!isValid(value)) {
-            throw new IllegalValueException(Messages.TODO_TITLE_CONSTRAINTS);
-        }
-
+    public Title(String value) {
         value = value.trim();
         this.value = value;
     }
@@ -30,16 +22,7 @@ public class Title {
      * Copy constructor
      */
     public Title(Title title) {
-        assert isValid(title.value); // should already have been checked
-
-        this.value = title.value;
-    }
-
-    /**
-     * Returns true if a given string is a valid value
-     */
-    private static boolean isValid(String title) {
-        return title != null && title.matches(TITLE_VALIDATION_REGEX);
+        this.value = title.value.trim();
     }
 
     @Override
