@@ -64,12 +64,14 @@ public class CommandFactory {
                 return buildRedoCommand();
             case ExportCommand.COMMAND_WORD:
             	return bulidExportCommand();
+            	return buildExportCommand();
             default:
                 return new InvalidCommand(Messages.UNKNOWN_COMMAND);
         }
     }
 
     private Command bulidExportCommand() {
+    private Command buildExportCommand() {
     	//Extract the file path
     	String path = sequentialParser.getInput().trim();
     	if(path.isEmpty()){
