@@ -62,6 +62,8 @@ public class CommandFactory {
                 return buildUndoCommand();
             case RedoCommand.COMMAND_WORD:
                 return buildRedoCommand();
+            case StoreCommand.COMMAND_WORD:
+            	return buildStoreCommand();
             case ExportCommand.COMMAND_WORD:
             	return buildExportCommand();
             case ImportCommand.COMMAND_WORD:
@@ -92,6 +94,20 @@ public class CommandFactory {
     	command = new ExportCommand(path);
 		return command;
 	}
+
+	private Command buildStoreCommand() {
+    	//Extract the file path
+    	String path = sequentialParser.getInput().trim();
+    	if(path.isEmpty()){
+    		return new InvalidCommand(Messages.MISSING_STORE_PATH);
+    	}
+    	StoreCommand command;
+    	command = new StoreCommand(path); 	
+    	return command;
+    	
+    	
+	}
+
 	private Command buildExitCommand() {
         return new ExitCommand();
     }

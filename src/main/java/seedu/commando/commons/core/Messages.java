@@ -10,6 +10,8 @@ public class Messages {
     public static final String MISSING_TODO_DATERANGE_START = "Missing start date for date range of to-do.";
     public static final String MISSING_TODO_DATERANGE_END = "Missing end date for date range of to-do.";
     public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.";
+    public static final String MISSING_STORE_PATH = "Missing the path to store.";
+    public static final String MISSING_STORE_FILE = "Missing the file name to store.";
     public static final String MISSING_EXPORT_PATH = "Missing the path to export.";
     public static final String MISSING_EXPORT_FILE = "Missing the file name to export.";
     public static final String MISSING_IMPORT_FILE = "Missing the file name to import.";
@@ -38,6 +40,8 @@ public class Messages {
     public static final String UNDID_COMMAND_FAIL = "Nothing more to undo!";
     public static final String REDID_COMMAND = "Redid the last undo command.";
     public static final String REDID_COMMAND_FAIL = "Nothing more to redo!";
+    public static final String STORE_COMMAND = "Changed the storage path to: %1$s.";
+    public static final String STORE_COMMAND_FILE_EXIST = "Failed to store the storage file to %1$s : destinaton file exists";
     public static final String EXPORT_COMMAND = "Export the storage file to: %1$s.";
     public static final String EXPORT_COMMAND_FILE_EXIST = "Failed to Export the storage file to %1$s : destination file exits";
     public static final String IMPORT_COMMAND = "Import the storage file from: %1$s.";
