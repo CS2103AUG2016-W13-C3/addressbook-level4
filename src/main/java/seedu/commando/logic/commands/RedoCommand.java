@@ -1,11 +1,9 @@
 package seedu.commando.logic.commands;
 
-import java.util.List;
-
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
+import seedu.commando.logic.UiLogic;
 import seedu.commando.model.Model;
-import seedu.commando.model.todo.ReadOnlyToDo;
 
 public class RedoCommand extends Command {
     
@@ -16,7 +14,7 @@ public class RedoCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
+    public CommandResult  execute(EventsCenter eventsCenter, UiLogic uiLogic, Model model) {
         assert model != null;
         
         if (model.redoToDoList()) {

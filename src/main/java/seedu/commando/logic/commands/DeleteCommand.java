@@ -3,6 +3,8 @@ package seedu.commando.logic.commands;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.logic.UiLogic;
+import seedu.commando.logic.UiToDo;
 import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.todo.ReadOnlyToDo;
@@ -25,11 +27,12 @@ public class DeleteCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
+    public CommandResult execute(EventsCenter eventsCenter, UiLogic uiLogic, Model model)
+        throws IllegalValueException {
         assert model != null;
-        assert toDoAtIndices != null;
+        assert uiLogic != null;
 
-        Optional<ReadOnlyToDo> toDoToDelete = getToDoAtIndex(toDoAtIndices, toDoIndex);
+        Optional<UiToDo> toDoToDelete = uiLogic.getToDoAtIndex(toDoIndex);
 
         if (!toDoToDelete.isPresent()) {
             return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex), true);

@@ -133,23 +133,31 @@ public class SequentialParserTest {
     @Test
     public void extractPrefixedWords_noMatches()  {
         sequentialParser.setInput("no matches");
-        assertTrue(sequentialParser.extractPrefixedWords("#").isEmpty());
+        assertTrue(sequentialParser.extractPrefixedWords("#", false).isEmpty());
         assertEquals("no matches", sequentialParser.getInput());
     }
 
     @Test
     public void extractPrefixedWords_allTags()  {
         sequentialParser.setInput("#tag1 #tag2 #tag3");
-        assertEquals(Arrays.asList("tag1", "tag2", "tag3"), sequentialParser.extractPrefixedWords("#"));
+        assertEquals(Arrays.asList("#tag1", "#tag2", "#tag3"), sequentialParser.extractPrefixedWords("#", false));
         assertEquals("", sequentialParser.getInput().trim());
     }
 
     @Test
     public void extractPrefixedWords_tagsWithOtherWords()  {
         sequentialParser.setInput("other #tag1 #tag2 words");
-        assertEquals(Arrays.asList("tag1", "tag2"), sequentialParser.extractPrefixedWords("#"));
+        assertEquals(Arrays.asList("#tag1", "#tag2"), sequentialParser.extractPrefixedWords("#", false));
         assertEquals(Arrays.asList("other", "words"), sequentialParser.extractWords());
     }
+
+    @Test
+    public void extractPrefixedWords_removePrefix_tagsWithOtherWords()  {
+        sequentialParser.setInput("other #tag1 #tag2 words");
+        assertEquals(Arrays.asList("tag1", "tag2"), sequentialParser.extractPrefixedWords("#", true));
+        assertEquals(Arrays.asList("other", "words"), sequentialParser.extractWords());
+    }
+
 
     @Test
     public void extractTextFromIndex_indexWithKeywords()  {

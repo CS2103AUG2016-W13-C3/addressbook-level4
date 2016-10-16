@@ -2,6 +2,7 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
+import seedu.commando.logic.UiLogic;
 import seedu.commando.model.Model;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
@@ -23,15 +24,18 @@ public class FindCommand extends Command {
         this.keywords = keywords;
     }
 
+    /**
+     * Asserts that {@code uiLogic} is non-null
+     */
     @Override
-    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
-        assert model != null;
+    public CommandResult execute(EventsCenter eventsCenter, UiLogic uiLogic, Model model) {
+        assert uiLogic != null;
 
         if (keywords.size() > 0) {
-            model.updateToDoListFilter(keywords);
-            return new CommandResult(String.format(Messages.FIND, model.getFilteredToDoList().size()));
+            uiLogic.setToDoListFilter(keywords);
+            return new CommandResult(String.format(Messages.FIND, uiLogic.getObservableEvents().size(), uiLogic.getObservableTasks().size()));
         } else {
-            model.clearToDoListFilter();
+            uiLogic.clearToDoListFilter();
             return new CommandResult(Messages.CLEAR_FIND);
         }
     }

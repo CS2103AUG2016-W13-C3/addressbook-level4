@@ -4,6 +4,7 @@ package seedu.commando.logic.commands;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.events.ui.ShowHelpRequestEvent;
+import seedu.commando.logic.UiLogic;
 import seedu.commando.model.Model;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
@@ -32,8 +33,11 @@ public class HelpCommand extends Command {
         this.commandWord = commandWord;
     }
 
+    /**
+     * Asserts that {@param eventsCenter} is non-null
+     */
     @Override
-    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
+    public CommandResult execute(EventsCenter eventsCenter, UiLogic uiLogic, Model model) {
         eventsCenter.post(new ShowHelpRequestEvent(commandWord));
         return new CommandResult(Messages.HELP_WINDOW_SHOWN);
     }

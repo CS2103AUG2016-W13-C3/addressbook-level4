@@ -117,11 +117,11 @@ public class SequentialParser {
     /**
      * Extracts all words prefixed with {@param prefix} as a list,
      * in the order that appears in the input
-     * Eg, method("#") on input = "some #tag1 #tag2 thing" returns ["tag1", "tag2"]
+     * Eg, extractPrefixedWords("#", true) on input = "some #tag1 #tag2 thing" returns ["tag1", "tag2"]
      * and resulting input = "some  thing"
      * Asserts {@param prefix} is non-null
      */
-    public List<String> extractPrefixedWords(String prefix) {
+    public List<String> extractPrefixedWords(String prefix, boolean ifRemovePrefix) {
         assert prefix != null;
 
         List<String> words = new LinkedList<>();
@@ -134,7 +134,7 @@ public class SequentialParser {
 
             // Check prefix of word
             if (word.indexOf(prefix) == 0) {
-                words.add(word.substring(prefix.length())); // Add without prefix
+                words.add(ifRemovePrefix ? word.substring(prefix.length()) : word); // Add without prefix
                 input = input.substring(0, matcher.start())
                     + input.substring(matcher.end()); // Remove matched word from input
 
