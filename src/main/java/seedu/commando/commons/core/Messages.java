@@ -22,10 +22,8 @@ public class Messages {
     public static final String TODO_NO_EDITS = "Nothing interesting happens.";
     public static final String TODO_ALREADY_FINISHED = "To-do already finished: %1$s";
     public static final String TODO_NOT_FOUND = "To-do not found: %1$s";
-    public static final String FIND = "Found %1$d to-do item(s).";
+    public static final String FIND = "Found %1$d events and %2$d tasks.";
     public static final String CLEAR_FIND = "Listed all to-do items.";
-    public static final String TODO_TITLE_CONSTRAINTS = "Title cannot be an empty string.";
-    public static final String TODO_TAG_CONSTRAINTS = "Tags cannot contain spaces.";
     public static final String TODO_ITEM_INDEX_INVALID = "Invalid to-do index: %1$d.";
     public static final String EXIT_APPLICATION = "Exiting application...";
     public static final String TODO_LIST_CLEARED = "Cleared to-do list!";
