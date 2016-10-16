@@ -4,9 +4,9 @@ import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.parser.DateTimeParser;
 import seedu.commando.logic.parser.SequentialParser;
-import sun.plugin2.message.Message;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -186,7 +186,14 @@ public class CommandFactory {
             KEYWORD_DATERANGE_START,
             KEYWORD_DATERANGE_END,
             KEYWORD_DUEDATE
-        ).ifPresent(title -> command.title = title);
+        ).ifPresent(title -> {
+            command.title = title;
+
+            // If title is set but no tags, remove tags as well
+            if (tags.isEmpty()) {
+                command.tags = Collections.emptySet();
+            }
+        });
 
         // Put in tags
         if (!tags.isEmpty()) {
