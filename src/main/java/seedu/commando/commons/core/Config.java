@@ -16,7 +16,24 @@ public class Config {
     public static String UserGuideUrl = "https://cs2103aug2016-w13-c3.github.io/main/user";
     public static String AboutUsUrl = "https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/AboutUs.md";
     private static Map<String, String> CommandWordsToUserGuideAnchors = new HashMap<String, String>() {{
-        put("cheatsheet", "command-cheatsheet");
+        put("cheatsheet", "cheatsheet");
+        put("add", "adding-to-do-items-add");
+        put("edit", "editing-to-do-items-edit");
+        put("clear", "clearing-all-to-do-items-clear");
+        put("delete", "deleting-to-do-items-delete");
+        put("finish", "finishing-to-do-items-finish");
+        put("store", "setting-save-location-set");
+        put("export", "exporting-export");
+        put("import", "importing-import");
+        put("undo", "undoing-undo");
+        put("redo", "redoing-redo");
+        put("exit", "exiting-the-application");
+        put("faq", "faq");
+        put("about", "about");
+        put("commands", "commands");
+        put("datetime formats", "supported-date-time-formats");
+        put("find", "finding-to-do-items-find");
+        put("search logic", "search-logic");
     }};
 
     /**

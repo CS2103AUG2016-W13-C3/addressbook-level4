@@ -47,7 +47,7 @@ public class EventCard extends UiPart{
     @FXML
     public void initialize() {
         titleLabel.setText(toDo.getTitle().value);
-        indexLabel.setText(String.valueOf(index));
+        indexLabel.setText(String.valueOf(index) + ". ");
 
         setLabelContent();
         setLabelStyle();
@@ -68,7 +68,7 @@ public class EventCard extends UiPart{
 
     private void setLabelStyle() {
         eventPane.setStyle("-fx-background-color: #FFFFFF");
-        eventPaneInner.setStyle("-fx-background-color: #DCDCDC");
+        eventPaneInner.setStyle("-fx-background-color: #DCDCDC; -fx-background-radius: 8px;");
         startLabel.setStyle("-fx-text-fill: #053a8e; -fx-font-family: Microsoft Yahei Light");
         endLabel.setStyle("-fx-text-fill: #053a8e; -fx-font-family: Microsoft Yahei Light");
         indexLabel.setStyle("-fx-font-family: Lucida Sans Unicode");

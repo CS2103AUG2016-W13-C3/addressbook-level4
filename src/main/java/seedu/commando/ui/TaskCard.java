@@ -67,7 +67,7 @@ public class TaskCard extends UiPart{
 
     private void setLabelStyle() {
         taskPane.setStyle("-fx-background-color: #FFFFFF");
-        taskPaneInner.setStyle("-fx-background-color: #DCDCDC");
+        taskPaneInner.setStyle("-fx-background-color: #DCDCDC; -fx-background-radius: 8px;");
         dueLabel.setStyle("-fx-text-fill: #FF0000; -fx-font-family: Microsoft Yahei Light");
         indexLabel.setStyle("-fx-font-family: Lucida Sans Unicode");
     }

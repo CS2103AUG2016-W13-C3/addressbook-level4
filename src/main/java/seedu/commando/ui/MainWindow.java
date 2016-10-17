@@ -1,24 +1,21 @@
 package seedu.commando.ui;
 
-import java.util.HashMap;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import seedu.commando.commons.core.Config;
@@ -32,22 +29,22 @@ import seedu.commando.model.UserPrefs;
  * a menu bar and space where other JavaFX elements can be placed.
  */
 public class MainWindow extends UiPart {
-
+    public static final double NON_MAXIMIZED_HEIGHT = 750;
+    public static final double NON_MAXIMIZED_WIDTH = 1000;
     private static final String ICON = "/images/address_book_32.png";
     private static final String FXML = "MainWindow.fxml";
-    public static final int MIN_HEIGHT = 600;
-    public static final int MIN_WIDTH = 740;
-    private static double X_OFFSET = 0;
-    private static double Y_OFFSET = 0;
+    private static double currScreenXPos = 0;
+    private static double currScreenYPos = 0;
+    private static boolean isMaximized;
     
-    KeyCombination altE = KeyCodeCombination.keyCombination("Alt+E");
     KeyCombination altH = KeyCodeCombination.keyCombination("Alt+H");
     KeyCombination altC = KeyCodeCombination.keyCombination("Alt+C");
-
+    KeyCombination altM = KeyCodeCombination.keyCombination("Alt+M");
+    KeyCombination enter = KeyCodeCombination.keyCombination("Enter");
+    
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-
     private EventListPanel eventPanel;
     private TaskListPanel taskPanel;
     private ResultDisplay resultDisplay;
@@ -55,6 +52,9 @@ public class MainWindow extends UiPart {
     private CommandBox commandBox;
     private UserPrefs userPrefs;
     private HelpWindow helpWindow;
+    
+    // Textfield of commandBox
+    private TextField commandField;
 
     // Handles to elements of this Ui container
     private VBox rootLayout;
@@ -79,6 +79,15 @@ public class MainWindow extends UiPart {
     
     @FXML
     private Menu creditMenu;
+    
+    @FXML
+    private Button toggleSizeButton;
+    
+    @FXML
+    private Button minimizeButton;
+    
+    @FXML
+    private Button exitButton;
 
     @FXML
     private AnchorPane eventListPanelPlaceholder;
@@ -108,6 +117,7 @@ public class MainWindow extends UiPart {
     }
 
     public static MainWindow load(Stage primaryStage, UserPrefs prefs, Logic logic) {
+        // Hide titlebar
         primaryStage.initStyle(StageStyle.UNDECORATED);
         MainWindow mainWindow = UiPartLoader.loadUiPart(primaryStage, new MainWindow());
         mainWindow.configure(Config.ApplicationTitle, Config.ApplicationName, prefs, logic);
@@ -124,7 +134,6 @@ public class MainWindow extends UiPart {
         setTitle(appTitle);
         
         setIcon(ICON);
-        setWindowMinSize();
         setWindowDefaultSize(prefs);
         
         setDraggable(titleBar);
@@ -142,12 +151,6 @@ public class MainWindow extends UiPart {
      * Alt + C = Open credits in window
      */
     private void setKeyBindings() {
-        scene.getAccelerators().put(altE, new Runnable() {
-            @Override
-            public void run() {
-                handleExit();
-            }
-        });
         scene.getAccelerators().put(altH, new Runnable() {
             @Override
             public void run() {
@@ -160,21 +163,35 @@ public class MainWindow extends UiPart {
                 handleCredits();
             }
         });
+        scene.getAccelerators().put(altM, new Runnable() {
+            @Override
+            public void run() {
+                toggleWindowSize();
+            }
+        });
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent key) {
+                if (key.getCode() == KeyCode.CONTROL) {
+                    commandField.requestFocus();
+                }
+            }
+        });
     }
 
     private void setDraggable(HBox bar) {
         bar.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                X_OFFSET = event.getSceneX();
-                Y_OFFSET = event.getSceneY();
+                currScreenXPos = event.getSceneX();
+                currScreenYPos = event.getSceneY();
             }
         });
         bar.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                primaryStage.setX(event.getScreenX() - X_OFFSET);
-                primaryStage.setY(event.getScreenY() - Y_OFFSET);
+                primaryStage.setX(event.getScreenX() - currScreenXPos);
+                primaryStage.setY(event.getScreenY() - currScreenYPos);
             }
         });
     }
@@ -185,6 +202,8 @@ public class MainWindow extends UiPart {
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), Config.DefaultToDoListFilePath);
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
+        commandField = (TextField) commandBoxPlaceholder.lookup("#commandTextField");
+        commandField.requestFocus();
     }
     
     private AnchorPane getCommandBoxPlaceholder() {
@@ -216,33 +235,61 @@ public class MainWindow extends UiPart {
     }
 
     /**
-     * Sets the default size based on user preferences.
+     * Sets the default size and coordinates based on user preferences.
      */
     protected void setWindowDefaultSize(UserPrefs prefs) {
         primaryStage.setHeight(prefs.getGuiSettings().getWindowHeight());
         primaryStage.setWidth(prefs.getGuiSettings().getWindowWidth());
-        if (prefs.getGuiSettings().getWindowCoordinates() != null) {
-            primaryStage.setX(prefs.getGuiSettings().getWindowCoordinates().getX());
-            primaryStage.setY(prefs.getGuiSettings().getWindowCoordinates().getY());
-        }
-    }
-
-    private void setWindowMinSize() {
-        primaryStage.setMinHeight(MIN_HEIGHT);
-        primaryStage.setMinWidth(MIN_WIDTH);
+        primaryStage.setX(prefs.getGuiSettings().getWindowCoordinates().getX());
+        primaryStage.setY(prefs.getGuiSettings().getWindowCoordinates().getY());
+        isMaximized = prefs.getGuiSettings().getIsMaximized();
+        primaryStage.setMaximized(isMaximized);
+        setToggleSizeButtonSymbol();
     }
 
     /**
-     * Returns the current size and the position of the main Window.
+     * Returns the current position of the main Window.
      */
     public GuiSettings getCurrentGuiSetting() {
-        return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
-                (int) primaryStage.getX(), (int) primaryStage.getY());
+        return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(), 
+                (int) primaryStage.getX(), (int) primaryStage.getY(), isMaximized);
     }
 
     @FXML
+    protected void toggleWindowSize() {
+        if (isMaximized) {
+            primaryStage.setMaximized(false);
+            primaryStage.setHeight(NON_MAXIMIZED_HEIGHT);
+            primaryStage.setWidth(NON_MAXIMIZED_WIDTH);
+        } else {
+            primaryStage.setMaximized(true);
+        }
+        isMaximized = !isMaximized;
+        setToggleSizeButtonSymbol();
+    }
+    
+    private void setToggleSizeButtonSymbol() {
+        if (isMaximized) {
+            toggleSizeButton.setText("❐");
+        } else {
+            toggleSizeButton.setText("⬜");
+        }
+    }
+    
+    /**
+     * Opens the About Us page
+     */
+    @FXML
     public void handleCredits() {
         helpWindow.visit(Config.AboutUsUrl);
+    }
+    
+    /**
+     * Minimizes the window
+     */
+    @FXML
+    public void setMinimized() {
+        primaryStage.setIconified(true);
     }
     
     @FXML
