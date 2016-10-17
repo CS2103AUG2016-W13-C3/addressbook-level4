@@ -24,6 +24,12 @@ public class SequentialParserTest {
     }
 
     @Test
+    public void extractText_emptyString()  {
+        sequentialParser.setInput("");
+        assertFalse(sequentialParser.extractText().isPresent());
+    }
+
+    @Test
     public void extractText_noKeywords()  {
         sequentialParser.setInput("No keywords");
         assertEquals("No keywords", sequentialParser.extractText().orElse(""));
@@ -170,7 +176,7 @@ public class SequentialParserTest {
     @Test
     public void extractTextAfterKeyword_keywordNotFound()  {
         sequentialParser.setInput("keyword not found");
-        assertTrue(!sequentialParser.extractTextAfterKeyword("key").isPresent());
+        assertFalse(sequentialParser.extractTextAfterKeyword("key").isPresent());
         assertEquals(Arrays.asList("keyword", "not", "found"), sequentialParser.extractWords());
     }
 
@@ -179,6 +185,12 @@ public class SequentialParserTest {
         sequentialParser.setInput("case InSensitive keyword");
         assertEquals("keyword", sequentialParser.extractTextAfterKeyword("iNsensitive").orElse(""));
         assertEquals(Arrays.asList("case"), sequentialParser.extractWords());
+    }
+
+    @Test
+    public void extractTextAfterKeyword_emptyStringAfterKeyword()  {
+        sequentialParser.setInput("keyword   next");
+        assertFalse(sequentialParser.extractTextAfterKeyword("keyword", "next").isPresent());
     }
 
     @Test

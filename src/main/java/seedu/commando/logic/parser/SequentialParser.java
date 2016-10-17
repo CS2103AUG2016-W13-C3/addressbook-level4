@@ -51,8 +51,15 @@ public class SequentialParser {
         assert keyword != null;
 
         int keywordStartIndex = getFirstOccurrenceOf(0, keyword);
+
+        if (keywordStartIndex == -1) {
+            return Optional.empty();
+        }
+
         int startIndex = keywordStartIndex + keyword.length();
         int endIndex = getFirstOccurrenceOf(startIndex, otherKeywords);
+
+        endIndex = endIndex == -1 ? input.length() : endIndex;
 
         String text = input.substring(startIndex, endIndex).trim();
 
@@ -78,13 +85,21 @@ public class SequentialParser {
         assert keyword != null;
 
         int keywordStartIndex = getFirstOccurrenceOf(0, keyword);
+
+        if (keywordStartIndex == -1) {
+            return Optional.empty();
+        }
+
         int startIndex = keywordStartIndex + keyword.length();
         int endIndex = getFirstOccurrenceOf(startIndex, otherKeywords);
+
+        endIndex = endIndex == -1 ? input.length() : endIndex;
 
         String datetimeString = input.substring(startIndex, endIndex);
 
         // Check if datetime can be parsed
         Optional<LocalDateTime> dateTime = dateTimeParser.parseDateTime(datetimeString);
+
         if (dateTime.isPresent()) {
             // Legit datetime, extract keyword + datetime from input
             input = input.substring(0, keywordStartIndex) + input.substring(endIndex);
@@ -97,22 +112,22 @@ public class SequentialParser {
 
     /**
      * Search for earliest occurrence of any keyword, case insensitive
+     * Returns -1 if no keyword found
       */
     private int getFirstOccurrenceOf(int startIndex, String... keywords) {
         String lowerCaseInput = input.substring(startIndex).toLowerCase();
 
         Matcher matcher = WORD_PATTERN.matcher(lowerCaseInput);
-        loop:
         while (matcher.find()) {
             for (String keyword : keywords) {
                 // If any keyword matched current word
-                if (matcher.group("word").equals(keyword.trim().toLowerCase())) {
+                if (matcher.group("word").equals(keyword.toLowerCase())) {
                     return matcher.start() + startIndex;
                 }
             }
         }
 
-        return input.length(); // no keywords found, return up to the last index of input
+        return -1; // no keywords found
     }
 
     /**
@@ -120,14 +135,16 @@ public class SequentialParser {
      */
     public Optional<String> extractText(String... keywords) {
         int endIndex = getFirstOccurrenceOf(0, keywords);
-        String text = input.substring(0, endIndex).trim();
+        endIndex = endIndex == -1 ? input.length() : endIndex;
 
-        // Remove extracted text
-        input = input.substring(endIndex);
+        String text = input.substring(0, endIndex).trim();
 
         if (text.isEmpty()) {
             return Optional.empty();
         } else {
+            // Remove extracted text
+            input = input.substring(endIndex);
+
             return Optional.of(text);
         }
     }
