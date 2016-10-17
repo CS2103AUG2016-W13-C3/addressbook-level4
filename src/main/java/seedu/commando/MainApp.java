@@ -8,7 +8,9 @@ import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.core.Version;
+import seedu.commando.commons.events.storage.ChangeToDoListFilePathEvent;
 import seedu.commando.commons.events.ui.ExitAppRequestEvent;
+import seedu.commando.commons.events.ui.UpdateFilePathEvent;
 import seedu.commando.commons.exceptions.DataConversionException;
 import seedu.commando.commons.util.ConfigUtil;
 import seedu.commando.commons.util.StringUtil;
@@ -41,6 +43,7 @@ public class MainApp extends Application {
     protected Model model;
     protected UserPrefs userPrefs;
     protected Config config;
+    protected EventsCenter eventsCenter;
 
     public MainApp() {}
 
@@ -181,6 +184,20 @@ public class MainApp extends Application {
     public void handleExitAppRequestEvent(ExitAppRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         this.stop();
+    }
+    
+    @Subscribe
+    public void handleChangeToDoListFilePathEvent(ChangeToDoListFilePathEvent event){
+    	logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    	this.storage.setToDoListFilePath(event.path);
+    	this.config.setToDoListFilePath(event.path);
+    	try {
+			ConfigUtil.saveConfig(this.config, Config.DefaultConfigFilePath);
+		} catch (IOException e) {
+			logger.warning("Failed to save config " + StringUtil.getDetails(e));
+		}
+    	EventsCenter.getInstance().post(new UpdateFilePathEvent());
+    	
     }
 
     public static void main(String[] args) {

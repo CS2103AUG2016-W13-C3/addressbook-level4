@@ -1,6 +1,9 @@
 package seedu.commando.ui;
 
+import java.io.IOException;
 import java.util.HashMap;
+
+import com.google.common.eventbus.Subscribe;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -22,8 +25,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import seedu.commando.commons.core.Config;
+import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.GuiSettings;
+import seedu.commando.commons.core.LogsCenter;
+import seedu.commando.commons.events.storage.ChangeToDoListFilePathEvent;
 import seedu.commando.commons.events.ui.ExitAppRequestEvent;
+import seedu.commando.commons.events.ui.UpdateFilePathEvent;
+import seedu.commando.commons.util.ConfigUtil;
+import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.model.UserPrefs;
 
@@ -259,6 +268,16 @@ public class MainWindow extends UiPart {
 
     public void show() {
         primaryStage.show();
+        initEventsCenter();
+    }
+    
+    private void initEventsCenter() {
+        EventsCenter.getInstance().registerHandler(this);
+    }
+    
+    @Subscribe
+    public void handleUpdateFilePathEvent(UpdateFilePathEvent event){
+    	statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getToDoListFilePath());
     }
 
     /**
@@ -276,4 +295,5 @@ public class MainWindow extends UiPart {
     public TaskListPanel getTaskListPanel() {
         return this.taskPanel;
     }
+    
 }
