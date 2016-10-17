@@ -72,7 +72,7 @@ public class SequentialParser {
     }
 
     /**
-     * From start, extracts a datetime after the first occurrence of {@param keyword} from input
+     * From start, extracts the first valid datetime after an occurrence of {@param keyword} from input
      * until any keyword in the set of {@param otherKeywords}
      * If datetime is invalid, extraction is not done, even if there is a match in keyword
      * {@param keyword} and the subsequent text extracted is removed from input
@@ -84,30 +84,38 @@ public class SequentialParser {
     public Optional<LocalDateTime> extractDateTimeAfterKeyword(String keyword, String... otherKeywords) {
         assert keyword != null;
 
-        int keywordStartIndex = getFirstOccurrenceOf(0, keyword);
+        int currentIndex = 0;
 
-        if (keywordStartIndex == -1) {
-            return Optional.empty();
+        while (currentIndex < input.length()) {
+            int keywordStartIndex = getFirstOccurrenceOf(currentIndex, keyword);
+
+            if (keywordStartIndex == -1) {
+                return Optional.empty();
+            }
+
+            int startIndex = keywordStartIndex + keyword.length();
+            int endIndex = getFirstOccurrenceOf(startIndex, otherKeywords);
+
+            endIndex = endIndex == -1 ? input.length() : endIndex;
+
+            String datetimeString = input.substring(startIndex, endIndex);
+
+            System.out.println("try: " +datetimeString);
+            // Check if datetime can be parsed
+            Optional<LocalDateTime> dateTime = dateTimeParser.parseDateTime(datetimeString);
+
+            if (dateTime.isPresent()) {
+                // Legit datetime, extract keyword + datetime from input
+                input = input.substring(0, keywordStartIndex) + input.substring(endIndex);
+                return dateTime;
+            }
+
+            // Repeat for the next occurrence of the keyword, if datetime not valid
+            currentIndex = endIndex;
         }
 
-        int startIndex = keywordStartIndex + keyword.length();
-        int endIndex = getFirstOccurrenceOf(startIndex, otherKeywords);
-
-        endIndex = endIndex == -1 ? input.length() : endIndex;
-
-        String datetimeString = input.substring(startIndex, endIndex);
-
-        // Check if datetime can be parsed
-        Optional<LocalDateTime> dateTime = dateTimeParser.parseDateTime(datetimeString);
-
-        if (dateTime.isPresent()) {
-            // Legit datetime, extract keyword + datetime from input
-            input = input.substring(0, keywordStartIndex) + input.substring(endIndex);
-            return dateTime;
-        } else {
-            // Invalid datetime, ignore
-            return Optional.empty();
-        }
+        // Couldn't find any valid datetimes
+        return Optional.empty();
     }
 
     /**

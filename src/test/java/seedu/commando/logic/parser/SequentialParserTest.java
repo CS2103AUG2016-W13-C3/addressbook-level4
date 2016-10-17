@@ -222,4 +222,22 @@ public class SequentialParserTest {
             "walk by the beach from 1 end to another", sequentialParser.extractText().orElse("")
         );
     }
+
+    @Test
+    public void extractDateTimeAfterKeyword_validDateAfterMultipleKeywords()  {
+        sequentialParser.setInput("walk by the beach from 1 end to another from 28 Oct 2018 1200h to 29 Nov 2019 1300h");
+        assertEquals(
+            LocalDateTime.of(2018, 10, 28, 12, 0),
+            sequentialParser.extractDateTimeAfterKeyword("from", "to", "from").orElse(null)
+        );
+
+        assertEquals(
+            LocalDateTime.of(2019, 11, 29, 13, 0),
+            sequentialParser.extractDateTimeAfterKeyword("to", "to", "from").orElse(null)
+        );
+
+        assertEquals(
+            "walk by the beach from 1 end to another", sequentialParser.extractText().orElse("")
+        );
+    }
 }

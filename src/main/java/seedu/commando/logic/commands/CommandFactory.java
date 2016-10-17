@@ -2,9 +2,9 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.logic.parser.DateTimeParser;
 import seedu.commando.logic.parser.SequentialParser;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -75,35 +75,39 @@ public class CommandFactory {
         // Extract tags
         List<String> tags = sequentialParser.extractPrefixedWords(TAG_PREFIX, true);
 
-        // Extract title
-        String title = sequentialParser.extractText(
+        // Extract date range, if exists
+        Optional<LocalDateTime> dateRangeStart = sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_START,
             KEYWORD_DATERANGE_START,
             KEYWORD_DATERANGE_END,
             KEYWORD_DUEDATE
-        ).orElseThrow(() -> new IllegalValueException(Messages.MISSING_TODO_TITLE));
+        );
+
+        Optional<LocalDateTime> dateRangeEnd = sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_END,
+            KEYWORD_DATERANGE_START,
+            KEYWORD_DATERANGE_END,
+            KEYWORD_DUEDATE
+        );
+
+        // Extract due date, if exists
+        Optional<LocalDateTime> dueDate = sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DUEDATE,
+            KEYWORD_DATERANGE_START,
+            KEYWORD_DATERANGE_END,
+            KEYWORD_DUEDATE
+        );
+
+        // Extract title
+        String title = sequentialParser.extractText().orElseThrow(() -> new IllegalValueException(Messages.MISSING_TODO_TITLE));
 
         AddCommand command = new AddCommand(title);
 
-        // Put in tags
+        // Put in fields
         if (!tags.isEmpty()) {
             command.tags = tags.stream().collect(Collectors.toSet());
         }
-        // Extract date range, if exists
-        sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_START,
-            KEYWORD_DATERANGE_END,
-            KEYWORD_DUEDATE
-        ).ifPresent(date -> command.dateRangeStart = date);
 
-        sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_END,
-            KEYWORD_DATERANGE_START,
-            KEYWORD_DUEDATE
-        ).ifPresent(date -> command.dateRangeEnd = date);
-
-        // Extract due date, if exists
-        sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DUEDATE,
-            KEYWORD_DATERANGE_START,
-            KEYWORD_DATERANGE_END
-        ).ifPresent(date -> command.dueDate = date);
+        dueDate.ifPresent(date -> command.dueDate = date);
+        dateRangeStart.ifPresent(date -> command.dateRangeStart = date);
+        dateRangeEnd.ifPresent(date -> command.dateRangeEnd = date);
 
         return command;
     }
@@ -166,20 +170,6 @@ public class CommandFactory {
         // Extract tags
         List<String> tags = sequentialParser.extractPrefixedWords(TAG_PREFIX, true);
 
-        // Extract title
-        sequentialParser.extractText(
-            KEYWORD_DATERANGE_START,
-            KEYWORD_DATERANGE_END,
-            KEYWORD_DUEDATE
-        ).ifPresent(title -> {
-            command.title = title;
-
-            // If title is set but no tags, remove tags as well
-            if (tags.isEmpty()) {
-                command.tags = Collections.emptySet();
-            }
-        });
-
         // Put in tags
         if (!tags.isEmpty()) {
             command.tags = tags.stream().collect(Collectors.toSet());
@@ -187,20 +177,33 @@ public class CommandFactory {
 
         // Extract date range, if exists
         sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_START,
+            KEYWORD_DATERANGE_START,
             KEYWORD_DATERANGE_END,
             KEYWORD_DUEDATE
         ).ifPresent(date -> command.dateRangeStart = date);
 
         sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_END,
             KEYWORD_DATERANGE_START,
+            KEYWORD_DATERANGE_END,
             KEYWORD_DUEDATE
         ).ifPresent(date -> command.dateRangeEnd = date);
 
         // Extract due date, if exists
         sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DUEDATE,
             KEYWORD_DATERANGE_START,
-            KEYWORD_DATERANGE_END
+            KEYWORD_DATERANGE_END,
+            KEYWORD_DUEDATE
         ).ifPresent(date -> command.dueDate = date);
+
+        // Extract title
+        sequentialParser.extractText().ifPresent(title -> {
+            command.title = title;
+
+            // If title is set but no tags, remove tags as well
+            if (tags.isEmpty()) {
+                command.tags = Collections.emptySet();
+            }
+        });
 
         return command;
     }

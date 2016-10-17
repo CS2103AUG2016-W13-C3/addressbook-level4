@@ -167,4 +167,13 @@ public class AddCommandTest {
             new ToDoBuilder("title")
                 .build()));
     }
+
+    @Test
+    public void execute_add_taskWithFromToBy() throws IllegalValueException {
+        logic.execute("add walk by the beach from here to there");
+
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("walk by the beach from here to there")
+                .build()));
+    }
 }
