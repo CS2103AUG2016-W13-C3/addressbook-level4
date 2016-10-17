@@ -68,7 +68,7 @@ public class CommandFactory {
     }
 
     private Command buildExitCommand() throws IllegalValueException {
-        if (sequentialParser.getInput().trim().isEmpty()) {
+        if (sequentialParser.isInputEmpty()) {
             return new ExitCommand();
         } else {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ExitCommand.COMMAND_WORD));
@@ -121,7 +121,7 @@ public class CommandFactory {
             () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
         );
 
-        if (sequentialParser.getInput().trim().isEmpty()) {
+        if (sequentialParser.isInputEmpty()) {
             return new DeleteCommand(index);
         } else {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD));
@@ -133,7 +133,7 @@ public class CommandFactory {
             () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
         );
 
-        if (sequentialParser.getInput().trim().isEmpty()) {
+        if (sequentialParser.isInputEmpty()) {
             return new FinishCommand(index);
         } else {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
@@ -159,7 +159,7 @@ public class CommandFactory {
     }
 
     private Command buildClearCommand() throws IllegalValueException {
-        if (sequentialParser.getInput().trim().isEmpty()) {
+        if (sequentialParser.isInputEmpty()) {
             return new ClearCommand();
         } else {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ClearCommand.COMMAND_WORD));
@@ -225,7 +225,7 @@ public class CommandFactory {
     }
     
     private Command buildUndoCommand() throws IllegalValueException {
-        if (sequentialParser.getInput().trim().isEmpty()) {
+        if (sequentialParser.isInputEmpty()) {
             return new UndoCommand();
         } else {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, UndoCommand.COMMAND_WORD));
@@ -233,7 +233,7 @@ public class CommandFactory {
     }
 
     private Command buildRedoCommand() throws IllegalValueException {
-        if (sequentialParser.getInput().trim().isEmpty()) {
+        if (sequentialParser.isInputEmpty()) {
             return new RedoCommand();
         } else {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, RedoCommand.COMMAND_WORD));
