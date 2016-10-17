@@ -4,6 +4,8 @@ import java.time.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
@@ -13,6 +15,31 @@ import com.joestelmach.natty.Parser;
  */
 public class DateTimeParser {
     public static final LocalTime DefaultLocalTime = LocalTime.NOON;
+
+    private static final String MonthWordRegexString = "January|Feburary|March|April|June|July|August|September|October|November|December|" +
+        "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec";
+    private static final String YearRegexString = "(?<year>\\d{4}|\\d{2})";
+    private static final String TwoDigitYearRegexString = "\\d{2}$";
+
+    private static final String DateRegexStringWithSlashes = "(?<month>\\d{1,2})\\/(?<day>\\d{1,2})(\\/" + YearRegexString + ")?";
+    private static final String DateRegexStringWithMonthWord = "(\\d{1,2})((th|rd|st|nd)?)\\s+" +
+        "(" + MonthWordRegexString + ")(\\s+" + YearRegexString + ")?";
+    private static final String DateRegexStringWithMonthWordReversed = "(" + MonthWordRegexString + ")\\s+" +
+        "(\\d{1,2})(th|rd|st|nd)?(\\s+" + YearRegexString + ")?";
+
+    private static final String[] supportedDateRegexStrings = new String[] {
+        DateRegexStringWithSlashes,
+        DateRegexStringWithMonthWord,
+        DateRegexStringWithMonthWordReversed,
+        "today",
+        "tomorrow"
+    };
+
+    private static final String[] supportedTimeRegexStrings = new String[] {
+        "(\\d{2})(\\.|:)(\\d{2})",
+        "(\\d{2}):?(\\d{2})h",
+        "(\\d{1,2})(\\.|:)?(\\d{2})?(am|pm)"
+    };
 
     private Parser parser = new Parser();
     private LocalDate lastLocalDate; // Date of last parsed datetime
@@ -32,8 +59,16 @@ public class DateTimeParser {
      * - If date is "inferred" and there were previous parses, date = {@link #lastLocalDate}
      * - Seconds field is always set to 0 (ignored)
      */
-    public Optional<LocalDateTime> parseDateTime(String text) {
-        List<DateGroup> dateGroups = parser.parse(text);
+    public Optional<LocalDateTime> parseDateTime(String input) {
+
+        Optional<String> preprocessedInput = preprocessInput(input);
+
+        // If preprocessing fails, return empty
+        if (!preprocessedInput.isPresent()) {
+            return Optional.empty();
+        }
+
+        List<DateGroup> dateGroups = parser.parse(preprocessedInput.get());
 
         // Return first date parsed
         if (!dateGroups.isEmpty()) {
@@ -76,5 +111,79 @@ public class DateTimeParser {
         lastLocalDate = localDateTime.toLocalDate();
 
         return localDateTime;
+    }
+
+    /**
+     * Determines with regex whether this is a supported datetime
+     * Preprocesses it to before being parsed in natty
+      * Returns Optional.empty() if not supported
+     */
+    private Optional<String> preprocessInput(String input) {
+        input = input.trim();
+
+        if (input.isEmpty()) {
+            return Optional.empty();
+        }
+
+        // Try to match a date
+        String dateString = "";
+        for (String regexString : supportedDateRegexStrings) {
+            // Try to match regex + (space or end of string)
+            Matcher matcher = Pattern.compile(regexString + "(\\s|$)").matcher(input);
+
+            // If matched from the start
+            if (matcher.find() && matcher.start() == 0) {
+
+                // Special case: for DateRegexStringWithSlashes format,
+                // Swap month and day
+                if (regexString.equals(DateRegexStringWithSlashes)) {
+                    dateString = matcher.group("day") + "/" + matcher.group("month") + "/" + matcher.group("year");
+                } else {
+                    dateString = matcher.group().trim();
+                }
+
+                // Tweak for year: if it is a 2 digit year, change it to 4
+                // Check if year string exists in datetime
+                try {
+                    if (matcher.group("year") != null && matcher.group("year").length() == 2) {
+                        // Get string version of today's year
+                        String thisFullYear = String.valueOf(LocalDateTime.now().getYear());
+                        // If today's year is more than 2 digits, append the front (size - 2) digits
+                        if (thisFullYear.length() > 2) {
+                            String fullYear = thisFullYear.substring(0, thisFullYear.length() - 2)
+                                + matcher.group("year");
+                            dateString = dateString.replaceFirst(TwoDigitYearRegexString, fullYear);
+                        }
+                    }
+                } catch (IllegalArgumentException exception) { } // no group with "year"
+
+                // Extract out date string from text
+                input = input.substring(matcher.end()).trim();
+
+                break; // exit loop
+            }
+        }
+
+        // Try to match a time
+        String timeString = "";
+        for (String regexString : supportedTimeRegexStrings) {
+            // Try to match regex + (space or end of string)
+            Matcher matcher = Pattern.compile(regexString + "(\\s|$)").matcher(input);
+
+            // If matched from the start
+            if (matcher.find() && matcher.start() == 0) {
+                // Extract out string for time from text
+                timeString = matcher.group().trim();
+                input = input.substring(matcher.end()).trim();
+                break; // exit loop
+            }
+        }
+
+        // If there is any characters left in text, invalid datetime
+        if (!input.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of (dateString + " " + timeString);
+        }
     }
 }

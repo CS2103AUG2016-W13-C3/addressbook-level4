@@ -150,8 +150,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public Optional<UiToDo> getUiToDoAtIndex(int toDoIndex) {
-        return uiModel.getToDoAtIndex(toDoIndex);
+    public Optional<UiToDo> getUiToDoAtIndex(int index) {
+        return uiModel.getToDoAtIndex(index);
     }
 
     @Override

@@ -53,12 +53,12 @@ public class LogicManager extends ComponentManager implements Logic {
     }
 
     @Override
-    public UnmodifiableObservableList<UiToDo> getObservableEventList() {
+    public UnmodifiableObservableList<UiToDo> getUiEventList() {
         return model.getUiEventList();
     }
 
     @Override
-    public UnmodifiableObservableList<UiToDo> getObservableTaskList() {
+    public UnmodifiableObservableList<UiToDo> getUiTaskList() {
         return model.getUiTaskList();
     }
 }

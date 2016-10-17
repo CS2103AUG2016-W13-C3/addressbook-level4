@@ -43,7 +43,7 @@ public interface Model {
     /**
      *  Gets the UI to-do with {@link UiToDo#getIndex()} == {@param toDoIndex}
      * */
-    Optional<UiToDo> getUiToDoAtIndex(int toDoIndex);
+    Optional<UiToDo> getUiToDoAtIndex(int index);
 
     /**
      * Clears the filter on the UI to-do list

@@ -4,8 +4,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
+import static org.junit.Assert.assertFalse;
 import static seedu.commando.testutil.TestHelper.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -158,21 +160,6 @@ public class SequentialParserTest {
         assertEquals(Arrays.asList("other", "words"), sequentialParser.extractWords());
     }
 
-
-    @Test
-    public void extractTextFromIndex_indexWithKeywords()  {
-        sequentialParser.setInput("Index with with keywords");
-        assertEquals("th", sequentialParser.extractTextFromIndex(8, "with", "keywords").orElse(""));
-        assertEquals(Arrays.asList("Index", "wi", "with", "keywords"), sequentialParser.extractWords());
-    }
-
-    @Test
-    public void extractTextFromIndex_indexWithoutKeywords()  {
-        sequentialParser.setInput("index without keywords");
-        assertEquals("out keywords", sequentialParser.extractTextFromIndex(10).orElse(""));
-        assertEquals(Arrays.asList("index", "with"), sequentialParser.extractWords());
-    }
-
     @Test
     public void extractTextAfterKeyword_keyword()  {
         sequentialParser.setInput("extract text after keyword");
@@ -192,5 +179,35 @@ public class SequentialParserTest {
         sequentialParser.setInput("case InSensitive keyword");
         assertEquals("keyword", sequentialParser.extractTextAfterKeyword("iNsensitive").orElse(""));
         assertEquals(Arrays.asList("case"), sequentialParser.extractWords());
+    }
+
+    @Test
+    public void extractDateTimeAfterKeyword_dateRange()  {
+        sequentialParser.setInput("from 10 Apr 2016 9am to 11 Jan 2018 10:28");
+        assertEquals(
+            LocalDateTime.of(2016, 4, 10, 9, 0),
+            sequentialParser.extractDateTimeAfterKeyword("from", "to").orElse(null)
+        );
+        assertEquals(
+            LocalDateTime.of(2018, 1, 11, 10, 28),
+            sequentialParser.extractDateTimeAfterKeyword("to").orElse(null)
+        );
+    }
+
+    @Test
+    public void extractDateTimeAfterKeyword_invalidDates()  {
+        sequentialParser.setInput("walk by the beach from 1 end to another");
+        assertFalse(
+            sequentialParser.extractDateTimeAfterKeyword("by", "to", "from").isPresent()
+        );
+        assertFalse(
+            sequentialParser.extractDateTimeAfterKeyword("from", "by", "to").isPresent()
+        );
+        assertFalse(
+            sequentialParser.extractDateTimeAfterKeyword("to", "by", "from").isPresent()
+        );
+        assertEquals(
+            "walk by the beach from 1 end to another", sequentialParser.extractText().orElse("")
+        );
     }
 }

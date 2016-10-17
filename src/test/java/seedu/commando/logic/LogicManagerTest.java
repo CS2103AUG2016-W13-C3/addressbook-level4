@@ -14,7 +14,6 @@ import seedu.commando.model.Model;
 import seedu.commando.model.ModelManager;
 import seedu.commando.storage.StorageManager;
 import seedu.commando.testutil.EventsCollector;
-import seedu.commando.testutil.ToDoBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -83,14 +82,14 @@ public class LogicManagerTest {
 
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(logic.getObservableEventList().size() == 1);
-        assertTrue(logic.getObservableTaskList().size() == 1);
+        assertTrue(logic.getUiEventList().size() == 1);
+        assertTrue(logic.getUiTaskList().size() == 1);
 
         CommandResult result = logic.execute("clear");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(logic.getObservableEventList().size() == 0);
-        assertTrue(logic.getObservableTaskList().size() == 0);
+        assertTrue(logic.getUiEventList().size() == 0);
+        assertTrue(logic.getUiTaskList().size() == 0);
     }
 
     @Test
@@ -116,32 +115,32 @@ public class LogicManagerTest {
         
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(logic.getObservableEventList().size() == 0);
-        assertTrue(logic.getObservableTaskList().size() == 1);
+        assertTrue(logic.getUiEventList().size() == 0);
+        assertTrue(logic.getUiTaskList().size() == 1);
         
         CommandResult result = logic.execute("undo");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(logic.getObservableEventList().size() == 0);
-        assertTrue(logic.getObservableTaskList().size() == 1);
+        assertTrue(logic.getUiEventList().size() == 0);
+        assertTrue(logic.getUiTaskList().size() == 1);
 
         result = logic.execute("undo");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(logic.getObservableEventList().size() == 0);
-        assertTrue(logic.getObservableTaskList().size() == 2);
+        assertTrue(logic.getUiEventList().size() == 0);
+        assertTrue(logic.getUiTaskList().size() == 2);
         
         result = logic.execute("undo");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(logic.getObservableEventList().size() == 0);
-        assertTrue(logic.getObservableTaskList().size() == 1);
+        assertTrue(logic.getUiEventList().size() == 0);
+        assertTrue(logic.getUiTaskList().size() == 1);
         
         result = logic.execute("undo");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(logic.getObservableEventList().size() == 0);
-        assertTrue(logic.getObservableTaskList().size() == 0);
+        assertTrue(logic.getUiEventList().size() == 0);
+        assertTrue(logic.getUiTaskList().size() == 0);
         
         result = logic.execute("undo");
         assertTrue(result.hasError());
@@ -156,20 +155,20 @@ public class LogicManagerTest {
         
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(logic.getObservableEventList().size() == 0);
-        assertTrue(logic.getObservableTaskList().size() == 1);
+        assertTrue(logic.getUiEventList().size() == 0);
+        assertTrue(logic.getUiTaskList().size() == 1);
         
         CommandResult result = logic.execute("redo");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(logic.getObservableEventList().size() == 0);
-        assertTrue(logic.getObservableTaskList().size() == 2);
+        assertTrue(logic.getUiEventList().size() == 0);
+        assertTrue(logic.getUiTaskList().size() == 2);
         
         result = logic.execute("redo");
         assertTrue(result.hasError());
         assertEquals(Messages.REDID_COMMAND_FAIL, result.getFeedback());
-        assertTrue(logic.getObservableEventList().size() == 0);
-        assertTrue(logic.getObservableTaskList().size() == 2);
+        assertTrue(logic.getUiEventList().size() == 0);
+        assertTrue(logic.getUiTaskList().size() == 2);
     }
 
     @Test

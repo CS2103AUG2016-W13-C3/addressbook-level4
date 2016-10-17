@@ -19,10 +19,10 @@ public interface Logic {
     /**
      * @see Model#getUiEventList()
      * */
-    UnmodifiableObservableList<UiToDo> getObservableEventList();
+    UnmodifiableObservableList<UiToDo> getUiEventList();
 
     /**
      * @see Model#getUiTaskList()
      * */
-    UnmodifiableObservableList<UiToDo> getObservableTaskList();
+    UnmodifiableObservableList<UiToDo> getUiTaskList();
 }

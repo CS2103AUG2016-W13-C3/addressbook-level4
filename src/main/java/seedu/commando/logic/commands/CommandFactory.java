@@ -5,14 +5,13 @@ import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.parser.DateTimeParser;
 import seedu.commando.logic.parser.SequentialParser;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Maps and builds commands from input strings, using {@link SequentialParser} and {@link DateTimeParser}
+ * Maps and builds commands from input strings, using {@link SequentialParser}
  * In charge of splitting up input strings to required parts for commands
  * Doesn't set context for commands
  */
@@ -23,10 +22,8 @@ public class CommandFactory {
     public static final String TAG_PREFIX = "#";
 
     private SequentialParser sequentialParser;
-    private DateTimeParser dateTimeParser;
     {
         sequentialParser = new SequentialParser();
-        dateTimeParser = new DateTimeParser();
     }
 
     /**
@@ -35,7 +32,6 @@ public class CommandFactory {
      * @throws IllegalValueException if the command is invalid
      */
     public Command build(String inputString) throws IllegalValueException {
-        dateTimeParser.resetContext(); // reset any contextual info from last command
         sequentialParser.setInput(inputString);
 
         // Check if command word exists
@@ -92,45 +88,22 @@ public class CommandFactory {
         if (!tags.isEmpty()) {
             command.tags = tags.stream().collect(Collectors.toSet());
         }
-
-        // Extract due date, if exists
-        Optional<String> dueDate = sequentialParser.extractTextAfterKeyword(KEYWORD_DUEDATE,
-            KEYWORD_DATERANGE_START,
-            KEYWORD_DATERANGE_END
-        );
-
-        if (dueDate.isPresent()) {
-            Optional<LocalDateTime> date = dateTimeParser.parseDateTime(dueDate.get());
-
-            command.dueDate = date.orElseThrow(
-                () -> new IllegalValueException(Messages.TODO_DUEDATE_INVALID_FORMAT)
-            );
-        }
-
         // Extract date range, if exists
-        Optional<String> dateRangeStart = sequentialParser.extractTextAfterKeyword(KEYWORD_DATERANGE_START,
+        sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_START,
             KEYWORD_DATERANGE_END,
             KEYWORD_DUEDATE
-        );
-        if (dateRangeStart.isPresent()) {
-            Optional<LocalDateTime> date = dateTimeParser.parseDateTime(dateRangeStart.get());
+        ).ifPresent(date -> command.dateRangeStart = date);
 
-            command.dateRangeStart = date.orElseThrow(
-                () -> new IllegalValueException(Messages.TODO_DATERANGE_START_INVALID_FORMAT)
-            );
-        }
-
-        Optional<String> dateRangeEnd = sequentialParser.extractTextAfterKeyword(KEYWORD_DATERANGE_END,
+        sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_END,
             KEYWORD_DATERANGE_START,
             KEYWORD_DUEDATE
-        );
-        if (dateRangeEnd.isPresent()) {
-            Optional<LocalDateTime> date = dateTimeParser.parseDateTime(dateRangeEnd.get());
+        ).ifPresent(date -> command.dateRangeEnd = date);
 
-            command.dateRangeEnd = date.orElseThrow(
-                () -> new IllegalValueException(Messages.TODO_DATERANGE_END_INVALID_FORMAT)
-            );
-        }
+        // Extract due date, if exists
+        sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DUEDATE,
+            KEYWORD_DATERANGE_START,
+            KEYWORD_DATERANGE_END
+        ).ifPresent(date -> command.dueDate = date);
 
         return command;
     }
@@ -212,44 +185,22 @@ public class CommandFactory {
             command.tags = tags.stream().collect(Collectors.toSet());
         }
 
-        // Extract due date, if exists
-        Optional<String> dueDate = sequentialParser.extractTextAfterKeyword(KEYWORD_DUEDATE,
-            KEYWORD_DATERANGE_START,
-            KEYWORD_DATERANGE_END
-        );
-
-        if (dueDate.isPresent()) {
-            Optional<LocalDateTime> date = dateTimeParser.parseDateTime(dueDate.get());
-
-            command.dueDate = date.orElseThrow(
-                () -> new IllegalValueException(Messages.TODO_DUEDATE_INVALID_FORMAT)
-            );
-        }
-
         // Extract date range, if exists
-        Optional<String> dateRangeStart = sequentialParser.extractTextAfterKeyword(KEYWORD_DATERANGE_START,
+        sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_START,
             KEYWORD_DATERANGE_END,
             KEYWORD_DUEDATE
-        );
-        if (dateRangeStart.isPresent()) {
-            Optional<LocalDateTime> date = dateTimeParser.parseDateTime(dateRangeStart.get());
+        ).ifPresent(date -> command.dateRangeStart = date);
 
-            command.dateRangeStart = date.orElseThrow(
-                () -> new IllegalValueException(Messages.TODO_DATERANGE_START_INVALID_FORMAT)
-            );
-        }
-
-        Optional<String> dateRangeEnd = sequentialParser.extractTextAfterKeyword(KEYWORD_DATERANGE_END,
+        sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_END,
             KEYWORD_DATERANGE_START,
             KEYWORD_DUEDATE
-        );
-        if (dateRangeEnd.isPresent()) {
-            Optional<LocalDateTime> date = dateTimeParser.parseDateTime(dateRangeEnd.get());
+        ).ifPresent(date -> command.dateRangeEnd = date);
 
-            command.dateRangeEnd = date.orElseThrow(
-                () -> new IllegalValueException(Messages.TODO_DATERANGE_END_INVALID_FORMAT)
-            );
-        }
+        // Extract due date, if exists
+        sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DUEDATE,
+            KEYWORD_DATERANGE_START,
+            KEYWORD_DATERANGE_END
+        ).ifPresent(date -> command.dueDate = date);
 
         return command;
     }
