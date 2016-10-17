@@ -8,6 +8,7 @@ import java.util.Optional;
 import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
+import seedu.commando.commons.events.storage.ChangeToDoListFilePathEvent;
 import seedu.commando.commons.exceptions.DataConversionException;
 import seedu.commando.commons.util.ConfigUtil;
 import seedu.commando.model.Model;
@@ -61,12 +62,8 @@ public class StoreCommand extends Command {
 		
 		//Set the default saving path in the config.json file;
 		config.setToDoListFilePath(path);
-		try {
-			ConfigUtil.saveConfig(config, Config.DefaultConfigFilePath);
-		} catch (IOException e) {
-			return new CommandResult(e.getMessage(),true);
-		}
-		//Debugging System.exit(0);
+		//Send a event to change the file path
+        eventsCenter.post(new ChangeToDoListFilePathEvent(path));
 		return new CommandResult(String.format(Messages.STORE_COMMAND, path));
 
 	}
