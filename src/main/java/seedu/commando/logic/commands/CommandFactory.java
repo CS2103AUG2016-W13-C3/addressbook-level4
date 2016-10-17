@@ -68,7 +68,10 @@ public class CommandFactory {
     }
 
     private Command buildExitCommand() {
-        return new ExitCommand();
+        if (!sequentialParser.hasKeywords())
+            return new ExitCommand();
+        else 
+            return new InvalidCommand(Messages.CONTAIN_EXTRA_PARAMETER);
     }
 
     private Command buildAddCommand() {
@@ -183,7 +186,10 @@ public class CommandFactory {
     }
 
     private Command buildClearCommand() {
-        return new ClearCommand();
+        if (!sequentialParser.hasKeywords())
+            return new ClearCommand();
+        else 
+            return new InvalidCommand(Messages.CONTAIN_EXTRA_PARAMETER);
     }
 
     private Command buildHelpCommand() {
@@ -289,10 +295,16 @@ public class CommandFactory {
     }
     
     private Command buildUndoCommand(){
-        return new UndoCommand();
+        if (!sequentialParser.hasKeywords())
+            return new UndoCommand();
+        else 
+            return new InvalidCommand(Messages.CONTAIN_EXTRA_PARAMETER);
     }
     
     private Command buildRedoCommand(){
-        return new RedoCommand();
+        if (!sequentialParser.hasKeywords())
+            return new RedoCommand();
+        else 
+            return new InvalidCommand(Messages.CONTAIN_EXTRA_PARAMETER);
     }
 }

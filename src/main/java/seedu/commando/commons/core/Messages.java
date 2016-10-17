@@ -34,4 +34,5 @@ public class Messages {
     public static final String UNDID_COMMAND_FAIL = "Nothing more to undo!";
     public static final String REDID_COMMAND = "Redid the last undo command.";
     public static final String REDID_COMMAND_FAIL = "Nothing more to redo!";
+    public static final String CONTAIN_EXTRA_PARAMETER = "Command should not have parameters"; 
 }

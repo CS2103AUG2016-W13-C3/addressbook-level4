@@ -31,7 +31,15 @@ public class SequentialParser {
     public String getInput() {
         return input;
     }
-
+    
+    /**
+     * Checks whether input has any keywords 
+     */
+    public boolean hasKeywords(){
+        return input.trim().length()>0;
+    }
+    
+    
     /**
      * From start, extracts the text after the first occurrence of {@param keyword} from input
      * until any keyword in the set of {@param otherKeywords}
