@@ -11,31 +11,42 @@ import javafx.stage.Screen;
  */
 public class GuiSettings implements Serializable {
 
-    public static final double MAX_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
-    public static final double MAX_WIDTH = Screen.getPrimary().getVisualBounds().getWidth();
-    private static final double DEFAULT_HEIGHT = MAX_HEIGHT * (3 / 4);
-    private static final double DEFAULT_WIDTH = MAX_WIDTH * (3 / 4);
+    private static final double DEFAULT_HEIGHT = 750;
+    private static final double DEFAULT_WIDTH = 1000;
+    private Double windowWidth;
+    private Double windowHeight;
+    private boolean isMaximized;
 
     private Point windowCoordinates;
 
     public GuiSettings() {
+        this.windowHeight = DEFAULT_HEIGHT; 
+        this.windowWidth = DEFAULT_WIDTH;
         this.windowCoordinates = null; // null represent no coordinates
+        this.isMaximized = false;
     }
 
-    public GuiSettings(int xPosition, int yPosition) {
+    public GuiSettings(double windowWidth, double windowHeight, int xPosition, int yPosition, boolean isMaximized) {
+        this.windowHeight = windowHeight; 
+        this.windowWidth = windowWidth;
         this.windowCoordinates = new Point(xPosition, yPosition);
+        this.isMaximized = isMaximized;
     }
 
     public Double getWindowWidth() {
-        return DEFAULT_WIDTH;
+        return windowWidth;
     }
 
     public Double getWindowHeight() {
-        return DEFAULT_HEIGHT;
+        return windowHeight;
     }
     
     public Point getWindowCoordinates() {
         return windowCoordinates;
+    }
+    
+    public boolean getIsMaximized() {
+        return isMaximized;
     }
 
     @Override
@@ -48,8 +59,9 @@ public class GuiSettings implements Serializable {
         }
 
         GuiSettings o = (GuiSettings)other;
-
-        return Objects.equals(windowCoordinates.x, o.windowCoordinates.x)
+        return Objects.equals(windowWidth, o.windowWidth)
+                && Objects.equals(windowHeight, o.windowHeight)
+                && Objects.equals(windowCoordinates.x, o.windowCoordinates.x)
                 && Objects.equals(windowCoordinates.y, o.windowCoordinates.y);
     }
 
@@ -61,8 +73,8 @@ public class GuiSettings implements Serializable {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("Width : " + MAX_WIDTH + "\n");
-        sb.append("Height : " + MAX_HEIGHT + "\n");
+        sb.append("Width : " + windowWidth + "\n");
+        sb.append("Height : " + windowHeight + "\n");
         sb.append("Position : " + windowCoordinates);
         return sb.toString();
     }

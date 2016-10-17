@@ -29,7 +29,8 @@ import seedu.commando.model.UserPrefs;
  * a menu bar and space where other JavaFX elements can be placed.
  */
 public class MainWindow extends UiPart {
-
+    public static final double NON_MAXIMIZED_HEIGHT = 750;
+    public static final double NON_MAXIMIZED_WIDTH = 1000;
     private static final String ICON = "/images/address_book_32.png";
     private static final String FXML = "MainWindow.fxml";
     private static double currScreenXPos = 0;
@@ -40,7 +41,7 @@ public class MainWindow extends UiPart {
     KeyCombination altC = KeyCodeCombination.keyCombination("Alt+C");
     KeyCombination altM = KeyCodeCombination.keyCombination("Alt+M");
     KeyCombination enter = KeyCodeCombination.keyCombination("Enter");
-
+    
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
@@ -234,32 +235,45 @@ public class MainWindow extends UiPart {
     }
 
     /**
-     * Sets the default size based on user preferences.
+     * Sets the default size and coordinates based on user preferences.
      */
     protected void setWindowDefaultSize(UserPrefs prefs) {
         primaryStage.setHeight(prefs.getGuiSettings().getWindowHeight());
         primaryStage.setWidth(prefs.getGuiSettings().getWindowWidth());
-        primaryStage.setX(GuiSettings.MAX_WIDTH / 8);
-        primaryStage.setY(GuiSettings.MAX_HEIGHT / 8);
+        primaryStage.setX(prefs.getGuiSettings().getWindowCoordinates().getX());
+        primaryStage.setY(prefs.getGuiSettings().getWindowCoordinates().getY());
+        isMaximized = prefs.getGuiSettings().getIsMaximized();
+        primaryStage.setMaximized(isMaximized);
+        setToggleSizeButtonSymbol();
     }
 
     /**
      * Returns the current position of the main Window.
      */
     public GuiSettings getCurrentGuiSetting() {
-        return new GuiSettings((int) primaryStage.getX(), (int) primaryStage.getY());
+        return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(), 
+                (int) primaryStage.getX(), (int) primaryStage.getY(), isMaximized);
     }
 
     @FXML
     protected void toggleWindowSize() {
-        if (!isMaximized) {
-            primaryStage.setMaximized(true);
-            toggleSizeButton.setText("❐");
-        } else {
+        if (isMaximized) {
             primaryStage.setMaximized(false);
-            toggleSizeButton.setText("⬜");
+            primaryStage.setHeight(NON_MAXIMIZED_HEIGHT);
+            primaryStage.setWidth(NON_MAXIMIZED_WIDTH);
+        } else {
+            primaryStage.setMaximized(true);
         }
         isMaximized = !isMaximized;
+        setToggleSizeButtonSymbol();
+    }
+    
+    private void setToggleSizeButtonSymbol() {
+        if (isMaximized) {
+            toggleSizeButton.setText("❐");
+        } else {
+            toggleSizeButton.setText("⬜");
+        }
     }
     
     /**
