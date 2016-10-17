@@ -2,7 +2,7 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.logic.UiLogic;
+import seedu.commando.model.ui.UiModel;
 import seedu.commando.model.Model;
 
 /**
@@ -12,63 +12,47 @@ import seedu.commando.model.Model;
  */
 public abstract class Command {
 
-    private Context context;
+    private EventsCenter eventsCenter;
+    private Model model;
 
     /**
-     * Sets the context for the command
-     * {@param context} must be non-null
+     * Sets the EventsCenter for the command
+     * {@param eventsCenter} must be non-null
      */
-    public void setContext(Context context) {
-        assert context != null;
+    public void setEventsCenter(EventsCenter eventsCenter) {
+        assert eventsCenter != null;
 
-        this.context = context;
+        this.eventsCenter = eventsCenter;
     }
-
-    /** Error thrown when there is no context during execution */
-    public static class NoContextException extends Exception {}
-
-    protected EventsCenter getEventsCenter() throws NoContextException {
-        if (context == null) {
-            throw new NoContextException();
-        }
-
-        return context.eventsCenter;
-    }
-
-    protected Model getModel() throws NoContextException {
-        if (context == null) {
-            throw new NoContextException();
-        }
-
-        return context.model;
-    }
-
-    protected UiLogic getUiLogic() throws NoContextException {
-        if (context == null) {
-            throw new NoContextException();
-        }
-
-        return context.uiLogic;
-    }
-
 
     /**
-     * Represents a context for the execution of the command
+     * Sets the Model for the command
+     * {@param model} must be non-null
      */
-    public static class Context {
-        private EventsCenter eventsCenter;
-        private UiLogic uiLogic;
-        private Model model;
+    public void setModel(Model model) {
+        assert model != null;
 
-        public Context(EventsCenter eventsCenter, UiLogic uiLogic, Model model) {
-            assert eventsCenter != null;
-            assert uiLogic != null;
-            assert model != null;
+        this.model = model;
+    }
 
-            this.eventsCenter = eventsCenter;
-            this.uiLogic = uiLogic;
-            this.model = model;
+    public static class NoEventsCenterException extends Exception {}
+
+    public static class NoModelException extends Exception {}
+
+    protected EventsCenter getEventsCenter() throws NoEventsCenterException {
+        if (eventsCenter == null) {
+            throw new NoEventsCenterException();
         }
+
+        return eventsCenter;
+    }
+
+    protected Model getModel() throws NoModelException {
+        if (model == null) {
+            throw new NoModelException();
+        }
+
+        return model;
     }
 
     /**
@@ -76,5 +60,5 @@ public abstract class Command {
      * @return result of the command
      */
     public abstract CommandResult execute()
-        throws IllegalValueException, NoContextException;
+        throws IllegalValueException, NoModelException, NoEventsCenterException;
 }

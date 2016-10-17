@@ -1,11 +1,9 @@
 package seedu.commando.logic.commands;
 
-import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.commons.util.CollectionUtil;
-import seedu.commando.logic.UiLogic;
-import seedu.commando.logic.UiToDo;
+import seedu.commando.model.ui.UiToDo;
 import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.todo.*;
@@ -34,11 +32,10 @@ public class EditCommand extends Command {
     }
 
     public CommandResult execute()
-        throws IllegalValueException, NoContextException {
+        throws IllegalValueException, NoModelException {
         Model model = getModel();
-        UiLogic uiLogic = getUiLogic();
 
-        Optional<UiToDo> toDoToEdit = uiLogic.getToDoAtIndex(toDoIndex);
+        Optional<UiToDo> toDoToEdit = model.getUiToDoAtIndex(toDoIndex);
 
         if (!toDoToEdit.isPresent()) {
             return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex), true);

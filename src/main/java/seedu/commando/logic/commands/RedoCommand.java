@@ -11,10 +11,10 @@ public class RedoCommand extends Command {
     public static final String COMMAND_WORD = "redo";
 
     @Override
-    public CommandResult  execute() throws NoContextException {
+    public CommandResult  execute() throws NoModelException {
         Model model = getModel();
         
-        //Checks if such redo action can be executed
+        // Checks if such redo action can be executed
         if (model.redoToDoList()) {
             return new CommandResult(Messages.REDID_COMMAND);
         } else {

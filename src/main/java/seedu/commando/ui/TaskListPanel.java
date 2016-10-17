@@ -12,8 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.events.ui.ToDoListPanelSelectionChangedEvent;
-import seedu.commando.logic.UiToDo;
-import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.ui.UiToDo;
 
 import java.util.logging.Logger;
 

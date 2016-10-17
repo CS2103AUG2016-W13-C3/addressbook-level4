@@ -1,10 +1,8 @@
 package seedu.commando.logic.commands;
 
-import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.commons.util.CollectionUtil;
-import seedu.commando.logic.UiLogic;
 import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.todo.Tag;
@@ -12,8 +10,6 @@ import seedu.commando.model.todo.*;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,7 +35,7 @@ public class AddCommand extends Command {
 
     @Override
     public CommandResult execute()
-        throws IllegalValueException, NoContextException {
+        throws IllegalValueException, NoModelException {
         Model model = getModel();
 
         // Create the to-do to add

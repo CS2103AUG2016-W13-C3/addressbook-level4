@@ -1,13 +1,9 @@
 package seedu.commando.logic.commands;
 
-import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.logic.UiLogic;
 import seedu.commando.model.Model;
-import seedu.commando.model.todo.ReadOnlyToDo;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,16 +21,16 @@ public class FindCommand extends Command {
      * Asserts that {@code uiLogic} is non-null
      */
     @Override
-    public CommandResult execute() throws NoContextException {
-        UiLogic uiLogic = getUiLogic();
+    public CommandResult execute() throws NoModelException {
+        Model model = getModel();
 
         // if no keywords or tags are provided, clear find
         if (keywords.isEmpty() && tags.isEmpty()) {
-            uiLogic.clearToDoListFilter();
+            model.clearUiToDoListFilter();
             return new CommandResult(Messages.CLEAR_FIND);
         }
 
-        uiLogic.setToDoListFilter(keywords, tags);
-        return new CommandResult(String.format(Messages.FIND, uiLogic.getObservableEvents().size(), uiLogic.getObservableTasks().size()));
+        model.setUiToDoListFilter(keywords, tags);
+        return new CommandResult(String.format(Messages.FIND, model.getUiEventList().size(), model.getUiTaskList().size()));
     }
 }

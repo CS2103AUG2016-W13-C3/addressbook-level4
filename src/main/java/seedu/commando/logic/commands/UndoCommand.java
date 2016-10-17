@@ -11,7 +11,7 @@ public class UndoCommand extends Command {
     public static final String COMMAND_WORD = "undo";
 
     @Override
-    public CommandResult execute() throws NoContextException {
+    public CommandResult execute() throws NoModelException {
         Model model = getModel();
 
         //check if there is undo action taken

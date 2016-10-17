@@ -1,4 +1,4 @@
-package seedu.commando.logic;
+package seedu.commando.model.ui;
 
 import javafx.beans.value.ObservableValue;
 import seedu.commando.model.todo.*;

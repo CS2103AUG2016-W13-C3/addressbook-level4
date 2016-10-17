@@ -1,4 +1,4 @@
-package seedu.commando.logic;
+package seedu.commando.model.ui;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -7,6 +7,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.util.StringUtil;
+import seedu.commando.logic.LogicManager;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * Handles any logic in displaying on the UI, eg, splitting/filtering the to-do list
  */
-public class UiLogic {
+public class UiModel {
     private final Logger logger = LogsCenter.getLogger(LogicManager.class);
 
     private final ReadOnlyToDoList toDoList;
@@ -36,7 +37,7 @@ public class UiLogic {
         toDoAtIndices = new ArrayList<>();
     }
 
-    public UiLogic(ReadOnlyToDoList toDoList) {
+    public UiModel(ReadOnlyToDoList toDoList) {
         this.toDoList = toDoList;
         filteredToDoList = new FilteredList<>(toDoList.getToDos());
 

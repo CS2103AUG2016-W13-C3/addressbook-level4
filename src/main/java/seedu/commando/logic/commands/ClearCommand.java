@@ -1,9 +1,7 @@
 package seedu.commando.logic.commands;
 
-import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.logic.UiLogic;
 import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListChange;
 
@@ -19,7 +17,7 @@ public class ClearCommand extends Command {
     public ClearCommand() {}
 
     @Override
-    public CommandResult execute() throws NoContextException {
+    public CommandResult execute() throws NoModelException {
         Model model = getModel();
 
         try {

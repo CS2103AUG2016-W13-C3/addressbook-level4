@@ -8,6 +8,8 @@ import seedu.commando.commons.events.model.ToDoListChangedEvent;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.commons.util.StringUtil;
 import seedu.commando.model.todo.*;
+import seedu.commando.model.ui.UiModel;
+import seedu.commando.model.ui.UiToDo;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -20,9 +22,8 @@ public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final ToDoList toDoList;
-    private final FilteredList<ReadOnlyToDo> filteredToDos;
-    private final UnmodifiableObservableList<ReadOnlyToDo> protectedFilteredToDos;
     private final ArrayList<ToDoListChange> toDoListChanges; // excludes undo and redo changes
+    private final UiModel uiModel;
     private int undoChangeIndex;
     private ToDoListChange lastToDoListChange;
     {
@@ -46,8 +47,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         this.toDoList = new ToDoList(toDoList.getToDos());
         this.userPrefs = userPrefs;
-        filteredToDos = new FilteredList<>(this.toDoList.getToDos());
-        protectedFilteredToDos = new UnmodifiableObservableList<>(filteredToDos);
+        uiModel = new UiModel(this.toDoList);
     }
 
     public ModelManager() {
@@ -137,6 +137,31 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public Optional<ToDoListChange> getLastToDoListChange() {
         return Optional.ofNullable(lastToDoListChange);
+    }
+
+    @Override
+    public UnmodifiableObservableList<UiToDo> getUiEventList() {
+        return uiModel.getObservableEvents();
+    }
+
+    @Override
+    public UnmodifiableObservableList<UiToDo> getUiTaskList() {
+        return uiModel.getObservableTasks();
+    }
+
+    @Override
+    public Optional<UiToDo> getUiToDoAtIndex(int toDoIndex) {
+        return uiModel.getToDoAtIndex(toDoIndex);
+    }
+
+    @Override
+    public void clearUiToDoListFilter() {
+        uiModel.clearToDoListFilter();
+    }
+
+    @Override
+    public void setUiToDoListFilter(Set<String> keywords, Set<String> tags) {
+        uiModel.setToDoListFilter(keywords, tags);
     }
 
     /** Raises an event to indicate the model has changed */

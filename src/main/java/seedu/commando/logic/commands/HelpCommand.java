@@ -29,7 +29,7 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public CommandResult execute() throws NoContextException {
+    public CommandResult execute() throws NoEventsCenterException {
         EventsCenter eventsCenter = getEventsCenter();
 
         eventsCenter.post(new ShowHelpRequestEvent(commandWord));
