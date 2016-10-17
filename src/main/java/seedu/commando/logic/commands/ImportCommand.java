@@ -41,7 +41,7 @@ public class ImportCommand extends Command {
 		if(!path.toLowerCase().endsWith(".xml")){
 			return new CommandResult(Messages.IMPORT_COMMAND_TYPE_ERROR,true);
 		}
-		//Check if the source file exists;
+		//Check if the source file exists (should not);
 		if(!file.exists()){
 			return new CommandResult(Messages.IMPORT_COMMAND_FILE_NOT_EXIST,true);
 		}
