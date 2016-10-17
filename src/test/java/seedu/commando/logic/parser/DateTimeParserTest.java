@@ -7,6 +7,7 @@ import org.junit.Test;
 import seedu.commando.logic.parser.DateTimeParser;
 
 import java.time.*;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -182,4 +183,43 @@ public class DateTimeParserTest {
     }
 
     // TODO: Add more datetime format tests
+    @Test
+    public void parseDateTime_relativeDayOfWeek()  {
+        dateTimeParser.parseDateTime("10 Jan 2016 10am");
+        
+        LocalDateTime ldt = now.minusDays(1).with(TemporalAdjusters.next(DayOfWeek.FRIDAY));
+        assertEquals(
+                LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),                 
+                    DateTimeParser.DefaultLocalTime.getHour(),
+                    DateTimeParser.DefaultLocalTime.getMinute()),
+                dateTimeParser.parseDateTime("coming Friday").orElse(null)
+        );
+        
+        assertEquals(
+                LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),                 
+                    DateTimeParser.DefaultLocalTime.getHour(),
+                    DateTimeParser.DefaultLocalTime.getMinute()),
+                dateTimeParser.parseDateTime("Friday").orElse(null)
+        );
+        
+        assertEquals(
+                LocalDateTime.of(ldt.plusWeeks(1).getYear(), ldt.plusWeeks(1).getMonthValue(), ldt.plusWeeks(1).getDayOfMonth(),                 
+                    DateTimeParser.DefaultLocalTime.getHour(),
+                    DateTimeParser.DefaultLocalTime.getMinute()),
+                dateTimeParser.parseDateTime("next Friday").orElse(null)
+        );         
+    }
+    
+    @Test
+    public void parseDateTime_realtiveDays()  {
+        dateTimeParser.parseDateTime("10 Jan 2016 10am");
+        
+        assertEquals(
+                LocalDateTime.of(now.plusDays(2).getYear(), now.plusDays(2).getMonthValue(), now.plusDays(2).getDayOfMonth(),                 
+                    DateTimeParser.DefaultLocalTime.getHour(),
+                    DateTimeParser.DefaultLocalTime.getMinute()),
+                dateTimeParser.parseDateTime("2 days later").orElse(null)
+        );   
+    }
+
 }
