@@ -86,6 +86,14 @@ public class FinishCommandTest {
     }
 
     @Test
+    public void execute_finish_invalidFormat() {
+        CommandResult result = logic.execute("finish 1 #troll");
+        assertTrue(result.hasError());
+
+        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD), result.getFeedback());
+    }
+
+    @Test
     public void execute_finish_index() throws IllegalValueException {
         logic.execute("add title");
         logic.execute("add title2");

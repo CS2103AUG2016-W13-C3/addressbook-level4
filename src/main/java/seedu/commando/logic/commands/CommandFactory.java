@@ -67,8 +67,12 @@ public class CommandFactory {
         }
     }
 
-    private Command buildExitCommand() {
-        return new ExitCommand();
+    private Command buildExitCommand() throws IllegalValueException {
+        if (sequentialParser.getInput().trim().isEmpty()) {
+            return new ExitCommand();
+        } else {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ExitCommand.COMMAND_WORD));
+        }
     }
 
     private Command buildAddCommand() throws IllegalValueException {
@@ -117,7 +121,11 @@ public class CommandFactory {
             () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
         );
 
-        return new DeleteCommand(index);
+        if (sequentialParser.getInput().trim().isEmpty()) {
+            return new DeleteCommand(index);
+        } else {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD));
+        }
     }
     
     private Command buildFinishCommand() throws IllegalValueException {
@@ -125,7 +133,11 @@ public class CommandFactory {
             () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
         );
 
-        return new FinishCommand(index);
+        if (sequentialParser.getInput().trim().isEmpty()) {
+            return new FinishCommand(index);
+        } else {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
+        }
     }
 
     private Command buildFindCommand() {
@@ -146,8 +158,12 @@ public class CommandFactory {
         return command;
     }
 
-    private Command buildClearCommand() {
-        return new ClearCommand();
+    private Command buildClearCommand() throws IllegalValueException {
+        if (sequentialParser.getInput().trim().isEmpty()) {
+            return new ClearCommand();
+        } else {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ClearCommand.COMMAND_WORD));
+        }
     }
 
     private Command buildHelpCommand() {
@@ -208,11 +224,19 @@ public class CommandFactory {
         return command;
     }
     
-    private Command buildUndoCommand(){
-        return new UndoCommand();
+    private Command buildUndoCommand() throws IllegalValueException {
+        if (sequentialParser.getInput().trim().isEmpty()) {
+            return new UndoCommand();
+        } else {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, UndoCommand.COMMAND_WORD));
+        }
     }
-    
-    private Command buildRedoCommand(){
-        return new RedoCommand();
+
+    private Command buildRedoCommand() throws IllegalValueException {
+        if (sequentialParser.getInput().trim().isEmpty()) {
+            return new RedoCommand();
+        } else {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, RedoCommand.COMMAND_WORD));
+        }
     }
 }

@@ -6,6 +6,7 @@ package seedu.commando.commons.core;
 public class Messages {
     public static final String UNKNOWN_COMMAND = "Unknown command.";
     public static final String MISSING_COMMAND_WORD = "Missing command word.";
+    public static final String INVALID_COMMAND_FORMAT = "Invalid format for '%1$s' command!";
     public static final String MISSING_TODO_TITLE = "Missing value for to-do.";
     public static final String MISSING_TODO_DATERANGE_START = "Missing start date for date range of to-do.";
     public static final String MISSING_TODO_DATERANGE_END = "Missing end date for date range of to-do.";
