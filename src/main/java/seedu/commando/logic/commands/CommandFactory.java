@@ -183,12 +183,17 @@ public class CommandFactory {
 
         EditCommand command = new EditCommand(index);
 
+        // Check if tag prefix exists in command
+        boolean hasTagPrefix = sequentialParser.getInput().contains(TAG_PREFIX);
+
         // Extract tags
         List<String> tags = sequentialParser.extractPrefixedWords(TAG_PREFIX, true);
 
         // Put in tags
         if (!tags.isEmpty()) {
             command.tags = tags.stream().collect(Collectors.toSet());
+        } else if (hasTagPrefix) { // If has an empty tag, empty list of tags for to-do
+            command.tags = Collections.emptySet();
         }
 
         // Extract date range, if exists
@@ -214,11 +219,6 @@ public class CommandFactory {
         // Extract title
         sequentialParser.extractText().ifPresent(title -> {
             command.title = title;
-
-            // If title is set but no tags, remove tags as well
-            if (tags.isEmpty()) {
-                command.tags = Collections.emptySet();
-            }
         });
 
         return command;

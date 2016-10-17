@@ -170,6 +170,7 @@ public class SequentialParser {
      * in the order that appears in the input
      * Eg, extractPrefixedWords("#", true) on input = "some #tag1 #tag2 thing" returns ["tag1", "tag2"]
      * and resulting input = "some  thing"
+     * Words which are empty strings are removed
      * Asserts {@param prefix} is non-null
      */
     public List<String> extractPrefixedWords(String prefix, boolean ifRemovePrefix) {

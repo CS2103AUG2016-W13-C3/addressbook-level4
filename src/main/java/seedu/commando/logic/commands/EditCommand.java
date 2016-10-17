@@ -25,7 +25,7 @@ public class EditCommand extends Command {
     public LocalDateTime dateRangeStart;
     public LocalDateTime dateRangeEnd;
     public LocalDateTime dueDate;
-    public Set<String> tags = Collections.emptySet();
+    public Set<String> tags = null;
 
     public EditCommand(int toDoIndex) {
         this.toDoIndex = toDoIndex;

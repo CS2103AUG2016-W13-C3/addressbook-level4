@@ -89,11 +89,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_edit_title() throws IllegalValueException {
-        logic.execute("add title");
-
-        assertTrue(ifToDoExists(logic,
-            new ToDoBuilder("title")
-                .build()));
+        logic.execute("add title #tag");
 
         String command = "edit 1 new title";
         CommandResult result = logic.execute(command);
@@ -102,6 +98,7 @@ public class EditCommandTest {
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("new title")
+                .withTags("tag")
                 .build()));
     }
 
@@ -127,9 +124,9 @@ public class EditCommandTest {
 
     @Test
     public void execute_edit_titleRemoveTags() throws IllegalValueException {
-        logic.execute("add title #tag1");
+        logic.execute("add title #tag1 #tag2");
 
-        CommandResult result = logic.execute("edit 1 new title");
+        CommandResult result = logic.execute("edit 1 new title #");
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
