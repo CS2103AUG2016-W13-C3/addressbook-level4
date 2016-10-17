@@ -28,7 +28,6 @@ public class FinishCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private Model model;
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
@@ -37,7 +36,7 @@ public class FinishCommandTest {
 
     @Before
     public void setup() throws IOException {
-        model = new ModelManager();
+        Model model = new ModelManager();
 
         toDoListFile = folder.newFile();
         userPrefsFile  = folder.newFile();
@@ -94,7 +93,7 @@ public class FinishCommandTest {
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title2")
                 .build()));
 
@@ -102,10 +101,10 @@ public class FinishCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertFalse(ifToDoExists(model,
+        assertFalse(ifToDoExists(logic,
             new ToDoBuilder("title2")
                 .build()));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .build()));
     }

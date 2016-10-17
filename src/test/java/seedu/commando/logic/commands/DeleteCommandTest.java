@@ -30,7 +30,6 @@ public class DeleteCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private Model model;
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
@@ -39,7 +38,7 @@ public class DeleteCommandTest {
 
     @Before
     public void setup() throws IOException {
-        model = new ModelManager();
+        Model model = new ModelManager();
 
         toDoListFile = folder.newFile();
         userPrefsFile  = folder.newFile();
@@ -96,7 +95,7 @@ public class DeleteCommandTest {
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title2")
                 .build()));
 
@@ -104,10 +103,10 @@ public class DeleteCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertFalse(ifToDoExists(model,
+        assertFalse(ifToDoExists(logic,
             new ToDoBuilder("title2")
                 .build()));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .build()));
     }

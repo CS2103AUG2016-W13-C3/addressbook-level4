@@ -30,7 +30,6 @@ public class EditCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private Model model;
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
@@ -39,7 +38,7 @@ public class EditCommandTest {
 
     @Before
     public void setup() throws IOException {
-        model = new ModelManager();
+        Model model = new ModelManager();
 
         toDoListFile = folder.newFile();
         userPrefsFile  = folder.newFile();
@@ -92,7 +91,7 @@ public class EditCommandTest {
     public void execute_edit_title() throws IllegalValueException {
         logic.execute("add title");
 
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .build()));
 
@@ -101,7 +100,7 @@ public class EditCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("new title")
                 .build()));
     }
@@ -110,7 +109,7 @@ public class EditCommandTest {
     public void execute_edit_tags() throws IllegalValueException {
         logic.execute("add title #tag1 #tag2");
 
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withTags("tag1", "tag2")
                 .build()));
@@ -120,7 +119,7 @@ public class EditCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withTags("tag2", "tag3", "tag4")
                 .build()));
@@ -134,7 +133,7 @@ public class EditCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("new title")
                 .build()));
     }
@@ -143,7 +142,7 @@ public class EditCommandTest {
     public void execute_edit_dueDate() throws IllegalValueException {
         logic.execute("add title by 10 Jan 1994 12:00");
 
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDueDate(LocalDateTime.of(1994, 1, 10, 12, 0))
                 .build()));
@@ -153,7 +152,7 @@ public class EditCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDueDate(LocalDateTime.of(1995, 4, 11, 0, 12))
                 .build()));
@@ -163,7 +162,7 @@ public class EditCommandTest {
     public void execute_edit_dateRange() throws IllegalValueException {
         logic.execute("add title from 10 Jan 1994 12:00 to 21 Jan 1994 13:00");
 
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDateRange(
                     LocalDateTime.of(1994, 1, 10, 12, 0),
@@ -176,7 +175,7 @@ public class EditCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDateRange(
                     LocalDateTime.of(1984, 9, 10, 12, 0),
@@ -203,7 +202,7 @@ public class EditCommandTest {
         CommandResult result = logic.execute(command);
         assertFalse(result.hasError());
 
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDateRange(
                     LocalDateTime.of(2016, 12, 10, 15, 0),

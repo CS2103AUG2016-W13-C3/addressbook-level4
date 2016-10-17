@@ -30,7 +30,6 @@ public class AddCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private Model model;
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
@@ -39,7 +38,7 @@ public class AddCommandTest {
 
     @Before
     public void setup() throws IOException {
-        model = new ModelManager();
+        Model model = new ModelManager();
 
         toDoListFile = folder.newFile();
         userPrefsFile  = folder.newFile();
@@ -72,7 +71,7 @@ public class AddCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model, new ToDoBuilder("valid title").build()));
+        assertTrue(ifToDoExists(logic, new ToDoBuilder("valid title").build()));
     }
 
     @Test
@@ -81,7 +80,7 @@ public class AddCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("valid title")
                 .withDueDate(LocalDateTime.of(2016, 2, 10, 11, 59))
                 .build()));
@@ -94,7 +93,7 @@ public class AddCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("valid title")
                 .withDateRange(
                     LocalDateTime.of(2016, 12, 10, 11, 59),
@@ -118,7 +117,7 @@ public class AddCommandTest {
         CommandResult result = logic.execute(command);
         assertFalse(result.hasError());
 
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDateRange(
                     LocalDateTime.of(2016, 12, 10, 15, 0),
@@ -134,7 +133,7 @@ public class AddCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("valid title")
                 .withTags(
                     "tag1", "tag2"
@@ -149,7 +148,7 @@ public class AddCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("valid title")
                 .withTags(
                     "tag1", "tag2"
@@ -164,7 +163,7 @@ public class AddCommandTest {
     public void execute_add_emptyTag() throws IllegalValueException {
         logic.execute("add title #    ");
 
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .build()));
     }

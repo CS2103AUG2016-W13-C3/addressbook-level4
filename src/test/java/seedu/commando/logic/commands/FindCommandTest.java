@@ -27,7 +27,6 @@ public class FindCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private Model model;
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
@@ -36,7 +35,7 @@ public class FindCommandTest {
 
     @Before
     public void setup() throws IOException {
-        model = new ModelManager();
+        Model model = new ModelManager();
 
         toDoListFile = folder.newFile();
         userPrefsFile  = folder.newFile();

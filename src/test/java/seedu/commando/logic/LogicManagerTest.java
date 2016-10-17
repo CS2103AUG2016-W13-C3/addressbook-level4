@@ -37,7 +37,6 @@ public class LogicManagerTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private Model model;
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
@@ -46,7 +45,7 @@ public class LogicManagerTest {
 
     @Before
     public void setup() throws IOException {
-        model = new ModelManager();
+        Model model = new ModelManager();
 
         toDoListFile = folder.newFile();
         userPrefsFile  = folder.newFile();
@@ -84,12 +83,14 @@ public class LogicManagerTest {
 
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 2);
+        assertTrue(logic.getObservableEventList().size() == 1);
+        assertTrue(logic.getObservableTaskList().size() == 1);
 
         CommandResult result = logic.execute("clear");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 0);
+        assertTrue(logic.getObservableEventList().size() == 0);
+        assertTrue(logic.getObservableTaskList().size() == 0);
     }
 
     @Test
@@ -115,27 +116,32 @@ public class LogicManagerTest {
         
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 1);
+        assertTrue(logic.getObservableEventList().size() == 0);
+        assertTrue(logic.getObservableTaskList().size() == 1);
         
         CommandResult result = logic.execute("undo");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 1);
+        assertTrue(logic.getObservableEventList().size() == 0);
+        assertTrue(logic.getObservableTaskList().size() == 1);
+
+        result = logic.execute("undo");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(logic.getObservableEventList().size() == 0);
+        assertTrue(logic.getObservableTaskList().size() == 2);
         
         result = logic.execute("undo");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 2);
+        assertTrue(logic.getObservableEventList().size() == 0);
+        assertTrue(logic.getObservableTaskList().size() == 1);
         
         result = logic.execute("undo");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 1);
-        
-        result = logic.execute("undo");
-        assertFalse(result.hasError());
-        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 0);
+        assertTrue(logic.getObservableEventList().size() == 0);
+        assertTrue(logic.getObservableTaskList().size() == 0);
         
         result = logic.execute("undo");
         assertTrue(result.hasError());
@@ -145,22 +151,25 @@ public class LogicManagerTest {
     @Test
     public void execute_redo() {
         logic.execute("add title");
-        logic.execute("add tilte2");
+        logic.execute("add title2");
         logic.execute("undo");
         
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 1);
+        assertTrue(logic.getObservableEventList().size() == 0);
+        assertTrue(logic.getObservableTaskList().size() == 1);
         
         CommandResult result = logic.execute("redo");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 2);
+        assertTrue(logic.getObservableEventList().size() == 0);
+        assertTrue(logic.getObservableTaskList().size() == 2);
         
         result = logic.execute("redo");
         assertTrue(result.hasError());
         assertEquals(Messages.REDID_COMMAND_FAIL, result.getFeedback());
-
+        assertTrue(logic.getObservableEventList().size() == 0);
+        assertTrue(logic.getObservableTaskList().size() == 2);
     }
 
     @Test
