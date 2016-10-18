@@ -62,6 +62,12 @@ public class CommandFactory {
                 return buildUndoCommand();
             case RedoCommand.COMMAND_WORD:
                 return buildRedoCommand();
+            case StoreCommand.COMMAND_WORD:
+            	return buildStoreCommand();
+            case ExportCommand.COMMAND_WORD:
+            	return buildExportCommand();
+            case ImportCommand.COMMAND_WORD:
+            	return buildImportCommand();
             default:
                 throw new IllegalValueException(Messages.UNKNOWN_COMMAND);
         }
@@ -74,6 +80,36 @@ public class CommandFactory {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ExitCommand.COMMAND_WORD));
         }
     }
+
+    private Command buildImportCommand() throws IllegalValueException {
+    	// Extract the file path
+    	String path = sequentialParser.extractText()
+            .orElseThrow(
+                () -> new IllegalValueException(Messages.MISSING_IMPORT_PATH)
+            );
+
+		return new ImportCommand(path);
+	}
+
+	private Command buildExportCommand() throws IllegalValueException {
+    	// Extract the file path
+        String path = sequentialParser.extractText()
+            .orElseThrow(
+                () -> new IllegalValueException(Messages.MISSING_EXPORT_PATH)
+            );
+
+        return new ExportCommand(path);
+	}
+
+	private Command buildStoreCommand() throws IllegalValueException {
+    	// Extract the file path
+        String path = sequentialParser.extractText()
+            .orElseThrow(
+                () -> new IllegalValueException(Messages.MISSING_STORE_PATH)
+            );
+
+    	return new StoreCommand(path);
+	}
 
     private Command buildAddCommand() throws IllegalValueException {
         // Extract tags

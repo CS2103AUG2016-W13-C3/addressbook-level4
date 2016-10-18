@@ -151,7 +151,7 @@ public class ModelManagerTest {
         assertTrue(modelManager.undoToDoList());
 
         assertTrue(modelManager.getLastToDoListChange().isPresent());
-        assertEquals(modelManager.getLastToDoListChange().get(), toDoListChangeDelete1.getReverseChange());
+        assertEquals(modelManager.getLastToDoListChange().get(), toDoListChangeAdd1);
         assertTrue(modelManager.getToDoList().getToDos().contains(toDoList2Item1));
         assertTrue(modelManager.getToDoList().getToDos().contains(toDoListItem1));
     }
@@ -166,8 +166,7 @@ public class ModelManagerTest {
         assertTrue(modelManager.undoToDoList());
         assertFalse(modelManager.undoToDoList()); // fails
 
-        assertTrue(modelManager.getLastToDoListChange().isPresent());
-        assertEquals(modelManager.getLastToDoListChange().get(), toDoListChangeAdd1.getReverseChange());
+        assertFalse(modelManager.getLastToDoListChange().isPresent());
         assertFalse(modelManager.getToDoList().getToDos().contains(toDoList2Item1));
         assertTrue(modelManager.getToDoList().getToDos().contains(toDoListItem1));
     }
@@ -182,8 +181,7 @@ public class ModelManagerTest {
 
         assertTrue(modelManager.undoToDoList());
 
-        assertTrue(modelManager.getLastToDoListChange().isPresent());
-        assertEquals(modelManager.getLastToDoListChange().get(), toDoListChangeDelete1.getReverseChange());
+        assertFalse(modelManager.getLastToDoListChange().isPresent());
         assertFalse(modelManager.getToDoList().getToDos().contains(toDoList2Item1));
         assertTrue(modelManager.getToDoList().getToDos().contains(toDoListItem1));
     }

@@ -13,6 +13,12 @@ public class Messages {
     public static final String MISSING_TODO_DATERANGE_END = "Missing end date for date range of to-do.";
     public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.";
     public static final String TODO_DATERANGE_CONSTRAINTS = "The end date of the date range must be after start date.";
+    public static final String MISSING_STORE_PATH = "Missing the path to store.";
+    public static final String MISSING_STORE_FILE = "Missing the file name to store.";
+    public static final String MISSING_EXPORT_PATH = "Missing the path to export.";
+    public static final String MISSING_EXPORT_FILE = "Missing the file name to export.";
+    public static final String MISSING_IMPORT_FILE = "Missing the file name to import.";
+    public static final String MISSING_IMPORT_PATH = "Missing the path to import.";
     public static final String TODO_DUEDATE_CONSTRAINTS = "Due date can be any date.";
     public static final String TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE = "To-do cannot have both due date and date range!";
     public static final String TODO_ADDED = "To-do added: %1$s.";
@@ -32,4 +38,11 @@ public class Messages {
     public static final String UNDO_COMMAND_FAIL = "Nothing more to undo!";
     public static final String REDO_COMMAND = "Redid the last undo command.";
     public static final String REDO_COMMAND_FAIL = "Nothing more to redo!";
+    public static final String STORE_COMMAND = "Changed the storage path to: %1$s.";
+    public static final String STORE_COMMAND_FILE_EXIST = "Failed to store the storage file to %1$s: destination file exists";
+    public static final String EXPORT_COMMAND = "Export the storage file to: %1$s.";
+    public static final String EXPORT_COMMAND_FILE_EXIST = "Failed to export the storage file to %1$s: destination file exists";
+    public static final String IMPORT_COMMAND = "Import the storage file from: %1$s.";
+    public static final String IMPORT_COMMAND_FILE_NOT_EXIST = "Invalid import file: the file does not exist.";
+    public static final String IMPORT_COMMAND_INVALID_DATA = "Invalid import file: the file is of an invalid format.";
 }

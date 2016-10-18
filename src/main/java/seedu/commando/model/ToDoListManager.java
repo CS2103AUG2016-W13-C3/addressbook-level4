@@ -85,6 +85,10 @@ public class ToDoListManager {
         return true;
     }
 
+    /**
+     * Gets the last to-do list change
+     * If a change is undone, it would not be considered "the last"
+     */
     public Optional<ToDoListChange> getLastToDoListChange() {
         return toDoListChanges.isEmpty() ? Optional.empty() :
             Optional.of(toDoListChanges.get(toDoListChanges.size() - 1));
