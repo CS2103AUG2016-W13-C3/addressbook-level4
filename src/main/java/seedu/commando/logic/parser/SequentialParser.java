@@ -108,7 +108,6 @@ public class SequentialParser {
 
             String datetimeString = input.substring(startIndex, endIndex);
 
-            System.out.println("try: " +datetimeString);
             // Check if datetime can be parsed
             Optional<LocalDateTime> dateTime = dateTimeParser.parseDateTime(datetimeString);
 

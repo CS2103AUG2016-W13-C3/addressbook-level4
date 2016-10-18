@@ -18,21 +18,28 @@ public class DateTimeParser {
 
     private static final String MonthWordRegexString = "January|Feburary|March|April|June|July|August|September|October|November|December|" +
         "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec";
+    private static final String DayWordRegexString = "Monday|Tuesday|Wednesday|Thursday|Friday|Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri";
     private static final String YearRegexString = "(?<year>\\d{4}|\\d{2})";
     private static final String TwoDigitYearRegexString = "\\d{2}$";
 
-    private static final String DateRegexStringWithSlashes = "(?<month>\\d{1,2})\\/(?<day>\\d{1,2})(\\/" + YearRegexString + ")?";
-    private static final String DateRegexStringWithMonthWord = "(\\d{1,2})((th|rd|st|nd)?)\\s+" +
+    private static final String DateWithSlashesRegexString = "(?<month>\\d{1,2})\\/(?<day>\\d{1,2})(\\/" + YearRegexString + ")?";
+    private static final String DateWithMonthWordRegexString = "(\\d{1,2})((th|rd|st|nd)?)\\s+" +
         "(" + MonthWordRegexString + ")(\\s+" + YearRegexString + ")?";
-    private static final String DateRegexStringWithMonthWordReversed = "(" + MonthWordRegexString + ")\\s+" +
+    private static final String DateWithMonthWordReversedRegexString = "(" + MonthWordRegexString + ")\\s+" +
         "(\\d{1,2})(th|rd|st|nd)?(\\s+" + YearRegexString + ")?";
+    private static final String DateWithDayWordRegexString = "((coming|next)\\s+)?(" + DayWordRegexString + ")";
+    private static final String DateWithLaterRegexString = "((\\d+\\d)|([2-9]))\\s+(days|weeks|months|years)\\s+(later)";
+    private static final String DateWithNextRegexString = "next (week|month|year)";
 
     private static final String[] supportedDateRegexStrings = new String[] {
-        DateRegexStringWithSlashes,
-        DateRegexStringWithMonthWord,
-        DateRegexStringWithMonthWordReversed,
+        DateWithSlashesRegexString,
+        DateWithMonthWordRegexString,
+        DateWithMonthWordReversedRegexString,
+        DateWithDayWordRegexString,
+        DateWithLaterRegexString,
+        DateWithNextRegexString,
         "today",
-        "tomorrow"
+        "tomorrow|tmr"
     };
 
     private static final String[] supportedTimeRegexStrings = new String[] {
@@ -129,14 +136,14 @@ public class DateTimeParser {
         String dateString = "";
         for (String regexString : supportedDateRegexStrings) {
             // Try to match regex + (space or end of string)
-            Matcher matcher = Pattern.compile(regexString + "(\\s|$)").matcher(input);
+            Matcher matcher = Pattern.compile(regexString + "(\\s|$)", Pattern.CASE_INSENSITIVE).matcher(input);
 
             // If matched from the start
             if (matcher.find() && matcher.start() == 0) {
 
-                // Special case: for DateRegexStringWithSlashes format,
+                // Special case: for DateWithSlashesRegexString format,
                 // Swap month and day
-                if (regexString.equals(DateRegexStringWithSlashes)) {
+                if (regexString.equals(DateWithSlashesRegexString)) {
                     dateString = matcher.group("day") + "/" + matcher.group("month") + "/" + matcher.group("year");
                 } else {
                     dateString = matcher.group().trim();
@@ -183,7 +190,14 @@ public class DateTimeParser {
         if (!input.isEmpty()) {
             return Optional.empty();
         } else {
-            return Optional.of (dateString + " " + timeString);
+
+            // Special case: if DateWithLaterRegexString is used,
+            // swap date and time (for parsing in natty)
+            if (dateString.matches(DateWithLaterRegexString)) {
+                return Optional.of(timeString + " " + dateString);
+            } else {
+                return Optional.of(dateString + " " + timeString);
+            }
         }
     }
 }
