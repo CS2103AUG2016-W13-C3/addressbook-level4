@@ -14,6 +14,7 @@ public class ToDoListManager {
     private final ToDoList toDoList;
     private final ArrayList<ToDoListChange> toDoListChanges; // changes that can be undone
     private final ArrayList<ToDoListChange> toDoListUndoChanges; // changes that can be redone
+    private ToDoListChange lastToDoListChange;
     {
         toDoListChanges = new ArrayList<>();
         toDoListUndoChanges = new ArrayList<>();
@@ -34,21 +35,16 @@ public class ToDoListManager {
     }
 
     public void changeToDoList(ToDoListChange change) throws IllegalValueException {
+        applyToDoListChange(change);
         toDoListChanges.add(change);
-        try {
-            applyToDoListChange(change);
-        } catch (IllegalValueException exception) {
-            // unable to apply the change
-            // revert change
-            toDoListChanges.remove(toDoListChanges.size() - 1);
-            throw exception;
-        }
 
         // Reset undo list
         toDoListUndoChanges.clear();
     }
 
     private void applyToDoListChange(ToDoListChange change) throws IllegalValueException {
+        lastToDoListChange = change;
+
         toDoList.remove(change.getDeletedToDos());
 
         try {
@@ -57,6 +53,7 @@ public class ToDoListManager {
             // there were duplicate to-dos
             // revert removal of to-dos
             toDoList.add(change.getDeletedToDos());
+            lastToDoListChange = null;
             throw exception;
         }
     }
@@ -68,16 +65,17 @@ public class ToDoListManager {
 
         ToDoListChange change = toDoListChanges.get(toDoListChanges.size() - 1);
 
-        // move changes to undo list
-        toDoListUndoChanges.add(change);
-        toDoListChanges.remove(toDoListChanges.size() - 1);
-
         try {
             applyToDoListChange(change.getReverseChange());
         } catch (IllegalValueException exception) {
             assert false; // Undo should always work
             return false; // Undo failed
         }
+
+        // move changes to undo list
+        toDoListUndoChanges.add(change);
+        toDoListChanges.remove(toDoListChanges.size() - 1);
+
 
         return true;
     }
@@ -89,10 +87,6 @@ public class ToDoListManager {
 
         ToDoListChange change = toDoListUndoChanges.get(toDoListUndoChanges.size() - 1);
 
-        // move changes from undo list
-        toDoListChanges.add(change);
-        toDoListUndoChanges.remove(toDoListUndoChanges.size() - 1);
-
         try {
             applyToDoListChange(change);
         } catch (IllegalValueException exception) {
@@ -100,15 +94,17 @@ public class ToDoListManager {
             return false; // Redo failed
         }
 
+        // move changes from undo list
+        toDoListChanges.add(change);
+        toDoListUndoChanges.remove(toDoListUndoChanges.size() - 1);
+
         return true;
     }
 
     /**
-     * Gets the last to-do list change
-     * If a change is undone, it would not be considered "the last"
+     * Latest change on the to-do list, including undo/redo
      */
     public Optional<ToDoListChange> getLastToDoListChange() {
-        return toDoListChanges.isEmpty() ? Optional.empty() :
-            Optional.of(toDoListChanges.get(toDoListChanges.size() - 1));
+        return Optional.ofNullable(lastToDoListChange);
     }
 }
