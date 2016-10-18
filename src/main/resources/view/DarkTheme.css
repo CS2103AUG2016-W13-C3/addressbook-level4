@@ -15,15 +15,25 @@
 	-fx-border-color: transparent;
 }
 
+.event-pane-title-background, .task-pane-title-background {
+	-fx-background-color: derive(#1d1d1d, 20%);
+	-fx-border-color: derive(#1d1d1d, 20%);
+}
+
+.event-pane-title, .task-pane-title {
+	-fx-font-family: "Segoe UI Light";
+	-fx-font-size: 30pt;
+}
+
 .label {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Light";
     -fx-text-fill: #555555;
     -fx-opacity: 0.9;
 }
 
 .label-bright {
-    -fx-font-size: 11pt;
+    -fx-font-size: 12pt;
     -fx-font-family: "Segoe UI Semibold";
     -fx-text-fill: white;
     -fx-opacity: 1;
@@ -134,7 +144,8 @@
 }
 
 #indexLabel {
-	-fx-font-family: Consolas;
+	-fx-font-family: Microsoft Yahei Light;
+	-fx-font-weight: 600;
 }
 
 .task-pane, .event-pane {
@@ -144,9 +155,9 @@
 .task-pane-inner, .event-pane-inner {
 	-fx-background-color: #DCDCDC; 
     -fx-background-radius: 8px;
-    -fx-border-width: 4px;
-    -fx-border-radius: 4px;
-    -fx-border-color:  derive(#1d1d1d, 20%);
+    -fx-border-width: 2px;
+    -fx-border-radius: 3px;
+    -fx-border-color:  derive(#1d1d1d, 50%);
 }
 
 .anchor-pane {
