@@ -1,5 +1,7 @@
 package seedu.commando.model.todo;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
@@ -115,6 +117,7 @@ public class ToDo implements ReadOnlyToDo {
         return isFinished;
     }
 
+
     @Override
     public ObservableStringValue getObservableValue() {
         return value;
@@ -134,7 +137,7 @@ public class ToDo implements ReadOnlyToDo {
 
     @Override
     public int hashCode() {
-        return Objects.hash(value.getValue());
+        return Objects.hash(title, dueDate, dateRange, tags);
     }
 
     @Override

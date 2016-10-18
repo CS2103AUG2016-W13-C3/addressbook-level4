@@ -217,4 +217,15 @@ public class AddCommandTest {
         assertEquals(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
+
+    @Test
+    public void execute_add_cannotAddDuplicate() throws IllegalValueException {
+        logic.execute("add task by 10 Oct 2015");
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("add task by 10 Oct 2015");
+        assertTrue(result.hasError());
+        assertEquals(Messages.TODO_ALREADY_EXISTS, result.getFeedback());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
 }

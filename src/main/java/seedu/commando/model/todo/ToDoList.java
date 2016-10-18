@@ -8,6 +8,8 @@ import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Represents a list of to-dos
@@ -43,7 +45,7 @@ public class ToDoList implements ReadOnlyToDoList {
     /**
      * @see #add(List<ReadOnlyToDo>)
      */
-    public void add(ReadOnlyToDo toDo) {
+    public void add(ReadOnlyToDo toDo) throws IllegalValueException {
         add(Collections.singletonList(toDo));
     }
     /**
@@ -56,9 +58,21 @@ public class ToDoList implements ReadOnlyToDoList {
 
     /**
      * Adds deep copies of each of the to-dos in {@param toDos}
+     * @throws IllegalValueException if there are duplicate to-dos
      */
-    public void add(List<ReadOnlyToDo> toDos) {
+    public void add(List<ReadOnlyToDo> toDos) throws IllegalValueException {
         assert toDos != null;
+
+        // Ensure there are no duplicate to-dos
+        if (toDos.stream().collect(Collectors.toSet()).size() < toDos.size()) {
+            throw new IllegalValueException(Messages.TODO_ALREADY_EXISTS);
+        }
+
+        for (ReadOnlyToDo toDo : toDos) {
+            if (list.contains(toDo)) {
+                throw new IllegalValueException(Messages.TODO_ALREADY_EXISTS);
+            }
+        }
 
         list.addAll(toDos);
     }
@@ -92,6 +106,11 @@ public class ToDoList implements ReadOnlyToDoList {
 
     public UnmodifiableObservableList<ReadOnlyToDo> getToDos() {
         return protectedList;
+    }
+
+    @Override
+    public boolean contains(ReadOnlyToDo toDo) {
+        return list.contains(toDo);
     }
 
     @Override

@@ -25,9 +25,6 @@ public interface Model {
     /** Redos the last undo to the to-do list, returns true if successful */
     boolean redoToDoList();
 
-    /** Gets the last to-do list change, considering undos and redos, if it exists */
-    Optional<ToDoListChange> getLastToDoListChange();
-
     /**
      * Returns observable list of UI events happening today
      * Events are in chronological order, with those finished at the bottom

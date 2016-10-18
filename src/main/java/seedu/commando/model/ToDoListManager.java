@@ -34,8 +34,15 @@ public class ToDoListManager {
     }
 
     public void changeToDoList(ToDoListChange change) throws IllegalValueException {
-        applyToDoListChange(change);
         toDoListChanges.add(change);
+        try {
+            applyToDoListChange(change);
+        } catch (IllegalValueException exception) {
+            // unable to apply the change
+            // revert change
+            toDoListChanges.remove(toDoListChanges.size() - 1);
+            throw exception;
+        }
 
         // Reset undo list
         toDoListUndoChanges.clear();
@@ -43,7 +50,15 @@ public class ToDoListManager {
 
     private void applyToDoListChange(ToDoListChange change) throws IllegalValueException {
         toDoList.remove(change.getDeletedToDos());
-        toDoList.add(change.getAddedToDos());
+
+        try {
+            toDoList.add(change.getAddedToDos());
+        } catch (IllegalValueException exception) {
+            // there were duplicate to-dos
+            // revert removal of to-dos
+            toDoList.add(change.getDeletedToDos());
+            throw exception;
+        }
     }
 
     public boolean undoToDoList() {
@@ -52,16 +67,17 @@ public class ToDoListManager {
         }
 
         ToDoListChange change = toDoListChanges.get(toDoListChanges.size() - 1);
+
+        // move changes to undo list
+        toDoListUndoChanges.add(change);
+        toDoListChanges.remove(toDoListChanges.size() - 1);
+
         try {
             applyToDoListChange(change.getReverseChange());
         } catch (IllegalValueException exception) {
             assert false; // Undo should always work
             return false; // Undo failed
         }
-
-        // move changes to undo list
-        toDoListUndoChanges.add(change);
-        toDoListChanges.remove(toDoListChanges.size() - 1);
 
         return true;
     }
@@ -72,16 +88,17 @@ public class ToDoListManager {
         }
 
         ToDoListChange change = toDoListUndoChanges.get(toDoListUndoChanges.size() - 1);
+
+        // move changes from undo list
+        toDoListChanges.add(change);
+        toDoListUndoChanges.remove(toDoListUndoChanges.size() - 1);
+
         try {
             applyToDoListChange(change);
         } catch (IllegalValueException exception) {
             assert false; // Redo should always work
             return false; // Redo failed
         }
-
-        // move changes from undo list
-        toDoListChanges.add(change);
-        toDoListUndoChanges.remove(toDoListUndoChanges.size() - 1);
 
         return true;
     }
