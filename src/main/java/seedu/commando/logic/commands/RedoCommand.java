@@ -16,9 +16,9 @@ public class RedoCommand extends Command {
         
         // Checks if such redo action can be executed
         if (model.redoToDoList()) {
-            return new CommandResult(Messages.REDID_COMMAND);
+            return new CommandResult(Messages.REDO_COMMAND);
         } else {
-            return new CommandResult(Messages.REDID_COMMAND_FAIL, true);
+            return new CommandResult(Messages.REDO_COMMAND_FAIL, true);
         }
     }
 

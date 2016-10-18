@@ -16,9 +16,9 @@ public class UndoCommand extends Command {
 
         //check if there is undo action taken
         if (model.undoToDoList()) {
-            return new CommandResult(Messages.UNDID_COMMAND);
+            return new CommandResult(Messages.UNDO_COMMAND);
         } else {
-            return new CommandResult(Messages.UNDID_COMMAND_FAIL, true);
+            return new CommandResult(Messages.UNDO_COMMAND_FAIL, true);
         }
     }
     

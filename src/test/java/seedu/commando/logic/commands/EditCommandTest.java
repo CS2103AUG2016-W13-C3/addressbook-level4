@@ -229,5 +229,4 @@ public class EditCommandTest {
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
         assertEquals(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, result.getFeedback());
     }
-
 }

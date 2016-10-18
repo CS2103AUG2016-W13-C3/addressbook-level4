@@ -7,7 +7,7 @@ public class Messages {
     public static final String UNKNOWN_COMMAND = "Unknown command.";
     public static final String MISSING_COMMAND_WORD = "Missing command word.";
     public static final String INVALID_COMMAND_FORMAT = "Invalid format for '%1$s' command!";
-    public static final String MISSING_TODO_TITLE = "Missing value for to-do.";
+    public static final String MISSING_TODO_TITLE = "Missing title for to-do.";
     public static final String MISSING_TODO_DATERANGE_START = "Missing start date for date range of to-do.";
     public static final String MISSING_TODO_DATERANGE_END = "Missing end date for date range of to-do.";
     public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.";
@@ -27,8 +27,8 @@ public class Messages {
     public static final String EXIT_APPLICATION = "Exiting application...";
     public static final String TODO_LIST_CLEARED = "Cleared to-do list!";
     public static final String HELP_WINDOW_SHOWN = "Opened help window.";
-    public static final String UNDID_COMMAND = "Undid the last command.";
-    public static final String UNDID_COMMAND_FAIL = "Nothing more to undo!";
-    public static final String REDID_COMMAND = "Redid the last undo command.";
-    public static final String REDID_COMMAND_FAIL = "Nothing more to redo!";
+    public static final String UNDO_COMMAND = "Undid the last command.";
+    public static final String UNDO_COMMAND_FAIL = "Nothing more to undo!";
+    public static final String REDO_COMMAND = "Redid the last undo command.";
+    public static final String REDO_COMMAND_FAIL = "Nothing more to redo!";
 }
