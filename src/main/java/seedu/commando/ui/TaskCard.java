@@ -1,7 +1,6 @@
 package seedu.commando.ui;
 
 import java.time.LocalDateTime;
-
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;

@@ -10,7 +10,6 @@ import seedu.commando.model.todo.ReadOnlyToDo;
 
 public class EventCard extends UiPart{
 
-    
     private static final String FXML = "EventCard.fxml";
     private boolean isFinished;
     private boolean isNew;

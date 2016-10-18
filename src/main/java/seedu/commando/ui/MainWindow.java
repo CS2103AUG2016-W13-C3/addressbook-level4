@@ -44,6 +44,9 @@ public class MainWindow extends UiPart {
     KeyCombination altM = KeyCodeCombination.keyCombination("Alt+M");
     KeyCombination enter = KeyCodeCombination.keyCombination("Enter");
     
+    private final String maximize = "⬜";
+    private final String unMaximize = "❐";
+    
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
@@ -67,40 +70,28 @@ public class MainWindow extends UiPart {
 
     @FXML
     private HBox titleBar;
-    
     @FXML
     private AnchorPane browserPlaceholder;
-
     @FXML
     private AnchorPane commandBoxPlaceholder;
-
     @FXML
     private Menu exitMenu;
-    
     @FXML
     private Menu helpMenu;
-    
     @FXML
     private Menu creditMenu;
-    
     @FXML
     private Button toggleSizeButton;
-    
     @FXML
     private Button minimizeButton;
-    
     @FXML
     private Button exitButton;
-
     @FXML
     private AnchorPane eventListPanelPlaceholder;
-    
     @FXML
     private AnchorPane taskListPanelPlaceholder;
-
     @FXML
     private AnchorPane resultDisplayPlaceholder;
-
     @FXML
     private AnchorPane statusbarPlaceholder;
 
@@ -271,9 +262,9 @@ public class MainWindow extends UiPart {
     
     private void setToggleSizeButtonSymbol() {
         if (isMaximized) {
-            toggleSizeButton.setText("❐");
+            toggleSizeButton.setText(unMaximize);
         } else {
-            toggleSizeButton.setText("⬜");
+            toggleSizeButton.setText(maximize);
         }
     }
     
