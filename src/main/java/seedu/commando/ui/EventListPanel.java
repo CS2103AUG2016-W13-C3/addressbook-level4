@@ -48,10 +48,10 @@ public class EventListPanel extends UiPart {
     }
 
     public static EventListPanel load(Stage primaryStage, AnchorPane eventListPlaceholder,
-                                     ObservableList<UiToDo> list) {
+                                     ObservableList<UiToDo> listToday, ObservableList<UiToDo> listUpcoming) {
         EventListPanel eventListPanel =
                 UiPartLoader.loadUiPart(primaryStage, eventListPlaceholder, new EventListPanel());
-        eventListPanel.configure(list);
+        eventListPanel.configure(listToday);
         return eventListPanel;
     }
 
@@ -85,12 +85,16 @@ public class EventListPanel extends UiPart {
         @Override
         protected void updateItem(UiToDo toDo, boolean empty) {
             super.updateItem(toDo, empty);
-
             if (empty || toDo == null) {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(EventCard.load(toDo, toDo.getIndex()).getLayout());
+                if (toDo.isNew()) {
+                    System.out.println("MODIFIED " + toDo.getText());
+                } else {
+                    System.out.println(toDo.getText());
+                }
+                setGraphic(EventCard.load(toDo, toDo.getIndex()).getLayout(toDo.isNew()));
             }
         }
     }

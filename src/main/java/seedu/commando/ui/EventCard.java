@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
@@ -86,8 +85,18 @@ public class EventCard extends UiPart{
         return formatter.format(ldt);
     }
     
-    public HBox getLayout() {
+    public HBox getLayout(boolean state) {
+        // If state is true, this event has just been modified
+        if (state) {
+            toggleJustEditedState();
+        }
         return eventPane;
+    }
+
+    private void toggleJustEditedState() {
+        ColorAdjust ca = new ColorAdjust();
+        ca.setBrightness(-0.5);
+        eventPaneInner.setEffect(ca);
     }
 
     @FXML
