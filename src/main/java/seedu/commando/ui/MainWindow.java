@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -71,6 +72,8 @@ public class MainWindow extends UiPart {
     @FXML
     private HBox titleBar;
     @FXML
+    private SplitPane splitPane;
+    @FXML
     private AnchorPane browserPlaceholder;
     @FXML
     private AnchorPane commandBoxPlaceholder;
@@ -130,12 +133,16 @@ public class MainWindow extends UiPart {
         setIcon(ICON);
         setWindowDefaultSize(prefs);
         
-        setDraggable(titleBar);
         scene = new Scene(rootLayout);
+        setDraggable();
         setKeyBindings();
         
         primaryStage.setScene(scene);
         helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl);
+    }
+
+    protected void disableSplitPaneResize() {
+        splitPane.lookup(".split-pane-divider").setMouseTransparent(true);
     }
 
     /**
@@ -171,19 +178,19 @@ public class MainWindow extends UiPart {
         });
     }
 
-    private void setDraggable(HBox bar) {
-        bar.setOnMousePressed(new EventHandler<MouseEvent>() {
+    private void setDraggable() {
+        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                currScreenXPos = event.getSceneX();
-                currScreenYPos = event.getSceneY();
+            public void handle(MouseEvent mouseEvent) {
+                currScreenXPos = mouseEvent.getSceneX();
+                currScreenYPos = mouseEvent.getSceneY();
             }
         });
-        bar.setOnMouseDragged(new EventHandler<MouseEvent>() {
+        scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                primaryStage.setX(event.getScreenX() - currScreenXPos);
-                primaryStage.setY(event.getScreenY() - currScreenYPos);
+            public void handle(MouseEvent mouseEvent) {
+                primaryStage.setX(mouseEvent.getScreenX() - currScreenXPos);
+                primaryStage.setY(mouseEvent.getScreenY() - currScreenYPos);
             }
         });
     }
