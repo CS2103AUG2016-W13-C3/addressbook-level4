@@ -630,21 +630,47 @@
                 <span><strong>Extensions:</strong></span>
 
                 <ul>
-                    <li>1a. Command was not properly formatted</li>
+                    <li>1a. Command name is wrong</li>
                     <ul>
-                        <li>a. Application uses GUI to report details of the error in parsing command</li>
-                        <li>b. Application uses GUI to show correct <code>add</code> command syntax and a sample <code>add</code> command</li>
+                        <li>a. Application uses GUI to report message of unknown command</li>
                         <li><i>*Use case ends</i></li>
                     </ul>
                 </ul>
 
                 <ul>
-                    <li>1b. Title contains keywords (i.e. "from", "to") as description or the timeframe does not match the time format</li>
+                    <li>1b. Command was not properly structured</li>
                     <ul>
-                        <li>a. Application considers all to be title and adds the to-do item as task to the current to-do list<br></li>
+                        <li>a. Application uses GUI to report details of the error in parsing command</li>
+                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command</li>
                         <li><i>*Use case ends</i></li>
                     </ul>
                 </ul>
+
+                <ul>
+                    <li>1c. Title is missing</li>
+                    <ul>
+                        <li>a. Application uses GUI to report the missing of valid title<br></li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
+
+                <ul>
+                    <li>1d. Title contains keywords (i.e. "from", "to") as description or the both start date and end date do not match the time format</li>
+                    <ul>
+                        <li>a. Application considers all keywords to be title and adds the to-do item as task to the current to-do list<br></li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
+
+                <ul>
+                    <li>1e. Either start date or end date does not match the time format</li>
+                    <ul>
+                        <li>a. Application uses GUI to report the missing of valid component of timeframe<br></li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
+
+
 
                 <h4>
                     <a id="uc01---add-to-do-item-task" class="anchor" href="#uc01---add-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC01 - Add to-do item (Task)
@@ -661,18 +687,34 @@
                 <span><strong>Extensions:</strong></span>
 
                 <ul>
-                    <li>1a. Command was not properly formatted</li>
+                    <li>1a. Command name is wrong</li>
                     <ul>
-                        <li>a. Application uses GUI to report details of the error in parsing command</li>
-                        <li>b. Application uses GUI to show correct <code>add</code> command syntax and a sample <code>add</code> command</li>
+                        <li>a. Application uses GUI to report message of unknown command</li>
                         <li><i>*Use case ends</i></li>
                     </ul>
                 </ul>
 
                 <ul>
-                    <li>1b. Title contains keywords (i.e. "by") as description or the deadline does not match the time format</li>
+                    <li>1b. Command was not properly structured</li>
                     <ul>
-                        <li>a. Application considers all to be title and adds the task item to the current to-do list</li>
+                        <li>a. Application uses GUI to report details of the error in parsing command</li>
+                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
+
+                <ul>
+                    <li>1c. Title is missing</li>
+                    <ul>
+                        <li>a. Application uses GUI to report the missing of valid title<br></li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
+
+                <ul>
+                    <li>1d. Title contains keywords (i.e. "by") as description or the deadline does not match the time format</li>
+                    <ul>
+                        <li>a. Application considers all to be title and adds the task item to the current to-do list with no deadline provided</li>
                         <li><i>*Use case ends</i></li>
                     </ul>
                 </ul>
@@ -693,16 +735,15 @@
                 <span><strong>Extensions:</strong></span>
 
                 <ul>
-                    <li>1a. Command was not properly formatted</li>
+                    <li>1a. Command name is wrong</li>
                     <ul>
-                        <li>a. Application uses GUI to report details of the error in parsing command</li>
-                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command</li>
+                        <li>a. Application uses GUI to report message of unknown command</li>
                         <li><i>*Use case ends</i></li>
                     </ul>
                 </ul>
 
                 <ul>
-                    <li>1b. The index of the to-do item is invalid</li>
+                    <li>2a. The index of the to-do item is invalid</li>
                     <ul>
                         <li>a. Application uses GUI to report that index is invalid</li>
                         <li><i>*Use case ends</i></li>
@@ -716,13 +757,31 @@
                 <span><strong>MSS:</strong></span>
                 <ul>
                     <li>1. User types in a <code>find</code> command with a list of words to search for</li>
-                    <li>2. Application searches through the to-do list and updates the GUI to show only the matched to-do items</li>
+                    <li>2. Application searches through the to-do list and returns a filtered to-do list</li>
+                    <li>3. Application Updates the GUI to show only the matched to-do items</li>
                     <li><i>*Use case ends</i></li>
                 </ul>
 
                 <span><strong>Extensions:</strong></span>
                 <ul>
-                    <li>1a. No words were given</li>
+                    <li>1a. Command name is wrong</li>
+                    <ul>
+                        <li>a. Application uses GUI to report message of unknown command</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
+
+                <ul>
+                    <li>1b. Command was not properly structured</li>
+                    <ul>
+                        <li>a. Application uses GUI to report details of the error in parsing command</li>
+                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
+
+                <ul>
+                    <li>1c. No words were given</li>
                     <ul>
                         <li>a. Application updates GUI to show all to-do items</li>
                         <li><i>*Use case ends</i></li>
@@ -751,18 +810,35 @@
 
                 <span><strong>Extensions:</strong></span>
                 <ul>
-                    <li> 1a. Command was not properly formatted</li>
+                    <li>1a. Command name is wrong</li>
                     <ul>
-                        <li>a. Application uses GUI to report details of the error in parsing command</li>
-                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>edit</code> command</li>
+                        <li>a. Application uses GUI to report message of unknown command</li>
                         <li><i>*Use case ends</i></li>
                     </ul>
                 </ul>
 
                 <ul>
-                    <li>1b. The index of the to-do item is invalid</li>
+                    <li>1b. Command was not properly structured</li>
+                    <ul>
+                        <li>a. Application uses GUI to report details of the error in parsing command</li>
+                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
+
+                <ul>
+                    <li>2a. The index of the to-do item is invalid</li>
                     <ul>
                         <li>a. Application uses GUI to report that the index of the to-do item is invalid</li>
+                        <li><i>*Use case ends</i></li>
+                    </ul>
+                </ul>
+
+                <ul>
+                    <li>2a. Adding timeframe or deadline to floating task</li>
+                    <ul>
+                        <li>a. Application reallocates the task to correct panel with its time details shown</li>
+                        <li>b. Application uses GUI to show updated list</li>
                         <li><i>*Use case ends</i></li>
                     </ul>
                 </ul>
