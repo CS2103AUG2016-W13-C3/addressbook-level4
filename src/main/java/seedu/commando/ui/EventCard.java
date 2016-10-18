@@ -16,6 +16,8 @@ public class EventCard extends UiPart{
 
     private DateTimeFormatter formatter;
     private static final String FXML = "EventCard.fxml";
+    private boolean isFinished;
+    private boolean isNew;
 
     @FXML
     private HBox eventPane;
@@ -85,32 +87,54 @@ public class EventCard extends UiPart{
         return formatter.format(ldt);
     }
     
-    public HBox getLayout(boolean state) {
-        // If state is true, this event has just been modified
-        if (state) {
-            toggleJustEditedState();
+    public HBox getLayoutState(boolean isNew, boolean isFinished) {
+        this.isNew = isNew;
+        this.isFinished = isFinished;
+        if (isNew) {
+            setRecentlyModifiedState();
+        }
+        if (isFinished) {
+            setFinishedState();
         }
         return eventPane;
     }
 
-    private void toggleJustEditedState() {
+    /**
+     * Every recently modified event will have a red border
+     * This includes modification via undo, edit, add
+     */
+    private void setRecentlyModifiedState() {
+        eventPaneInner.setStyle("-fx-border-color: red");
+    }
+    
+    /**
+     * Tints a finished event gray
+     */
+    private void setFinishedState() {
         ColorAdjust ca = new ColorAdjust();
-        ca.setBrightness(-0.5);
+        ca.setBrightness(-0.3);
         eventPaneInner.setEffect(ca);
     }
 
+    /**
+     * Tints a hovered event a slight gray
+     */
     @FXML
     private void activateHoverState() {
-        ColorAdjust ca = new ColorAdjust();
-        ca.setBrightness(-0.5);
-        eventPaneInner.setEffect(ca);
+        if (!isFinished) {
+            ColorAdjust ca = new ColorAdjust();
+            ca.setBrightness(-0.1);
+            eventPaneInner.setEffect(ca);
+        }
     }
     
     @FXML
     private void deactivateHoverState() {
-        ColorAdjust ca = new ColorAdjust();
-        ca.setBrightness(0);
-        eventPaneInner.setEffect(ca);
+        if (!isFinished) {
+            ColorAdjust ca = new ColorAdjust();
+            ca.setBrightness(0);
+            eventPaneInner.setEffect(ca);
+        }
     }
     
     @Override

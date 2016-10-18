@@ -11,7 +11,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.commando.commons.core.LogsCenter;
-import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.ui.UiToDo;
 
 import java.util.logging.Logger;
@@ -90,7 +89,7 @@ public class TaskListPanel extends UiPart {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(TaskCard.load(toDo, toDo.getIndex()).getLayout());
+                setGraphic(TaskCard.load(toDo, toDo.getIndex()).getLayoutState(toDo.isNew(), toDo.isFinished()));
             }
         }
     }

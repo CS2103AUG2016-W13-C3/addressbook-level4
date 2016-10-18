@@ -8,10 +8,10 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.commando.commons.core.LogsCenter;
-import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.ui.UiToDo;
 
 import java.util.logging.Logger;
@@ -48,20 +48,20 @@ public class EventListPanel extends UiPart {
     }
 
     public static EventListPanel load(Stage primaryStage, AnchorPane eventListPlaceholder,
-                                     ObservableList<UiToDo> listToday, ObservableList<UiToDo> listUpcoming) {
+                                     ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
         EventListPanel eventListPanel =
                 UiPartLoader.loadUiPart(primaryStage, eventListPlaceholder, new EventListPanel());
-        eventListPanel.configure(listToday);
+        eventListPanel.configure(eventsToday, eventsUpcoming);
         return eventListPanel;
     }
 
-    private void configure(ObservableList<UiToDo> toDos) {
-        setConnections(toDos);
+    private void configure(ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
+        setConnections(eventsToday, eventsUpcoming);
         addToPlaceholder();
     }
 
-    private void setConnections(ObservableList<UiToDo> list) {
-        eventListView.setItems(list);
+    private void setConnections(ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
+        eventListView.setItems(eventsToday);
         eventListView.setCellFactory(listView -> new ToDoListViewCell());
     }
 
@@ -89,12 +89,8 @@ public class EventListPanel extends UiPart {
                 setGraphic(null);
                 setText(null);
             } else {
-                if (toDo.isNew()) {
-                    System.out.println("MODIFIED " + toDo.getText());
-                } else {
-                    System.out.println(toDo.getText());
-                }
-                setGraphic(EventCard.load(toDo, toDo.getIndex()).getLayout(toDo.isNew()));
+                HBox layout = EventCard.load(toDo, toDo.getIndex()).getLayoutState(toDo.isNew(), toDo.isFinished());
+                setGraphic(layout);
             }
         }
     }
