@@ -172,9 +172,7 @@ public class MainWindow extends UiPart {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent key) {
-                if (key.getCode() == KeyCode.CONTROL) {
-                    commandField.requestFocus();
-                }
+                commandField.requestFocus();
             }
         });
     }
