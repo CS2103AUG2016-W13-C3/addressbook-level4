@@ -43,7 +43,15 @@ public class ToDoListManager {
 
     private void applyToDoListChange(ToDoListChange change) throws IllegalValueException {
         toDoList.remove(change.getDeletedToDos());
-        toDoList.add(change.getAddedToDos());
+
+        try {
+            toDoList.add(change.getAddedToDos());
+        } catch (IllegalValueException exception) {
+            // there were duplicate to-dos
+            // revert removal of to-dos
+            toDoList.add(change.getDeletedToDos());
+            throw exception;
+        }
     }
 
     public boolean undoToDoList() {

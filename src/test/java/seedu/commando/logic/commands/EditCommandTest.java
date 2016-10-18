@@ -229,4 +229,23 @@ public class EditCommandTest {
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
         assertEquals(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, result.getFeedback());
     }
+
+    @Test
+    public void execute_edit_cannotHaveDuplicates() throws IllegalValueException {
+        logic.execute("add task");
+        logic.execute("add task2");
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("edit 1 task2");
+        assertTrue(result.hasError());
+        assertEquals(Messages.TODO_ALREADY_EXISTS, result.getFeedback());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("task")
+                .build()));
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("task2")
+                .build()));
+    }
 }

@@ -79,11 +79,6 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public Optional<ToDoListChange> getLastToDoListChange() {
-        return toDoListManager.getLastToDoListChange();
-    }
-
-    @Override
     public UnmodifiableObservableList<UiToDo> getUiEventsToday() {
         return uiModel.getTodayEvents();
     }

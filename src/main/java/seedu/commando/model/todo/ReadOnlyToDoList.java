@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 public interface ReadOnlyToDoList {
     UnmodifiableObservableList<ReadOnlyToDo> getToDos();
 
+    /** Checks if the list contains the given to-do */
+    boolean contains(ReadOnlyToDo toDo);
+
     /**
      * Updates and returns its value, based on the current value of its fields
      */
