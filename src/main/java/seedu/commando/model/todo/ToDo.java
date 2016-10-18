@@ -3,6 +3,7 @@ package seedu.commando.model.todo;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
+import seedu.commando.commons.exceptions.IllegalValueException;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -12,7 +13,6 @@ import java.util.stream.Collectors;
 
 /**
  * Represents a to-do
- * Guarantees: details are present and not null, field values are validated.
  */
 public class ToDo implements ReadOnlyToDo {
     private Title title;
@@ -25,7 +25,6 @@ public class ToDo implements ReadOnlyToDo {
         value = new ReadOnlyStringWrapper();
         isFinished = false;
     }
-
 
     /**
      * Asserts that value is non-null
@@ -70,7 +69,7 @@ public class ToDo implements ReadOnlyToDo {
 
     public void setDueDate(DueDate dueDate) {
         assert dueDate != null;
-        
+
         this.dueDate = dueDate;
         updateValue();
     }

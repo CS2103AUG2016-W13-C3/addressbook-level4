@@ -20,11 +20,11 @@ public class UserPrefs {
     }
 
     public UserPrefs(){
-        this.setGuiSettings(500, 500, 0, 0);
+        this.setGuiSettings(1000, 750, 0, 0, false);
     }
 
-    public void setGuiSettings(double width, double height, int x, int y) {
-        guiSettings = new GuiSettings(width, height, x, y);
+    public void setGuiSettings(double width, double height, int x, int y, boolean isMaximized) {
+        guiSettings = new GuiSettings(width, height, x, y, isMaximized);
     }
 
     @Override

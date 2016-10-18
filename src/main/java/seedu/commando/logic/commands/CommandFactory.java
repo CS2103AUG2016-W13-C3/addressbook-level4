@@ -2,10 +2,10 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.logic.parser.DateTimeParser;
 import seedu.commando.logic.parser.SequentialParser;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Maps and builds commands from input strings, using {@link SequentialParser}
  * In charge of splitting up input strings to required parts for commands
+ * Doesn't set context for commands
  */
 public class CommandFactory {
     public static final String KEYWORD_DATERANGE_START = "from";
@@ -21,27 +22,26 @@ public class CommandFactory {
     public static final String TAG_PREFIX = "#";
 
     private SequentialParser sequentialParser;
-    private DateTimeParser dateTimeParser;
     {
         sequentialParser = new SequentialParser();
-        dateTimeParser = new DateTimeParser();
     }
 
     /**
      * Interprets an input string as a command, initializes it, and returns it
      * @return instance of a command based on {@param parsable}
+     * @throws IllegalValueException if the command is invalid
      */
-    public Command build(String inputString){
+    public Command build(String inputString) throws IllegalValueException {
         sequentialParser.setInput(inputString);
 
         // Check if command word exists
         Optional<String> commandWord = sequentialParser.extractFirstWord();
 
         if (!commandWord.isPresent()) {
-            return new InvalidCommand(Messages.MISSING_COMMAND_WORD);
+            throw new IllegalValueException(Messages.MISSING_COMMAND_WORD);
         }
 
-        switch (commandWord.get()) {
+        switch (commandWord.get().toLowerCase()) {
             case AddCommand.COMMAND_WORD:
                 return buildAddCommand();
             case DeleteCommand.COMMAND_WORD:
@@ -62,128 +62,144 @@ public class CommandFactory {
                 return buildUndoCommand();
             case RedoCommand.COMMAND_WORD:
                 return buildRedoCommand();
+            case StoreCommand.COMMAND_WORD:
+            	return buildStoreCommand();
+            case ExportCommand.COMMAND_WORD:
+            	return buildExportCommand();
+            case ImportCommand.COMMAND_WORD:
+            	return buildImportCommand();
             default:
-                return new InvalidCommand(Messages.UNKNOWN_COMMAND);
+                throw new IllegalValueException(Messages.UNKNOWN_COMMAND);
         }
     }
 
-    private Command buildExitCommand() {
-        return new ExitCommand();
+    private Command buildExitCommand() throws IllegalValueException {
+        if (sequentialParser.isInputEmpty()) {
+            return new ExitCommand();
+        } else {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ExitCommand.COMMAND_WORD));
+        }
     }
 
-    private Command buildAddCommand() {
+    private Command buildImportCommand() throws IllegalValueException {
+    	// Extract the file path
+    	String path = sequentialParser.extractText()
+            .orElseThrow(
+                () -> new IllegalValueException(Messages.MISSING_IMPORT_PATH)
+            );
+
+		return new ImportCommand(path);
+	}
+
+	private Command buildExportCommand() throws IllegalValueException {
+    	// Extract the file path
+        String path = sequentialParser.extractText()
+            .orElseThrow(
+                () -> new IllegalValueException(Messages.MISSING_EXPORT_PATH)
+            );
+
+        return new ExportCommand(path);
+	}
+
+	private Command buildStoreCommand() throws IllegalValueException {
+    	// Extract the file path
+        String path = sequentialParser.extractText()
+            .orElseThrow(
+                () -> new IllegalValueException(Messages.MISSING_STORE_PATH)
+            );
+
+    	return new StoreCommand(path);
+	}
+
+    private Command buildAddCommand() throws IllegalValueException {
         // Extract tags
-        List<String> tags = sequentialParser.extractPrefixedWords(TAG_PREFIX);
-
-        // Try to find value
-        Optional<String> title = sequentialParser.extractText(
-            KEYWORD_DATERANGE_START,
-            KEYWORD_DATERANGE_END,
-            KEYWORD_DUEDATE
-        );
-
-        if (!title.isPresent()) {
-            return new InvalidCommand(Messages.MISSING_TODO_TITLE);
-        }
-
-        AddCommand command;
-        try {
-            command = new AddCommand(title.get());
-        } catch (IllegalValueException exception) {
-            return new InvalidCommand(Messages.TODO_TITLE_CONSTRAINTS);
-        }
-
-        // Put in tags
-        if (!tags.isEmpty()) {
-            try {
-                command.setTags(tags.stream().collect(Collectors.toSet()));
-            } catch (IllegalValueException exception) {
-                return new InvalidCommand(exception.getMessage());
-            }
-        }
-
-        // Extract due date, if exists
-        Optional<String> dueDateString = sequentialParser.extractTextAfterKeyword(KEYWORD_DUEDATE,
-            KEYWORD_DATERANGE_START,
-            KEYWORD_DATERANGE_END
-        );
-
-        Optional<LocalDateTime> dueDate = dateTimeParser.parseDateTime(dueDateString.orElse(""));
-
-        if (dueDate.isPresent()) {
-            try {
-                command.setDueDate(dueDate.get());
-            } catch (IllegalValueException exception) {
-                return new InvalidCommand(exception.getMessage());
-            }
-        }
+        List<String> tags = sequentialParser.extractPrefixedWords(TAG_PREFIX, true);
 
         // Extract date range, if exists
-        Optional<String> startDateString = sequentialParser.extractTextAfterKeyword(KEYWORD_DATERANGE_START,
+        Optional<LocalDateTime> dateRangeStart = sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_START,
+            KEYWORD_DATERANGE_START,
             KEYWORD_DATERANGE_END,
             KEYWORD_DUEDATE
         );
-        Optional<String> endDateString = sequentialParser.extractTextAfterKeyword(KEYWORD_DATERANGE_END,
+
+        Optional<LocalDateTime> dateRangeEnd = sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_END,
             KEYWORD_DATERANGE_START,
+            KEYWORD_DATERANGE_END,
             KEYWORD_DUEDATE
         );
 
-        if (startDateString.isPresent() || startDateString.isPresent()) {
-            if (endDateString.isPresent() && !startDateString.isPresent()) {
-                return new InvalidCommand(Messages.MISSING_TODO_DATERANGE_START);
-            } else if (startDateString.isPresent() && !endDateString.isPresent()) {
-                return new InvalidCommand(Messages.MISSING_TODO_DATERANGE_END);
-            }
+        // Extract due date, if exists
+        Optional<LocalDateTime> dueDate = sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DUEDATE,
+            KEYWORD_DATERANGE_START,
+            KEYWORD_DATERANGE_END,
+            KEYWORD_DUEDATE
+        );
 
-            Optional<LocalDateTime> startDate = dateTimeParser.parseDateTime(startDateString.orElse(""));
-            Optional<LocalDateTime> endDate = dateTimeParser.parseDateTime(endDateString.orElse(""));
+        // Extract title
+        String title = sequentialParser.extractText().orElseThrow(() -> new IllegalValueException(Messages.MISSING_TODO_TITLE));
 
-            if (!startDate.isPresent()) {
-                return new InvalidCommand(Messages.TODO_DATERANGE_START_INVALID_FORMAT);
-            } else if (!endDate.isPresent()) {
-                return new InvalidCommand(Messages.TODO_DATERANGE_END_INVALID_FORMAT);
-            }
+        AddCommand command = new AddCommand(title);
 
-            // Here, startDate and endDate exist and are valid
-            try {
-                command.setDateRange(startDate.get(), endDate.get());
-            } catch (IllegalValueException exception) {
-                return new InvalidCommand(exception.getMessage());
-            }
+        // Put in fields
+        if (!tags.isEmpty()) {
+            command.tags = tags.stream().collect(Collectors.toSet());
+        }
+
+        dueDate.ifPresent(date -> command.dueDate = date);
+        dateRangeStart.ifPresent(date -> command.dateRangeStart = date);
+        dateRangeEnd.ifPresent(date -> command.dateRangeEnd = date);
+
+        return command;
+    }
+
+    private Command buildDeleteCommand() throws IllegalValueException {
+        int index = sequentialParser.extractFirstInteger().orElseThrow(
+            () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
+        );
+
+        if (sequentialParser.isInputEmpty()) {
+            return new DeleteCommand(index);
+        } else {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD));
+        }
+    }
+    
+    private Command buildFinishCommand() throws IllegalValueException {
+        int index = sequentialParser.extractFirstInteger().orElseThrow(
+            () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
+        );
+
+        if (sequentialParser.isInputEmpty()) {
+            return new FinishCommand(index);
+        } else {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
+        }
+    }
+
+    private Command buildFindCommand() {
+        FindCommand command = new FindCommand();
+
+        // Extract tags
+        List<String> tags = sequentialParser.extractPrefixedWords(TAG_PREFIX, true);
+        if (!tags.isEmpty()) {
+            command.tags = tags.stream().collect(Collectors.toSet());
+        }
+
+        // Try to find keywords
+        List<String> keywords = sequentialParser.extractWords();
+        if (!keywords.isEmpty()) {
+            command.keywords = keywords.stream().collect(Collectors.toSet());
         }
 
         return command;
     }
 
-    private Command buildDeleteCommand() {
-        // Try to find index
-        Optional<Integer> index = sequentialParser.extractFirstInteger();
-        if (!index.isPresent()) {
-            return new InvalidCommand(Messages.MISSING_TODO_ITEM_INDEX);
+    private Command buildClearCommand() throws IllegalValueException {
+        if (sequentialParser.isInputEmpty()) {
+            return new ClearCommand();
+        } else {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ClearCommand.COMMAND_WORD));
         }
-
-        return new DeleteCommand(index.get());
-    }
-    
-    private Command buildFinishCommand(){
-        Optional<Integer> index = sequentialParser.extractFirstInteger();
-        if (!index.isPresent()) {
-            return new InvalidCommand(Messages.MISSING_TODO_ITEM_INDEX);
-        }
-
-        return new FinishCommand(index.get());
-    }
-
-    private Command buildFindCommand() {
-        // Try to find keywords
-        List<String> words = sequentialParser.extractWords();
-
-        // Convert to set
-        return new FindCommand(words.stream().collect(Collectors.toSet()));
-    }
-
-    private Command buildClearCommand() {
-        return new ClearCommand();
     }
 
     private Command buildHelpCommand() {
@@ -196,103 +212,68 @@ public class CommandFactory {
             return new HelpCommand();
         }
     }
-    private Command buildEditCommand() {
-        // Try to find index
-        Optional<Integer> index = sequentialParser.extractFirstInteger();
-        if (!index.isPresent()) {
-            return new InvalidCommand(Messages.MISSING_TODO_ITEM_INDEX);
-        }
 
-        EditCommand command = new EditCommand(index.get());
+    private Command buildEditCommand() throws IllegalValueException {
+        int index = sequentialParser.extractFirstInteger().orElseThrow(
+            () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
+        );
+
+        EditCommand command = new EditCommand(index);
+
+        // Check if tag prefix exists in command
+        boolean hasTagPrefix = sequentialParser.getInput().contains(TAG_PREFIX);
 
         // Extract tags
-        List<String> tags = sequentialParser.extractPrefixedWords(TAG_PREFIX);
+        List<String> tags = sequentialParser.extractPrefixedWords(TAG_PREFIX, true);
 
+        // Put in tags
         if (!tags.isEmpty()) {
-            try {
-                command.setTags(tags.stream().collect(Collectors.toSet()));
-            } catch (IllegalValueException exception) {
-                return new InvalidCommand(exception.getMessage());
-            }
-        }
-
-        // Extract value
-        Optional<String> title = sequentialParser.extractText(
-            KEYWORD_DATERANGE_START,
-            KEYWORD_DATERANGE_END,
-            KEYWORD_DUEDATE
-        );
-
-        if (title.isPresent()) {
-            try {
-                command.setTitle(title.get());
-            } catch (IllegalValueException exception) {
-                return new InvalidCommand(exception.getMessage());
-            }
-        }
-
-        // Extract due date, if exists
-        Optional<String> dueDateString = sequentialParser.extractTextAfterKeyword(KEYWORD_DUEDATE,
-            KEYWORD_DATERANGE_START,
-            KEYWORD_DATERANGE_END
-        );
-
-        Optional<LocalDateTime> dueDate = dateTimeParser.parseDateTime(dueDateString.orElse(""));
-
-        if (dueDateString.isPresent() && !dueDate.isPresent()) {
-            return new InvalidCommand(Messages.TODO_DUEDATE_INVALID_FORMAT);
-        }
-
-        if (dueDate.isPresent()) {
-            try {
-                command.setDueDate(dueDate.get());
-            } catch (IllegalValueException exception) {
-                return new InvalidCommand(exception.getMessage());
-            }
+            command.tags = tags.stream().collect(Collectors.toSet());
+        } else if (hasTagPrefix) { // If has an empty tag, empty list of tags for to-do
+            command.tags = Collections.emptySet();
         }
 
         // Extract date range, if exists
-        Optional<String> startDateString = sequentialParser.extractTextAfterKeyword(KEYWORD_DATERANGE_START,
+        sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_START,
+            KEYWORD_DATERANGE_START,
             KEYWORD_DATERANGE_END,
             KEYWORD_DUEDATE
-        );
-        Optional<String> endDateString = sequentialParser.extractTextAfterKeyword(KEYWORD_DATERANGE_END,
+        ).ifPresent(date -> command.dateRangeStart = date);
+
+        sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DATERANGE_END,
             KEYWORD_DATERANGE_START,
+            KEYWORD_DATERANGE_END,
             KEYWORD_DUEDATE
-        );
+        ).ifPresent(date -> command.dateRangeEnd = date);
 
-        if (startDateString.isPresent() || startDateString.isPresent()) {
-            if (endDateString.isPresent() && !startDateString.isPresent()) {
-                return new InvalidCommand(Messages.MISSING_TODO_DATERANGE_START);
-            } else if (startDateString.isPresent() && !endDateString.isPresent()) {
-                return new InvalidCommand(Messages.MISSING_TODO_DATERANGE_END);
-            }
+        // Extract due date, if exists
+        sequentialParser.extractDateTimeAfterKeyword(KEYWORD_DUEDATE,
+            KEYWORD_DATERANGE_START,
+            KEYWORD_DATERANGE_END,
+            KEYWORD_DUEDATE
+        ).ifPresent(date -> command.dueDate = date);
 
-            Optional<LocalDateTime> startDate = dateTimeParser.parseDateTime(startDateString.orElse(""));
-            Optional<LocalDateTime> endDate = dateTimeParser.parseDateTime(endDateString.orElse(""));
-
-            if (!startDate.isPresent()) {
-                return new InvalidCommand(Messages.TODO_DATERANGE_START_INVALID_FORMAT);
-            } else if (!endDate.isPresent()) {
-                return new InvalidCommand(Messages.TODO_DATERANGE_END_INVALID_FORMAT);
-            }
-
-            // Here, startDate and endDate exist and are valid
-            try {
-                command.setDateRange(startDate.get(), endDate.get());
-            } catch (IllegalValueException exception) {
-                return new InvalidCommand(exception.getMessage());
-            }
-        }
+        // Extract title
+        sequentialParser.extractText().ifPresent(title -> {
+            command.title = title;
+        });
 
         return command;
     }
     
-    private Command buildUndoCommand(){
-        return new UndoCommand();
+    private Command buildUndoCommand() throws IllegalValueException {
+        if (sequentialParser.isInputEmpty()) {
+            return new UndoCommand();
+        } else {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, UndoCommand.COMMAND_WORD));
+        }
     }
-    
-    private Command buildRedoCommand(){
-        return new RedoCommand();
+
+    private Command buildRedoCommand() throws IllegalValueException {
+        if (sequentialParser.isInputEmpty()) {
+            return new RedoCommand();
+        } else {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, RedoCommand.COMMAND_WORD));
+        }
     }
 }

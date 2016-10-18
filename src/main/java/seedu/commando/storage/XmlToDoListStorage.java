@@ -90,4 +90,10 @@ public class XmlToDoListStorage implements ToDoListStorage {
 
         saveToDoList(toDoList, filePath);
     }
+
+	@Override
+	public void setToDoListFilePath(String path) {
+		assert path != null;
+		this.filePath = path;
+	}
 }

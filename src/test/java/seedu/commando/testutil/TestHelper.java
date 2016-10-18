@@ -2,13 +2,8 @@ package seedu.commando.testutil;
 
 import seedu.commando.commons.events.model.ToDoListChangedEvent;
 import seedu.commando.commons.events.ui.ShowHelpRequestEvent;
-import seedu.commando.model.Model;
+import seedu.commando.logic.Logic;
 import seedu.commando.model.todo.ReadOnlyToDo;
-
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Collection of convenience methods for testing
@@ -26,14 +21,17 @@ public class TestHelper {
     /**
      * Checks if a to-do exists in the model
      */
-    public static boolean ifToDoExists(Model model, ReadOnlyToDo readOnlyToDo) {
-        return model.getToDoList().getToDos().contains(readOnlyToDo);
+    public static boolean ifToDoExists(Logic logic, ReadOnlyToDo readOnlyToDo) {
+        return logic.getUiEventList().filtered(event -> event.isSameStateAs(readOnlyToDo)).size() > 0
+            || logic.getUiTaskList().filtered(task -> task.isSameStateAs(readOnlyToDo)).size() > 0;
+
     }
 
     /**
      * Checks if a to-do exists in the filtered list of model
      */
-    public static boolean ifToDoExistsFiltered(Model model, ReadOnlyToDo readOnlyToDo) {
-        return model.getFilteredToDoList().contains(readOnlyToDo);
+    public static boolean ifToDoExistsFiltered(Logic logic, ReadOnlyToDo readOnlyToDo) {
+        return logic.getUiEventList().filtered(uiToDo -> uiToDo.isSameStateAs(readOnlyToDo)).size() > 0
+            || logic.getUiTaskList().filtered(uiToDo -> uiToDo.isSameStateAs(readOnlyToDo)).size() > 0;
     }
 }

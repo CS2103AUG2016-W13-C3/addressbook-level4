@@ -1,66 +1,41 @@
 package seedu.commando.logic.commands;
 
-import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.commons.util.CollectionUtil;
+import seedu.commando.model.ui.UiToDo;
 import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.todo.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Edits a to-do in the current to-do list
+ * Public fields are initially null and are optional parameters for the command
  */
 public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
     private final int toDoIndex;
-    private Title title;
-    private DateRange dateRange;
-    private DueDate dueDate;
-    private Set<Tag> tags = new HashSet<>();
+    public String title;
+    public LocalDateTime dateRangeStart;
+    public LocalDateTime dateRangeEnd;
+    public LocalDateTime dueDate;
+    public Set<String> tags = null;
 
     public EditCommand(int toDoIndex) {
         this.toDoIndex = toDoIndex;
     }
 
-    public void setTitle(String title) throws IllegalValueException {
-        assert title != null;
+    public CommandResult execute()
+        throws IllegalValueException, NoModelException {
+        Model model = getModel();
 
-        this.title = new Title(title);
-    }
-
-    public void setDueDate(LocalDateTime dueDate) throws IllegalValueException {
-        this.dueDate = new DueDate(dueDate);
-    }
-
-    public void setDateRange(LocalDateTime startDate, LocalDateTime endDate) throws IllegalValueException {
-        this.dateRange = new DateRange(startDate, endDate);
-    }
-
-    /**
-     * Sets tags for edit command
-     * Tags will be checked for validity
-     */
-    public void setTags(Set<String> tags) throws IllegalValueException {
-        assert tags != null;
-
-        this.tags.clear();
-
-        for (String tag : tags) {
-            this.tags.add(new Tag(tag));
-        }
-    }
-
-    @Override
-    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
-        assert model != null;
-        assert toDoAtIndices != null;
-
-        Optional<ReadOnlyToDo> toDoToEdit = getToDoAtIndex(toDoAtIndices, toDoIndex);
+        Optional<UiToDo> toDoToEdit = model.getUiToDoAtIndex(toDoIndex);
 
         if (!toDoToEdit.isPresent()) {
             return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex), true);
@@ -69,34 +44,40 @@ public class EditCommand extends Command {
         // Copy original to-do
         ToDo newToDo = new ToDo(toDoToEdit.get());
 
+        // Set fields if exist
         if (title != null) {
-            newToDo.setTitle(title);
+            newToDo.setTitle(new Title(title));
         }
-
         if (dueDate != null) {
-            newToDo.setDueDate(dueDate);
+            newToDo.setDueDate(new DueDate(dueDate));
         }
 
-        if (dateRange != null) {
-            newToDo.setDateRange(dateRange);
+        if (dateRangeStart != null && dateRangeEnd != null) {
+            newToDo.setDateRange(new DateRange(dateRangeStart, dateRangeEnd));
+        } else if (dateRangeEnd != null) {
+            throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_START);
+        } else if (dateRangeStart != null) {
+            throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_END);
         }
 
-        if (!tags.isEmpty()) {
-            newToDo.setTags(tags);
+        if (tags != null) {
+            newToDo.setTags(tags.stream().map(Tag::new).collect(Collectors.toSet()));
         }
 
-        if (newToDo.equals(toDoToEdit.get())) {
+        // Check if to-do has changed
+        if (newToDo.isSameStateAs(toDoToEdit.get())) {
             return new CommandResult(Messages.TODO_NO_EDITS, true);
         }
 
-        try {
-            model.changeToDoList(new ToDoListChange(
-                Collections.singletonList(newToDo),
-                Collections.singletonList(toDoToEdit.get())
-            ));
-        } catch (IllegalValueException exception) {
-            return new CommandResult(exception.getMessage(), true);
+        // Ensure to-do doesn't have both duedate and daterange
+        if (newToDo.getDateRange().isPresent() && newToDo.getDueDate().isPresent()) {
+            throw new IllegalValueException(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE);
         }
+
+        model.changeToDoList(new ToDoListChange(
+            Collections.singletonList(newToDo),
+            Collections.singletonList(toDoToEdit.get())
+        ));
 
         return new CommandResult(String.format(Messages.TODO_EDITED, newToDo.getTitle().toString()));
     }

@@ -88,4 +88,10 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(e));
         }
     }
+
+	@Override
+	public void setToDoListFilePath(String path) {
+		logger.info("Change the toDoListFilePath to " +path );
+		toDoListStorage.setToDoListFilePath(path);
+	}
 }
