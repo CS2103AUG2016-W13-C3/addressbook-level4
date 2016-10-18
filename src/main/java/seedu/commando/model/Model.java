@@ -29,16 +29,23 @@ public interface Model {
     Optional<ToDoListChange> getLastToDoListChange();
 
     /**
-     * Returns observable list of UI events
-     * Events are in chronological order
+     * Returns observable list of UI events happening today
+     * Events are in chronological order, with those finished at the bottom
      * */
-    UnmodifiableObservableList<UiToDo> getUiEventList();
+    UnmodifiableObservableList<UiToDo> getUiEventsToday();
+
+    /**
+     * Returns observable list of UI events happening after today
+     * Events are in chronological order, with those finished at the bottom
+     * */
+    UnmodifiableObservableList<UiToDo> getUiEventsUpcoming();
 
     /**
      *  Return observable list of UI tasks
-     *  Tasks are in chronological order, with those with DueDate on top
+     *  Tasks are in chronological order, with those finished at the bottom,
+     *  with those with DueDate on top
      * */
-    UnmodifiableObservableList<UiToDo> getUiTaskList();
+    UnmodifiableObservableList<UiToDo> getUiTasks();
 
     /**
      *  Gets the UI to-do with {@link UiToDo#getIndex()} == {@param toDoIndex}

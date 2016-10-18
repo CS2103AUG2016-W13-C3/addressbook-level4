@@ -41,8 +41,8 @@ public class SequentialParser {
     public boolean isInputEmpty(){
         return input.trim().isEmpty();
     }
-    
-    
+
+
     /**
      * From start, extracts the text after the first occurrence of {@param keyword} from input
      * until any keyword in the set of {@param otherKeywords}

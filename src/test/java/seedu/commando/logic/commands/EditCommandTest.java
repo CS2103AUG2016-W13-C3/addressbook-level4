@@ -32,7 +32,7 @@ public class EditCommandTest {
 
     private Logic logic;
     private EventsCollector eventsCollector;
-    private LocalDateTime now = LocalDateTime.now();
+    private int nextYear = LocalDateTime.now().getYear() + 1;
     private File toDoListFile;
     private File userPrefsFile;
 
@@ -137,37 +137,37 @@ public class EditCommandTest {
 
     @Test
     public void execute_edit_dueDate() throws IllegalValueException {
-        logic.execute("add title by 10 Jan 1994 12:00");
+        logic.execute("add title by 10 Jan " + nextYear + " 12:00");
 
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
-                .withDueDate(LocalDateTime.of(1994, 1, 10, 12, 0))
+                .withDueDate(LocalDateTime.of(nextYear, 1, 10, 12, 0))
                 .build()));
 
-        String command = "edit 1 by 11 Apr 1995 00:12";
+        String command = "edit 1 by 11 Apr " + (nextYear + 1) + " 00:12";
         CommandResult result = logic.execute(command);
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
-                .withDueDate(LocalDateTime.of(1995, 4, 11, 0, 12))
+                .withDueDate(LocalDateTime.of(nextYear + 1, 4, 11, 0, 12))
                 .build()));
     }
 
     @Test
     public void execute_edit_dateRange() throws IllegalValueException {
-        logic.execute("add title from 10 Jan 1994 12:00 to 21 Jan 1994 13:00");
+        logic.execute("add title from 10 Jan " + nextYear + " 12:00 to 21 Jan " + nextYear + " 13:00");
 
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDateRange(
-                    LocalDateTime.of(1994, 1, 10, 12, 0),
-                    LocalDateTime.of(1994, 1, 21, 13, 0)
+                    LocalDateTime.of(nextYear, 1, 10, 12, 0),
+                    LocalDateTime.of(nextYear, 1, 21, 13, 0)
                 )
                 .build()));
 
-        String command = "edit 1 from 10 Sep 1984 12:00 to 21 Sep 1984 13:00";
+        String command = "edit 1 from 10 Sep " + nextYear + " 12:00 to 21 Sep " + nextYear + " 13:00";
         CommandResult result = logic.execute(command);
         assertFalse(result.hasError());
 
@@ -175,17 +175,17 @@ public class EditCommandTest {
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDateRange(
-                    LocalDateTime.of(1984, 9, 10, 12, 0),
-                    LocalDateTime.of(1984, 9, 21, 13, 0)
+                    LocalDateTime.of(nextYear, 9, 10, 12, 0),
+                    LocalDateTime.of(nextYear, 9, 21, 13, 0)
                 )
                 .build()));
     }
 
     @Test
     public void execute_edit_invalidDateRange() throws IllegalValueException {
-        logic.execute("add title from 11 Dec 2016 to 12 Dec 2016");
+        logic.execute("add title from 11 Dec " + nextYear + " to 12 Dec " + nextYear);
         eventsCollector.reset();
-        String command = "edit 1 from 10 Dec 2017 11:59 to 11 Apr 2016 23:10";
+        String command = "edit 1 from 10 Dec " + nextYear + " 11:59 to 11 Apr " + nextYear + " 23:10";
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
         assertEquals(Messages.TODO_DATERANGE_CONSTRAINTS, result.getFeedback());
@@ -194,25 +194,25 @@ public class EditCommandTest {
 
     @Test
     public void execute_edit_inferredDateFromStart() throws IllegalValueException {
-        logic.execute("add title from 11 Dec 2016 to 12 Dec 2016");
-        String command = "edit 1 from 10 Dec 2016 3pm to 7pm";
+        logic.execute("add title from 11 Dec " + nextYear + " to 12 Dec " + nextYear + " ");
+        String command = "edit 1 from 10 Dec " + nextYear + " 3pm to 7pm";
         CommandResult result = logic.execute(command);
         assertFalse(result.hasError());
 
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDateRange(
-                    LocalDateTime.of(2016, 12, 10, 15, 0),
-                    LocalDateTime.of(2016, 12, 10, 19, 0)
+                    LocalDateTime.of(nextYear, 12, 10, 15, 0),
+                    LocalDateTime.of(nextYear, 12, 10, 19, 0)
                 )
                 .build()));
     }
 
     @Test
     public void execute_edit_cannotAddDueDateToEvent() throws IllegalValueException {
-        logic.execute("add title from 11 Dec 2016 to 12 Dec 2016");
+        logic.execute("add title from 11 Dec " + nextYear + " to 12 Dec " + nextYear);
         eventsCollector.reset();
-        String command = "edit 1 by 13 Dec 2016";
+        String command = "edit 1 by 13 Dec " + nextYear;
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
@@ -221,9 +221,9 @@ public class EditCommandTest {
 
     @Test
     public void execute_edit_cannotAddDateRangeToTaskWithDueDate() throws IllegalValueException {
-        logic.execute("add title by 13 Dec 2016");
+        logic.execute("add title by 13 Dec " + nextYear);
         eventsCollector.reset();
-        String command = "edit 1 from 11 Dec 2016 to 12 Dec 2016";
+        String command = "edit 1 from 11 Dec " + nextYear + " to 12 Dec " + nextYear;
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));

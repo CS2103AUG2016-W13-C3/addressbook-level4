@@ -20,12 +20,13 @@ public class ToDoListManager {
     }
 
     /**
-     * Initializes with the given to-do list (not copied)
+     * Initializes with the given to-do list
+     * To-do list is copied
      */
-    public ToDoListManager(ToDoList toDoList) {
+    public ToDoListManager(ReadOnlyToDoList toDoList) {
         assert toDoList != null;
 
-        this.toDoList = toDoList;
+        this.toDoList = new ToDoList(toDoList);
     }
 
     public ToDoList getToDoList() {

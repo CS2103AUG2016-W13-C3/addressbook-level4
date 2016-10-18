@@ -14,9 +14,11 @@ public class UiToDo implements ReadOnlyToDo {
 
     private final ReadOnlyToDo toDo;
     private final int index;
+    private final boolean isNew;
 
-    public UiToDo(ReadOnlyToDo toDo, int index) {
+    public UiToDo(ReadOnlyToDo toDo, int index, boolean isNew) {
         this.toDo = toDo;
+        this.isNew = isNew;
         this.index = index;
     }
 
@@ -53,6 +55,8 @@ public class UiToDo implements ReadOnlyToDo {
     public int getIndex() {
         return index;
     }
+
+    public boolean isNew() { return isNew; }
 
     @Override
     public boolean equals(Object other) {
