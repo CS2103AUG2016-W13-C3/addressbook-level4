@@ -29,9 +29,6 @@ public class ImportCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     private Model model;
     private Logic logic;
     private EventsCollector eventsCollector;
@@ -97,8 +94,7 @@ public class ImportCommandTest {
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
         assertTrue(model.getToDoList().getToDos().size() == 2);
-        
-        thrown.expect(IOException.class);
+
         Files.delete(Paths.get("test.xml"));
 
     }

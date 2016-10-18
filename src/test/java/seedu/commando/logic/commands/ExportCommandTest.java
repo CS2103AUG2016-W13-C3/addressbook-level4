@@ -30,9 +30,6 @@ public class ExportCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
     
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-    
     private Model model;
     private Logic logic;
     private EventsCollector eventsCollector;
@@ -79,7 +76,6 @@ public class ExportCommandTest {
         CommandResult result = logic.execute("export test");
         assertFalse(result.hasError());
         
-        thrown.expect(IOException.class);
         assertTrue(Arrays.equals(Files.readAllBytes(toDoListFile.toPath()), Files.readAllBytes(Paths.get("test"))));
         Files.delete(Paths.get("test"));
     }
