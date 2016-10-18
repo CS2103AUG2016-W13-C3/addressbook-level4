@@ -1,5 +1,7 @@
 package seedu.commando.ui;
 
+import com.google.common.eventbus.Subscribe;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -15,12 +17,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import seedu.commando.commons.core.Config;
+import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.GuiSettings;
+import seedu.commando.commons.core.LogsCenter;
+import seedu.commando.commons.events.storage.ChangeToDoListFilePathEvent;
 import seedu.commando.commons.events.ui.ExitAppRequestEvent;
+import seedu.commando.commons.events.ui.UpdateFilePathEvent;
+import seedu.commando.commons.util.ConfigUtil;
+import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.model.UserPrefs;
 
@@ -51,6 +58,7 @@ public class MainWindow extends UiPart {
     private StatusBarFooter statusBarFooter;
     private CommandBox commandBox;
     private UserPrefs userPrefs;
+    private Config config;
     private HelpWindow helpWindow;
     
     // Textfield of commandBox
@@ -116,19 +124,19 @@ public class MainWindow extends UiPart {
         return FXML;
     }
 
-    public static MainWindow load(Stage primaryStage, UserPrefs prefs, Logic logic) {
-        // Hide titlebar
+    public static MainWindow load(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
         primaryStage.initStyle(StageStyle.UNDECORATED);
         MainWindow mainWindow = UiPartLoader.loadUiPart(primaryStage, new MainWindow());
-        mainWindow.configure(Config.ApplicationTitle, Config.ApplicationName, prefs, logic);
+        mainWindow.configure(Config.ApplicationTitle, Config.ApplicationName, config, prefs, logic);
         return mainWindow;
     }
 
-    private void configure(String appTitle, String appName, UserPrefs prefs, Logic logic) {
+    private void configure(String appTitle, String appName, Config config, UserPrefs prefs, Logic logic) {
         // Set dependencies
         this.logic = logic;
         this.appName = appName;
         this.userPrefs = prefs;
+        this.config = config;
 
         // Configure the UI
         setTitle(appTitle);
@@ -195,10 +203,10 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getObservableEventList());
-        taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getObservableTaskList());
+        eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getUiEventList());
+        taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getUiTaskList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
-        statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), Config.DefaultToDoListFilePath);
+        statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getToDoListFilePath());
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
         commandField = (TextField) commandBoxPlaceholder.lookup("#commandTextField");
         commandField.requestFocus();
@@ -292,16 +300,25 @@ public class MainWindow extends UiPart {
     
     @FXML
     public void handleHelp() {
-        showHelpForCommand("");
+        showHelpAtAnchor("");
     }
 
-    public void showHelpForCommand(String commandWord) {
-        // Search through map
-        helpWindow.show(Config.getUserGuideAnchorForCommandWord(commandWord));
+    public void showHelpAtAnchor(String anchor) {
+        helpWindow.show(anchor);
     }
 
     public void show() {
         primaryStage.show();
+        initEventsCenter();
+    }
+    
+    private void initEventsCenter() {
+        EventsCenter.getInstance().registerHandler(this);
+    }
+    
+    @Subscribe
+    public void handleUpdateFilePathEvent(UpdateFilePathEvent event){
+    	statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getToDoListFilePath());
     }
 
     /**
@@ -319,4 +336,5 @@ public class MainWindow extends UiPart {
     public TaskListPanel getTaskListPanel() {
         return this.taskPanel;
     }
+    
 }

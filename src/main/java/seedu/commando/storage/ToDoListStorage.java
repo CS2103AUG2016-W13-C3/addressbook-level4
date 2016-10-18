@@ -16,6 +16,11 @@ public interface ToDoListStorage {
      * Returns the file path of the data file.
      */
     String getToDoListFilePath();
+    
+    /**
+     * Set the file path of the data file to another location
+     */
+    void setToDoListFilePath(String path);
 
     /**
      * Returns ToDoList data as a {@link ReadOnlyToDoList}.

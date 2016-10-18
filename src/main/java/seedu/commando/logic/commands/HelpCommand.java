@@ -1,13 +1,11 @@
 package seedu.commando.logic.commands;
 
 
+import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.events.ui.ShowHelpRequestEvent;
-import seedu.commando.model.Model;
-import seedu.commando.model.todo.ReadOnlyToDo;
-
-import java.util.List;
+import seedu.commando.commons.exceptions.IllegalValueException;
 
 /**
  * Format full help instructions for every command for display.
@@ -33,8 +31,20 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
-        eventsCenter.post(new ShowHelpRequestEvent(commandWord));
+    public CommandResult execute()
+        throws NoEventsCenterException, IllegalValueException {
+        EventsCenter eventsCenter = getEventsCenter();
+
+        String anchor = "";
+        if (!commandWord.isEmpty()) {
+            Config.getUserGuideAnchorForCommandWord(
+                commandWord
+            ).orElseThrow(
+                () -> new IllegalValueException(Messages.UNKNOWN_COMMAND_FOR_HELP)
+            );
+        }
+
+        eventsCenter.post(new ShowHelpRequestEvent(anchor));
         return new CommandResult(Messages.HELP_WINDOW_SHOWN);
     }
 }

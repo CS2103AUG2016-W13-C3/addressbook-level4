@@ -1,9 +1,9 @@
 package seedu.commando.logic;
 
-import javafx.collections.ObservableList;
-import seedu.commando.commons.core.IndexedItem;
+import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.logic.commands.CommandResult;
-import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.Model;
+import seedu.commando.model.ui.UiToDo;
 
 /**
  * API of the Logic component
@@ -17,13 +17,12 @@ public interface Logic {
     CommandResult execute(String commandText);
 
     /**
-     * Returns observable list of events
+     * @see Model#getUiEventList()
      * */
-    ObservableList<IndexedItem<ReadOnlyToDo>> getObservableEventList();
+    UnmodifiableObservableList<UiToDo> getUiEventList();
 
     /**
-     *  Return observable list of tasks
-     *  Tasks are in chronological order, with those with DueDate on top
+     * @see Model#getUiTaskList()
      * */
-    ObservableList<IndexedItem<ReadOnlyToDo>> getObservableTaskList();
+    UnmodifiableObservableList<UiToDo> getUiTaskList();
 }

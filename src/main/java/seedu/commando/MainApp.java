@@ -8,8 +8,11 @@ import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.core.Version;
+import seedu.commando.commons.events.storage.ChangeToDoListFilePathEvent;
 import seedu.commando.commons.events.ui.ExitAppRequestEvent;
+import seedu.commando.commons.events.ui.UpdateFilePathEvent;
 import seedu.commando.commons.exceptions.DataConversionException;
+import seedu.commando.commons.util.ConfigUtil;
 import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.logic.LogicManager;
@@ -39,6 +42,8 @@ public class MainApp extends Application {
     protected Storage storage;
     protected Model model;
     protected UserPrefs userPrefs;
+    protected Config config;
+    protected EventsCenter eventsCenter;
 
     public MainApp() {}
 
@@ -46,10 +51,12 @@ public class MainApp extends Application {
     public void init() throws Exception {
         logger.info("=============================[ Initializing " + Config.ApplicationTitle + " ]===========================");
         super.init();
+        
+        config = initConfig(getApplicationParameter("config"));
 
-        storage = new StorageManager(Config.DefaultToDoListFilePath, Config.DefaultUserPrefsFilePath);
+        storage = new StorageManager(config.getToDoListFilePath(), config.getUserPrefsFilePath());
 
-        userPrefs = initPrefs();
+        userPrefs = initPrefs(config);
 
         initLogging();
 
@@ -57,7 +64,7 @@ public class MainApp extends Application {
 
         logic = new LogicManager(model, storage);
 
-        ui = new UiManager(logic, userPrefs);
+        ui = new UiManager(logic, config, userPrefs);
 
         initEventsCenter();
     }
@@ -90,9 +97,41 @@ public class MainApp extends Application {
     private void initLogging() {
         LogsCenter.init(Config.LogLevel);
     }
+    
+    protected Config initConfig(String configFilePath) {
+        Config initializedConfig;
+        String configFilePathUsed;
 
-    protected UserPrefs initPrefs() {
-        String prefsFilePath = Config.DefaultUserPrefsFilePath;
+        configFilePathUsed = Config.DefaultConfigFilePath;
+
+        if (configFilePath != null) {
+            logger.info("Custom Config file specified " + configFilePath);
+            configFilePathUsed = configFilePath;
+        }
+
+        logger.info("Using config file : " + configFilePathUsed);
+
+        try {
+            Optional<Config> configOptional = ConfigUtil.readConfig(configFilePathUsed);
+            initializedConfig = configOptional.orElse(new Config());
+        } catch (DataConversionException e) {
+            logger.warning("Config file at " + configFilePathUsed + " is not in the correct format. " +
+                    "Using default config properties");
+            initializedConfig = new Config();
+        }
+
+        //Update config file in case it was missing to begin with or there are new/unused fields
+        try {
+            ConfigUtil.saveConfig(initializedConfig, configFilePathUsed);
+        } catch (IOException e) {
+            logger.warning("Failed to save config file : " + StringUtil.getDetails(e));
+        }
+        return initializedConfig;
+    }
+
+    protected UserPrefs initPrefs(Config config) {
+    	assert config != null;
+        String prefsFilePath = config.getUserPrefsFilePath();
         logger.info("Using prefs file: " + prefsFilePath);
 
         UserPrefs initializedPrefs;
@@ -104,7 +143,7 @@ public class MainApp extends Application {
                     "Using default user prefs");
             initializedPrefs = new UserPrefs();
         } catch (IOException e) {
-            logger.warning("Problem while reading from the file. Will be starting with an empty AddressBook");
+            logger.warning("Problem while reading from the file. Will be starting with an empty CommanDo");
             initializedPrefs = new UserPrefs();
         }
 
@@ -145,6 +184,20 @@ public class MainApp extends Application {
     public void handleExitAppRequestEvent(ExitAppRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         this.stop();
+    }
+    
+    @Subscribe
+    public void handleChangeToDoListFilePathEvent(ChangeToDoListFilePathEvent event){
+    	logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    	this.storage.setToDoListFilePath(event.path);
+    	this.config.setToDoListFilePath(event.path);
+    	try {
+			ConfigUtil.saveConfig(this.config, Config.DefaultConfigFilePath);
+		} catch (IOException e) {
+			logger.warning("Failed to save config " + StringUtil.getDetails(e));
+		}
+    	EventsCenter.getInstance().post(new UpdateFilePathEvent());
+    	
     }
 
     public static void main(String[] args) {

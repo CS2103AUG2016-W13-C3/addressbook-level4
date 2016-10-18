@@ -30,7 +30,6 @@ public class EditCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private Model model;
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
@@ -39,7 +38,7 @@ public class EditCommandTest {
 
     @Before
     public void setup() throws IOException {
-        model = new ModelManager();
+        Model model = new ModelManager();
 
         toDoListFile = folder.newFile();
         userPrefsFile  = folder.newFile();
@@ -90,19 +89,16 @@ public class EditCommandTest {
 
     @Test
     public void execute_edit_title() throws IllegalValueException {
-        logic.execute("add title");
-
-        assertTrue(ifToDoExists(model,
-            new ToDoBuilder("title")
-                .build()));
+        logic.execute("add title #tag");
 
         String command = "edit 1 new title";
         CommandResult result = logic.execute(command);
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("new title")
+                .withTags("tag")
                 .build()));
     }
 
@@ -110,7 +106,7 @@ public class EditCommandTest {
     public void execute_edit_tags() throws IllegalValueException {
         logic.execute("add title #tag1 #tag2");
 
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withTags("tag1", "tag2")
                 .build()));
@@ -120,9 +116,22 @@ public class EditCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withTags("tag2", "tag3", "tag4")
+                .build()));
+    }
+
+    @Test
+    public void execute_edit_titleRemoveTags() throws IllegalValueException {
+        logic.execute("add title #tag1 #tag2");
+
+        CommandResult result = logic.execute("edit 1 new title #");
+        assertFalse(result.hasError());
+
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("new title")
                 .build()));
     }
 
@@ -130,7 +139,7 @@ public class EditCommandTest {
     public void execute_edit_dueDate() throws IllegalValueException {
         logic.execute("add title by 10 Jan 1994 12:00");
 
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDueDate(LocalDateTime.of(1994, 1, 10, 12, 0))
                 .build()));
@@ -140,7 +149,7 @@ public class EditCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDueDate(LocalDateTime.of(1995, 4, 11, 0, 12))
                 .build()));
@@ -150,7 +159,7 @@ public class EditCommandTest {
     public void execute_edit_dateRange() throws IllegalValueException {
         logic.execute("add title from 10 Jan 1994 12:00 to 21 Jan 1994 13:00");
 
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDateRange(
                     LocalDateTime.of(1994, 1, 10, 12, 0),
@@ -163,7 +172,7 @@ public class EditCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDateRange(
                     LocalDateTime.of(1984, 9, 10, 12, 0),
@@ -172,4 +181,52 @@ public class EditCommandTest {
                 .build()));
     }
 
+    @Test
+    public void execute_edit_invalidDateRange() throws IllegalValueException {
+        logic.execute("add title from 11 Dec 2016 to 12 Dec 2016");
+        eventsCollector.reset();
+        String command = "edit 1 from 10 Dec 2017 11:59 to 11 Apr 2016 23:10";
+        CommandResult result = logic.execute(command);
+        assertTrue(result.hasError());
+        assertEquals(Messages.TODO_DATERANGE_CONSTRAINTS, result.getFeedback());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
+
+    @Test
+    public void execute_edit_inferredDateFromStart() throws IllegalValueException {
+        logic.execute("add title from 11 Dec 2016 to 12 Dec 2016");
+        String command = "edit 1 from 10 Dec 2016 3pm to 7pm";
+        CommandResult result = logic.execute(command);
+        assertFalse(result.hasError());
+
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("title")
+                .withDateRange(
+                    LocalDateTime.of(2016, 12, 10, 15, 0),
+                    LocalDateTime.of(2016, 12, 10, 19, 0)
+                )
+                .build()));
+    }
+
+    @Test
+    public void execute_edit_cannotAddDueDateToEvent() throws IllegalValueException {
+        logic.execute("add title from 11 Dec 2016 to 12 Dec 2016");
+        eventsCollector.reset();
+        String command = "edit 1 by 13 Dec 2016";
+        CommandResult result = logic.execute(command);
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertEquals(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, result.getFeedback());
+    }
+
+    @Test
+    public void execute_edit_cannotAddDateRangeToTaskWithDueDate() throws IllegalValueException {
+        logic.execute("add title by 13 Dec 2016");
+        eventsCollector.reset();
+        String command = "edit 1 from 11 Dec 2016 to 12 Dec 2016";
+        CommandResult result = logic.execute(command);
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertEquals(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, result.getFeedback());
+    }
 }

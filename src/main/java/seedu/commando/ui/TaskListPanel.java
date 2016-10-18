@@ -10,9 +10,9 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import seedu.commando.commons.core.IndexedItem;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.ui.UiToDo;
 
 import java.util.logging.Logger;
 
@@ -26,7 +26,7 @@ public class TaskListPanel extends UiPart {
     private AnchorPane placeHolderPane;
 
     @FXML
-    private ListView<IndexedItem<ReadOnlyToDo>> taskListView;
+    private ListView<UiToDo> taskListView;
 
     public TaskListPanel() {
         super();
@@ -48,19 +48,19 @@ public class TaskListPanel extends UiPart {
     }
 
     public static TaskListPanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
-                                     ObservableList<IndexedItem<ReadOnlyToDo>> list) {
+                                     ObservableList<UiToDo> list) {
         TaskListPanel taskListPanel =
                 UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new TaskListPanel());
         taskListPanel.configure(list);
         return taskListPanel;
     }
 
-    private void configure(ObservableList<IndexedItem<ReadOnlyToDo>> toDos) {
+    private void configure(ObservableList<UiToDo> toDos) {
         setConnections(toDos);
         addToPlaceholder();
     }
 
-    private void setConnections(ObservableList<IndexedItem<ReadOnlyToDo>> list) {
+    private void setConnections(ObservableList<UiToDo> list) {
         taskListView.setItems(list);
         taskListView.setCellFactory(listView -> new ToDoListViewCell());
     }
@@ -77,20 +77,20 @@ public class TaskListPanel extends UiPart {
         });
     }
 
-    class ToDoListViewCell extends ListCell<IndexedItem<ReadOnlyToDo>> {
+    class ToDoListViewCell extends ListCell<UiToDo> {
 
         public ToDoListViewCell() {
         }
 
         @Override
-        protected void updateItem(IndexedItem<ReadOnlyToDo> toDo, boolean empty) {
+        protected void updateItem(UiToDo toDo, boolean empty) {
             super.updateItem(toDo, empty);
 
             if (empty || toDo == null) {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(TaskCard.load(toDo.get(), toDo.getIndex()).getLayout());
+                setGraphic(TaskCard.load(toDo, toDo.getIndex()).getLayout());
             }
         }
     }

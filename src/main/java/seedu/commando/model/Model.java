@@ -3,6 +3,7 @@ package seedu.commando.model;
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.*;
+import seedu.commando.model.ui.UiToDo;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,13 +28,30 @@ public interface Model {
     /** Gets the last to-do list change, considering undos and redos, if it exists */
     Optional<ToDoListChange> getLastToDoListChange();
 
-    /** Returns the filtered to-do list as an {@code UnmodifiableObservableList<ReadOnlyToDo>} */
-    UnmodifiableObservableList<ReadOnlyToDo> getFilteredToDoList();
+    /**
+     * Returns observable list of UI events
+     * Events are in chronological order
+     * */
+    UnmodifiableObservableList<UiToDo> getUiEventList();
 
-    /** Updates the filter of the filtered to-do list to show all to-dos */
-    void clearToDoListFilter();
+    /**
+     *  Return observable list of UI tasks
+     *  Tasks are in chronological order, with those with DueDate on top
+     * */
+    UnmodifiableObservableList<UiToDo> getUiTaskList();
 
-    /** Updates the filter of the filtered to-do list to filter by the given keywords */
-    void updateToDoListFilter(Set<String> keywords);
+    /**
+     *  Gets the UI to-do with {@link UiToDo#getIndex()} == {@param toDoIndex}
+     * */
+    Optional<UiToDo> getUiToDoAtIndex(int index);
 
+    /**
+     * Clears the filter on the UI to-do list
+     */
+    void clearUiToDoListFilter();
+
+    /**
+     * Sets a filter on the UI to-do list
+     */
+    void setUiToDoListFilter(Set<String> keywords, Set<String> tags);
 }

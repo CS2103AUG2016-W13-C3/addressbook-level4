@@ -4,8 +4,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
+import static org.junit.Assert.assertFalse;
 import static seedu.commando.testutil.TestHelper.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -19,6 +21,12 @@ public class SequentialParserTest {
 
     @After
     public void teardown() {
+    }
+
+    @Test
+    public void extractText_emptyString()  {
+        sequentialParser.setInput("");
+        assertFalse(sequentialParser.extractText().isPresent());
     }
 
     @Test
@@ -133,36 +141,29 @@ public class SequentialParserTest {
     @Test
     public void extractPrefixedWords_noMatches()  {
         sequentialParser.setInput("no matches");
-        assertTrue(sequentialParser.extractPrefixedWords("#").isEmpty());
+        assertTrue(sequentialParser.extractPrefixedWords("#", false).isEmpty());
         assertEquals("no matches", sequentialParser.getInput());
     }
 
     @Test
     public void extractPrefixedWords_allTags()  {
         sequentialParser.setInput("#tag1 #tag2 #tag3");
-        assertEquals(Arrays.asList("tag1", "tag2", "tag3"), sequentialParser.extractPrefixedWords("#"));
+        assertEquals(Arrays.asList("#tag1", "#tag2", "#tag3"), sequentialParser.extractPrefixedWords("#", false));
         assertEquals("", sequentialParser.getInput().trim());
     }
 
     @Test
     public void extractPrefixedWords_tagsWithOtherWords()  {
         sequentialParser.setInput("other #tag1 #tag2 words");
-        assertEquals(Arrays.asList("tag1", "tag2"), sequentialParser.extractPrefixedWords("#"));
+        assertEquals(Arrays.asList("#tag1", "#tag2"), sequentialParser.extractPrefixedWords("#", false));
         assertEquals(Arrays.asList("other", "words"), sequentialParser.extractWords());
     }
 
     @Test
-    public void extractTextFromIndex_indexWithKeywords()  {
-        sequentialParser.setInput("Index with with keywords");
-        assertEquals("th", sequentialParser.extractTextFromIndex(8, "with", "keywords").orElse(""));
-        assertEquals(Arrays.asList("Index", "wi", "with", "keywords"), sequentialParser.extractWords());
-    }
-
-    @Test
-    public void extractTextFromIndex_indexWithoutKeywords()  {
-        sequentialParser.setInput("index without keywords");
-        assertEquals("out keywords", sequentialParser.extractTextFromIndex(10).orElse(""));
-        assertEquals(Arrays.asList("index", "with"), sequentialParser.extractWords());
+    public void extractPrefixedWords_removePrefix_tagsWithOtherWords()  {
+        sequentialParser.setInput("other #tag1 #tag2 words");
+        assertEquals(Arrays.asList("tag1", "tag2"), sequentialParser.extractPrefixedWords("#", true));
+        assertEquals(Arrays.asList("other", "words"), sequentialParser.extractWords());
     }
 
     @Test
@@ -175,7 +176,7 @@ public class SequentialParserTest {
     @Test
     public void extractTextAfterKeyword_keywordNotFound()  {
         sequentialParser.setInput("keyword not found");
-        assertTrue(!sequentialParser.extractTextAfterKeyword("key").isPresent());
+        assertFalse(sequentialParser.extractTextAfterKeyword("key").isPresent());
         assertEquals(Arrays.asList("keyword", "not", "found"), sequentialParser.extractWords());
     }
 
@@ -184,5 +185,59 @@ public class SequentialParserTest {
         sequentialParser.setInput("case InSensitive keyword");
         assertEquals("keyword", sequentialParser.extractTextAfterKeyword("iNsensitive").orElse(""));
         assertEquals(Arrays.asList("case"), sequentialParser.extractWords());
+    }
+
+    @Test
+    public void extractTextAfterKeyword_emptyStringAfterKeyword()  {
+        sequentialParser.setInput("keyword   next");
+        assertFalse(sequentialParser.extractTextAfterKeyword("keyword", "next").isPresent());
+    }
+
+    @Test
+    public void extractDateTimeAfterKeyword_dateRange()  {
+        sequentialParser.setInput("from 10 Apr 2016 9am to 11 Jan 2018 10:28");
+        assertEquals(
+            LocalDateTime.of(2016, 4, 10, 9, 0),
+            sequentialParser.extractDateTimeAfterKeyword("from", "to").orElse(null)
+        );
+        assertEquals(
+            LocalDateTime.of(2018, 1, 11, 10, 28),
+            sequentialParser.extractDateTimeAfterKeyword("to").orElse(null)
+        );
+    }
+
+    @Test
+    public void extractDateTimeAfterKeyword_invalidDates()  {
+        sequentialParser.setInput("walk by the beach from 1 end to another");
+        assertFalse(
+            sequentialParser.extractDateTimeAfterKeyword("by", "to", "from").isPresent()
+        );
+        assertFalse(
+            sequentialParser.extractDateTimeAfterKeyword("from", "by", "to").isPresent()
+        );
+        assertFalse(
+            sequentialParser.extractDateTimeAfterKeyword("to", "by", "from").isPresent()
+        );
+        assertEquals(
+            "walk by the beach from 1 end to another", sequentialParser.extractText().orElse("")
+        );
+    }
+
+    @Test
+    public void extractDateTimeAfterKeyword_validDateAfterMultipleKeywords()  {
+        sequentialParser.setInput("walk by the beach from 1 end to another from 28 Oct 2018 1200h to 29 Nov 2019 1300h");
+        assertEquals(
+            LocalDateTime.of(2018, 10, 28, 12, 0),
+            sequentialParser.extractDateTimeAfterKeyword("from", "to", "from").orElse(null)
+        );
+
+        assertEquals(
+            LocalDateTime.of(2019, 11, 29, 13, 0),
+            sequentialParser.extractDateTimeAfterKeyword("to", "to", "from").orElse(null)
+        );
+
+        assertEquals(
+            "walk by the beach from 1 end to another", sequentialParser.extractText().orElse("")
+        );
     }
 }

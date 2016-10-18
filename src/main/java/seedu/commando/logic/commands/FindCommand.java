@@ -1,38 +1,36 @@
 package seedu.commando.logic.commands;
 
-import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.model.Model;
-import seedu.commando.model.todo.ReadOnlyToDo;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Set;
 
 /**
- * Finds and lists all persons in address book whose name contains any of the argument keywords.
- * Keyword matching is case sensitive.
+ * Updates the filter for to-do list to show only to-do items containing all
+ * of the keywords and tags (case insensitive)
  */
 public class FindCommand extends Command {
-    public static final String COMMAND_WORD = "find";
+    public static final String
+        COMMAND_WORD = "find";
 
-    private final Set<String> keywords;
+    public Set<String> keywords = Collections.emptySet();
+    public Set<String> tags = Collections.emptySet();
 
-    public FindCommand(Set<String> keywords) {
-        assert keywords != null;
-
-        this.keywords = keywords;
-    }
-
+    /**
+     * Asserts that {@code uiLogic} is non-null
+     */
     @Override
-    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
-        assert model != null;
+    public CommandResult execute() throws NoModelException {
+        Model model = getModel();
 
-        if (keywords.size() > 0) {
-            model.updateToDoListFilter(keywords);
-            return new CommandResult(String.format(Messages.FIND, model.getFilteredToDoList().size()));
-        } else {
-            model.clearToDoListFilter();
+        // if no keywords or tags are provided, clear find
+        if (keywords.isEmpty() && tags.isEmpty()) {
+            model.clearUiToDoListFilter();
             return new CommandResult(Messages.CLEAR_FIND);
         }
+
+        model.setUiToDoListFilter(keywords, tags);
+        return new CommandResult(String.format(Messages.FIND, model.getUiEventList().size(), model.getUiTaskList().size()));
     }
 }

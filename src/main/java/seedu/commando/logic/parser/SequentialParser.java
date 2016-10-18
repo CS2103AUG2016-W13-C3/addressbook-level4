@@ -1,5 +1,6 @@
 package seedu.commando.logic.parser;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,8 +15,9 @@ public class SequentialParser {
     private static final Pattern FIRST_INTEGER_PATTERN = Pattern.compile("^(?<index>-?\\d+)(?<tail>.*)$");
     private static final Pattern WORD_PATTERN = Pattern.compile("(?<word>\\S+)");
     private String input;
-
-    public SequentialParser() {
+    private DateTimeParser dateTimeParser;
+    {
+        dateTimeParser = new DateTimeParser();
     }
 
     /**
@@ -23,6 +25,7 @@ public class SequentialParser {
      */
     public void setInput(String input) {
         this.input = input;
+        dateTimeParser.resetContext(); // reset any contextual info from last command
     }
 
     /**
@@ -31,97 +34,145 @@ public class SequentialParser {
     public String getInput() {
         return input;
     }
-
+    
+    /**
+     * Checks whether current input is empty
+     */
+    public boolean isInputEmpty(){
+        return input.trim().isEmpty();
+    }
+    
+    
     /**
      * From start, extracts the text after the first occurrence of {@param keyword} from input
      * until any keyword in the set of {@param otherKeywords}
      * {@param keyword} and the subsequent text extracted is removed from input
-     * Similar to {@link this#extractTextFromIndex(int, String...)}
+     * Keywords are matched as whole words, not substrings, and as case-insensitive ("word" does not match in "keyword")
+     * It can match up to the end of input, if an empty set of keywords is provided or none in
+     * set is encountered
      * Asserts {@param keyword} is non-null
      *
      * @return optional of text extracted from input, empty if not found
      */
+
     public Optional<String> extractTextAfterKeyword(String keyword, String... otherKeywords) {
         assert keyword != null;
 
-        String lowerCaseInput = input.toLowerCase();
-        Matcher matcher = WORD_PATTERN.matcher(lowerCaseInput);
+        int keywordStartIndex = getFirstOccurrenceOf(0, keyword);
 
-        while (matcher.find()) {
-            // If keyword matched current word
-            if (matcher.group("word").equals(keyword.trim().toLowerCase())) {
-                // Remove keyword
-                input = input.substring(0, matcher.start()) + input.substring(matcher.end());
-
-                // Extract text from start (was end) of the keyword
-               return extractTextFromIndex(
-                   matcher.start(),
-                   otherKeywords
-               );
-            }
+        if (keywordStartIndex == -1) {
+            return Optional.empty();
         }
 
-        // Keyword not found
+        int startIndex = keywordStartIndex + keyword.length();
+        int endIndex = getFirstOccurrenceOf(startIndex, otherKeywords);
+
+        endIndex = endIndex == -1 ? input.length() : endIndex;
+
+        String text = input.substring(startIndex, endIndex).trim();
+
+        if (text.isEmpty()) {
+            return Optional.empty();
+        } else {
+            input = input.substring(0, keywordStartIndex) + input.substring(endIndex);
+            return Optional.of(text);
+        }
+    }
+
+    /**
+     * From start, extracts the first valid datetime after an occurrence of {@param keyword} from input
+     * until any keyword in the set of {@param otherKeywords}
+     * If datetime is invalid, extraction is not done, even if there is a match in keyword
+     * {@param keyword} and the subsequent text extracted is removed from input
+     * Similar to {@link this#extractTextAfterKeyword(String, String...)}}
+     * Asserts {@param keyword} is non-null
+     *
+     * @return optional of datetime extracted from input, empty if not found
+     */
+    public Optional<LocalDateTime> extractDateTimeAfterKeyword(String keyword, String... otherKeywords) {
+        assert keyword != null;
+
+        int currentIndex = 0;
+
+        while (currentIndex < input.length()) {
+            int keywordStartIndex = getFirstOccurrenceOf(currentIndex, keyword);
+
+            if (keywordStartIndex == -1) {
+                return Optional.empty();
+            }
+
+            int startIndex = keywordStartIndex + keyword.length();
+            int endIndex = getFirstOccurrenceOf(startIndex, otherKeywords);
+
+            endIndex = endIndex == -1 ? input.length() : endIndex;
+
+            String datetimeString = input.substring(startIndex, endIndex);
+
+            // Check if datetime can be parsed
+            Optional<LocalDateTime> dateTime = dateTimeParser.parseDateTime(datetimeString);
+
+            if (dateTime.isPresent()) {
+                // Legit datetime, extract keyword + datetime from input
+                input = input.substring(0, keywordStartIndex) + input.substring(endIndex);
+                return dateTime;
+            }
+
+            // Repeat for the next occurrence of the keyword, if datetime not valid
+            currentIndex = endIndex;
+        }
+
+        // Couldn't find any valid datetimes
         return Optional.empty();
     }
 
     /**
-     * From {@param startIndex}, extracts text from input until any keyword in the set of keywords {@param keywords}
-     * Keywords are matched as whole words, not substrings, and as case-insensitive ("word" does not match in "keyword")
-     * It can match up to the end of input, if an empty set of keywords is provided or none in
-     * set is encountered
-     *
-     * @return optional of text extracted from input, empty if not found
-     */
-    public Optional<String> extractTextFromIndex(int startIndex, String... keywords) {
-        // Search for earliest occurrence of any keyword, case insensitive
-        int endIndex = input.length();
+     * Search for earliest occurrence of any keyword, case insensitive
+     * Returns -1 if no keyword found
+      */
+    private int getFirstOccurrenceOf(int startIndex, String... keywords) {
         String lowerCaseInput = input.substring(startIndex).toLowerCase();
 
         Matcher matcher = WORD_PATTERN.matcher(lowerCaseInput);
-        loop:
         while (matcher.find()) {
             for (String keyword : keywords) {
                 // If any keyword matched current word
-                if (matcher.group("word").equals(keyword.trim().toLowerCase())) {
-                    endIndex = matcher.start() + startIndex;
-                    break loop; // stop, we found the first
+                if (matcher.group("word").equals(keyword.toLowerCase())) {
+                    return matcher.start() + startIndex;
                 }
             }
         }
 
-        String text = input.substring(startIndex, endIndex).trim();
-
-        // Remove extracted text
-        if (startIndex == 0) {
-            input = input.substring(endIndex);
-        } else {
-            // Add space to account for startIndex splitting a word
-            input = input.substring(0, startIndex) + " " + input.substring(endIndex);
-        }
-
-        if (text.isEmpty()) {
-            return Optional.empty();
-        }
-
-        return Optional.of(text);
+        return -1; // no keywords found
     }
 
     /**
-     * Similar to {@link this#extractTextFromIndex(int, String...)}, but from start of input
+     * Similar to {@link this#extractTextAfterKeyword(String, String...)}, but from start of input
      */
     public Optional<String> extractText(String... keywords) {
-        return extractTextFromIndex(0, keywords);
+        int endIndex = getFirstOccurrenceOf(0, keywords);
+        endIndex = endIndex == -1 ? input.length() : endIndex;
+
+        String text = input.substring(0, endIndex).trim();
+
+        if (text.isEmpty()) {
+            return Optional.empty();
+        } else {
+            // Remove extracted text
+            input = input.substring(endIndex);
+
+            return Optional.of(text);
+        }
     }
 
     /**
      * Extracts all words prefixed with {@param prefix} as a list,
      * in the order that appears in the input
-     * Eg, method("#") on input = "some #tag1 #tag2 thing" returns ["tag1", "tag2"]
+     * Eg, extractPrefixedWords("#", true) on input = "some #tag1 #tag2 thing" returns ["tag1", "tag2"]
      * and resulting input = "some  thing"
+     * Words which are empty strings are removed
      * Asserts {@param prefix} is non-null
      */
-    public List<String> extractPrefixedWords(String prefix) {
+    public List<String> extractPrefixedWords(String prefix, boolean ifRemovePrefix) {
         assert prefix != null;
 
         List<String> words = new LinkedList<>();
@@ -130,11 +181,17 @@ public class SequentialParser {
         for (Matcher matcher = WORD_PATTERN.matcher(input);
              matcher.find(); ) {
 
-            String word = matcher.group("word");
+            String rawWord = matcher.group("word");
 
             // Check prefix of word
-            if (word.indexOf(prefix) == 0) {
-                words.add(word.substring(prefix.length())); // Add without prefix
+            if (rawWord.indexOf(prefix) == 0) {
+                String word = ifRemovePrefix ? rawWord.substring(prefix.length()) : rawWord;
+
+                // Add word only if it doesn't reduce to empty string
+                if (!word.trim().isEmpty()) {
+                    words.add(word);
+                }
+
                 input = input.substring(0, matcher.start())
                     + input.substring(matcher.end()); // Remove matched word from input
 

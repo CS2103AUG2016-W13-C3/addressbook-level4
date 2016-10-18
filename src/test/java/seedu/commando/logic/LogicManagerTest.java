@@ -9,13 +9,11 @@ import org.junit.rules.TemporaryFolder;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.events.ui.ExitAppRequestEvent;
-import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.commands.*;
 import seedu.commando.model.Model;
 import seedu.commando.model.ModelManager;
 import seedu.commando.storage.StorageManager;
 import seedu.commando.testutil.EventsCollector;
-import seedu.commando.testutil.ToDoBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +24,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.commando.testutil.TestHelper.*;
 
+/**
+ * Contains tests for LogicManager
+ * More tests for specific command words might also be in {@link seedu.commando.logic.commands}
+ */
 public class LogicManagerTest {
 
     /**
@@ -34,7 +36,6 @@ public class LogicManagerTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private Model model;
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
@@ -43,7 +44,7 @@ public class LogicManagerTest {
 
     @Before
     public void setup() throws IOException {
-        model = new ModelManager();
+        Model model = new ModelManager();
 
         toDoListFile = folder.newFile();
         userPrefsFile  = folder.newFile();
@@ -81,12 +82,14 @@ public class LogicManagerTest {
 
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 2);
+        assertTrue(logic.getUiEventList().size() == 1);
+        assertTrue(logic.getUiTaskList().size() == 1);
 
         CommandResult result = logic.execute("clear");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 0);
+        assertTrue(logic.getUiEventList().size() == 0);
+        assertTrue(logic.getUiTaskList().size() == 0);
     }
 
     @Test
@@ -101,94 +104,6 @@ public class LogicManagerTest {
         assertTrue(result.hasError());
 
         assertEquals(String.format(Messages.TODO_ITEM_INDEX_INVALID, 2), result.getFeedback());
-    }
-
-    @Test
-    public void execute_find_keywords() throws IllegalValueException {
-        logic.execute("add title");
-        logic.execute("add title2");
-        logic.execute("add title 3");
-        logic.execute("add somethingelse");
-
-        eventsCollector.reset();
-        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-
-        CommandResult result = logic.execute("find title");
-        assertFalse(result.hasError());
-
-        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-
-        assertTrue(ifToDoExistsFiltered(model,
-            new ToDoBuilder("title")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(model,
-            new ToDoBuilder("title2")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(model,
-            new ToDoBuilder("title 3")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(model,
-            new ToDoBuilder("somethingelse")
-                .build()));
-    }
-    
-    @Test
-    public void execute_undo() {
-        logic.execute("add title");
-        logic.execute("add test 3");
-        logic.execute("delete 2");
-        logic.execute("edit 1 titlereplaced");
-        
-        eventsCollector.reset();
-        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 1);
-        
-        CommandResult result = logic.execute("undo");
-        assertFalse(result.hasError());
-        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 1);
-        
-        result = logic.execute("undo");
-        assertFalse(result.hasError());
-        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 2);
-        
-        result = logic.execute("undo");
-        assertFalse(result.hasError());
-        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 1);
-        
-        result = logic.execute("undo");
-        assertFalse(result.hasError());
-        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 0);
-        
-        result = logic.execute("undo");
-        assertTrue(result.hasError());
-        assertEquals(Messages.UNDID_COMMAND_FAIL, result.getFeedback());
-
-
-    }
-    
-    @Test
-    public void execute_redo() {
-        logic.execute("add title");
-        logic.execute("add tilte2");
-        logic.execute("undo");
-        
-        eventsCollector.reset();
-        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 1);
-        
-        CommandResult result = logic.execute("redo");
-        assertFalse(result.hasError());
-        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(model.getToDoList().getToDos().size() == 2);
-        
-        result = logic.execute("redo");
-        assertTrue(result.hasError());
-        assertEquals(Messages.REDID_COMMAND_FAIL, result.getFeedback());
-
     }
 
     @Test

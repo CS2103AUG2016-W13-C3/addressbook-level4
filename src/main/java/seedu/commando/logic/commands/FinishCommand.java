@@ -1,15 +1,14 @@
 package seedu.commando.logic.commands;
 
-import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.model.ui.UiModel;
+import seedu.commando.model.ui.UiToDo;
 import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListChange;
-import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.ToDo;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,11 +25,11 @@ public class FinishCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
-        assert model != null;
-        assert toDoAtIndices != null;
+    public CommandResult execute()
+        throws IllegalValueException, NoModelException {
+        Model model = getModel();
 
-        Optional<ReadOnlyToDo> toDoToFinish = getToDoAtIndex(toDoAtIndices, toDoIndex);
+        Optional<UiToDo> toDoToFinish = model.getUiToDoAtIndex(toDoIndex);
 
         if (!toDoToFinish.isPresent()) {
             return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex), true);

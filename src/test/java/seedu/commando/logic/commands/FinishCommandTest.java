@@ -28,7 +28,6 @@ public class FinishCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private Model model;
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
@@ -37,7 +36,7 @@ public class FinishCommandTest {
 
     @Before
     public void setup() throws IOException {
-        model = new ModelManager();
+        Model model = new ModelManager();
 
         toDoListFile = folder.newFile();
         userPrefsFile  = folder.newFile();
@@ -87,6 +86,14 @@ public class FinishCommandTest {
     }
 
     @Test
+    public void execute_finish_invalidFormat() {
+        CommandResult result = logic.execute("finish 1 #troll");
+        assertTrue(result.hasError());
+
+        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD), result.getFeedback());
+    }
+
+    @Test
     public void execute_finish_index() throws IllegalValueException {
         logic.execute("add title");
         logic.execute("add title2");
@@ -94,7 +101,7 @@ public class FinishCommandTest {
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title2")
                 .build()));
 
@@ -102,10 +109,10 @@ public class FinishCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertFalse(ifToDoExists(model,
+        assertFalse(ifToDoExists(logic,
             new ToDoBuilder("title2")
                 .build()));
-        assertTrue(ifToDoExists(model,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .build()));
     }

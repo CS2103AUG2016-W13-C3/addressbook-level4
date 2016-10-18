@@ -10,9 +10,9 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import seedu.commando.commons.core.IndexedItem;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.ui.UiToDo;
 
 import java.util.logging.Logger;
 
@@ -26,7 +26,7 @@ public class EventListPanel extends UiPart {
     private AnchorPane placeHolderPane;
 
     @FXML
-    private ListView<IndexedItem<ReadOnlyToDo>> eventListView;
+    private ListView<UiToDo> eventListView;
 
     public EventListPanel() {
         super();
@@ -48,19 +48,19 @@ public class EventListPanel extends UiPart {
     }
 
     public static EventListPanel load(Stage primaryStage, AnchorPane eventListPlaceholder,
-                                     ObservableList<IndexedItem<ReadOnlyToDo>> list) {
+                                     ObservableList<UiToDo> list) {
         EventListPanel eventListPanel =
                 UiPartLoader.loadUiPart(primaryStage, eventListPlaceholder, new EventListPanel());
         eventListPanel.configure(list);
         return eventListPanel;
     }
 
-    private void configure(ObservableList<IndexedItem<ReadOnlyToDo>> toDos) {
+    private void configure(ObservableList<UiToDo> toDos) {
         setConnections(toDos);
         addToPlaceholder();
     }
 
-    private void setConnections(ObservableList<IndexedItem<ReadOnlyToDo>> list) {
+    private void setConnections(ObservableList<UiToDo> list) {
         eventListView.setItems(list);
         eventListView.setCellFactory(listView -> new ToDoListViewCell());
     }
@@ -77,20 +77,20 @@ public class EventListPanel extends UiPart {
         });
     }
 
-    class ToDoListViewCell extends ListCell<IndexedItem<ReadOnlyToDo>> {
+    class ToDoListViewCell extends ListCell<UiToDo> {
 
         public ToDoListViewCell() {
         }
 
         @Override
-        protected void updateItem(IndexedItem<ReadOnlyToDo> toDo, boolean empty) {
+        protected void updateItem(UiToDo toDo, boolean empty) {
             super.updateItem(toDo, empty);
 
             if (empty || toDo == null) {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(EventCard.load(toDo.get(), toDo.getIndex()).getLayout());
+                setGraphic(EventCard.load(toDo, toDo.getIndex()).getLayout());
             }
         }
     }

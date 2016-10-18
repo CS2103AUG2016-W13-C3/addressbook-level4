@@ -3,10 +3,6 @@ package seedu.commando.logic.commands;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.events.ui.ExitAppRequestEvent;
-import seedu.commando.model.Model;
-import seedu.commando.model.todo.ReadOnlyToDo;
-
-import java.util.List;
 
 /**
  * Terminates the program
@@ -17,12 +13,9 @@ public class ExitCommand extends Command {
 
     public ExitCommand() {}
 
-    /**
-     * Asserts that {@code eventsCenter} is non-null
-     */
     @Override
-    public CommandResult execute(List<ReadOnlyToDo> toDoAtIndices, Model model, EventsCenter eventsCenter) {
-        assert eventsCenter != null;
+    public CommandResult execute() throws NoEventsCenterException {
+        EventsCenter eventsCenter = getEventsCenter();
 
         eventsCenter.post(new ExitAppRequestEvent());
         return new CommandResult(Messages.EXIT_APPLICATION);
