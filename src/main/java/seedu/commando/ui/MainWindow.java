@@ -30,7 +30,7 @@ import seedu.commando.model.UserPrefs;
  */
 public class MainWindow extends UiPart {
     public static final double NON_MAXIMIZED_HEIGHT = 750;
-    public static final double NON_MAXIMIZED_WIDTH = 1000;
+    public static final double NON_MAXIMIZED_WIDTH = 1200;
     private static final String ICON = "/images/address_book_32.png";
     private static final String FXML = "MainWindow.fxml";
     private static double currScreenXPos = 0;

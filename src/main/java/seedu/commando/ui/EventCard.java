@@ -21,7 +21,7 @@ public class EventCard extends UiPart{
     @FXML
     private HBox eventPane;
     @FXML
-    private GridPane eventPaneInner;
+    private HBox eventPaneInner;
     @FXML
     private Label titleLabel;
     @FXML

@@ -20,7 +20,7 @@ public class TaskCard extends UiPart{
     @FXML
     private HBox taskPane;
     @FXML
-    private GridPane taskPaneInner;
+    private HBox taskPaneInner;
     @FXML
     private Label titleLabel;
     @FXML
@@ -68,7 +68,11 @@ public class TaskCard extends UiPart{
 
     private void setLabelStyle() {
         taskPane.setStyle("-fx-background-color: #FFFFFF");
-        taskPaneInner.setStyle("-fx-background-color: #DCDCDC; -fx-background-radius: 8px;");
+        taskPaneInner.setStyle("-fx-background-color: #DCDCDC; " + 
+                                "-fx-background-radius: 8px;" + 
+                                "-fx-border-width: 4px;" + 
+                                "-fx-border-radius: 4px;" + 
+                                "-fx-border-color: black");
         dueLabel.setStyle("-fx-text-fill: #FF0000; -fx-font-family: Microsoft Yahei Light");
         indexLabel.setStyle("-fx-font-family: Lucida Sans Unicode");
     }
