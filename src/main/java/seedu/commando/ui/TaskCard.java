@@ -113,9 +113,7 @@ public class TaskCard extends UiPart{
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        ColorAdjust ca = new ColorAdjust();
-        ca.setBrightness(-0.3);
-        taskPaneInner.setEffect(ca);
+        taskPaneInner.setStyle("-fx-background-color: derive(#1d1d1d, 95%);");
     }
     
     /**
@@ -124,18 +122,14 @@ public class TaskCard extends UiPart{
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            ColorAdjust ca = new ColorAdjust();
-            ca.setBrightness(-0.1);
-            taskPaneInner.setEffect(ca);
+            taskPaneInner.setStyle("-fx-background-color: derive(#DCDCDC, 50%);");
         }
     }
     
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            ColorAdjust ca = new ColorAdjust();
-            ca.setBrightness(0);
-            taskPaneInner.setEffect(ca);
+            taskPaneInner.setStyle("-fx-background-color: #DCDCDC;");
         }
     }
 
