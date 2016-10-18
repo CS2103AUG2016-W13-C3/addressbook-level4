@@ -27,11 +27,11 @@
             <hr>
             <section id="main_content">
                 <p>
-                    <ul id="table-of-contents">
-                        <li><a href="#about">What is CommanDo?</a></li>
+                    <ul id="first-layer">
+                        <li><a href="#about">What is CommanDo</a></li>
                         <li><a href="#quick-start">Getting Started</a></li>
                         <li><a href="#commands">Commands</a></li>
-                        <ul>
+                        <ul id="second-layer">
                             <li><a href="#viewing-help-help">Viewing Help</a></li>
                             <li><a href="#adding-to-do-items-add">Adding To-Do Items</a></li>
                             <li><a href="#editing-to-do-items-edit">Editing To-Do Items</a></li>
@@ -50,11 +50,11 @@
                         <li><a href="#cheatsheet">Cheatsheet</a></li>
                     </ul>
                 </p>
-                <h2 id="about">What is CommanDo?</h2>
+                <h2 id="about">What is CommanDo</h2>
 
                 <p><em>You have a ton of things to do, but you really hate the amount of mouse-clicking and the complicated user interfaces you have to go through to edit a to-do list in most to-do list management software...</em></p>
                 <p>
-                    Meet <em>CommanDo</em> - it is <em>the</em> to-do list manager that keeps things clean and allows you to edit your to-do list swiftly by typing out commands, mouse-free. Commands in <em>CommanDo</em> are simple and intuitive, while providing a bit of flexibility in syntax and customizability. <em>CommanDo</em> recognizes and actively categories to-dos into 2 groups: events (to-dos with a description and a time window) and tasks (to-dos with just a description, accompanied by an optional deadline).
+                    Meet <em>CommanDo</em> - it is <em>the</em> to-do list manager that keeps things clean and allows you to edit your to-do list swiftly by typing out commands, mouse-free. Commands in <em>CommanDo</em> are simple and intuitive, while providing both flexibility in structure and customizability. <em>CommanDo</em> recognizes and actively categorizes to-dos into 2 groups: events (to-dos with a description and a time window) and tasks (to-dos with just a description, accompanied by an optional deadline).
                 </p>
 
                 <figure>
@@ -67,7 +67,7 @@
                 <h2 id="quick-start">Getting Started</h2>
                 <ol>
                     <li>
-                        Ensure that you have Java version <code>1.8.0_60</code> or later on your device (<a target="_blank" href="https://java.com/en/download/help/version_manual.xml">here's how</a>). Instructions on how to install latest version of Java can be found <a target="_blank" href="https://java.com/en/download/help/download_options.xml">here</a>.
+                        Ensure that you have Java version <code>1.8.0_60</code> or later on your device (<a target="_blank" href="https://java.com/en/download/help/version_manual.xml">here's how</a>). Instructions on how to install the latest version of Java can be found <a target="_blank" href="https://java.com/en/download/help/download_options.xml">here</a>.
                     </li>
                     <li>
                         Download the latest <code>commando.jar</code> from <em>CommanDo's</em> <a href="https://github.com/CS2103AUG2016-W13-C3/main/releases">releases</a> tab on Github.
@@ -83,7 +83,7 @@
                         </figure>
                     </li>
                     <li>
-                        Type <code>help</code> and press <kbd class="light">Enter</kbd> - a window will open up to show this exact guide. This is how you'll be entering commands in <em>CommanDo</em>. Refer to the <a href="#commands">Commands</a> section below for a whole list of commands.
+                        Type <code>help</code> and press <kbd class="light">Enter</kbd> - a window will open up to show this exact guide. This is how commands will be entered in <em>CommanDo</em>. Refer to the <a href="#commands">Commands</a> section below for the list of commands.
                     </li>
                 </ol>
 
@@ -98,7 +98,7 @@
                 <pre><span class="inputstart">&gt;&gt;</span> help [<span>&lt;command_word&gt;</span>]</pre>
 
                 <blockquote>
-                    <b>Understanding Command Formats</b> For each command, the first word is the <em>command word</em> that specifies the type of the command. What follows after are fields to fill in for that command. The following legend describes the syntax we used to specify command formats:
+                    <b>Understanding Command Formats:</b> For each command, the first word is the <em>command word</em> that specifies the type of the command. What follows after are fields to fill in for that command. The following legend describes the syntax we used to specify command formats:
                     <ol class="indent">
                         <li>
                             <code><span class="inputstart">&gt;&gt;</span></code> denotes a field to fill in
@@ -124,7 +124,7 @@
                     Adding To-Do Items: <code>add</code>
                 </h3>
 
-                <p>The very first thing you'll need to do is to add a to-do. Each to-do item contains minimally a description, and can be have multiple tags and/or time constraint / interval associated with it. To-do items are categoried into 2 types: <em>Events</em> (shown in the left panel) and <em>Tasks</em> (shown in the right panel):</p>
+                <p>The very first thing you'll need to do is to add a to-do. Each to-do item contains minimally a description, can have multiple tags, and a time constraint/interval associated with it. To-do items are categoried into 2 types: <em>Events</em> (shown in the left panel) and <em>Tasks</em> (shown in the right panel):</p>
 
                 <figure>
                     <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
@@ -135,7 +135,7 @@
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>&lt;description&gt;</span> from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span> [#<span>&lt;tag&gt;</span>...]</pre>
 
-                <p>An <em>Event</em> is an activity happening within a time frame, containing <code>start_datetime</code> and <code>end_datetime</code> fields to represent the time frame. You can also add tags prefixed with <code>#</code> to help organise your to-do list. On the interface of <em>CommanDo</em>, every <em>Event</em> from the current day onwards is listed on the left panel, in chronological order:</p>
+                <p>An <em>Event</em> is an activity happening within a time frame, containing <code>start_datetime</code> and <code>end_datetime</code> fields to represent the time frame. You can also add tags prefixed with <code>#</code> to group your to-do items. On the interface of <em>CommanDo</em>, every <em>Event</em> from the current day onwards is listed on the left panel, in chronological order:</p>
 
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/addEvent.png" width="600">
@@ -144,7 +144,7 @@
                 </figure>
 
                 <blockquote>
-                    <b>Datetime Formats</b> <em>CommanDo</em> is pretty flexible in parsing your datetime fields, accepting formats like <code>5 Jan 2016 2300</code> and <code>28/12/2016 12pm</code> (where date is in format DD/MM/YYYY). The year can be dropped for convenience, if you mean the current year. For the full list of usable datetime formats, refer to the section on <a href="#supported-datetime-formats">supported datetime formats</a> below.
+                    <b>Datetime Formats</b> <em>CommanDo</em> is pretty flexible in parsing your datetime fields, accepting formats like <code>5 Jan 2016 2300</code> and <code>28/12/2016 12pm</code> (where date is in format DD/MM/YYYY). The year can be dropped for convenience, if you mean the current year. For the full list of usable datetime formats, refer to the later FAQ section on <a href="#supported-datetime-formats">supported datetime formats</a>.
                 </blockquote>
 
                 <span><strong>Examples:</strong></span>
@@ -199,10 +199,12 @@
 
                 <p>By including suitable fields and their keywords, you'll be able to edit the description, time slot and tags of an <em>Event</em> with <em>Index</em> of <code>&lt;index&gt;</code>. Note that if tags are provided in an edit, the old tags will be completely replaced by the new ones. </p>
 
-                <span><strong>Examples:</strong></span>
+                <span><strong>Given an event at index 1:</strong> Meeting from boss from today 1300 to today 1500</span>
 
-                <pre><span class="inputstart">&gt;&gt;</span> add <span>meeting with boss</span> from <span>today 1300</span> to <span>today 1500</span><br/><span class="inputstart">&gt;&gt;</span> edit <span>1</span> from <span>today 1400</span> to <span>today 1600 #important</span><br/><span class="inputstart">&gt;&gt;</span> edit <span>1 #projectABC</span></pre>
-                <span><strong>What it does: </strong> adds an <em>Event</em>, then changes its time slot and adds a tag to it, then replaces a tag with another.</span>
+                <pre><span class="inputstart">&gt;&gt;</span> edit <span>1</span> from <span>today 1400</span> to <span>today 1600 #important</span></pre>
+                <span><strong>What it does: </strong>changes the time slot of said event and adds a tag.</span>
+                <pre><span class="inputstart">&gt;&gt;</span> edit <span>1 #projectABC</span></pre>
+                <span><strong>What it does: </strong>replaces the tag of said event with another tag.</span>
 
 
                 <h4>Editing Tasks</h4>
@@ -211,11 +213,15 @@
 
                 <p>By including suitable fields and their keywords, you'll similarly be able to edit the description, deadline and tags of a <em>Task</em>. In addition, you can remove the deadline by entering nothing after the <code>by</code> keyword.</p>
 
-                <span><strong>Examples:</strong></span>
+                <span><strong>Given a task at index 2:</strong> plan shopping trip #lunch</span>
 
-                <pre><span class="inputstart">&gt;&gt;</span> add <span>plan shopping trip #lunch</span><br/><span class="inputstart">&gt;&gt;</span> edit <span>1 shopping trip to IKEA</span><br/><span class="inputstart">&gt;&gt;</span> edit <span>1</span> by <span>6 feb</span><br/><span class="inputstart">&gt;&gt;</span> edit <span>1</span> by</pre>
-                <span><strong>What it does: </strong> adds an <em>Task</em> with a tag, then changes its description,  then adds a deadline to it, then removes that deadline.</span>
-
+                <pre><span class="inputstart">&gt;&gt;</span> edit <span>2 shopping trip to IKEA</span></pre>
+                <span><strong>What it does: </strong> changes the description of said event.</span>
+                <pre><span class="inputstart">&gt;&gt;</span> edit <span>2</span> by <span>6 feb</span></pre>
+                <span><strong>What it does: </strong> changes the deadline of said event.</span>
+                <pre><span class="inputstart">&gt;&gt;</span> edit <span>2</span> by</pre>
+                <span><strong>What it does: </strong> removes the deadline of said event.</span>
+                
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>watch Inception</span><br/><span class="inputstart">&gt;&gt;</span> edit <span>1 watch Gravity</span><br/><span class="inputstart">&gt;&gt;</span> edit <span>1 #family</span></pre>
                 <span><strong>What it does: </strong> adds an <em>Task</em>, then changes its description,  then adds a tag to it.</span>
 
@@ -226,21 +232,21 @@
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span></pre>
 
-                <h3 id="finishing-to-do-items-finish">Finishing To-Do Items: <code>finish</code></h3>
+                <h3 id="marking-to-do-items-finish">Finishing To-Do Items as done: <code>finish</code></h3>
 
-                <p>After finishing a to-do item, mark it as done with the <code>finish</code> command! That to-do item will disappear from the interface of <em>CommanDo</em>. Note that this is an alias of the <code>delete</code> command.</p>
+                <p>After finishing a to-do item, you can mark it as done with the <code>finish</code> command and it will be archived.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> finish <span>&lt;index&gt;</span></pre>
 
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/finish.png" width="600">
-                    <figcaption>Result of <span>finish 1</span></figcaption>
+                    <figcaption>Result of <code>finish 1</code></figcaption>
                 </figure>
 
                 <h3 id="finding-to-do-items-find">Finding To-Do Items: <code>find</code></h3>
 
-                <p>So you have already built a long list of to-do items, and want to search out the details of one of them by either its description or its tags. You can use the <code>find</code> command to achieve this.</p>
+                <p>So you already have a long list of to-do items in your save file, and want to search for some specific to-do items. You can use the <code>find</code> command to do this.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> find <span>&lt;keyword&gt;</span>...</pre>
@@ -253,7 +259,7 @@
                 </figure>
 
                 <p>
-                    Some details on how <code>find</code> command works:
+                    Some details on how the <code>find</code> command works:
                     <ul id="search-logic">
                         <li>Both <em>Events</em> and <em>Tasks</em> will be searched, in their separate panels.</li>
                         <li>Search is case insensitive – keywords <code>Chicken Egg</code> will match <code>chicken egg</code>.</li>
@@ -274,7 +280,7 @@
 
                 <h3 id="clearing-all-to-do-items-clear">Clearing Your To-Do List: <code>clear</code></h3>
 
-                <p>If you want to reset your to-do list, use the <code>clear</code> command. <em>Use with caution</em>.</p>
+                <p>If you want to reset your to-do list, use the <code>clear</code> command.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> clear</pre>
@@ -286,7 +292,7 @@
 
                 <h3 id="setting-save-location-set">Setting Save Location: <code>store</code></h3>
 
-                <p>Maybe you want to save your to-do list in your <em>Dropbox</em> or <em>OneDrive</em> folder that is synced with the cloud. The <code>store</code> command lets you do exactly that - it changes the location where the to-do list data is saved on your local file system.</p>
+                <p>Perhaps you want to save your to-do list in your <em>Dropbox</em> or <em>OneDrive</em> folder that is cloud-synced. The <code>store</code> command lets you do exactly that - it migrates the save file to that of the given file path.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre>&gt;&gt; store <span>&lt;file_path&gt;</span></pre>
@@ -308,28 +314,28 @@
 
                 <h3 id="importing-import">Importing: <code>import</code></h3>
 
-                <p>If you already have an existing to-do list data file (possibly from your other devices) and want you use it in <em>CommanDo</em>, the <code>import</code> command can import a valid data file. <em>Note that it overrides the current to-do list with the imported to-do list!</em>
+                <p>If you already have an existing to-do list data file (possibly from your other devices) and want to use it in <em>CommanDo</em>, the <code>import</code> command can import a valid data file. <em>Note that it overrides the current to-do list with the imported to-do list!</em></p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> import <span>&lt;file_path&gt;</span></pre>
 
                 <h3 id="undoing-undo">Undoing: <code>undo</code></h3>
 
-                <p>Scenario: you deleted a to-do item by accident and you want to undo your last modification. Although <em>CommanDo</em> does not support <code>Ctrl + Z</code>, the <code>undo</code> command does the same: the most recent <code>add</code>, <code>edit</code>, <code>delete</code>, <code>clear</code>, <code>import</code> or <code>store</code>command would be reverted. Multiple <code>undo</code> commands can be used in succession, but note that the capacity to <code>undo</code> is lost if you close the application.</p>
+                <p>Scenario: you deleted a to-do item by accident and you want to undo your last modification. Although <em>CommanDo</em> does not support <code>Ctrl + Z</code>, the <code>undo</code> command does the same: the most recent <code>add</code>, <code>edit</code>, <code>delete</code>, <code>clear</code>, <code>import</code> or <code>store</code>command would be reverted. Multiple <code>undo</code> commands can be used in succession, as long as there is something to undo. The range of undo commands is limited to the current session.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> undo</pre>
 
                 <h3 id="redoing-redo">Redoing: <code>redo</code></h3>
 
-                <p>Scenario: you deleted a to-do item by accident, cleverly used <code>undo</code> to restore that to-do item, but eventually realised that to-do item isn't worth keeping after all. The <code>redo</code> command reverts the most recent <code>undo</code>, can be used in sucession, but similarly loses its capacity when the application is closed.</p>
+                <p>Scenario: You deleted a to-do item by accident. You had used <code>undo</code> to restore that to-do item, but eventually realised that the to-do item isn't worth keeping after all. The <code>redo</code> command reverts the most recent <code>undo</code>, can be used in sucession. The range of redo commands is also limited to the current session.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> redo</pre>
 
                 <h3 id="exiting-the-application">Exiting the Application: <code>exit</code></h3>
 
-                <p>Finally, you are done with managing your to-do list and want to close the program. You can either press the cross button or directly use <code>exit</code> command provided in <em>CommanDo</em>. This command closes the application, with all the changes to your to-do list saved.</p>
+                <p>Finally, you are done with managing your to-do list and want to close the program. You can either click on the close button or use the <code>exit</code> command provided in <em>CommanDo</em>. This command closes the application, and all the changes to your to-do list are saved.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> exit</pre>
@@ -348,15 +354,15 @@
 
                 <h3>3. Is sharing across devices supported?</h3>
 
-                <p><em>CommanDo</em> doesn't directly support syncing of the to-do list across devices. Instead, use the <code>export</code> command to generate a save data file, transfer the file to another device, and use the <code>import</code> command on the 2nd device to import your to-do list from that save file. Alternatively, you can use a cloud-syncing service (e.g. <a href="dropbox.com">Dropbox</a>) and the <code>store</code> command to sync the to-do list automatically by setting the save location to the same file on both devices. </p>
+                <p><em>CommanDo</em> doesn't directly support syncing of the to-do list across devices. Instead, use the <code>export</code> command to generate a save data file, transfer the file to another device, and use the <code>import</code> command on the 2nd device to import your to-do list from that save file. Alternatively, use a cloud-syncing service (e.g. <a href="dropbox.com">Dropbox</a>) and the <code>store</code> command to sync the to-do list automatically by setting the save location to the same file on both devices. </p>
 
                 <h3>4. My commands keep giving me an error and I have no idea what is wrong.</h3>
 
-                <p>When the format of your command is invalid, <em>CommanDo</em> will tell you the nature of the error and display the correct command format in the command feedback box just below the command input. <em>CommanDo</em> relies on a specific command syntax to understand your commands, in which the first word in your command is the <em>command word</em>. Based on the <em>command word</em>, refer to the appropriate section under <a href="#commands">Commands</a>, read up on the command format for that command, and try out some of the given sample commands.</p>
+                <p>When the format of your command is invalid, <em>CommanDo</em> will tell you the nature of the error and display the correct command format in the command feedback box just below the command input. <em>CommanDo</em> relies on a specific command syntax to process your commands, where the first word in your command is the <em>command word</em>. Based on the <em>command word</em>, refer to the appropriate section under <a href="#commands">Commands</a>, read up on the command format for that command, and try out some of the given sample commands.</p>
 
                 <h3>5. I keep forgetting how to use certain commands.</h3>
 
-                <p>The <code>help</code> command (explained in the section <a href="#viewing-help-help">above</a>) can be used to quickly summon this guide or a relevant section of this guide when you need it. Alternatively, you can just try typing your command - if it is invalid, <em>CommanDo</em> will display the correct command format for that command in the command feedback box just below the command input. This might be helpful for you to correctively learn the command format.</p>
+                <p>The <code>help</code> command can be used to quickly summon this guide or a relevant section of this guide when you need it. Alternatively, you can just try typing your command - if it is invalid, <em>CommanDo</em> will display the correct command format for that command in the command feedback box just below the command input. This might be helpful for you to correctively learn the command format.</p>
 
                 <h3 id="supported-date-time-formats">6. What date & time formats can I use in my commands?</h3>
 

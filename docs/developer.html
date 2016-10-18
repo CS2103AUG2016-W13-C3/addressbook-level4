@@ -31,18 +31,16 @@
 
             <section id="main_content">
                 <p>
-                    <ul id="table-of-contents">
+                    <ul id="first-layer">
                         <li><a href="#introduction">Introduction</a></li>
-                        <li>
-                            <a href="#development">Development</a>
-                            <ul>
-                                <li><a href="#target-users">Target Users</a></li>
-                                <li><a href="#features">Features</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="#development">Development</a></li>
+                        <ul id="second-layer">
+                            <li><a href="#target-users">Target Users</a></li>
+                            <li><a href="#features">Features</a></li>
+                        </ul>
                         <li><a href="#setting-up">Setting Up</a></li>
                         <li><a href="#design">Design</a></li>
-                        <ul>
+                        <ul id="second-layer">
                             <li><a href="#architecture">Architecture</a></li>
                             <li><a href="#ui-api">UI API</a></li>
                             <li><a href="#logic-api">Logic API</a></li>
@@ -50,7 +48,7 @@
                             <li><a href="#storage-api">Storage API</a></li>
                         </ul>
                         <li><a href="#implementation">Implementation</a></li>
-                        <ul>
+                        <ul id="second-layer">
                             <li><a href="#event-driven-design">Event Driven Design</a></li>
                             <li><a href="#logging">Logging</a></li>
                         </ul>
@@ -60,50 +58,49 @@
                         <li><a href="#known-issues">Known Issues</a></li>
                         <li><a href="#future-plans">Future Plans</a></li>
                         <li><a href="#appendices">Appendices</a></li>
-                        <ul>
+                        <ul id="second-layer">
                             <li><a href="#appendix-a-user-stories">Appendix A: User Stories</a></li>
                             <li><a href="#appendix-b-use-cases">Appendix B: Use Cases</a></li>
                             <li><a href="#appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</a></li>
                             <li><a href="#appendix-d-glossary">Appendix D: Glossary</a></li>
                             <li><a href="#appendix-e-product-survey">Appendix E: Product Survey</a></li>
                         </ul>
-
                     </ul>
                 </p>
 
                 <h2 id="introduction">Introduction</h2>
 
-                <p><em>CommanDo</em> is a to-do list manager. It is designed to cater for the needs of people who type fast. To-do items are displayed on a graphical user interface (GUI), split into 2 vertical lists of <em>Events</em> and <em>Tasks</em>, while the user manage their to-do list by typing commands on a text input - just like in a Command Line Interface (CLI).</p>
+                <p><em>CommanDo</em> is a to-do list manager. It is designed to cater for the needs of people who type fast and has a user interface shown in the picture below. To-do items are displayed on a graphical user interface (GUI), split into 2 panels of <em>Events</em> and <em>Tasks</em>. The user manage his/her to-do list by typing commands on a text input - just like in a Command Line Interface (CLI).</p>
 
                 <figure>
                     <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
-                    <figcaption><em>CommanDo</em> at its maximum efficiency</figcaption>
+                    <figcaption><em>CommanDo</em> complete view</figcaption>
                 </figure>
 
-                <p>This guide describes the development of <em>CommanDo</em>, how it is currently designed and implemented at a technical level, some of the known issues, and some future plans and extensions for it.</p>
+                <p>This guide describes the development of <em>CommanDo</em>, how it is currently designed and implemented at a technical level, some of the known issues, and some future plans and extensions for it. Do you want to join the development team for this exciting project as a developer? Please read our developer guide in details</p>
 
                 <h2 id="development">Development</h2>
 
+                <li>Prefer typing over using the mouse</li>
                 <h3 id="target-users">Target Users</h3>
 
                 <p>
                     Our main target users ("Jim") are characterised by people who...
                     <ul>
-                        <li>Prefer typing over using the mouse</li>
                         <li>Have most to-do items coming as emails</li>
                         <li>Update their to-do list very often and wants speed in doing so</li>
                         <li>Want to capture the idea of deadlines in their to-do items</li>
                     </ul>
                 </p>
 
-                <p>Our <a href="#appendix-e-product-survey">Product Survey</a> has revealed that many of the existing to-do list managers are unable to satisfy the needs of our main target users, especially in terms of speed of entry and absence of concept of deadlines.</p>
+                <p>Our <a href="#appendix-e-product-survey">Product Survey</a> has revealed that many of the existing to-do list managers are unable to satisfy the needs of our main target users, especially in terms of speed of entry and absence of deadlines.</p>
 
                 <h3 id="features">Features</h3>
 
                 <p>In summary, we are focusing on these features:</p>
                 <ol>
                     <li>2 types of to-dos: events and tasks, displayed in separate panels in chronological order</li>
-                    <li>Command-line style input, with commands as short, as flexible and as intuitive as possible</li>
+                    <li>Command-line style input, with commands being short, flexible and intuitive</li>
                     <li>Able to search through to-dos easily, empowered by a tagging system</li>
                     <li>Undoing and redoing to-do list operations</li>
                     <li>Importing and exporting to-do list to a human-readable data file</li>
@@ -180,16 +177,16 @@
 
                 <ul>
                     <li>
-                        <a href="#ui-api"><strong>UI Component</strong></a>: The UI of the application, which acts as the middleman between the user and the API provided by <strong>Logic</strong> (package <code>seedu.commando.ui</code>)
+                        <a href="#ui-api"><strong><em>UI</em> Component</strong></a>: Acts as the middleman between the user and the API provided by <em>Logic</em> (package <code>seedu.commando.ui</code>)
                     </li>
                     <li>
-                        <a href="#logic-api"><strong>Logic Component</strong></a>: Executes commands from the UI, using the API provided by <strong>Model</strong> and <strong>Storage</strong> (package <code>seedu.commando.logic</code>)
+                        <a href="#logic-api"><strong><em>Logic</em> Component</strong></a>: Executes commands from the UI, using the API provided by <em>Model</em> and <em>Storage</em> (package <code>seedu.commando.logic</code>)
                     </li>
                     <li>
-                        <a href="#model-api"><strong>Model Component</strong></a>: Defines how data is represented and holds the data of the application in-memory (package <code>seedu.commando.model</code>)
+                        <a href="#model-api"><strong><em>Model</em> Component</strong></a>: Defines how data is represented and holds the data of the application in-memory (package <code>seedu.commando.model</code>)
                     </li>
                     <li>
-                        <a href="#storage-api"><strong>Storage Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.commando.storage</code>)
+                        <a href="#storage-api"><strong><em>Storage</em> Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.commando.storage</code>)
                     </li>
                 </ul>
 
@@ -284,7 +281,7 @@
                 <h3 id="event-driven-design">Event Driven Design</h3>
 
                 <p>
-                    For components to inform one another that something has happened, we use <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a>, packaged in <code>EventsCenter.java</code> within <code>seedu.commando.commons</code>. This is especially important for lower-level components to communicate with higher-level components that it should not be dependent on.
+                    For components to inform one another that something has happened, we use <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a>, packaged in <code>EventsCenter.java</code> within <code>seedu.commando.commons</code>. This is especially important for lower-level components to communicate with higher-level components that they should not be dependent on.
                 </p>
 
                 <blockquote>
@@ -292,7 +289,7 @@
                 </blockquote>
 
                 <p>
-                    An example is the posting of <code>ExitAppRequestEvent</code> by <strong>Logic</strong> to inform <code>MainApp.java</code> to close the window:
+                    An example is the posting of <code>ExitAppRequestEvent</code> by <em>Logic</em> to inform <code>MainApp.java</code> to close the window:
                 </p>
 
                 <figure>
@@ -309,7 +306,7 @@
                 <h4>Logging Levels</h4>
                 <ul>
                     <li>
-                        <code>SEVERE</code>: Critical problem detected which may possibly cause the termination of the application
+                        <code>SEVERE</code>: Critical problems detected which may possibly cause the termination of the application
                     </li>
                     <li>
                         <code>WARNING</code>: Actions that can be continued, but with caution
@@ -332,7 +329,7 @@
 
                 <ol>
                     <li>
-                        <strong>In Eclipse - </strong> Right-click on the <code>./src/test/java</code> folder and choose <code>Run as</code> &gt; <code>JUnit Test</code>. To run a subset of tests, you can right-click on a test package, test class, or a test instead.
+                        <strong>In Eclipse - </strong> Right-click on the <code>./src/test/java</code> folder and choose <code>Run as</code> &gt; <code>JUnit Test</code>. To run a subset of tests, right-click on a test package, test class, or a test instead.
                     </li>
 
                     <li>
@@ -341,20 +338,17 @@
                 </ol>
 
                 <blockquote>
-                    <p>
-                        If you are not using a recent Eclipse version (i.e. <em>Neon</em> or later), enable assertions in JUnit tests
-                        as described <a href="http://stackoverflow.com/questions/2522897/eclipse-junit-ea-vm-option">here</a>.
-                    </p>
+                        If you are not using a recent Eclipse version (i.e. <em>Neon</em> or later), enable assertions in JUnit tests as described <a href="http://stackoverflow.com/questions/2522897/eclipse-junit-ea-vm-option">here</a>.
                 </blockquote>
 
 
                 <h3 id="types-of-tests">Types of Tests</h3>
 
                 <ol>
-                    <li><strong>GUI Tests - </strong>They are <em>System Tests</em> that test the entire application by simulating user actions on the GUI. These are in the <code>guitests</code> package.</li>
+                    <li><strong>GUI Tests - </strong>They are System Tests that test the entire application by simulating user actions on the GUI. These are in the <code>guitests</code> package.</li>
 
                     <blockquote>
-                        <strong>Headless GUI Testing</strong> Thanks to the <a href="https://github.com/TestFX/TestFX">TestFX</a> library we use, our GUI tests can be run in the <em>headless</em> mode. In the headless mode, GUI tests do not show up on the screen. That means you can do other things on your device while the tests are running. See <a href="UsingGradle.md#running-tests">UsingGradle.md</a> to learn how to run tests in headless mode.
+                        <strong>Headless GUI Testing</strong> By applying <a href="https://github.com/TestFX/TestFX">TestFX</a> library, GUI tests can be run in the <em>headless</em> mode. In the <em>headless mode</em>, GUI tests do not show up on the screen. That means you can do other things on your device while the tests are running. See <a href="UsingGradle.md#running-tests">UsingGradle.md</a> to learn how to run tests in headless mode.
                     </blockquote>
 
                     <li>
@@ -428,7 +422,7 @@
 
                 <h3>Eclipse reports compile errors after new commits are pulled from Git.</h3>
 
-                <p>It is likely that Eclipse failed to regonize the new files that appeared in the new commits. Refresh the project in Eclipse by right-clicking the project in the package explorer panel and choosing <code>Gradle</code> &gt; <code>Refresh Gradle Project</code>.</p>
+                <p>It is likely that Eclipse failed to recognise the new files that appeared in the new commits. Refresh the project in Eclipse by right-clicking the project in the package explorer panel and choosing <code>Gradle</code> &gt; <code>Refresh Gradle Project</code>.</p>
 
                 <h3>Eclipse reports some required libraries missing.</h3>
 
@@ -782,12 +776,12 @@
                     <li>Should be able to hold up to 1000 to-dos</li>
                     <li>Should be able to hold up to 1000 tags per to-do</li>
                     <li>Should come with automated unit tests</li>
-                    <li>Code should be open source</li>
+                    <li>Should make the code be open source</li>
                     <li>Should favor DOS style commands over Unix-style commands</li>
                     <li>Should not use more than 100MB of RAM</li>
-                    <li>Number of existing files that has to be edited to add new commands is at most 2 existing files (easy to add)</li>
-                    <li>New users should not take more than 1 hour to learn the commands and their syntax</li>
-                    <li>New users should not require reading of a guide to navigate GUI (excluding learning of commands) </li>
+                    <li>Should keep the number of existing files that has to be edited to add new commands at most 2</li>
+                    <li>Should not take more than 1 hour for new user to learn the commands and their syntax</li>
+                    <li>Should not require new user to read a guide to navigate GUI (excluding learning of commands) </li>
                 </ol>
 
                 <h3 id="appendix-d-glossary">Appendix D: Glossary</h3>
@@ -820,23 +814,23 @@
                         <tbody>
                             <tr>
                                 <td>Google Keep (Zhiwen)</td>
-                                <td align="left">+ Simplicity (clear and simple UI) <br> + Easy access from anywhere <br> + Native sync and integration with Google <br> + Mark things done easily <br> + Support photos, audios and lists in content</td>
-                                <td align="left">- Unable to do text formatting <br> - Search function only supports titles <br> - Unable to prioritise activities</td>
+                                <td align="left">+ It has high level of simplicity (clear and simple UI) <br> + It can be easily accessed from anywhere <br> + It supports native sync and integration with Google <br> + Mark things done easily <br> + Support photos, audios and lists in content</td>
+                                <td align="left">- It is unable to do text formatting <br> - Its search function only supports titles <br> - It is unable to prioritise activities</td>
                             </tr>
                             <tr>
                                 <td>Trello (Sheng Xuan)</td>
-                                <td align="left">+ Multiple platform support (Web, mobile, desktop) <br> + Due date function, which is suitable for tasks with deadlines <br> + Search by keyword of a task <br> + Archive completed tasks <br> + Check list to track the progress of each task <br> + Attachment files to a task (ie. forms to reply in a email)</td>
-                                <td align="left">- At least 2 clicks (taps) are needed to add a new task <br> - Calendar view function is not free to use. In free version, no timeline is provided. Adding events that happen in specific dates are not supported <br> - Unable to undo</td>
+                                <td align="left">+ It supports multiple platforms (Web, mobile, desktop) <br> + It has due date function, which is suitable for tasks with deadlines <br> + It can search by keyword of a task <br> + It archives completed tasks <br> + It has check list to track the progress of each task <br> + It can attach files to a task (ie. forms to reply in a email)</td>
+                                <td align="left">- It needs at least 2 clicks (taps) to add a new task <br> - It costs money  to use the calendar view functionis. In free version, no timeline is provided. Adding events that happen in specific dates are not supported <br> - It is unable to undo</td>
                             </tr>
                             <tr>
                                 <td>Anydo (Conan)</td>
-                                <td align="left">+ Able to push tasks to a later date <br> + Easily reorder tasks <br> + Easy to use interface (4 major groups) <br> + Can be used on mobile and on browser <br> + Supports double confirmation of deleting a task when complete <br> + Can add details in later</td>
-                                <td align="left">- No clear distinguishing of the 3 types of tasks <br> - No sense of timeline, just tasks to complete by the end of the day <br> - Deadlines are not shown unless the task is clicked <br> - No search function (however, you can Ctrl+F, though no content search) <br> - The other 2 groups “Upcoming” and “Someday” is kind of ambiguous</td>
+                                <td align="left">+ It is able to push tasks to a later date <br> + It can easily reorder tasks <br> + It has user-friendly interface (4 major groups) <br> + It can be used on mobile and on browser <br> + It supports double confirmation of deleting a task when complete <br> + It can add details in later</td>
+                                <td align="left">- It has no clear distinguishing among the 3 types of tasks <br> - It has no sense of timeline, and just tasks to complete by the end of the day <br> - Its deadlines are not shown unless the task is clicked <br> - It does not support search function (however, you can Ctrl+F, though no content search) <br> - Its other 2 groups “Upcoming” and “Someday” are kind of ambiguous</td>
                             </tr>
                             <tr>
                                 <td>Google Calendar (Yun Chuan)</td>
-                                <td align="left">+ Able to mark as done, and undo “done” <br> + Clean, simple interface which is not cluttered <br> + Autocomplete based on crowd-sourced or history (but doesn’t feel very “intelligent”) <br> + Push notifications for reminders/events <br> + Able to repeat events <br> + Both on mobile and on website, sync-ed <br> + “All-day” events <br> + “Schedule” view lists everything in chronological order, starting from today <br> + Able to “zoom in” (day view) and “zoom out” (month view) <br> + Split into: “events” and “reminders”, events have start to end time, reminders only have a reminder time</td>
-                                <td align="left">- Online, cannot export to data file <br> - Unable to mark deadlines accurately (not an “event”) <br> - Cannot search for to-do items <br> - Too many screens or user actions to add a task</td>
+                                <td align="left">+ It is able to mark as done, and undo “done” <br> + It has clean, simple interface which is not cluttered <br> + It can autocomplete based on crowd-sourced or history (but doesn’t feel very “intelligent”) <br> + It can push notifications for reminders/events <br> + It is able to repeat events <br> + It is automatically synchronised both on mobile and on website <br> + It has “All-day” events <br> + It supports “Schedule” view which lists everything in chronological order, starting from today <br> + It is able to “zoom in” (day view) and “zoom out” (month view) <br> + Its items are split into: “events” and “reminders”. Events have start to end time while reminders only have a reminder time</td>
+                                <td align="left">- It cannot export to data file online <br> - It is unable to mark deadlines accurately (not an “event”) <br> - It cannot search for to-do items <br> - It has too many screens or user actions to add a task</td>
                             </tr>
                         </tbody>
                     </table>
