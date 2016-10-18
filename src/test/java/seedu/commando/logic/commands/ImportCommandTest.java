@@ -1,10 +1,12 @@
 package seedu.commando.logic.commands;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static seedu.commando.testutil.TestHelper.wasToDoListChangedEventPosted;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
 import org.junit.After;
@@ -79,6 +81,26 @@ public class ImportCommandTest {
     	result = logic.execute("import this cant be there.XMl");
     	assertTrue(result.hasError());
     	assertEquals(Messages.IMPORT_COMMAND_FILE_NOT_EXIST, result.getFeedback());
+    }
+    
+    @Test
+    public void execute_import_validPath(){
+        logic.execute("add test1");
+        logic.execute("add test2");
+        logic.execute("export test.xml");
+        logic.execute("clear");
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(model.getToDoList().getToDos().size() == 0);
+        
+        CommandResult result = logic.execute("import test.xml");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(model.getToDoList().getToDos().size() == 2);
+        
+        try {
+            Files.delete(Paths.get("test.xml"));
+        } catch (IOException e) {
+        }
     }
     
 }

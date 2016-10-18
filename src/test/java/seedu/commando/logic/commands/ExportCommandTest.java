@@ -1,11 +1,13 @@
 package seedu.commando.logic.commands;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,6 +15,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import javafx.scene.shape.Path;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.logic.Logic;
@@ -22,7 +25,7 @@ import seedu.commando.model.ModelManager;
 import seedu.commando.storage.StorageManager;
 import seedu.commando.testutil.EventsCollector;
 
-public class ExprotCommandTest {
+public class ExportCommandTest {
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 
@@ -67,5 +70,15 @@ public class ExprotCommandTest {
     	assertEquals(Messages.MISSING_EXPORT_FILE, result.getFeedback());
 	}
     
-
+	@Test
+	public void execute_export_validPath() {
+	    logic.execute("add test 1");
+	    CommandResult result = logic.execute("export test");
+	    assertFalse(result.hasError());
+	    try {
+            assertTrue(Arrays.equals(Files.readAllBytes(toDoListFile.toPath()), Files.readAllBytes(Paths.get("test"))));
+            Files.delete(Paths.get("test"));
+        } catch (IOException e) {
+        }
+	}
 }
