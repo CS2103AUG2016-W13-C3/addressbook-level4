@@ -69,7 +69,11 @@ public class EventCard extends UiPart{
 
     private void setLabelStyle() {
         eventPane.setStyle("-fx-background-color: #FFFFFF");
-        eventPaneInner.setStyle("-fx-background-color: #DCDCDC; -fx-background-radius: 8px;");
+        eventPaneInner.setStyle("-fx-background-color: #DCDCDC; " + 
+                                "-fx-background-radius: 8px;" + 
+                                "-fx-border-width: 4px;" + 
+                                "-fx-border-radius: 4px;" + 
+                                "-fx-border-color: black");
         startLabel.setStyle("-fx-text-fill: #053a8e; -fx-font-family: Microsoft Yahei Light");
         endLabel.setStyle("-fx-text-fill: #053a8e; -fx-font-family: Microsoft Yahei Light");
         indexLabel.setStyle("-fx-font-family: Lucida Sans Unicode");

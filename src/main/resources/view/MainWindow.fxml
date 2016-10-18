@@ -17,26 +17,26 @@
 		<URL value="@Extensions.css" />
 	</stylesheets>
 	<children>
-		<HBox fx:id="titleBar" style="-fx-background-color: #303030;">
+		<HBox fx:id="titleBar" styleClass="title-bar">
 			<children>
 				<FlowPane fx:id="titlebar2" HBox.hgrow="ALWAYS">
 					<children>
-						<MenuBar style="-fx-background-color: #303030;">
+						<MenuBar prefWidth="297.0" styleClass="title-button">
 							<menus>
 								<Menu disable="true" mnemonicParsing="false" text="Help (Alt + H)" />
 								<Menu disable="true" mnemonicParsing="false" text="Credits (Alt + C)" />
 							</menus>
 						</MenuBar>
-      				<MenuBar opacity="0.58" style="-fx-background-color: #303030;">
+      				<MenuBar opacity="0.5" styleClass="title-button">
       					<menus>
       						<Menu disable="true" mnemonicParsing="false" text="CommanDo" />
       					</menus>
       				</MenuBar>
 					</children>
 				</FlowPane>
-            <Button fx:id="minimizeButton" mnemonicParsing="false" onMouseClicked="#setMinimized" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #303030; -fx-border-color: #303030;" text="－" textOverrun="CLIP" />
-            <Button fx:id="toggleSizeButton" mnemonicParsing="false" onMouseClicked="#toggleWindowSize" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #303030; -fx-border-color: #303030;" text="⬜" textOverrun="CLIP" />
-            <Button fx:id="exitButton" mnemonicParsing="false" onMouseClicked="#handleExit" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #303030; -fx-border-color: #303030;" text="✕" textOverrun="CLIP" />
+            <Button fx:id="minimizeButton" mnemonicParsing="false" onMouseClicked="#setMinimized" prefHeight="40.0" prefWidth="40.0" styleClass="size-button" text="－" textOverrun="CLIP" />
+            <Button fx:id="toggleSizeButton" mnemonicParsing="false" onMouseClicked="#toggleWindowSize" prefHeight="40.0" prefWidth="40.0" styleClass="size-button" text="⬜" textOverrun="CLIP" />
+            <Button fx:id="exitButton" mnemonicParsing="false" onMouseClicked="#handleExit" prefHeight="40.0" prefWidth="40.0" style="-fx-border-color: transparent;" styleClass="size-button" text="✕" textOverrun="CLIP" />
 			</children>
 		</HBox>
 		<SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.4" VBox.vgrow="ALWAYS">

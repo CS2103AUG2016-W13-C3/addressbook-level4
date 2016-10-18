@@ -2,6 +2,19 @@
     -fx-background-color: derive(#1d1d1d, 20%);
 }
 
+.title-bar {
+	-fx-background-color: derive(#1d1d1d, 10%);
+	-fx-border-color: derive(#1d1d1d, 5%);
+}
+
+.title-bar .title-button, .title-bar .size-button {
+	-fx-background-color: transparent;
+}
+
+.title-bar .size-button {
+	-fx-border-color: transparent;
+}
+
 .label {
     -fx-font-size: 11pt;
     -fx-font-family: "Segoe UI Semibold";
@@ -75,6 +88,10 @@
     -fx-background-color: -fx-focus-color;
 }
 
+.split-pane-container {
+	
+}
+
 .split-pane:horizontal .split-pane-divider {
     -fx-border-color: transparent #1d1d1d transparent #1d1d1d;
     -fx-background-color: transparent, derive(#1d1d1d, 10%);
@@ -121,8 +138,8 @@
 }
 
 .anchor-pane-with-border {
-     -fx-background-color: derive(#1d1d1d, 20%);
-     -fx-border-color: derive(#1d1d1d, 10%);
+     -fx-background-color: derive(#1d1d1d, 10%);
+     -fx-border-color: derive(#1d1d1d, 5%);
      -fx-border-radius: 1px;
      -fx-border-top-width: 1px;
 }
