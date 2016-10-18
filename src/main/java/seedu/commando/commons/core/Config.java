@@ -2,6 +2,7 @@ package seedu.commando.commons.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 
 /**
@@ -38,12 +39,15 @@ public class Config {
 
     /**
      * Returns anchor name for heading of {@param commandWord}on user guide at {@param UserGuideUrl}
-     * If no mapping exists, the original value will be returned
+     * If no mapping exists, returns empty
      */
-    public static String getUserGuideAnchorForCommandWord(String commandWord) {
-        return CommandWordsToUserGuideAnchors.entrySet().stream()
-            .filter(e -> e.getKey().equals(commandWord))
-            .map(Map.Entry::getValue)
-            .findFirst().orElse(commandWord);
+    public static Optional<String> getUserGuideAnchorForCommandWord(String commandWord) {
+        for (String word : CommandWordsToUserGuideAnchors.keySet()) {
+            if (word.equalsIgnoreCase(commandWord)) {
+                return Optional.of(CommandWordsToUserGuideAnchors.get(word));
+            }
+        }
+
+        return Optional.empty();
     }
 }

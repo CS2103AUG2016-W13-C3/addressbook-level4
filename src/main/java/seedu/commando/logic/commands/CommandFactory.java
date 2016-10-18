@@ -176,6 +176,7 @@ public class CommandFactory {
             return new HelpCommand();
         }
     }
+
     private Command buildEditCommand() throws IllegalValueException {
         int index = sequentialParser.extractFirstInteger().orElseThrow(
             () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)

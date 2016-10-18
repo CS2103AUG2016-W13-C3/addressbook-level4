@@ -293,12 +293,11 @@ public class MainWindow extends UiPart {
     
     @FXML
     public void handleHelp() {
-        showHelpForCommand("");
+        showHelpAtAnchor("");
     }
 
-    public void showHelpForCommand(String commandWord) {
-        // Search through map
-        helpWindow.show(Config.getUserGuideAnchorForCommandWord(commandWord));
+    public void showHelpAtAnchor(String anchor) {
+        helpWindow.show(anchor);
     }
 
     public void show() {
