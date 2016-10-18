@@ -1,12 +1,8 @@
 package seedu.commando.ui;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.HBox;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
@@ -14,11 +10,11 @@ import seedu.commando.model.todo.ReadOnlyToDo;
 
 public class EventCard extends UiPart{
 
-    private DateTimeFormatter formatter;
+    
     private static final String FXML = "EventCard.fxml";
     private boolean isFinished;
     private boolean isNew;
-
+    
     @FXML
     private HBox eventPane;
     @FXML
@@ -70,21 +66,12 @@ public class EventCard extends UiPart{
     private void setLabelContent() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
-            startLabel.setText(prettifyDateTime(dateRange.startDate) + " To ");
-            endLabel.setText(prettifyDateTime(dateRange.endDate));
+            startLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.startDate) + " To ");
+            endLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.endDate));
         } else {
             startLabel.setText("");
             endLabel.setText("");
         }
-    }
-    
-    private String prettifyDateTime(LocalDateTime ldt) {
-        String dateTimePattern = "d MMM HH:mm";
-        if (ldt.getYear() != LocalDateTime.now().getYear()) {
-            dateTimePattern = "d MMM yyyy HH:mm";
-        }
-        formatter = DateTimeFormatter.ofPattern(dateTimePattern);
-        return formatter.format(ldt);
     }
     
     public HBox getLayoutState(boolean isNew, boolean isFinished) {
@@ -104,14 +91,14 @@ public class EventCard extends UiPart{
      * This includes modification via undo, edit, add
      */
     private void setRecentlyModifiedState() {
-        eventPaneInner.setStyle("-fx-border-color: red");
+        eventPaneInner.setStyle(ToDoCardStyleManager.recentlyModifiedStateCSS);
     }
     
     /**
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        eventPaneInner.setStyle("-fx-background-color: derive(#1d1d1d, 95%);");
+        eventPaneInner.setStyle(ToDoCardStyleManager.finishedStateCSS);
     }
 
     /**
@@ -120,14 +107,14 @@ public class EventCard extends UiPart{
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            eventPaneInner.setStyle("-fx-background-color: derive(#DCDCDC, 50%);");
+            eventPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateCSS);
         }
     }
     
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            eventPaneInner.setStyle("-fx-background-color: #DCDCDC;");
+            eventPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateCSS);
         }
     }
     

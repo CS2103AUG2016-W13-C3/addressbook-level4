@@ -1,19 +1,16 @@
 package seedu.commando.ui;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.HBox;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
 public class TaskCard extends UiPart{
 
-    private DateTimeFormatter formatter;
     private static final String FXML = "TaskCard.fxml";
     private boolean isFinished;
     private boolean isNew;
@@ -45,13 +42,10 @@ public class TaskCard extends UiPart{
 
     @FXML
     public void initialize() {
-        formatter = DateTimeFormatter.ofPattern("HH:mma dd/MM/yyyy");
-        
         titleLabel.setText(toDo.getTitle().value);
         indexLabel.setText(String.valueOf(index) + ". ");
 
         setLabelContent();
-        setLabelStyle();
         setLabelTags();
     }
 
@@ -66,27 +60,14 @@ public class TaskCard extends UiPart{
             tagsLabel.setText("");
         }
     }
-
-    private void setLabelStyle() {
-        dueLabel.setStyle("-fx-text-fill: #FF0000; -fx-font-family: Microsoft Yahei Light");
-    }
-
+    
     private void setLabelContent() {
         if (toDo.getDueDate().isPresent()) {
             final LocalDateTime due = toDo.getDueDate().get().value;
-            dueLabel.setText("by " + prettifyDateTime(due));
+            dueLabel.setText("by " + ToDoCardStyleManager.prettifyDateTime(due));
         } else {
             dueLabel.setText("");
         }
-    }
-    
-    private String prettifyDateTime(LocalDateTime ldt) {
-        String dateTimePattern = "d MMM HH:mm";
-        if (ldt.getYear() != LocalDateTime.now().getYear()) {
-            dateTimePattern = "d MMM yyyy HH:mm";
-        }
-        formatter = DateTimeFormatter.ofPattern(dateTimePattern);
-        return formatter.format(ldt);
     }
 
     public HBox getLayoutState(boolean isNew, boolean isFinished) {
@@ -106,14 +87,14 @@ public class TaskCard extends UiPart{
      * This includes modification via undo, edit, add
      */
     private void setRecentlyModifiedState() {
-        taskPaneInner.setStyle("-fx-border-color: red");
+        taskPaneInner.setStyle(ToDoCardStyleManager.recentlyModifiedStateCSS);
     }
     
     /**
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        taskPaneInner.setStyle("-fx-background-color: derive(#1d1d1d, 95%);");
+        taskPaneInner.setStyle(ToDoCardStyleManager.finishedStateCSS);
     }
     
     /**
@@ -122,14 +103,14 @@ public class TaskCard extends UiPart{
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            taskPaneInner.setStyle("-fx-background-color: derive(#DCDCDC, 50%);");
+            taskPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateCSS);
         }
     }
     
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            taskPaneInner.setStyle("-fx-background-color: #DCDCDC;");
+            taskPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateCSS);
         }
     }
 
