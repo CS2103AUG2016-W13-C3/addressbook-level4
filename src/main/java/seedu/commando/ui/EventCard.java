@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import seedu.commando.model.todo.Tag;
@@ -98,6 +99,20 @@ public class EventCard extends UiPart{
         return eventPane;
     }
 
+    @FXML
+    private void activateHoverState() {
+        ColorAdjust ca = new ColorAdjust();
+        ca.setBrightness(-0.5);
+        eventPaneInner.setEffect(ca);
+    }
+    
+    @FXML
+    private void deactivateHoverState() {
+        ColorAdjust ca = new ColorAdjust();
+        ca.setBrightness(0);
+        eventPaneInner.setEffect(ca);
+    }
+    
     @Override
     public void setNode(Node node) {
         eventPane = (HBox)node;

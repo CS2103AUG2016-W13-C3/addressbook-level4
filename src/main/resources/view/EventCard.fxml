@@ -9,19 +9,15 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox id="eventPane" fx:id="eventPane" xmlns="http://javafx.com/javafx/8.0.65"
-	xmlns:fx="http://javafx.com/fxml/1">
+<HBox id="eventPane" fx:id="eventPane" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<GridPane fx:id="eventPaneInner" HBox.hgrow="ALWAYS">
+		<GridPane fx:id="eventPaneInner" onMouseEntered="#activateHoverState" onMouseExited="#deactivateHoverState" HBox.hgrow="ALWAYS">
 			<columnConstraints>
-				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
-					prefWidth="150.0" />
-				<ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0"
-					minWidth="20.0" prefWidth="20.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+				<ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0" minWidth="20.0" prefWidth="20.0" />
 			</columnConstraints>
 			<children>
-				<VBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="25.0"
-					prefHeight="25.0" GridPane.columnIndex="0">
+				<VBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="25.0" prefHeight="25.0" GridPane.columnIndex="0">
 					<stylesheets>
 						<URL value="@DarkTheme.css" />
 						<URL value="@Extensions.css" />
@@ -30,25 +26,21 @@
 						<Insets bottom="5" left="15" right="5" top="5" />
 					</padding>
 					<children>
-						<HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="216.0"
-							spacing="5">
+						<HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="216.0" spacing="5">
 							<children>
 								<HBox>
 									<children>
-										<Label fx:id="indexLabel" styleClass="cell_big_label"
-											text="\$i">
+										<Label fx:id="indexLabel" styleClass="cell_big_label" text="\$i">
 											<padding>
 												<Insets right="10.0" />
 											</padding>
 										</Label>
-										<Label fx:id="titleLabel" styleClass="cell_big_label"
-											text="\$value" />
+										<Label fx:id="titleLabel" styleClass="cell_big_label" text="\$value" />
 									</children>
 								</HBox>
 								<HBox>
 									<children>
-										<Label fx:id="tagsLabel" styleClass="cell_big_label"
-											text="\$tags">
+										<Label fx:id="tagsLabel" styleClass="cell_big_label" text="\$tags">
 											<padding>
 												<Insets left="20.0" />
 											</padding>
@@ -63,15 +55,12 @@
 					<children>
 						<HBox prefHeight="25.0" prefWidth="200.0">
 							<children>
-								<Label fx:id="startLabel" alignment="BOTTOM_LEFT"
-									prefHeight="38.0" prefWidth="175.0" styleClass="cell_time_interval_label"
-									text="\$start" />
+								<Label fx:id="startLabel" alignment="BOTTOM_LEFT" prefHeight="38.0" prefWidth="175.0" styleClass="cell_time_interval_label" text="\$start" />
 							</children>
 						</HBox>
 						<HBox prefHeight="25.0" prefWidth="200.0">
 							<children>
-								<Label fx:id="endLabel" alignment="TOP_LEFT" prefHeight="38.0"
-									prefWidth="175.0" styleClass="cell_time_interval_label" text="\$end" />
+								<Label fx:id="endLabel" alignment="TOP_LEFT" prefHeight="38.0" prefWidth="175.0" styleClass="cell_time_interval_label" text="\$end" />
 							</children>
 						</HBox>
 					</children>
