@@ -159,7 +159,8 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_invalidDate()  {
+        public void parseDateTime_invalidDate()  {
+        // Use of Boundary value analysis
         assertFalse(dateTimeParser.parseDateTime("No date").isPresent());
         assertFalse(dateTimeParser.parseDateTime("10/2016").isPresent());
         assertFalse(dateTimeParser.parseDateTime("1/2/3/4").isPresent());
@@ -173,8 +174,9 @@ public class DateTimeParserTest {
 
     @Test
     public void parseDateTime_invalidTime()  {
+        // Use of Boundary value analysis
         assertFalse(dateTimeParser.parseDateTime("10cm").isPresent());
-        assertFalse(dateTimeParser.parseDateTime("2459").isPresent());
+        assertFalse(dateTimeParser.parseDateTime("2359").isPresent());
         assertFalse(dateTimeParser.parseDateTime("0").isPresent());
         assertFalse(dateTimeParser.parseDateTime("31").isPresent());
         assertFalse(dateTimeParser.parseDateTime("h").isPresent());
