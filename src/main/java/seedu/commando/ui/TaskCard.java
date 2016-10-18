@@ -12,7 +12,6 @@ public class TaskCard extends UiPart{
 
     private static final String FXML = "TaskCard.fxml";
     private boolean isFinished;
-    private boolean isNew;
 
     @FXML
     private HBox taskPane;
@@ -70,7 +69,6 @@ public class TaskCard extends UiPart{
     }
 
     public HBox getLayoutState(boolean isNew, boolean isFinished) {
-        this.isNew = isNew;
         this.isFinished = isFinished;
         if (isNew) {
             setRecentlyModifiedState();

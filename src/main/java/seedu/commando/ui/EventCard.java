@@ -12,7 +12,6 @@ public class EventCard extends UiPart{
 
     private static final String FXML = "EventCard.fxml";
     private boolean isFinished;
-    private boolean isNew;
     
     @FXML
     private HBox eventPane;
@@ -74,7 +73,6 @@ public class EventCard extends UiPart{
     }
     
     public HBox getLayoutState(boolean isNew, boolean isFinished) {
-        this.isNew = isNew;
         this.isFinished = isFinished;
         if (isNew) {
             setRecentlyModifiedState();
