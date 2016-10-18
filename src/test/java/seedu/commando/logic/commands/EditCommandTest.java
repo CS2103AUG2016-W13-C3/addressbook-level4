@@ -208,4 +208,26 @@ public class EditCommandTest {
                 .build()));
     }
 
+    @Test
+    public void execute_edit_cannotAddDueDateToEvent() throws IllegalValueException {
+        logic.execute("add title from 11 Dec 2016 to 12 Dec 2016");
+        eventsCollector.reset();
+        String command = "edit 1 by 13 Dec 2016";
+        CommandResult result = logic.execute(command);
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertEquals(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, result.getFeedback());
+    }
+
+    @Test
+    public void execute_edit_cannotAddDateRangeToTaskWithDueDate() throws IllegalValueException {
+        logic.execute("add title by 13 Dec 2016");
+        eventsCollector.reset();
+        String command = "edit 1 from 11 Dec 2016 to 12 Dec 2016";
+        CommandResult result = logic.execute(command);
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertEquals(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, result.getFeedback());
+    }
+
 }

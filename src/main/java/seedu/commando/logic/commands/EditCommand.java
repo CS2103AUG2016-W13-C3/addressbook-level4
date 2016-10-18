@@ -51,9 +51,15 @@ public class EditCommand extends Command {
         if (dueDate != null) {
             newToDo.setDueDate(new DueDate(dueDate));
         }
-        if (!CollectionUtil.isAnyNull(dateRangeStart, dateRangeEnd)) {
+
+        if (dateRangeStart != null && dateRangeEnd != null) {
             newToDo.setDateRange(new DateRange(dateRangeStart, dateRangeEnd));
+        } else if (dateRangeEnd != null) {
+            throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_START);
+        } else if (dateRangeStart != null) {
+            throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_END);
         }
+
         if (tags != null) {
             newToDo.setTags(tags.stream().map(Tag::new).collect(Collectors.toSet()));
         }
@@ -63,14 +69,15 @@ public class EditCommand extends Command {
             return new CommandResult(Messages.TODO_NO_EDITS, true);
         }
 
-        try {
-            model.changeToDoList(new ToDoListChange(
-                Collections.singletonList(newToDo),
-                Collections.singletonList(toDoToEdit.get())
-            ));
-        } catch (IllegalValueException exception) {
-            return new CommandResult(exception.getMessage(), true);
+        // Ensure to-do doesn't have both duedate and daterange
+        if (newToDo.getDateRange().isPresent() && newToDo.getDueDate().isPresent()) {
+            throw new IllegalValueException(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE);
         }
+
+        model.changeToDoList(new ToDoListChange(
+            Collections.singletonList(newToDo),
+            Collections.singletonList(toDoToEdit.get())
+        ));
 
         return new CommandResult(String.format(Messages.TODO_EDITED, newToDo.getTitle().toString()));
     }

@@ -45,21 +45,28 @@ public class AddCommand extends Command {
         if (dueDate != null) {
             toDo.setDueDate(new DueDate(dueDate));
         }
-        if (!CollectionUtil.isAnyNull(dateRangeStart, dateRangeEnd)) {
+
+        if (dateRangeStart != null && dateRangeEnd != null) {
             toDo.setDateRange(new DateRange(dateRangeStart, dateRangeEnd));
+        } else if (dateRangeEnd != null) {
+            throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_START);
+        } else if (dateRangeStart != null) {
+            throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_END);
         }
+
         if (tags != null) {
             toDo.setTags(tags.stream().map(Tag::new).collect(Collectors.toSet()));
         }
 
-        try {
-            model.changeToDoList(new ToDoListChange(
-                Collections.singletonList(toDo),
-                Collections.emptyList()
-            ));
-        } catch (IllegalValueException exception) {
-            return new CommandResult(exception.getMessage(), true);
+        // Ensure to-do doesn't have both duedate and daterange
+        if (toDo.getDateRange().isPresent() && toDo.getDueDate().isPresent()) {
+            throw new IllegalValueException(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE);
         }
+
+        model.changeToDoList(new ToDoListChange(
+            Collections.singletonList(toDo),
+            Collections.emptyList()
+        ));
 
         return new CommandResult(String.format(Messages.TODO_ADDED, toDo.getTitle().toString()));
     }

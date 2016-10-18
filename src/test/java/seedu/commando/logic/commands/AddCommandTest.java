@@ -103,12 +103,44 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_add_invalidDateRange() throws IllegalValueException {
+    public void execute_add_illogicalDateRange() throws IllegalValueException {
         String command = "add valid title from 10 Dec 2017 11:59 to 11 Apr 2017 23:10";
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
         assertEquals(Messages.TODO_DATERANGE_CONSTRAINTS, result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
+
+    @Test
+    public void execute_add_missingDateRangeStart() throws IllegalValueException {
+        String command = "add valid title from not date to 11 Apr 2017 23:10";
+        CommandResult result = logic.execute(command);
+        assertTrue(result.hasError());
+        assertEquals(Messages.MISSING_TODO_DATERANGE_START, result.getFeedback());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
+
+    @Test
+    public void execute_add_missingDateRangeEnd() throws IllegalValueException {
+        String command = "add valid title from 11 Apr 2017 23:10 to not date";
+        CommandResult result = logic.execute(command);
+        assertTrue(result.hasError());
+        assertEquals(Messages.MISSING_TODO_DATERANGE_END, result.getFeedback());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
+
+    @Test
+    public void execute_add_taskEndingWithBy() throws IllegalValueException {
+        String command = "add task ending with by by 10 Oct 2016 10:10";
+        CommandResult result = logic.execute(command);
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("task ending with by")
+                .withDueDate(
+                    LocalDateTime.of(2016, 10, 10, 10, 10)
+                )
+                .build()));
     }
 
     @Test
@@ -175,5 +207,14 @@ public class AddCommandTest {
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("walk by the beach from here to there")
                 .build()));
+    }
+
+    @Test
+    public void execute_add_cannotHaveDateRangeAndDueDate() throws IllegalValueException {
+        String command = "add task from 2 Oct 11:11 to 12:12 by 1 Oct 09:10";
+        CommandResult result = logic.execute(command);
+        assertTrue(result.hasError());
+        assertEquals(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, result.getFeedback());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 }

@@ -11,11 +11,9 @@ public class Messages {
     public static final String MISSING_TODO_DATERANGE_START = "Missing start date for date range of to-do.";
     public static final String MISSING_TODO_DATERANGE_END = "Missing end date for date range of to-do.";
     public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.";
-    public static final String TODO_DATERANGE_CONSTRAINTS = "For date range, end date must be after start date.";
+    public static final String TODO_DATERANGE_CONSTRAINTS = "The end date of the date range must be after start date.";
     public static final String TODO_DUEDATE_CONSTRAINTS = "Due date can be any date.";
-    public static final String TODO_DUEDATE_INVALID_FORMAT = "Due date is an invalid date.";
-    public static final String TODO_DATERANGE_START_INVALID_FORMAT = "Start of date range is an invalid date.";
-    public static final String TODO_DATERANGE_END_INVALID_FORMAT = "End of date range is an invalid date.";
+    public static final String TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE = "To-do cannot have both due date and date range!";
     public static final String TODO_ADDED = "To-do added: %1$s.";
     public static final String TODO_DELETED = "To-do deleted: %1$s.";
     public static final String TODO_FINISHED = "To-do finished: %1$s.";

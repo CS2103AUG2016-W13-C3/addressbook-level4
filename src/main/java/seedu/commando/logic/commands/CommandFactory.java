@@ -41,7 +41,7 @@ public class CommandFactory {
             throw new IllegalValueException(Messages.MISSING_COMMAND_WORD);
         }
 
-        switch (commandWord.get()) {
+        switch (commandWord.get().toLowerCase()) {
             case AddCommand.COMMAND_WORD:
                 return buildAddCommand();
             case DeleteCommand.COMMAND_WORD:
