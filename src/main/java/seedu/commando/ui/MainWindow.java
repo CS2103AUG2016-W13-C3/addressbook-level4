@@ -22,12 +22,8 @@ import javafx.stage.StageStyle;
 import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.GuiSettings;
-import seedu.commando.commons.core.LogsCenter;
-import seedu.commando.commons.events.storage.ChangeToDoListFilePathEvent;
 import seedu.commando.commons.events.ui.ExitAppRequestEvent;
 import seedu.commando.commons.events.ui.UpdateFilePathEvent;
-import seedu.commando.commons.util.ConfigUtil;
-import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.model.UserPrefs;
 
@@ -203,8 +199,8 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getUiEventList());
-        taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getUiTaskList());
+        eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getUiEventsToday());
+        taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getUiTasks());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getToDoListFilePath());
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);

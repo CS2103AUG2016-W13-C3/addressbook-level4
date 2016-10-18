@@ -60,23 +60,23 @@ public class UndoRedoCommandsTest {
         logic.execute("delete 2");
         logic.execute("edit 1 titlereplaced");
 
-        assertTrue(logic.getUiTaskList().size() == 1);
+        assertTrue(logic.getUiTasks().size() == 1);
 
         CommandResult result = logic.execute("undo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 1);
+        assertTrue(logic.getUiTasks().size() == 1);
 
         result = logic.execute("undo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 2);
+        assertTrue(logic.getUiTasks().size() == 2);
 
         result = logic.execute("undo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 1);
+        assertTrue(logic.getUiTasks().size() == 1);
 
         result = logic.execute("undo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 0);
+        assertTrue(logic.getUiTasks().size() == 0);
 
         result = logic.execute("undo");
         assertTrue(result.hasError());
@@ -89,16 +89,16 @@ public class UndoRedoCommandsTest {
         logic.execute("add title2");
         logic.execute("undo");
 
-        assertTrue(logic.getUiTaskList().size() == 1);
+        assertTrue(logic.getUiTasks().size() == 1);
 
         CommandResult result = logic.execute("redo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 2);
+        assertTrue(logic.getUiTasks().size() == 2);
 
         result = logic.execute("redo");
         assertTrue(result.hasError());
         assertEquals(Messages.REDO_COMMAND_FAIL, result.getFeedback());
-        assertTrue(logic.getUiTaskList().size() == 2);
+        assertTrue(logic.getUiTasks().size() == 2);
     }
 
     @Test
@@ -108,35 +108,35 @@ public class UndoRedoCommandsTest {
         logic.execute("undo");
         logic.execute("add title3");
 
-        assertTrue(logic.getUiTaskList().size() == 2);
+        assertTrue(logic.getUiTasks().size() == 2);
 
         eventsCollector.reset();
 
         CommandResult result = logic.execute("undo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 1);
+        assertTrue(logic.getUiTasks().size() == 1);
 
         result = logic.execute("undo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 0);
+        assertTrue(logic.getUiTasks().size() == 0);
 
         result = logic.execute("undo");
         assertTrue(result.hasError());
         assertEquals(Messages.UNDO_COMMAND_FAIL, result.getFeedback());
-        assertTrue(logic.getUiTaskList().size() == 0);
+        assertTrue(logic.getUiTasks().size() == 0);
 
         result = logic.execute("redo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 1);
+        assertTrue(logic.getUiTasks().size() == 1);
 
         result = logic.execute("redo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 2);
+        assertTrue(logic.getUiTasks().size() == 2);
 
         result = logic.execute("redo");
         assertTrue(result.hasError());
         assertEquals(Messages.REDO_COMMAND_FAIL, result.getFeedback());
-        assertTrue(logic.getUiTaskList().size() == 2);
+        assertTrue(logic.getUiTasks().size() == 2);
     }
 
     @Test
@@ -149,16 +149,16 @@ public class UndoRedoCommandsTest {
 
         CommandResult result = logic.execute("undo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 1);
+        assertTrue(logic.getUiTasks().size() == 1);
 
         result = logic.execute("edit 1 title4");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 1);
+        assertTrue(logic.getUiTasks().size() == 1);
 
         result = logic.execute("redo");
         assertTrue(result.hasError());
         assertEquals(Messages.REDO_COMMAND_FAIL, result.getFeedback());
-        assertTrue(logic.getUiTaskList().size() == 1);
+        assertTrue(logic.getUiTasks().size() == 1);
 
         result = logic.execute("undo");
         assertFalse(result.hasError());
@@ -168,18 +168,18 @@ public class UndoRedoCommandsTest {
 
         result = logic.execute("undo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 0);
+        assertTrue(logic.getUiTasks().size() == 0);
 
         result = logic.execute("undo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 2);
+        assertTrue(logic.getUiTasks().size() == 2);
 
         result = logic.execute("undo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 1);
+        assertTrue(logic.getUiTasks().size() == 1);
 
         result = logic.execute("undo");
         assertFalse(result.hasError());
-        assertTrue(logic.getUiTaskList().size() == 0);
+        assertTrue(logic.getUiTasks().size() == 0);
     }
 }

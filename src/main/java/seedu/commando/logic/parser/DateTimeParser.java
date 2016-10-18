@@ -15,6 +15,10 @@ import com.joestelmach.natty.Parser;
  */
 public class DateTimeParser {
     public static final LocalTime DefaultLocalTime = LocalTime.NOON;
+    public static final LocalTime MorningLocalTime = LocalTime.of(8, 0);
+    public static final LocalTime AfternoonLocalTime = LocalTime.of(12, 0);
+    public static final LocalTime EveningLocalTime = LocalTime.of(19, 0);
+    public static final LocalTime NightLocalTime = LocalTime.of(21, 0);
 
     private static final String MonthWordRegexString = "January|Feburary|March|April|June|July|August|September|October|November|December|" +
         "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec";
@@ -30,6 +34,7 @@ public class DateTimeParser {
     private static final String DateWithDayWordRegexString = "((coming|next)\\s+)?(" + DayWordRegexString + ")";
     private static final String DateWithLaterRegexString = "((\\d+\\d)|([2-9]))\\s+(days|weeks|months|years)\\s+(later)";
     private static final String DateWithNextRegexString = "next (week|month|year)";
+    private static final String TimeNightRegexString = "(this\\s+)?(night|tonight)";
 
     private static final String[] supportedDateRegexStrings = new String[] {
         DateWithSlashesRegexString,
@@ -45,7 +50,9 @@ public class DateTimeParser {
     private static final String[] supportedTimeRegexStrings = new String[] {
         "(\\d{2})(\\.|:)(\\d{2})",
         "(\\d{2}):?(\\d{2})h",
-        "(\\d{1,2})(\\.|:)?(\\d{2})?(am|pm)"
+        "(\\d{1,2})(\\.|:)?(\\d{2})?(am|pm)",
+        "(this\\s+)?(morning|afternoon|noon|evening|midnight)",
+        TimeNightRegexString
     };
 
     private Parser parser = new Parser();
@@ -67,7 +74,6 @@ public class DateTimeParser {
      * - Seconds field is always set to 0 (ignored)
      */
     public Optional<LocalDateTime> parseDateTime(String input) {
-
         Optional<String> preprocessedInput = preprocessInput(input);
 
         // If preprocessing fails, return empty
@@ -179,9 +185,18 @@ public class DateTimeParser {
 
             // If matched from the start
             if (matcher.find() && matcher.start() == 0) {
-                // Extract out string for time from text
-                timeString = matcher.group().trim();
+
+                // Special case: for TimeNightRegexString format,
+                // Set time to 9pm
+                if (regexString.equals(TimeNightRegexString)) {
+                    timeString = NightLocalTime.toString();
+                    System.out.println(NightLocalTime);
+                } else {
+                    timeString = matcher.group().trim();
+                }
+
                 input = input.substring(matcher.end()).trim();
+
                 break; // exit loop
             }
         }

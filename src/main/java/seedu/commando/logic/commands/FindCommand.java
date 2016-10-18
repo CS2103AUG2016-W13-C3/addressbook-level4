@@ -11,8 +11,7 @@ import java.util.Set;
  * of the keywords and tags (case insensitive)
  */
 public class FindCommand extends Command {
-    public static final String
-        COMMAND_WORD = "find";
+    public static final String COMMAND_WORD = "find";
 
     public Set<String> keywords = Collections.emptySet();
     public Set<String> tags = Collections.emptySet();
@@ -31,6 +30,6 @@ public class FindCommand extends Command {
         }
 
         model.setUiToDoListFilter(keywords, tags);
-        return new CommandResult(String.format(Messages.FIND, model.getUiEventList().size(), model.getUiTaskList().size()));
+        return new CommandResult(String.format(Messages.FIND, model.getUiEventsToday().size(), model.getUiTasks().size()));
     }
 }
