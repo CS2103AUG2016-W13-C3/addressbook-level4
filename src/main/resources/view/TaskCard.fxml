@@ -5,19 +5,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox id="taskPane" fx:id="taskPane" xmlns="http://javafx.com/javafx/8.0.65"
+<HBox id="taskPane" fx:id="taskPane" styleClass="task-pane"
+	stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.65"
 	xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<HBox fx:id="taskPaneInner" onMouseEntered="#activateHoverState"
-			onMouseExited="#deactivateHoverState" HBox.hgrow="ALWAYS">
+			onMouseExited="#deactivateHoverState" styleClass="task-pane-inner"
+			HBox.hgrow="ALWAYS">
 			<children>
 				<HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="216.0"
 					spacing="5" HBox.hgrow="ALWAYS">
 					<children>
 						<HBox HBox.hgrow="ALWAYS">
 							<children>
-								<Label fx:id="indexLabel" prefHeight="44.0" styleClass="cell_big_label"
-									text="\$i">
+								<Label fx:id="indexLabel" prefHeight="44.0" text="\$i">
 									<padding>
 										<Insets left="20.0" right="10.0" />
 									</padding>
@@ -45,15 +46,14 @@
 					<children>
 						<HBox>
 							<children>
-								<Label fx:id="" alignment="BOTTOM_LEFT"
-									maxWidth="Infinity" prefHeight="38.0" styleClass="cell_due_date_label"
-									text="" />
+								<Label fx:id="" alignment="BOTTOM_LEFT" maxWidth="Infinity"
+									prefHeight="38.0" styleClass="cell_due_date_label" text="" />
 							</children>
 						</HBox>
 						<HBox>
 							<children>
 								<Label fx:id="dueLabel" alignment="BOTTOM_RIGHT" maxWidth="Infinity"
-									prefHeight="38.0" styleClass="cell_due_date_label" text="\$due" />
+									prefHeight="38.0" text="\$due" />
 							</children>
 						</HBox>
 					</children>

@@ -123,14 +123,30 @@
     -fx-text-fill: #010504;
 }
 
-.cell_time_interval_label {
-	-fx-font-size: 16px;
-	-fx-text-fill: blue;
+#startLabel, #endLabel {
+	-fx-text-fill: #053a8e; 
+	-fx-font-family: Microsoft Yahei Light;
 }
 
-.cell_due_date_label {
-	-fx-font-size: 16px;
-	-fx-text-fill: red;
+#dueLabel {
+	-fx-text-fill: #FF0000; 
+	-fx-font-family: Microsoft Yahei Light;
+}
+
+#indexLabel {
+	-fx-font-family: Consolas;
+}
+
+.task-pane, .event-pane {
+	-fx-background-color: #FFFFFF;
+}
+
+.task-pane-inner, .event-pane-inner {
+	-fx-background-color: #DCDCDC; 
+    -fx-background-radius: 8px;
+    -fx-border-width: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color:  derive(#1d1d1d, 20%);
 }
 
 .anchor-pane {

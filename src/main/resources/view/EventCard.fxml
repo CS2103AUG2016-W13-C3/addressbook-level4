@@ -5,19 +5,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox id="eventPane" fx:id="eventPane" xmlns="http://javafx.com/javafx/8.0.65"
+<HBox id="eventPane" fx:id="eventPane" styleClass="event-pane"
+	stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.65"
 	xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<HBox fx:id="eventPaneInner" onMouseEntered="#activateHoverState"
-			onMouseExited="#deactivateHoverState" HBox.hgrow="ALWAYS">
+			onMouseExited="#deactivateHoverState" styleClass="event-pane-inner"
+			HBox.hgrow="ALWAYS">
 			<children>
 				<HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="216.0"
 					spacing="5" HBox.hgrow="ALWAYS">
 					<children>
 						<HBox HBox.hgrow="ALWAYS">
 							<children>
-								<Label fx:id="indexLabel" prefHeight="44.0" styleClass="cell_big_label"
-									text="\$i">
+								<Label fx:id="indexLabel" prefHeight="44.0" text="\$i">
 									<padding>
 										<Insets left="20.0" right="10.0" />
 									</padding>
@@ -46,14 +47,13 @@
 						<HBox>
 							<children>
 								<Label fx:id="startLabel" alignment="BOTTOM_LEFT"
-									maxWidth="Infinity" prefHeight="38.0" styleClass="cell_time_interval_label"
-									text="\$start" />
+									maxWidth="Infinity" prefHeight="38.0" text="\$start" />
 							</children>
 						</HBox>
 						<HBox>
 							<children>
 								<Label fx:id="endLabel" alignment="TOP_LEFT" maxWidth="Infinity"
-									prefHeight="38.0" styleClass="cell_time_interval_label" text="\$end" />
+									prefHeight="38.0" text="\$end" />
 							</children>
 						</HBox>
 					</children>
