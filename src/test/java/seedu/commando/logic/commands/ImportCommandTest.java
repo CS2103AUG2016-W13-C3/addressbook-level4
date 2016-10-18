@@ -31,7 +31,6 @@ public class ImportCommandTest {
     private Model model;
     private Logic logic;
     private EventsCollector eventsCollector;
-    private LocalDateTime now = LocalDateTime.now();
     private File toDoListFile;
     private File userPrefsFile;
 

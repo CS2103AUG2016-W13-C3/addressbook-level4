@@ -1,11 +1,11 @@
 package seedu.commando.logic.commands;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,14 +22,13 @@ import seedu.commando.model.ModelManager;
 import seedu.commando.storage.StorageManager;
 import seedu.commando.testutil.EventsCollector;
 
-public class StroeCommandTest {
+public class StoreCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
     private Model model;
     private Logic logic;
     private EventsCollector eventsCollector;
-    private LocalDateTime now = LocalDateTime.now();
     private File toDoListFile;
     private File userPrefsFile;
 

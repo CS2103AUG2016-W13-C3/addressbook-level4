@@ -41,9 +41,9 @@ public class Messages {
     public static final String REDID_COMMAND = "Redid the last undo command.";
     public static final String REDID_COMMAND_FAIL = "Nothing more to redo!";
     public static final String STORE_COMMAND = "Changed the storage path to: %1$s.";
-    public static final String STORE_COMMAND_FILE_EXIST = "Failed to store the storage file to %1$s : destinaton file exists";
+    public static final String STORE_COMMAND_FILE_EXIST = "Failed to store the storage file to %1$s : destination file exists";
     public static final String EXPORT_COMMAND = "Export the storage file to: %1$s.";
-    public static final String EXPORT_COMMAND_FILE_EXIST = "Failed to Export the storage file to %1$s : destination file exits";
+    public static final String EXPORT_COMMAND_FILE_EXIST = "Failed to export the storage file to %1$s : destination file exists";
     public static final String IMPORT_COMMAND = "Import the storage file from: %1$s.";
     public static final String IMPORT_COMMAND_TYPE_ERROR = "Invalid import file, it must be a xml file.";
     public static final String IMPORT_COMMAND_FILE_NOT_EXIST = "Invalid import file, the file does not exist";
