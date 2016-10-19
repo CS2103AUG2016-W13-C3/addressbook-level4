@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import seedu.commando.commons.core.LogsCenter;
@@ -27,7 +27,7 @@ public class CommandBox extends UiPart {
     private Logic logic;
 
     @FXML
-    private TextArea commandTextArea;
+    private TextField commandTextField;
     private CommandResult mostRecentResult;
 
     public static CommandBox load(Stage primaryStage, AnchorPane commandBoxPlaceholder,
@@ -46,9 +46,9 @@ public class CommandBox extends UiPart {
 
     private void addToPlaceholder() {
         SplitPane.setResizableWithParent(placeHolderPane, false);
-        placeHolderPane.getChildren().add(commandTextArea);
+        placeHolderPane.getChildren().add(commandTextField);
         FxViewUtil.applyAnchorBoundaryParameters(commandPane, 0.0, 0.0, 0.0, 0.0);
-        FxViewUtil.applyAnchorBoundaryParameters(commandTextArea, 0.0, 0.0, 0.0, 0.0);
+        FxViewUtil.applyAnchorBoundaryParameters(commandTextField, 0.0, 0.0, 0.0, 0.0);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class CommandBox extends UiPart {
     @FXML
     private void handleCommandInputChanged() {
         //Take a copy of the command text
-        previousCommandTest = commandTextArea.getText();
+        previousCommandTest = commandTextField.getText();
 
         /* We assume the command is correct. If it is incorrect, the command box will be changed accordingly
          * in the event handling code {@link #handleIncorrectCommandAttempted}
@@ -86,8 +86,8 @@ public class CommandBox extends UiPart {
      * Sets the command box style to indicate a correct command.
      */
     private void setStyleToIndicateCorrectCommand() {
-        commandTextArea.getStyleClass().remove("error");
-        commandTextArea.setText("");
+        commandTextField.getStyleClass().remove("error");
+        commandTextField.setText("");
     }
 
     @Subscribe
@@ -101,14 +101,14 @@ public class CommandBox extends UiPart {
      * Restores the command box text to the previously entered command
      */
     private void restoreCommandText() {
-        commandTextArea.setText(previousCommandTest);
+        commandTextField.setText(previousCommandTest);
     }
 
     /**
      * Sets the command box style to indicate an error
      */
     private void setStyleToIndicateIncorrectCommand() {
-        commandTextArea.getStyleClass().add("error");
+        commandTextField.getStyleClass().add("error");
     }
 
 }

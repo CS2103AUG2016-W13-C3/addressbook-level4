@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -60,8 +60,8 @@ public class MainWindow extends UiPart {
     private Config config;
     private HelpWindow helpWindow;
     
-    // TextArea of commandBox
-    private TextArea commandField;
+    // Textfield of commandBox
+    private TextField commandField;
 
     // Handles to elements of this Ui container
     private VBox rootLayout;
@@ -83,8 +83,6 @@ public class MainWindow extends UiPart {
     private Menu helpMenu;
     @FXML
     private Menu creditMenu;
-    @FXML
-    private Menu appNameMenu;
     @FXML
     private Button toggleSizeButton;
     @FXML
@@ -131,7 +129,6 @@ public class MainWindow extends UiPart {
 
         // Configure the UI
         setTitle(appTitle);
-        setAppName(appName);
         
         setIcon(ICON);
         setWindowDefaultSize(prefs);
@@ -204,7 +201,7 @@ public class MainWindow extends UiPart {
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getToDoListFilePath());
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
-        commandField = (TextArea) commandBoxPlaceholder.lookup("#commandTextArea");
+        commandField = (TextField) commandBoxPlaceholder.lookup("#commandTextField");
         commandField.requestFocus();
     }
     
@@ -234,10 +231,6 @@ public class MainWindow extends UiPart {
 
     private void setTitle(String appTitle) {
         primaryStage.setTitle(appTitle);
-    }
-    
-    private void setAppName(String appName) {
-        appNameMenu.setText(appName);
     }
 
     /**

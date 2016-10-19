@@ -11,12 +11,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.model.ui.UiToDo;
+
+import java.util.logging.Logger;
 
 /**
  * Panel containing the list of to-dos
  */
 public class EventListPanel extends UiPart {
+    private final Logger logger = LogsCenter.getLogger(EventListPanel.class);
     private static final String FXML = "EventListPanel.fxml";
     private VBox panel;
     private AnchorPane placeHolderPane;
