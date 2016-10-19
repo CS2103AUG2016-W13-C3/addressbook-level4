@@ -82,14 +82,12 @@ public class LogicManagerTest {
 
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(logic.getUiEventList().size() == 1);
-        assertTrue(logic.getUiTaskList().size() == 1);
+        assertTrue(logic.getToDos().size() == 2);
 
         CommandResult result = logic.execute("clear");
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(logic.getUiEventList().size() == 0);
-        assertTrue(logic.getUiTaskList().size() == 0);
+        assertTrue(logic.getToDos().size() == 0);
     }
 
     @Test

@@ -25,20 +25,24 @@ public interface Model {
     /** Redos the last undo to the to-do list, returns true if successful */
     boolean redoToDoList();
 
-    /** Gets the last to-do list change, considering undos and redos, if it exists */
-    Optional<ToDoListChange> getLastToDoListChange();
+    /**
+     * Returns observable list of UI events happening today
+     * Events are in chronological order, with those finished at the bottom
+     * */
+    UnmodifiableObservableList<UiToDo> getUiEventsToday();
 
     /**
-     * Returns observable list of UI events
-     * Events are in chronological order
+     * Returns observable list of UI events happening after today
+     * Events are in chronological order, with those finished at the bottom
      * */
-    UnmodifiableObservableList<UiToDo> getUiEventList();
+    UnmodifiableObservableList<UiToDo> getUiEventsUpcoming();
 
     /**
      *  Return observable list of UI tasks
-     *  Tasks are in chronological order, with those with DueDate on top
+     *  Tasks are in chronological order, with those finished at the bottom,
+     *  with those with DueDate on top
      * */
-    UnmodifiableObservableList<UiToDo> getUiTaskList();
+    UnmodifiableObservableList<UiToDo> getUiTasks();
 
     /**
      *  Gets the UI to-do with {@link UiToDo#getIndex()} == {@param toDoIndex}

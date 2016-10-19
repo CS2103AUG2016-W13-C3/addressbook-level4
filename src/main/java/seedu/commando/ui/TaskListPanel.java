@@ -11,7 +11,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.commando.commons.core.LogsCenter;
-import seedu.commando.commons.events.ui.ToDoListPanelSelectionChangedEvent;
 import seedu.commando.model.ui.UiToDo;
 
 import java.util.logging.Logger;
@@ -63,21 +62,11 @@ public class TaskListPanel extends UiPart {
     private void setConnections(ObservableList<UiToDo> list) {
         taskListView.setItems(list);
         taskListView.setCellFactory(listView -> new ToDoListViewCell());
-        setEventHandlerForSelectionChangeEvent();
     }
 
     private void addToPlaceholder() {
         SplitPane.setResizableWithParent(placeHolderPane, false);
         placeHolderPane.getChildren().add(panel);
-    }
-
-    private void setEventHandlerForSelectionChangeEvent() {
-        taskListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                logger.fine("Selection in to-do list panel changed to : '" + newValue + "'");
-                raise(new ToDoListPanelSelectionChangedEvent(newValue));
-            }
-        });
     }
 
     public void scrollTo(int index) {
@@ -100,7 +89,7 @@ public class TaskListPanel extends UiPart {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(TaskCard.load(toDo, toDo.getIndex()).getLayout());
+                setGraphic(TaskCard.load(toDo, toDo.getIndex()).getLayoutState(toDo.isNew(), toDo.isFinished()));
             }
         }
     }

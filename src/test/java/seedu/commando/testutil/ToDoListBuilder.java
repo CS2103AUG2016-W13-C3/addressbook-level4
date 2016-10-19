@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class ToDoListBuilder {
     private ToDoList toDoList = new ToDoList();
 
-    public ToDoListBuilder add(ToDo toDo) {
+    public ToDoListBuilder add(ToDo toDo) throws IllegalValueException {
         toDoList.add(toDo);
 
         return this;

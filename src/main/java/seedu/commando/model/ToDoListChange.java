@@ -3,22 +3,21 @@ package seedu.commando.model;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.ToDo;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * An immutable representation of a change in a to-do list
+ * Guaranteed: To-dos are unique in {@link #getAddedToDos()} and {@link #getDeletedToDos()}
  */
 public class ToDoListChange {
 
-    private List<ReadOnlyToDo> addedToDos;
-    private List<ReadOnlyToDo> deletedToDos;
+    private Set<ReadOnlyToDo> addedToDos;
+    private Set<ReadOnlyToDo> deletedToDos;
 
-    public ToDoListChange(List<ReadOnlyToDo> addedToDos, List<ReadOnlyToDo> deletedToDos) {
-        this.addedToDos = addedToDos.stream().map(ToDo::new).collect(Collectors.toList());
-        this.deletedToDos = deletedToDos.stream().map(ToDo::new).collect(Collectors.toList());
+    public ToDoListChange(Collection<ReadOnlyToDo> addedToDos, Collection<ReadOnlyToDo> deletedToDos) {
+        this.addedToDos = addedToDos.stream().map(ToDo::new).collect(Collectors.toSet());
+        this.deletedToDos = deletedToDos.stream().map(ToDo::new).collect(Collectors.toSet());
     }
 
     public List<ReadOnlyToDo> getAddedToDos() {

@@ -22,7 +22,8 @@ public interface ReadOnlyToDo {
     ObservableValue getObservableValue();
 
     /**
-     * Returns true if both have the same state. (interfaces cannot override .equals)
+     * Returns true if both have the same state
+     * All fields must be equal
      */
     default boolean isSameStateAs(ReadOnlyToDo other) {
         return other == this // short circuit if same object

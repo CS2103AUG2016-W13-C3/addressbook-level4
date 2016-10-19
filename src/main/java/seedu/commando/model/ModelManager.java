@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final ToDoList toDoList;
     private final ToDoListManager toDoListManager;
     private final UiModel uiModel;
     private final UserPrefs userPrefs;
@@ -36,11 +35,10 @@ public class ModelManager extends ComponentManager implements Model {
 
         logger.fine("Initializing with to-do list: " + toDoList + " and user prefs: " + userPrefs);
 
-        this.toDoList = new ToDoList(toDoList);
         this.userPrefs = userPrefs;
 
-        toDoListManager = new ToDoListManager(this.toDoList);
-        uiModel = new UiModel(this.toDoList);
+        toDoListManager = new ToDoListManager(toDoList);
+        uiModel = new UiModel(toDoListManager);
     }
 
     public ModelManager() {
@@ -49,7 +47,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public ReadOnlyToDoList getToDoList() {
-        return toDoList;
+        return toDoListManager.getToDoList();
     }
 
     @Override
@@ -81,18 +79,18 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public Optional<ToDoListChange> getLastToDoListChange() {
-        return toDoListManager.getLastToDoListChange();
+    public UnmodifiableObservableList<UiToDo> getUiEventsToday() {
+        return uiModel.getTodayEvents();
     }
 
     @Override
-    public UnmodifiableObservableList<UiToDo> getUiEventList() {
-        return uiModel.getObservableEvents();
+    public UnmodifiableObservableList<UiToDo> getUiEventsUpcoming() {
+        return uiModel.getUpcomingEvents();
     }
 
     @Override
-    public UnmodifiableObservableList<UiToDo> getUiTaskList() {
-        return uiModel.getObservableTasks();
+    public UnmodifiableObservableList<UiToDo> getUiTasks() {
+        return uiModel.getTasks();
     }
 
     @Override
@@ -112,7 +110,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     /** Raises an event to indicate the model has changed */
     private void indicateToDoListChanged() {
-        raise(new ToDoListChangedEvent(toDoList));
+        raise(new ToDoListChangedEvent(toDoListManager.getToDoList()));
     }
 
 }

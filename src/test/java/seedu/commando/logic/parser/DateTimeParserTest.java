@@ -312,4 +312,43 @@ public class DateTimeParserTest {
             dateTimeParser.parseDateTime("next year").orElse(null)
         );
     }
+
+    @Test
+    public void parseDateTime_timePresets()  {
+        assertEquals(
+            LocalDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(),
+                DateTimeParser.MorningLocalTime.getHour(),
+                DateTimeParser.MorningLocalTime.getMinute()),
+            dateTimeParser.parseDateTime("morning").orElse(null)
+        );
+
+        assertEquals(
+            LocalDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(),
+                DateTimeParser.AfternoonLocalTime.getHour(),
+                DateTimeParser.AfternoonLocalTime.getMinute()),
+            dateTimeParser.parseDateTime("this afternoon").orElse(null)
+        );
+
+        assertEquals(
+            LocalDateTime.of(2016, 10, 10,
+                DateTimeParser.EveningLocalTime.getHour(),
+                DateTimeParser.EveningLocalTime.getMinute()),
+            dateTimeParser.parseDateTime("10 Oct 2016 evening").orElse(null)
+        );
+
+        dateTimeParser.resetContext();
+
+        assertEquals(
+            LocalDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(),
+                DateTimeParser.NightLocalTime.getHour(),
+                DateTimeParser.NightLocalTime.getMinute()),
+            dateTimeParser.parseDateTime("night").orElse(null)
+        );
+
+        assertEquals(
+            LocalDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(),
+                0, 0),
+            dateTimeParser.parseDateTime("midnight").orElse(null)
+        );
+    }
 }
