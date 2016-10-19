@@ -8,6 +8,7 @@ import seedu.commando.logic.commands.Command;
 import seedu.commando.logic.commands.CommandFactory;
 import seedu.commando.logic.commands.CommandResult;
 import seedu.commando.model.Model;
+import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.ui.UiToDo;
 import seedu.commando.storage.Storage;
 
@@ -53,12 +54,22 @@ public class LogicManager extends ComponentManager implements Logic {
     }
 
     @Override
-    public UnmodifiableObservableList<UiToDo> getUiEventList() {
-        return model.getUiEventList();
+    public UnmodifiableObservableList<UiToDo> getUiEventsToday() {
+        return model.getUiEventsToday();
     }
 
     @Override
-    public UnmodifiableObservableList<UiToDo> getUiTaskList() {
-        return model.getUiTaskList();
+    public UnmodifiableObservableList<UiToDo> getUiEventsUpcoming() {
+        return model.getUiEventsUpcoming();
+    }
+
+    @Override
+    public UnmodifiableObservableList<UiToDo> getUiTasks() {
+        return model.getUiTasks();
+    }
+
+    @Override
+    public UnmodifiableObservableList<ReadOnlyToDo> getToDos() {
+        return model.getToDoList().getToDos();
     }
 }

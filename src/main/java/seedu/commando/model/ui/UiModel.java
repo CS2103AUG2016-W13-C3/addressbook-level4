@@ -8,9 +8,12 @@ import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.LogicManager;
+import seedu.commando.model.ToDoListChange;
+import seedu.commando.model.ToDoListManager;
 import seedu.commando.model.todo.ReadOnlyToDo;
-import seedu.commando.model.todo.ReadOnlyToDoList;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -21,25 +24,29 @@ import java.util.stream.Collectors;
 public class UiModel {
     private final Logger logger = LogsCenter.getLogger(LogicManager.class);
 
-    private final ReadOnlyToDoList toDoList;
+    private final ToDoListManager toDoListManager;
     private final FilteredList<ReadOnlyToDo> filteredToDoList;
-    private final ObservableList<UiToDo> observableEvents;
-    private final ObservableList<UiToDo> observableTasks;
-    private final UnmodifiableObservableList<UiToDo> protectedObservableEvents;
-    private final UnmodifiableObservableList<UiToDo> protectedObservableTasks;
+    private final ObservableList<UiToDo> todayEvents;
+    private final ObservableList<UiToDo> upcomingEvents;
+    private final ObservableList<UiToDo> tasks;
+    private final UnmodifiableObservableList<UiToDo> protectedUpcomingEvents;
+    private final UnmodifiableObservableList<UiToDo> protectedTodayEvents;
+    private final UnmodifiableObservableList<UiToDo> protectedTasks;
     private final ArrayList<UiToDo> toDoAtIndices;
     private int runningIndex;
     {
-        observableEvents = FXCollections.observableArrayList();
-        observableTasks = FXCollections.observableArrayList();
-        protectedObservableEvents = new UnmodifiableObservableList<>(observableEvents);
-        protectedObservableTasks = new UnmodifiableObservableList<>(observableTasks);
+        upcomingEvents = FXCollections.observableArrayList();
+        todayEvents = FXCollections.observableArrayList();
+        tasks = FXCollections.observableArrayList();
+        protectedUpcomingEvents = new UnmodifiableObservableList<>(upcomingEvents);
+        protectedTodayEvents = new UnmodifiableObservableList<>(todayEvents);
+        protectedTasks = new UnmodifiableObservableList<>(tasks);
         toDoAtIndices = new ArrayList<>();
     }
 
-    public UiModel(ReadOnlyToDoList toDoList) {
-        this.toDoList = toDoList;
-        filteredToDoList = new FilteredList<>(toDoList.getToDos());
+    public UiModel(ToDoListManager toDoListManager) {
+        this.toDoListManager = toDoListManager;
+        filteredToDoList = new FilteredList<>(toDoListManager.getToDoList().getToDos());
 
         updateEventsAndTasks(filteredToDoList);
         filteredToDoList.addListener(new ListChangeListener<ReadOnlyToDo>() {
@@ -79,55 +86,84 @@ public class UiModel {
         filteredToDoList.setPredicate(null);
     }
 
-    public UnmodifiableObservableList<UiToDo> getObservableEvents() {
-        return protectedObservableEvents;
+    public UnmodifiableObservableList<UiToDo> getTodayEvents() {
+        return protectedTodayEvents;
     }
 
-    public UnmodifiableObservableList<UiToDo> getObservableTasks() {
-        return protectedObservableTasks;
+    public UnmodifiableObservableList<UiToDo> getTasks() {
+        return protectedTasks;
+    }
+
+    public UnmodifiableObservableList<UiToDo> getUpcomingEvents() {
+        return protectedUpcomingEvents;
     }
 
     /**
      * Called to update the to-do list when it changes
      */
     private void updateEventsAndTasks(List<ReadOnlyToDo> list) {
-        List<ReadOnlyToDo> events = list.stream().filter(this::isEvent).collect(Collectors.toList());
-        List<ReadOnlyToDo> tasks = list.stream().filter(this::isTask).collect(Collectors.toList());
-
-        // Sort observableEvents and observableTasks for UI
-        sortEvents(events);
-        sortTasks(tasks);
+        // Sort and filter observableEvents and observableTasks for UI
+        List<ReadOnlyToDo> events = processEvents(list);
+        List<ReadOnlyToDo> tasks = processTasks(list);
 
         toDoAtIndices.clear();
 
         // Add indices to events first and set to observable events
+        // Also check if the events are new with respect to last change
         runningIndex = 0;
-        observableEvents.setAll(events.stream().map(
-            toDo -> new UiToDo(toDo, ++ runningIndex)
+
+        Optional<ToDoListChange> change = toDoListManager.getLastToDoListChange();
+
+        List<ReadOnlyToDo> newToDos = change.isPresent()
+            ? change.get().getAddedToDos() : Collections.emptyList();
+
+        List<UiToDo> uiEvents = events.stream().map(
+            toDo -> new UiToDo(toDo, ++ runningIndex, newToDos.contains(toDo))
+        ).collect(Collectors.toList());
+
+        // Split to today and upcoming
+        this.todayEvents.setAll(uiEvents.stream().filter(
+            // Before tomorrow
+            event -> event.getDateRange().get().startDate
+                .isBefore(LocalDate.now().plusDays(1).atStartOfDay())
         ).collect(Collectors.toList()));
-        toDoAtIndices.addAll(observableEvents);
+
+        this.upcomingEvents.setAll(uiEvents.stream().filter(
+            event -> !this.todayEvents.contains(event)
+        ).collect(Collectors.toList()));
+        toDoAtIndices.addAll(uiEvents);
 
         // Then do the same for tasks
-        observableTasks.setAll(tasks.stream().map(
-            toDo -> new UiToDo(toDo, ++ runningIndex)
+        this.tasks.setAll(tasks.stream().map(
+            toDo -> new UiToDo(toDo, ++ runningIndex, newToDos.contains(toDo))
         ).collect(Collectors.toList()));
-        toDoAtIndices.addAll(observableTasks);
+        toDoAtIndices.addAll(this.tasks);
 
         // running index should be incremented by no. of to-dos
         assert runningIndex == toDoAtIndices.size();
 
         // log events and tasks shown
-        logger.info("Events: " + observableEvents.stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
+        logger.info("Events: " + this.upcomingEvents.stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
             .collect(Collectors.joining(",")));
 
-        logger.info("Tasks: " + observableTasks.stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
+        logger.info("Tasks: " + this.tasks.stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
             .collect(Collectors.joining(",")));
     }
 
-    private void sortTasks(List<ReadOnlyToDo> tasks) {
-        // For observableTasks, sort by whether they have due dates, then chronological order
+    private List<ReadOnlyToDo> processTasks(List<ReadOnlyToDo> toDos) {
+        List<ReadOnlyToDo> tasks = toDos.stream().filter(this::isTask).collect(Collectors.toList());
 
+        // For observableTasks, sort by whether they are done,
+        // then whether have due dates, then chronological order
         tasks.sort((task1, task2) -> {
+            if (!task1.isFinished() && task2.isFinished()) {
+                return -1; // task1 first
+            }
+
+            if (task1.isFinished() && !task2.isFinished()) {
+                return 1; // task2 first
+            }
+
             if (!task1.getDueDate().isPresent() && !task2.getDueDate().isPresent()) {
                 return 0; // both don't have dates, equal
             }
@@ -146,17 +182,36 @@ public class UiModel {
 
             return task1.getDueDate().get().value.compareTo(task2.getDueDate().get().value);
         });
+
+        return tasks;
     }
 
-    private void sortEvents(List<ReadOnlyToDo> events) {
+    private List<ReadOnlyToDo> processEvents(List<ReadOnlyToDo> toDos) {
+        List<ReadOnlyToDo> events = toDos.stream()
+            .filter(this::isEvent)
+            .filter(
+                // filter all to-dos from today onwards
+                event -> event.getDateRange().get().endDate.isAfter(LocalDate.now().atStartOfDay())
+            ).collect(Collectors.toList());
+
         // For observableEvents, sort by chronological order
         events.sort((event1, event2) -> {
             // Must have date ranges because they are observableEvents
-            assert event1.getDateRange().isPresent();
             assert event2.getDateRange().isPresent();
+            assert event2.getDateRange().isPresent();
+
+            if (!event1.isFinished() && event2.isFinished()) {
+                return -1; // event1 first
+            }
+
+            if (event1.isFinished() && !event2.isFinished()) {
+                return 1; // event2 first
+            }
 
             return event1.getDateRange().get().startDate.compareTo(event2.getDateRange().get().startDate);
         });
+
+        return events;
     }
 
     /**

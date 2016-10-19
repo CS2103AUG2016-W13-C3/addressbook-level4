@@ -8,10 +8,10 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.commando.commons.core.LogsCenter;
-import seedu.commando.commons.events.ui.ToDoListPanelSelectionChangedEvent;
 import seedu.commando.model.ui.UiToDo;
 
 import java.util.logging.Logger;
@@ -48,36 +48,26 @@ public class EventListPanel extends UiPart {
     }
 
     public static EventListPanel load(Stage primaryStage, AnchorPane eventListPlaceholder,
-                                     ObservableList<UiToDo> list) {
+                                     ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
         EventListPanel eventListPanel =
                 UiPartLoader.loadUiPart(primaryStage, eventListPlaceholder, new EventListPanel());
-        eventListPanel.configure(list);
+        eventListPanel.configure(eventsToday, eventsUpcoming);
         return eventListPanel;
     }
 
-    private void configure(ObservableList<UiToDo> toDos) {
-        setConnections(toDos);
+    private void configure(ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
+        setConnections(eventsToday, eventsUpcoming);
         addToPlaceholder();
     }
 
-    private void setConnections(ObservableList<UiToDo> list) {
-        eventListView.setItems(list);
+    private void setConnections(ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
+        eventListView.setItems(eventsToday);
         eventListView.setCellFactory(listView -> new ToDoListViewCell());
-        setEventHandlerForSelectionChangeEvent();
     }
 
     private void addToPlaceholder() {
         SplitPane.setResizableWithParent(placeHolderPane, false);
         placeHolderPane.getChildren().add(panel);
-    }
-
-    private void setEventHandlerForSelectionChangeEvent() {
-        eventListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                logger.fine("Selection in to-do list panel changed to : '" + newValue + "'");
-                raise(new ToDoListPanelSelectionChangedEvent(newValue));
-            }
-        });
     }
 
     public void scrollTo(int index) {
@@ -95,12 +85,12 @@ public class EventListPanel extends UiPart {
         @Override
         protected void updateItem(UiToDo toDo, boolean empty) {
             super.updateItem(toDo, empty);
-
             if (empty || toDo == null) {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(EventCard.load(toDo, toDo.getIndex()).getLayout());
+                HBox layout = EventCard.load(toDo, toDo.getIndex()).getLayoutState(toDo.isNew(), toDo.isFinished());
+                setGraphic(layout);
             }
         }
     }

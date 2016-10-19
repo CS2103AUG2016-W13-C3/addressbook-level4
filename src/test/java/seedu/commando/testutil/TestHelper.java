@@ -22,16 +22,15 @@ public class TestHelper {
      * Checks if a to-do exists in the model
      */
     public static boolean ifToDoExists(Logic logic, ReadOnlyToDo readOnlyToDo) {
-        return logic.getUiEventList().filtered(event -> event.isSameStateAs(readOnlyToDo)).size() > 0
-            || logic.getUiTaskList().filtered(task -> task.isSameStateAs(readOnlyToDo)).size() > 0;
-
+        return logic.getToDos().contains(readOnlyToDo);
     }
 
     /**
-     * Checks if a to-do exists in the filtered list of model
+     * Checks if a to-do appears on the UI
      */
     public static boolean ifToDoExistsFiltered(Logic logic, ReadOnlyToDo readOnlyToDo) {
-        return logic.getUiEventList().filtered(uiToDo -> uiToDo.isSameStateAs(readOnlyToDo)).size() > 0
-            || logic.getUiTaskList().filtered(uiToDo -> uiToDo.isSameStateAs(readOnlyToDo)).size() > 0;
+        return logic.getUiEventsToday().filtered(uiToDo -> uiToDo.isSameStateAs(readOnlyToDo)).size() > 0
+            || logic.getUiEventsUpcoming().filtered(uiToDo -> uiToDo.isSameStateAs(readOnlyToDo)).size() > 0
+            || logic.getUiTasks().filtered(uiToDo -> uiToDo.isSameStateAs(readOnlyToDo)).size() > 0;
     }
 }

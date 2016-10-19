@@ -1,86 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox id="taskPane" fx:id="taskPane" xmlns="http://javafx.com/javafx/8.0.65"
-	xmlns:fx="http://javafx.com/fxml/1">
+<HBox id="taskPane" fx:id="taskPane" styleClass="task-pane" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<GridPane fx:id="taskPaneInner" HBox.hgrow="ALWAYS">
-			<columnConstraints>
-				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
-					prefWidth="150.0" />
-				<ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0"
-					minWidth="10.0" prefWidth="10.0" />
-			</columnConstraints>
+		<HBox fx:id="taskPaneInner" onMouseEntered="#activateHoverState" onMouseExited="#deactivateHoverState" styleClass="task-pane-inner" HBox.hgrow="ALWAYS">
 			<children>
-				<VBox alignment="CENTER_LEFT" maxHeight="50.0" minHeight="25.0"
-					prefHeight="25.0" GridPane.columnIndex="0">
-					<stylesheets>
-						<URL value="@DarkTheme.css" />
-						<URL value="@Extensions.css" />
-					</stylesheets>
-					<padding>
-						<Insets bottom="5" left="15" right="5" top="5" />
-					</padding>
-
+				<HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="216.0" spacing="5" HBox.hgrow="ALWAYS">
 					<children>
-						<HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="216.0"
-							spacing="5">
+						<HBox HBox.hgrow="ALWAYS">
 							<children>
-								<HBox>
-									<children>
-										<Label fx:id="indexLabel" styleClass="cell_big_label"
-											text="\$i">
-											<padding>
-												<Insets right="10.0" />
-											</padding>
-										</Label>
-										<Label fx:id="titleLabel" styleClass="cell_big_label"
-											text="\$value" />
-									</children>
-								</HBox>
-								<HBox>
-									<children>
-										<Label fx:id="tagsLabel" styleClass="cell_big_label"
-											text="\$tags">
-											<padding>
-												<Insets left="20.0" />
-											</padding>
-										</Label>
-									</children>
-								</HBox>
+								<Label fx:id="indexLabel" prefHeight="50.0" text="\$i">
+									<padding>
+										<Insets left="20.0" right="10.0" />
+									</padding>
+								</Label>
+								<Label fx:id="titleLabel" prefHeight="50.0" styleClass="cell_big_label" text="\$value" />
 							</children>
 						</HBox>
-					</children>
-				</VBox>
-				<VBox prefHeight="50.0" prefWidth="200.0" GridPane.columnIndex="1">
-					<children>
-						<HBox prefHeight="100.0" prefWidth="200.0">
+						<HBox>
 							<children>
-								<Label fx:id="dueLabel" alignment="BOTTOM_RIGHT"
-									prefHeight="50.0" prefWidth="175.0" styleClass="cell_due_date_label"
-									text="\$due" />
+								<Label fx:id="tagsLabel" prefHeight="50.0" styleClass="cell_big_label" text="\$tags">
+									<padding>
+										<Insets left="20.0" />
+									</padding>
+								</Label>
 							</children>
 							<padding>
-								<Insets right="10.0" />
+								<Insets right="30.0" />
 							</padding>
+						</HBox>
+					</children>
+				</HBox>
+				<VBox prefHeight="50.0" prefWidth="150.0">
+					<children>
+						<HBox>
+							<children>
+								<Label fx:id="dueLabel" alignment="BOTTOM_LEFT" maxWidth="Infinity" prefHeight="38.0" text="" />
+							</children>
+						</HBox>
+						<HBox>
+							<children>
+								<Label fx:id="dueLabel" alignment="TOP_LEFT" maxWidth="Infinity" prefHeight="38.0" text="\$due" />
+							</children>
 						</HBox>
 					</children>
 				</VBox>
 			</children>
-			<rowConstraints>
-				<RowConstraints />
-			</rowConstraints>
-		</GridPane>
+		</HBox>
 	</children>
 	<padding>
 		<Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
 	</padding>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </HBox>

@@ -1,12 +1,8 @@
 package seedu.commando.ui;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
@@ -14,13 +10,13 @@ import seedu.commando.model.todo.ReadOnlyToDo;
 
 public class EventCard extends UiPart{
 
-    private DateTimeFormatter formatter;
     private static final String FXML = "EventCard.fxml";
-
+    private boolean isFinished;
+    
     @FXML
     private HBox eventPane;
     @FXML
-    private GridPane eventPaneInner;
+    private HBox eventPaneInner;
     @FXML
     private Label titleLabel;
     @FXML
@@ -50,7 +46,6 @@ public class EventCard extends UiPart{
         indexLabel.setText(String.valueOf(index) + ". ");
 
         setLabelContent();
-        setLabelStyle();
         setLabelTags();
     }
 
@@ -65,39 +60,61 @@ public class EventCard extends UiPart{
             tagsLabel.setText("");
         }
     }
-
-    private void setLabelStyle() {
-        eventPane.setStyle("-fx-background-color: #FFFFFF");
-        eventPaneInner.setStyle("-fx-background-color: #DCDCDC; -fx-background-radius: 8px;");
-        startLabel.setStyle("-fx-text-fill: #053a8e; -fx-font-family: Microsoft Yahei Light");
-        endLabel.setStyle("-fx-text-fill: #053a8e; -fx-font-family: Microsoft Yahei Light");
-        indexLabel.setStyle("-fx-font-family: Lucida Sans Unicode");
-    }
     
     private void setLabelContent() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
-            startLabel.setText(prettifyDateTime(dateRange.startDate) + " To ");
-            endLabel.setText(prettifyDateTime(dateRange.endDate));
+            startLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.startDate) + " To ");
+            endLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.endDate));
         } else {
             startLabel.setText("");
             endLabel.setText("");
         }
     }
     
-    private String prettifyDateTime(LocalDateTime ldt) {
-        String dateTimePattern = "d MMM HH:mm";
-        if (ldt.getYear() != LocalDateTime.now().getYear()) {
-            dateTimePattern = "d MMM yyyy HH:mm";
+    public HBox getLayoutState(boolean isNew, boolean isFinished) {
+        this.isFinished = isFinished;
+        if (isNew) {
+            setRecentlyModifiedState();
         }
-        formatter = DateTimeFormatter.ofPattern(dateTimePattern);
-        return formatter.format(ldt);
-    }
-    
-    public HBox getLayout() {
+        if (isFinished) {
+            setFinishedState();
+        }
         return eventPane;
     }
 
+    /**
+     * Every recently modified event will have a red border
+     * This includes modification via undo, edit, add
+     */
+    private void setRecentlyModifiedState() {
+        eventPaneInner.setStyle(ToDoCardStyleManager.recentlyModifiedStateCSS);
+    }
+    
+    /**
+     * Tints a finished event gray
+     */
+    private void setFinishedState() {
+        eventPaneInner.setStyle(ToDoCardStyleManager.finishedStateCSS);
+    }
+
+    /**
+     * Tints a hovered event a slight gray
+     */
+    @FXML
+    private void activateHoverState() {
+        if (!isFinished) {
+            eventPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateCSS);
+        }
+    }
+    
+    @FXML
+    private void deactivateHoverState() {
+        if (!isFinished) {
+            eventPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateCSS);
+        }
+    }
+    
     @Override
     public void setNode(Node node) {
         eventPane = (HBox)node;

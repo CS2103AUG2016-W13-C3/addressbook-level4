@@ -8,8 +8,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -22,12 +22,8 @@ import javafx.stage.StageStyle;
 import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.GuiSettings;
-import seedu.commando.commons.core.LogsCenter;
-import seedu.commando.commons.events.storage.ChangeToDoListFilePathEvent;
 import seedu.commando.commons.events.ui.ExitAppRequestEvent;
 import seedu.commando.commons.events.ui.UpdateFilePathEvent;
-import seedu.commando.commons.util.ConfigUtil;
-import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.model.UserPrefs;
 
@@ -37,7 +33,7 @@ import seedu.commando.model.UserPrefs;
  */
 public class MainWindow extends UiPart {
     public static final double NON_MAXIMIZED_HEIGHT = 750;
-    public static final double NON_MAXIMIZED_WIDTH = 1000;
+    public static final double NON_MAXIMIZED_WIDTH = 1200;
     private static final String ICON = "/images/address_book_32.png";
     private static final String FXML = "MainWindow.fxml";
     private static double currScreenXPos = 0;
@@ -48,6 +44,9 @@ public class MainWindow extends UiPart {
     KeyCombination altC = KeyCodeCombination.keyCombination("Alt+C");
     KeyCombination altM = KeyCodeCombination.keyCombination("Alt+M");
     KeyCombination enter = KeyCodeCombination.keyCombination("Enter");
+    
+    private final String maximize = "⬜";
+    private final String unMaximize = "❐";
     
     private Logic logic;
 
@@ -72,40 +71,30 @@ public class MainWindow extends UiPart {
 
     @FXML
     private HBox titleBar;
-    
+    @FXML
+    private SplitPane splitPane;
     @FXML
     private AnchorPane browserPlaceholder;
-
     @FXML
     private AnchorPane commandBoxPlaceholder;
-
     @FXML
     private Menu exitMenu;
-    
     @FXML
     private Menu helpMenu;
-    
     @FXML
     private Menu creditMenu;
-    
     @FXML
     private Button toggleSizeButton;
-    
     @FXML
     private Button minimizeButton;
-    
     @FXML
     private Button exitButton;
-
     @FXML
     private AnchorPane eventListPanelPlaceholder;
-    
     @FXML
     private AnchorPane taskListPanelPlaceholder;
-
     @FXML
     private AnchorPane resultDisplayPlaceholder;
-
     @FXML
     private AnchorPane statusbarPlaceholder;
 
@@ -144,12 +133,16 @@ public class MainWindow extends UiPart {
         setIcon(ICON);
         setWindowDefaultSize(prefs);
         
-        setDraggable(titleBar);
         scene = new Scene(rootLayout);
+        setDraggable();
         setKeyBindings();
         
         primaryStage.setScene(scene);
         helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl);
+    }
+
+    protected void disableSplitPaneResize() {
+        splitPane.lookup(".split-pane-divider").setMouseTransparent(true);
     }
 
     /**
@@ -180,33 +173,31 @@ public class MainWindow extends UiPart {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent key) {
-                if (key.getCode() == KeyCode.CONTROL) {
-                    commandField.requestFocus();
-                }
+                commandField.requestFocus();
             }
         });
     }
 
-    private void setDraggable(HBox bar) {
-        bar.setOnMousePressed(new EventHandler<MouseEvent>() {
+    private void setDraggable() {
+        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                currScreenXPos = event.getSceneX();
-                currScreenYPos = event.getSceneY();
+            public void handle(MouseEvent mouseEvent) {
+                currScreenXPos = mouseEvent.getSceneX();
+                currScreenYPos = mouseEvent.getSceneY();
             }
         });
-        bar.setOnMouseDragged(new EventHandler<MouseEvent>() {
+        scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                primaryStage.setX(event.getScreenX() - currScreenXPos);
-                primaryStage.setY(event.getScreenY() - currScreenYPos);
+            public void handle(MouseEvent mouseEvent) {
+                primaryStage.setX(mouseEvent.getScreenX() - currScreenXPos);
+                primaryStage.setY(mouseEvent.getScreenY() - currScreenYPos);
             }
         });
     }
 
     void fillInnerParts() {
-        eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getUiEventList());
-        taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getUiTaskList());
+        eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getUiEventsToday(), logic.getUiEventsUpcoming());
+        taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getUiTasks());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getToDoListFilePath());
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
@@ -278,9 +269,9 @@ public class MainWindow extends UiPart {
     
     private void setToggleSizeButtonSymbol() {
         if (isMaximized) {
-            toggleSizeButton.setText("❐");
+            toggleSizeButton.setText(unMaximize);
         } else {
-            toggleSizeButton.setText("⬜");
+            toggleSizeButton.setText(maximize);
         }
     }
     

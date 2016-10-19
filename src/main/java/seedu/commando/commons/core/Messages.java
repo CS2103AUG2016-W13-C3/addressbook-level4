@@ -45,4 +45,5 @@ public class Messages {
     public static final String IMPORT_COMMAND = "Import the storage file from: %1$s.";
     public static final String IMPORT_COMMAND_FILE_NOT_EXIST = "Invalid import file: the file does not exist.";
     public static final String IMPORT_COMMAND_INVALID_DATA = "Invalid import file: the file is of an invalid format.";
+    public static final String TODO_ALREADY_EXISTS = "To-do already exists!";
 }

@@ -74,7 +74,7 @@ public class ToDoListTest {
     }
 
     @Test
-    public void add() {
+    public void add() throws IllegalValueException {
         assertFalse(toDoList.getToDos().contains(toDoList2Item1));
         toDoList.add(toDoList2Item1);
         assertTrue(toDoList.getToDos().contains(toDoList2Item1));

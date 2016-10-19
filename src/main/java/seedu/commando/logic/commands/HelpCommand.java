@@ -37,7 +37,7 @@ public class HelpCommand extends Command {
 
         String anchor = "";
         if (!commandWord.isEmpty()) {
-            Config.getUserGuideAnchorForCommandWord(
+            anchor = Config.getUserGuideAnchorForCommandWord(
                 commandWord
             ).orElseThrow(
                 () -> new IllegalValueException(Messages.UNKNOWN_COMMAND_FOR_HELP)
