@@ -19,29 +19,27 @@ import java.util.logging.Logger;
  * A ui for the status bar that is displayed at the footer of the application.
  */
 public class StatusBarFooter extends UiPart {
+    
+    private static final String FXML = "StatusBarFooter.fxml";
     private static final Logger logger = LogsCenter.getLogger(StatusBarFooter.class);
+    
     private StatusBar syncStatus;
     private StatusBar saveLocationStatus;
-
     private GridPane mainPane;
+    private AnchorPane placeHolder;
 
     @FXML
     private AnchorPane saveLocStatusBarPane;
-
     @FXML
     private AnchorPane syncStatusBarPane;
 
-    private AnchorPane placeHolder;
-
-    private static final String FXML = "StatusBarFooter.fxml";
-
-    public static StatusBarFooter load(Stage stage, AnchorPane placeHolder, String saveLocation) {
+    protected static StatusBarFooter load(Stage stage, AnchorPane placeHolder, String saveLocation) {
         StatusBarFooter statusBarFooter = UiPartLoader.loadUiPart(stage, placeHolder, new StatusBarFooter());
         statusBarFooter.configure(saveLocation);
         return statusBarFooter;
     }
 
-    public void configure(String saveLocation) {
+    protected void configure(String saveLocation) {
         addMainPane();
         addSyncStatus();
         setSyncStatus("Not updated yet in this session");

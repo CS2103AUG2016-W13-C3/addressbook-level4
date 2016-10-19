@@ -46,7 +46,7 @@ public class TaskCard extends UiPart{
         setLabelContent();
         setLabelTags();
     }
-
+    
     private void setLabelTags() {
         if (!toDo.getTags().isEmpty()) {
             String tags = "";
@@ -67,8 +67,12 @@ public class TaskCard extends UiPart{
             dueLabel.setText("");
         }
     }
-
-    public HBox getLayoutState(boolean isNew, boolean isFinished) {
+    
+    
+    /*
+     * Different CSS styles for different states
+     */
+    protected HBox getLayoutState(boolean isNew, boolean isFinished) {
         this.isFinished = isFinished;
         if (isNew) {
             setRecentlyModifiedState();
@@ -111,6 +115,7 @@ public class TaskCard extends UiPart{
         }
     }
 
+    
     @Override
     public void setNode(Node node) {
         taskPane = (HBox)node;

@@ -32,21 +32,19 @@ import seedu.commando.model.UserPrefs;
  * a menu bar and space where other JavaFX elements can be placed.
  */
 public class MainWindow extends UiPart {
-    public static final double NON_MAXIMIZED_HEIGHT = 750;
-    public static final double NON_MAXIMIZED_WIDTH = 1200;
-    private static final String ICON = "/images/address_book_32.png";
-    private static final String FXML = "MainWindow.fxml";
-    private static double currScreenXPos = 0;
-    private static double currScreenYPos = 0;
-    private static boolean isMaximized;
     
-    KeyCombination altH = KeyCodeCombination.keyCombination("Alt+H");
-    KeyCombination altC = KeyCodeCombination.keyCombination("Alt+C");
-    KeyCombination altM = KeyCodeCombination.keyCombination("Alt+M");
-    KeyCombination enter = KeyCodeCombination.keyCombination("Enter");
-    
+    // Fixed variables
+    private final double NON_MAXIMIZED_HEIGHT = 750;
+    private final double NON_MAXIMIZED_WIDTH = 1200;
+    private final String ICON = "/images/address_book_32.png";
+    private final String FXML = "MainWindow.fxml";
     private final String maximize = "⬜";
     private final String unMaximize = "❐";
+    
+    // Variables that changes while the app is active
+    private double currScreenXPos = 0;
+    private double currScreenYPos = 0;
+    private static boolean isMaximized;
     
     private Logic logic;
 
@@ -98,7 +96,6 @@ public class MainWindow extends UiPart {
     @FXML
     private AnchorPane statusbarPlaceholder;
 
-
     public MainWindow() {
         super();
     }
@@ -113,7 +110,7 @@ public class MainWindow extends UiPart {
         return FXML;
     }
 
-    public static MainWindow load(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
+    protected static MainWindow load(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
         primaryStage.initStyle(StageStyle.UNDECORATED);
         MainWindow mainWindow = UiPartLoader.loadUiPart(primaryStage, new MainWindow());
         mainWindow.configure(Config.ApplicationTitle, Config.ApplicationName, config, prefs, logic);
@@ -130,15 +127,82 @@ public class MainWindow extends UiPart {
         // Configure the UI
         setTitle(appTitle);
         
+        // Icon and App size settings
         setIcon(ICON);
         setWindowDefaultSize(prefs);
         
         scene = new Scene(rootLayout);
+        
+        // Bind events
         setDraggable();
         setKeyBindings();
         
         primaryStage.setScene(scene);
         helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl);
+    }
+
+    protected void fillInnerParts() {
+        eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getUiEventsToday(), logic.getUiEventsUpcoming());
+        taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getUiTasks());
+        resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
+        statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getToDoListFilePath());
+        commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
+    }
+    
+    protected void moreConfigurations() {
+        commandField = (TextField) commandBoxPlaceholder.lookup("#commandTextField");
+        commandField.requestFocus();
+        disableSplitPaneResize();
+    }
+    
+    private AnchorPane getCommandBoxPlaceholder() {
+        return commandBoxPlaceholder;
+    }
+
+    private AnchorPane getStatusbarPlaceholder() {
+        return statusbarPlaceholder;
+    }
+
+    private AnchorPane getResultDisplayPlaceholder() {
+        return resultDisplayPlaceholder;
+    }
+
+    private AnchorPane getEventListPlaceholder() {
+        return eventListPanelPlaceholder;
+    }
+
+    private AnchorPane getTaskListPlaceholder() {
+        return taskListPanelPlaceholder;
+    }
+
+    protected void hide() {
+        primaryStage.hide();
+    }
+
+    private void setTitle(String appTitle) {
+        primaryStage.setTitle(appTitle);
+    }
+
+    /**
+     * Sets the default size and coordinates based on user preferences.
+     * Also includes whether the app is previously maximized
+     */
+    protected void setWindowDefaultSize(UserPrefs prefs) {
+        primaryStage.setHeight(prefs.getGuiSettings().getWindowHeight());
+        primaryStage.setWidth(prefs.getGuiSettings().getWindowWidth());
+        primaryStage.setX(prefs.getGuiSettings().getWindowCoordinates().getX());
+        primaryStage.setY(prefs.getGuiSettings().getWindowCoordinates().getY());
+        isMaximized = prefs.getGuiSettings().getIsMaximized();
+        primaryStage.setMaximized(isMaximized);
+        setToggleSizeButtonSymbol();
+    }
+
+    /**
+     * Returns the current position of the main Window.
+     */
+    protected GuiSettings getCurrentGuiSetting() {
+        return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(), 
+                (int) primaryStage.getX(), (int) primaryStage.getY(), isMaximized);
     }
 
     protected void disableSplitPaneResize() {
@@ -152,6 +216,11 @@ public class MainWindow extends UiPart {
      * Alt + C = Open credits in window
      */
     private void setKeyBindings() {
+        KeyCombination altH = KeyCodeCombination.keyCombination("Alt+H");
+        KeyCombination altC = KeyCodeCombination.keyCombination("Alt+C");
+        KeyCombination altM = KeyCodeCombination.keyCombination("Alt+M");
+        KeyCombination enter = KeyCodeCombination.keyCombination("Enter");
+        
         scene.getAccelerators().put(altH, new Runnable() {
             @Override
             public void run() {
@@ -194,66 +263,10 @@ public class MainWindow extends UiPart {
             }
         });
     }
-
-    void fillInnerParts() {
-        eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getUiEventsToday(), logic.getUiEventsUpcoming());
-        taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getUiTasks());
-        resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
-        statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getToDoListFilePath());
-        commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
-        commandField = (TextField) commandBoxPlaceholder.lookup("#commandTextField");
-        commandField.requestFocus();
-    }
     
-    private AnchorPane getCommandBoxPlaceholder() {
-        return commandBoxPlaceholder;
-    }
-
-    private AnchorPane getStatusbarPlaceholder() {
-        return statusbarPlaceholder;
-    }
-
-    private AnchorPane getResultDisplayPlaceholder() {
-        return resultDisplayPlaceholder;
-    }
-
-    public AnchorPane getEventListPlaceholder() {
-        return eventListPanelPlaceholder;
-    }
-
-    public AnchorPane getTaskListPlaceholder() {
-        return taskListPanelPlaceholder;
-    }
-
-    public void hide() {
-        primaryStage.hide();
-    }
-
-    private void setTitle(String appTitle) {
-        primaryStage.setTitle(appTitle);
-    }
-
     /**
-     * Sets the default size and coordinates based on user preferences.
+     * Toggles the app between two sizes. One being the default size, and the full screen size
      */
-    protected void setWindowDefaultSize(UserPrefs prefs) {
-        primaryStage.setHeight(prefs.getGuiSettings().getWindowHeight());
-        primaryStage.setWidth(prefs.getGuiSettings().getWindowWidth());
-        primaryStage.setX(prefs.getGuiSettings().getWindowCoordinates().getX());
-        primaryStage.setY(prefs.getGuiSettings().getWindowCoordinates().getY());
-        isMaximized = prefs.getGuiSettings().getIsMaximized();
-        primaryStage.setMaximized(isMaximized);
-        setToggleSizeButtonSymbol();
-    }
-
-    /**
-     * Returns the current position of the main Window.
-     */
-    public GuiSettings getCurrentGuiSetting() {
-        return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(), 
-                (int) primaryStage.getX(), (int) primaryStage.getY(), isMaximized);
-    }
-
     @FXML
     protected void toggleWindowSize() {
         if (isMaximized) {
@@ -279,7 +292,7 @@ public class MainWindow extends UiPart {
      * Opens the About Us page
      */
     @FXML
-    public void handleCredits() {
+    private void handleCredits() {
         helpWindow.visit(Config.AboutUsUrl);
     }
     
@@ -287,20 +300,20 @@ public class MainWindow extends UiPart {
      * Minimizes the window
      */
     @FXML
-    public void setMinimized() {
+    private void setMinimized() {
         primaryStage.setIconified(true);
     }
     
     @FXML
-    public void handleHelp() {
+    private void handleHelp() {
         showHelpAtAnchor("");
     }
 
-    public void showHelpAtAnchor(String anchor) {
+    protected void showHelpAtAnchor(String anchor) {
         helpWindow.show(anchor);
     }
 
-    public void show() {
+    protected void show() {
         primaryStage.show();
         initEventsCenter();
     }
@@ -310,7 +323,7 @@ public class MainWindow extends UiPart {
     }
     
     @Subscribe
-    public void handleUpdateFilePathEvent(UpdateFilePathEvent event){
+    private void handleUpdateFilePathEvent(UpdateFilePathEvent event){
     	statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getToDoListFilePath());
     }
 
@@ -320,14 +333,6 @@ public class MainWindow extends UiPart {
     @FXML
     private void handleExit() {
         raise(new ExitAppRequestEvent());
-    }
-
-    public EventListPanel getEventListPanel() {
-        return this.eventPanel;
-    }
-    
-    public TaskListPanel getTaskListPanel() {
-        return this.taskPanel;
     }
     
 }

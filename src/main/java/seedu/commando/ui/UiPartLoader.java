@@ -12,7 +12,7 @@ import seedu.commando.MainApp;
 public class UiPartLoader {
     private final static String FXML_FILE_FOLDER = "/view/";
 
-    public static <T extends UiPart> T loadUiPart(Stage primaryStage, T controllerSeed) {
+    protected static <T extends UiPart> T loadUiPart(Stage primaryStage, T controllerSeed) {
         return loadUiPart(primaryStage, null, controllerSeed);
     }
 
@@ -24,6 +24,7 @@ public class UiPartLoader {
      * @param sampleUiPart The sample of the expected UiPart class.
      * @param <T> The type of the UiPart
      */
+    @SuppressWarnings("unchecked")
     public static <T extends UiPart> T loadUiPart(Stage primaryStage, AnchorPane placeholder, T sampleUiPart) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(MainApp.class.getResource(FXML_FILE_FOLDER + sampleUiPart.getFxmlPath()));
@@ -32,7 +33,7 @@ public class UiPartLoader {
         controller.setStage(primaryStage);
         controller.setPlaceholder(placeholder);
         controller.setNode(mainNode);
-        return (T)controller;
+        return (T) controller;
     }
 
     /**
@@ -41,7 +42,6 @@ public class UiPartLoader {
      * @param seedUiPart The UiPart object to be used as the ui.
      * @param <T> The type of the UiPart
      */
-
     public static <T extends UiPart> T loadUiPart(T seedUiPart) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(MainApp.class.getResource(FXML_FILE_FOLDER + seedUiPart.getFxmlPath()));
@@ -49,7 +49,6 @@ public class UiPartLoader {
         loadLoader(loader, seedUiPart.getFxmlPath());
         return seedUiPart;
     }
-
 
     private static Node loadLoader(FXMLLoader loader, String fxmlFileName) {
         try {

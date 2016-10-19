@@ -45,7 +45,7 @@ public class EventCard extends UiPart{
         titleLabel.setText(toDo.getTitle().value);
         indexLabel.setText(String.valueOf(index) + ". ");
 
-        setLabelContent();
+        setLabelDateTimes();
         setLabelTags();
     }
 
@@ -61,7 +61,7 @@ public class EventCard extends UiPart{
         }
     }
     
-    private void setLabelContent() {
+    private void setLabelDateTimes() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
             startLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.startDate) + " To ");
@@ -72,7 +72,11 @@ public class EventCard extends UiPart{
         }
     }
     
-    public HBox getLayoutState(boolean isNew, boolean isFinished) {
+    
+    /*
+     * Different CSS styles for different states
+     */
+    protected HBox getLayoutState(boolean isNew, boolean isFinished) {
         this.isFinished = isFinished;
         if (isNew) {
             setRecentlyModifiedState();
@@ -114,6 +118,7 @@ public class EventCard extends UiPart{
             eventPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateCSS);
         }
     }
+    
     
     @Override
     public void setNode(Node node) {

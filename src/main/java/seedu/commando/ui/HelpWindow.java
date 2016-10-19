@@ -16,20 +16,21 @@ import java.util.logging.Logger;
 public class HelpWindow extends UiPart {
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
-    private static final String ICON = "/images/help_icon.png";
-    private static final String FXML = "HelpWindow.fxml";
-    private static final String TITLE = "Help";
+    
+    // Fixed variables
+    private final String ICON = "/images/help_icon.png";
+    private final String FXML = "HelpWindow.fxml";
+    private final String TITLE = "Help";
 
     private AnchorPane mainPane;
-
     private Stage dialogStage;
     private WebView browser;
-    private String url = "";
+    private String helpurl = "";
 
-    public static HelpWindow load(Stage primaryStage, String url) {
+    protected static HelpWindow load(Stage primaryStage, String helpurl) {
         logger.fine("Showing help page about the application.");
         HelpWindow helpWindow = UiPartLoader.loadUiPart(primaryStage, new HelpWindow());
-        helpWindow.configure(url);
+        helpWindow.configure(helpurl);
         return helpWindow;
     }
 
@@ -43,8 +44,8 @@ public class HelpWindow extends UiPart {
         return FXML;
     }
 
-    private void configure(String url){
-        this.url = url;
+    private void configure(String helpurl){
+        this.helpurl = helpurl;
 
         Scene scene = new Scene(mainPane);
         // Null passed as the parent stage to make it non-modal.
@@ -53,7 +54,7 @@ public class HelpWindow extends UiPart {
         setIcon(dialogStage, ICON);
 
         browser = new WebView();
-        browser.getEngine().load(this.url); // preload page at url
+        browser.getEngine().load(this.helpurl); // preload page at url
         FxViewUtil.applyAnchorBoundaryParameters(browser, 0.0, 0.0, 0.0, 0.0);
         mainPane.getChildren().add(browser);
     }
@@ -61,11 +62,14 @@ public class HelpWindow extends UiPart {
     /**
      * Shows a window that navigates to help url, anchored at `#{@param anchor}`
      */
-    public void show(String anchor) {
-        visit(url + "#" + anchor);
+    protected void show(String anchor) {
+        visit(helpurl + "#" + anchor);
     }
     
-    public void visit(String url) {
+    /**
+     * Shows a window that navigates to a specified url
+     */
+    protected void visit(String url) {
         browser.getEngine().load(url);
         dialogStage.show();
     }

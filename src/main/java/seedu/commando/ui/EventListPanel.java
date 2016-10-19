@@ -11,17 +11,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.model.ui.UiToDo;
-
-import java.util.logging.Logger;
 
 /**
  * Panel containing the list of to-dos
  */
 public class EventListPanel extends UiPart {
-    private final Logger logger = LogsCenter.getLogger(EventListPanel.class);
+    
+    // Fixed variables
     private static final String FXML = "EventListPanel.fxml";
+    
     private VBox panel;
     private AnchorPane placeHolderPane;
 
@@ -47,7 +46,7 @@ public class EventListPanel extends UiPart {
         this.placeHolderPane = pane;
     }
 
-    public static EventListPanel load(Stage primaryStage, AnchorPane eventListPlaceholder,
+    protected static EventListPanel load(Stage primaryStage, AnchorPane eventListPlaceholder,
                                      ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
         EventListPanel eventListPanel =
                 UiPartLoader.loadUiPart(primaryStage, eventListPlaceholder, new EventListPanel());
@@ -70,7 +69,7 @@ public class EventListPanel extends UiPart {
         placeHolderPane.getChildren().add(panel);
     }
 
-    public void scrollTo(int index) {
+    protected void scrollTo(int index) {
         Platform.runLater(() -> {
             eventListView.scrollTo(index);
             eventListView.getSelectionModel().clearAndSelect(index);

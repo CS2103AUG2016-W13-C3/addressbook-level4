@@ -10,17 +10,15 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.model.ui.UiToDo;
-
-import java.util.logging.Logger;
 
 /**
  * Panel containing the list of to-dos
  */
 public class TaskListPanel extends UiPart {
-    private final Logger logger = LogsCenter.getLogger(TaskListPanel.class);
+
     private static final String FXML = "TaskListPanel.fxml";
+
     private VBox panel;
     private AnchorPane placeHolderPane;
 
@@ -46,8 +44,8 @@ public class TaskListPanel extends UiPart {
         this.placeHolderPane = pane;
     }
 
-    public static TaskListPanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
-                                     ObservableList<UiToDo> list) {
+    protected static TaskListPanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
+            ObservableList<UiToDo> list) {
         TaskListPanel taskListPanel =
                 UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new TaskListPanel());
         taskListPanel.configure(list);
@@ -69,7 +67,7 @@ public class TaskListPanel extends UiPart {
         placeHolderPane.getChildren().add(panel);
     }
 
-    public void scrollTo(int index) {
+    protected void scrollTo(int index) {
         Platform.runLater(() -> {
             taskListView.scrollTo(index);
             taskListView.getSelectionModel().clearAndSelect(index);
@@ -78,8 +76,7 @@ public class TaskListPanel extends UiPart {
 
     class ToDoListViewCell extends ListCell<UiToDo> {
 
-        public ToDoListViewCell() {
-        }
+        public ToDoListViewCell() { }
 
         @Override
         protected void updateItem(UiToDo toDo, boolean empty) {
