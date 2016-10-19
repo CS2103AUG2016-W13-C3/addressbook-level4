@@ -80,7 +80,7 @@ allprojects {
         archiveName = "commando.jar"
 
         manifest {
-            attributes "Main-Class": "seedu.address.MainApp"
+            attributes "Main-Class": "seedu.commando.MainApp"
         }
 
         destinationDir = file("${buildDir}/jar/")
@@ -141,7 +141,7 @@ task guiTests(type: CommandoTest) {
 
 
 task nonGuiTests(type: CommandoTest) {
-    include 'seedu/address/**'
+    include 'seedu/commando/**'
 
     jacoco {
         destinationFile = new File("${buildDir}/jacoco/test.exec")

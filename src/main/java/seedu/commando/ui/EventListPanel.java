@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class EventListPanel extends UiPart {
     private final Logger logger = LogsCenter.getLogger(EventListPanel.class);
-    private static final String FXML = "eventListPanel.fxml";
+    private static final String FXML = "EventListPanel.fxml";
     private VBox panel;
     private AnchorPane placeHolderPane;
 
