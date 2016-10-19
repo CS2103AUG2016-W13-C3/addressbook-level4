@@ -219,7 +219,6 @@ public class MainWindow extends UiPart {
         KeyCombination altH = KeyCodeCombination.keyCombination("Alt+H");
         KeyCombination altC = KeyCodeCombination.keyCombination("Alt+C");
         KeyCombination altM = KeyCodeCombination.keyCombination("Alt+M");
-        KeyCombination enter = KeyCodeCombination.keyCombination("Enter");
         
         scene.getAccelerators().put(altH, new Runnable() {
             @Override
@@ -247,15 +246,18 @@ public class MainWindow extends UiPart {
         });
     }
 
+    /**
+     * Sets the whole app to be draggable
+     */
     private void setDraggable() {
-        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+        titleBar.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 currScreenXPos = mouseEvent.getSceneX();
                 currScreenYPos = mouseEvent.getSceneY();
             }
         });
-        scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
+        titleBar.addEventFilter(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 primaryStage.setX(mouseEvent.getScreenX() - currScreenXPos);
