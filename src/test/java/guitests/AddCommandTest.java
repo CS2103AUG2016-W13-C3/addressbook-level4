@@ -1,53 +1,64 @@
-//package guitests;
-//
-//import guitests.guihandles.PersonCardHandle;
-//import org.junit.Test;
-//import seedu.address.logic.commands.AddCommand;
-//import seedu.address.commons.core.Messages;
-//import seedu.address.testutil.TestPerson;
-//import seedu.address.testutil.TestUtil;
-//
-//import static org.junit.Assert.assertTrue;
-//
-//public class AddCommandTest extends AddressBookGuiTest {
-//
-//    @Test
-//    public void add() {
-//        //add one person
-//        TestPerson[] currentList = td.getTypicalPersons();
-//        TestPerson personToAdd = td.hoon;
-//        assertAddSuccess(personToAdd, currentList);
-//        currentList = TestUtil.addPersonsToList(currentList, personToAdd);
-//
-//        //add another person
-//        personToAdd = td.ida;
-//        assertAddSuccess(personToAdd, currentList);
-//        currentList = TestUtil.addPersonsToList(currentList, personToAdd);
-//
-//        //add duplicate person
-//        commandBox.runCommand(td.hoon.getAddCommand());
-//        assertResultMessage(AddCommand.MESSAGE_DUPLICATE_PERSON);
-//        assertTrue(personListPanel.isListMatching(currentList));
-//
-//        //add to empty list
-//        commandBox.runCommand("clear");
-//        assertAddSuccess(td.alice);
-//
-//        //invalid command
-//        commandBox.runCommand("adds Johnny");
-//        assertResultMessage(Messages.UNKNOWN_COMMAND);
-//    }
-//
-//    private void assertAddSuccess(TestPerson personToAdd, TestPerson... currentList) {
-//        commandBox.runCommand(personToAdd.getAddCommand());
-//
-//        //confirm the new card contains the right data
-//        PersonCardHandle addedCard = personListPanel.navigateToPerson(personToAdd.getName().fullName);
-//        assertMatching(personToAdd, addedCard);
-//
-//        //confirm the list now contains all previous persons plus the new person
-//        TestPerson[] expectedList = TestUtil.addPersonsToList(currentList, personToAdd);
-//        assertTrue(personListPanel.isListMatching(expectedList));
-//    }
-//
-//}
+package guitests;
+
+import seedu.commando.commons.core.Messages;
+import seedu.commando.logic.commands.AddCommand;
+import seedu.commando.model.todo.ToDo;
+
+import org.junit.Test;
+
+import guitests.guihandles.EventCardHandle;
+import guitests.guihandles.ToDoCardHandle;
+import guitests.utils.CommandBuilder;
+import guitests.utils.TestUtil;
+
+import static org.junit.Assert.assertTrue;
+
+public class AddCommandTest extends CommanDoGuiTest {
+
+    @Test
+    public void add() {
+        commandBox.runCommand("clear");
+        //add one todo
+        ToDo[] currentList = td.getEmptyToDos();
+        ToDo toDoToAdd = td.toDoItem2;
+        assertAddSuccess(toDoToAdd, currentList);
+        currentList = TestUtil.addToDosToList(currentList, toDoToAdd);
+
+        //add another todo
+        toDoToAdd = td.toDoItem1;
+        assertAddSuccess(toDoToAdd, currentList);
+        currentList = TestUtil.addToDosToList(currentList, toDoToAdd);
+
+        //add duplicate person
+        commandBox.runCommand(CommandBuilder.buildAddCommand(td.toDoItem1));
+        assertResultMessage(Messages.TODO_ALREADY_EXISTS);
+        assertTrue(eventListPanel.isListMatching(currentList) && taskListPanel.isListMatching(eventListPanel.getListViewSize(), currentList));
+
+        //add to empty list
+        commandBox.runCommand("clear");
+        assertAddSuccess(td.toDoItem3);
+
+        //invalid command
+        commandBox.runCommand("adds Johnny");
+        assertResultMessage(Messages.UNKNOWN_COMMAND);
+    }
+
+    private void assertAddSuccess(ToDo todoToAdd, ToDo... currentList) {
+        commandBox.runCommand(CommandBuilder.buildAddCommand(todoToAdd));
+
+        //confirm the new card contains the right data
+        ToDoCardHandle eventListResult = eventListPanel.navigateToTodo(todoToAdd.getTitle().value);
+        ToDoCardHandle taskListResult = taskListPanel.navigateToTodo(todoToAdd.getTitle().value);
+        ToDoCardHandle addedCard = null;
+        if (eventListResult != null)
+            addedCard = eventListResult;
+        else if (taskListResult != null)
+            addedCard = taskListResult;
+        assertMatching(todoToAdd, addedCard);
+
+        //confirm the list now contains all previous persons plus the new person
+        ToDo[] expectedList = TestUtil.addToDosToList(currentList, todoToAdd);
+        assertTrue(eventListPanel.isListMatching(expectedList) && taskListPanel.isListMatching(eventListPanel.getListViewSize(), expectedList));
+    }
+
+}

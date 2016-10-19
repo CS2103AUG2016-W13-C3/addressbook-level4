@@ -1,10 +1,10 @@
 package seedu.commando.model.todo;
 
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.testutil.ToDoBuilder;
 
@@ -28,27 +28,14 @@ public class ToDoListTest {
     public void setup() throws IllegalValueException {
         toDoList = new ToDoList();
         toDoListItem1 = new ToDoBuilder("title").build();
-        toDoListItem2 = new ToDoBuilder("title 2")
-            .withTags(
-                "tag1", "tag2"
-            )
-            .withDueDate(
-                LocalDateTime.of(2016, 5, 1, 20, 1)
-            )
-            .withDateRange(
-                LocalDateTime.of(2016, 3, 1, 20, 1),
-                LocalDateTime.of(2016, 4, 1, 20, 1)
-            )
-            .isFinished(true)
-            .build();
+        toDoListItem2 = new ToDoBuilder("title 2").withTags("tag1", "tag2")
+                .withDueDate(LocalDateTime.of(2016, 5, 1, 20, 1))
+                .withDateRange(LocalDateTime.of(2016, 3, 1, 20, 1), LocalDateTime.of(2016, 4, 1, 20, 1))
+                .isFinished(true).build();
         toDoList.add(toDoListItem1);
         toDoList.add(toDoListItem2);
         toDoList2Item1 = new ToDoBuilder("title 3")
-            .withDateRange(
-                LocalDateTime.of(2016, 3, 1, 20, 1),
-                LocalDateTime.of(2016, 4, 1, 20, 1)
-            )
-            .build();
+                .withDateRange(LocalDateTime.of(2016, 3, 1, 20, 1), LocalDateTime.of(2016, 4, 1, 20, 1)).build();
 
         toDoList2 = new ToDoList();
         toDoList2.add(toDoList2Item1);
@@ -56,7 +43,7 @@ public class ToDoListTest {
 
     @Test
     public void ToDoListCopy() {
-       ToDoList copied = new ToDoList(toDoList);
+        ToDoList copied = new ToDoList(toDoList);
         assertEquals(copied, toDoList);
     }
 
