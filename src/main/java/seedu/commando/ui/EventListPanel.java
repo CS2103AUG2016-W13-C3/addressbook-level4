@@ -61,7 +61,7 @@ public class EventListPanel extends UiPart {
     }
 
     private void setConnections(ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
-        eventListView.setItems(eventsToday);
+        eventListView.setItems(eventsUpcoming);
         eventListView.setCellFactory(listView -> new ToDoListViewCell());
     }
 

@@ -128,9 +128,7 @@ public class UiModel {
                 .isBefore(LocalDate.now().plusDays(1).atStartOfDay())
         ).collect(Collectors.toList()));
 
-        this.upcomingEvents.setAll(uiEvents.stream().filter(
-            event -> !this.todayEvents.contains(event)
-        ).collect(Collectors.toList()));
+        this.upcomingEvents.setAll(uiEvents);
         toDoAtIndices.addAll(uiEvents);
 
         // Then do the same for tasks
