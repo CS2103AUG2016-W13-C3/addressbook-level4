@@ -30,7 +30,7 @@
 						</MenuBar>
       				<MenuBar opacity="0.5" styleClass="title-button">
       					<menus>
-      						<Menu disable="true" mnemonicParsing="false" text="CommanDo" />
+      						<Menu fx:id="appNameMenu" disable="true" mnemonicParsing="false" />
       					</menus>
       				</MenuBar>
 					</children>

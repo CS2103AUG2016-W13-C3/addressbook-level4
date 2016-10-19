@@ -10,16 +10,12 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.model.ui.UiToDo;
-
-import java.util.logging.Logger;
 
 /**
  * Panel containing the list of to-dos
  */
 public class TaskListPanel extends UiPart {
-    private final Logger logger = LogsCenter.getLogger(TaskListPanel.class);
     private static final String FXML = "TaskListPanel.fxml";
     private VBox panel;
     private AnchorPane placeHolderPane;
