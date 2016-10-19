@@ -19,23 +19,24 @@ public class Config {
     public static String AboutUsUrl = "https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/AboutUs.md";
     private static Map<String, String> CommandWordsToUserGuideAnchors = new HashMap<String, String>() {{
         put("cheatsheet", "cheatsheet");
-        put("add", "adding-to-do-items-add");
-        put("edit", "editing-to-do-items-edit");
-        put("clear", "clearing-all-to-do-items-clear");
-        put("delete", "deleting-to-do-items-delete");
-        put("finish", "finishing-to-do-items-finish");
-        put("store", "setting-save-location-set");
-        put("export", "exporting-export");
-        put("import", "importing-import");
-        put("undo", "undoing-undo");
-        put("redo", "redoing-redo");
-        put("exit", "exiting-the-application");
+        put("add", "add");
+        put("edit", "edit");
+        put("clear", "clear");
+        put("delete", "delete");
+        put("finish", "finish");
+        put("store", "store");
+        put("export", "export");
+        put("import", "import");
+        put("undo", "undo");
+        put("redo", "redo");
+        put("exit", "exit");
         put("faq", "faq");
         put("about", "about");
         put("commands", "commands");
         put("datetime formats", "supported-date-time-formats");
-        put("find", "finding-to-do-items-find");
+        put("find", "find");
         put("search logic", "search-logic");
+        put("unfinish", "unfinish");
     }};
 
     public Config() {
