@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import guitests.guihandles.EventCardHandle;
 import guitests.guihandles.ToDoCardHandle;
+import guitests.guihandles.ToDoListPanelHandle;
 import guitests.utils.CommandBuilder;
 import guitests.utils.TestUtil;
 
@@ -32,7 +33,7 @@ public class AddCommandTest extends CommanDoGuiTest {
         //add duplicate person
         commandBox.runCommand(CommandBuilder.buildAddCommand(td.toDoItem1));
         assertResultMessage(Messages.TODO_ALREADY_EXISTS);
-        assertTrue(eventListPanel.isListMatching(currentList) && taskListPanel.isListMatching(eventListPanel.getListViewSize(), currentList));
+        assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
 
         //add to empty list
         commandBox.runCommand("clear");
@@ -58,7 +59,7 @@ public class AddCommandTest extends CommanDoGuiTest {
 
         //confirm the list now contains all previous persons plus the new person
         ToDo[] expectedList = TestUtil.addToDosToList(currentList, todoToAdd);
-        assertTrue(eventListPanel.isListMatching(expectedList) && taskListPanel.isListMatching(eventListPanel.getListViewSize(), expectedList));
+        assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedList));
     }
 
 }
