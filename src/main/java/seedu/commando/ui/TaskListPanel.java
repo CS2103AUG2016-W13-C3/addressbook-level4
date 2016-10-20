@@ -11,6 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.commando.model.ui.UiToDo;
+import seedu.commando.ui.ToDoListViewCell.Card;
 
 /**
  * Panel containing the list of to-dos
@@ -59,7 +60,7 @@ public class TaskListPanel extends UiPart {
 
     private void setConnections(ObservableList<UiToDo> list) {
         taskListView.setItems(list);
-        taskListView.setCellFactory(listView -> new ToDoListViewCell());
+        taskListView.setCellFactory(listView -> new ToDoListViewCell(Card.Task));
     }
 
     private void addToPlaceholder() {
@@ -72,22 +73,5 @@ public class TaskListPanel extends UiPart {
             taskListView.scrollTo(index);
             taskListView.getSelectionModel().clearAndSelect(index);
         });
-    }
-
-    class ToDoListViewCell extends ListCell<UiToDo> {
-
-        public ToDoListViewCell() { }
-
-        @Override
-        protected void updateItem(UiToDo toDo, boolean empty) {
-            super.updateItem(toDo, empty);
-
-            if (empty || toDo == null) {
-                setGraphic(null);
-                setText(null);
-            } else {
-                setGraphic(TaskCard.load(toDo, toDo.getIndex()).getLayoutState(toDo.isNew(), toDo.isFinished()));
-            }
-        }
     }
 }

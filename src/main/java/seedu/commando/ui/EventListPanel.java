@@ -12,15 +12,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.commando.model.ui.UiToDo;
+import seedu.commando.ui.ToDoListViewCell.Card;
 
 /**
  * Panel containing the list of to-dos
  */
 public class EventListPanel extends UiPart {
-    
+
     // Fixed variables
     private static final String FXML = "EventListPanel.fxml";
-    
+
     private VBox panel;
     private AnchorPane placeHolderPane;
 
@@ -47,7 +48,7 @@ public class EventListPanel extends UiPart {
     }
 
     protected static EventListPanel load(Stage primaryStage, AnchorPane eventListPlaceholder,
-                                     ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
+            ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
         EventListPanel eventListPanel =
                 UiPartLoader.loadUiPart(primaryStage, eventListPlaceholder, new EventListPanel());
         eventListPanel.configure(eventsToday, eventsUpcoming);
@@ -61,7 +62,7 @@ public class EventListPanel extends UiPart {
 
     private void setConnections(ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
         eventListView.setItems(eventsUpcoming);
-        eventListView.setCellFactory(listView -> new ToDoListViewCell());
+        eventListView.setCellFactory(listView -> new ToDoListViewCell(Card.Event));
     }
 
     private void addToPlaceholder() {
@@ -74,23 +75,5 @@ public class EventListPanel extends UiPart {
             eventListView.scrollTo(index);
             eventListView.getSelectionModel().clearAndSelect(index);
         });
-    }
-
-    class ToDoListViewCell extends ListCell<UiToDo> {
-
-        public ToDoListViewCell() {
-        }
-
-        @Override
-        protected void updateItem(UiToDo toDo, boolean empty) {
-            super.updateItem(toDo, empty);
-            if (empty || toDo == null) {
-                setGraphic(null);
-                setText(null);
-            } else {
-                HBox layout = EventCard.load(toDo, toDo.getIndex()).getLayoutState(toDo.isNew(), toDo.isFinished());
-                setGraphic(layout);
-            }
-        }
     }
 }

@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
@@ -19,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.GuiSettings;
@@ -26,6 +29,8 @@ import seedu.commando.commons.events.ui.ExitAppRequestEvent;
 import seedu.commando.commons.events.ui.UpdateFilePathEvent;
 import seedu.commando.logic.Logic;
 import seedu.commando.model.UserPrefs;
+import seedu.commando.model.ui.UiToDo;
+import seedu.commando.ui.ToDoListViewCell.Card;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -138,6 +143,7 @@ public class MainWindow extends UiPart {
         setKeyBindings();
         
         primaryStage.setScene(scene);
+        
         helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl);
     }
 
@@ -153,6 +159,16 @@ public class MainWindow extends UiPart {
         commandField = (TextField) commandBoxPlaceholder.lookup("#commandTextField");
         commandField.requestFocus();
         disableSplitPaneResize();
+        
+//        eventPanel.getListView().setCellFactory(new Callback<ListView<ToDoListViewCell>, ToDoListViewCell<UiToDo>>() {
+//
+//            @Override
+//            public ListCell<UiToDo> call(ListView<ToDoListViewCell> arg0) {
+//                // TODO Auto-generated method stub
+//                return null;
+//            }
+//            
+//        });
     }
     
     private AnchorPane getCommandBoxPlaceholder() {
