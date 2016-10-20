@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -22,6 +23,7 @@ public class TaskListPanel extends UiPart {
 
     private VBox panel;
     private AnchorPane placeHolderPane;
+    private ScrollBar scrollbar;
 
     @FXML
     private ListView<UiToDo> taskListView;
@@ -56,6 +58,10 @@ public class TaskListPanel extends UiPart {
     private void configure(ObservableList<UiToDo> toDos) {
         setConnections(toDos);
         addToPlaceholder();
+        Platform.runLater(() -> {
+            scrollbar = (ScrollBar) taskListView.lookup(".scroll-bar:vertical");
+            scrollbar.setUnitIncrement(200);
+        });
     }
 
     private void setConnections(ObservableList<UiToDo> list) {
@@ -77,5 +83,21 @@ public class TaskListPanel extends UiPart {
     
     protected ListView<UiToDo> getTaskListView() {
         return taskListView;
+    }
+    
+    private boolean isScrollBarPresent() {
+        return scrollbar != null;
+    }
+    
+    protected void scrollDown() {
+        if (isScrollBarPresent()) {
+            scrollbar.increment();
+        }
+    }
+    
+    protected void scrollUp() {
+        if (isScrollBarPresent()) {
+            scrollbar.decrement();
+        }
     }
 }

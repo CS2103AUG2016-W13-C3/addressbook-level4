@@ -1,5 +1,7 @@
 package seedu.commando.ui;
 
+import java.awt.Scrollbar;
+
 import com.google.common.eventbus.Subscribe;
 
 import javafx.event.EventHandler;
@@ -10,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -267,12 +270,42 @@ public class MainWindow extends UiPart {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent key) {
-                if (key.getCode() == KeyCode.TAB) {
-                    cycleThroughFocusPanes();
-                    key.consume();
-                } else {
-                    currentlyFocusedPane = FocusPanes.COMMANDBOX;
-                    commandField.requestFocus();
+                switch (key.getCode()) {
+                    case UP:
+                        // If currently focused on Event Panel or Task Panel, scroll respectively
+                        switch (currentlyFocusedPane) {
+                            case EVENTPANEL:
+                                eventPanel.scrollUp();
+                                break;
+                            case TASKPANEL:
+                                taskPanel.scrollUp();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case DOWN:
+                        switch (currentlyFocusedPane) {
+                            case EVENTPANEL:
+                                eventPanel.scrollDown();
+                                break;
+                            case TASKPANEL:
+                                taskPanel.scrollDown();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case TAB:
+                        // If tab is pressed, cycle through Event Panel, Task Panel and Command Box
+                        cycleThroughFocusPanes();
+                        key.consume();
+                        break;
+                    default:
+                        // Else, any other sutiable character is considered input to command box
+                        // and it will be in focus
+                        currentlyFocusedPane = FocusPanes.COMMANDBOX;
+                        commandField.requestFocus();
                 }
             }
         });
@@ -292,6 +325,14 @@ public class MainWindow extends UiPart {
             currentlyFocusedPane = FocusPanes.COMMANDBOX;
             commandField.requestFocus();
             break;
+        }
+    }
+    
+    private <T extends UiPart> T getCurrentlyFocusedPane() {
+        if (currentlyFocusedPane == FocusPanes.EVENTPANEL) {
+            return (T) eventPanel;
+        } else {
+            return (T) taskPanel;
         }
     }
 

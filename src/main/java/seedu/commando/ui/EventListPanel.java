@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -24,6 +25,7 @@ public class EventListPanel extends UiPart {
 
     private VBox panel;
     private AnchorPane placeHolderPane;
+    private ScrollBar scrollbar;
 
     @FXML
     private ListView<UiToDo> eventListView;
@@ -58,6 +60,7 @@ public class EventListPanel extends UiPart {
     private void configure(ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
         setConnections(eventsToday, eventsUpcoming);
         addToPlaceholder();
+        scrollbar = (ScrollBar) eventListView.lookup(".scroll-bar:vertical");
     }
 
     private void setConnections(ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
@@ -79,5 +82,21 @@ public class EventListPanel extends UiPart {
     
     protected ListView<UiToDo> getEventListView() {
         return eventListView;
+    }
+    
+    private boolean isScrollBarPresent() {
+        return scrollbar != null;
+    }
+    
+    protected void scrollDown() {
+        if (isScrollBarPresent()) {
+            scrollbar.increment();
+        }
+    }
+    
+    protected void scrollUp() {
+        if (isScrollBarPresent()) {
+            scrollbar.decrement();
+        }
     }
 }
