@@ -237,6 +237,9 @@ public class MainWindow extends UiPart {
      * Alt + E = Exit the app
      * Alt + H = Open help in window
      * Alt + C = Open credits in window
+     * 
+     * Pressing Tab will cycle between Event Panel, Task Panel and Command Box
+     * Typing text will set focus automatically to the Command Box
      */
     private void setKeyBindings() {
         KeyCombination altH = KeyCodeCombination.keyCombination("Alt+H");
