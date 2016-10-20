@@ -76,4 +76,8 @@ public class EventListPanel extends UiPart {
             eventListView.getSelectionModel().clearAndSelect(index);
         });
     }
+    
+    protected ListView<UiToDo> getEventListView() {
+        return eventListView;
+    }
 }

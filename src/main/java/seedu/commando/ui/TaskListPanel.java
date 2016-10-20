@@ -74,4 +74,8 @@ public class TaskListPanel extends UiPart {
             taskListView.getSelectionModel().clearAndSelect(index);
         });
     }
+    
+    protected ListView<UiToDo> getTaskListView() {
+        return taskListView;
+    }
 }

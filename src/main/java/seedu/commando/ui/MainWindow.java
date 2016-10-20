@@ -12,6 +12,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -71,7 +72,13 @@ public class MainWindow extends UiPart {
     private Scene scene;
 
     private String appName;
-
+    
+    private enum FocusPanes {
+        COMMANDBOX, EVENTPANEL, TASKPANEL
+    }
+    
+    FocusPanes currentlyFocusedPane = FocusPanes.COMMANDBOX;
+    
     @FXML
     private HBox titleBar;
     @FXML
@@ -254,12 +261,35 @@ public class MainWindow extends UiPart {
                 toggleWindowSize();
             }
         });
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent key) {
-                commandField.requestFocus();
+                if (key.getCode() == KeyCode.TAB) {
+                    cycleThroughFocusPanes();
+                    key.consume();
+                } else {
+                    currentlyFocusedPane = FocusPanes.COMMANDBOX;
+                    commandField.requestFocus();
+                }
             }
         });
+    }
+    
+    private void cycleThroughFocusPanes() {
+        switch (currentlyFocusedPane) {
+        case COMMANDBOX:
+            currentlyFocusedPane = FocusPanes.EVENTPANEL;
+            eventPanel.getEventListView().requestFocus();
+            break;
+        case EVENTPANEL:
+            currentlyFocusedPane = FocusPanes.TASKPANEL;
+            taskPanel.getTaskListView().requestFocus();
+            break;
+        case TASKPANEL:
+            currentlyFocusedPane = FocusPanes.COMMANDBOX;
+            commandField.requestFocus();
+            break;
+        }
     }
 
     /**
