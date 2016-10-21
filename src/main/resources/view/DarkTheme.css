@@ -148,7 +148,11 @@
 }
 
 #indexLabel {
+	-fx-background-color: derive(#1d1d1d, 60%);
+	-fx-text-fill: #FFFFFF;
 	-fx-font-family: "Segoe UI bold";
+	-fx-border-width: 0 2px 0 0;
+	-fx-border-color: derive(#1d1d1d, 40%);
 }
 
 .task-pane, .event-pane {

@@ -43,7 +43,7 @@ public class EventCard extends UiPart{
     @FXML
     public void initialize() {
         titleLabel.setText(toDo.getTitle().value);
-        indexLabel.setText(String.valueOf(index) + ". ");
+        indexLabel.setText(String.valueOf(index));
 
         setLabelDateTimes();
         setLabelTags();
