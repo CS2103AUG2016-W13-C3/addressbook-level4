@@ -139,17 +139,16 @@
 
 #startLabel, #endLabel {
 	-fx-text-fill: #053a8e; 
-	-fx-font-family: Microsoft Yahei Light;
+	-fx-font-family: "Segoe UI bold";
 }
 
 #dueLabel {
 	-fx-text-fill: #FF0000; 
-	-fx-font-family: Microsoft Yahei Light;
+	-fx-font-family: "Segoe UI bold";
 }
 
 #indexLabel {
-	-fx-font-family: Microsoft Yahei Light;
-	-fx-font-weight: 600;
+	-fx-font-family: "Segoe UI bold";
 }
 
 .task-pane, .event-pane {
