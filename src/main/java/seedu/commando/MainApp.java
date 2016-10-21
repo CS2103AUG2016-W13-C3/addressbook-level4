@@ -197,7 +197,8 @@ public class MainApp extends Application {
 			logger.warning("Failed to save config " + StringUtil.getDetails(e));
 		}
     	EventsCenter.getInstance().post(new UpdateFilePathEvent());
-    	
+
+
     }
 
     public static void main(String[] args) {
