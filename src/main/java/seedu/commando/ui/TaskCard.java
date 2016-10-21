@@ -1,9 +1,10 @@
 package seedu.commando.ui;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import org.apache.commons.lang.StringUtils;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -66,10 +67,29 @@ public class TaskCard extends UiPart {
     private void setLabelContent() {
         if (toDo.getDueDate().isPresent()) {
             final LocalDateTime due = toDo.getDueDate().get().value;
+            long dayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), due);
             dueLabel.setText("by " + ToDoCardStyleManager.prettifyDateTime(due));
+            dueLabel.setStyle("-fx-text-fill: " + getDueLabelTextColor((int) dayDifference));
         } else {
             dueLabel.setText("");
         }
+    }
+    
+    /**
+     * @param dayDifference
+     * @return colour code for due date label. The closer it is to today, the more red 
+     * it will become, otherwise, tends towards green. If it is already over (neg), it is 
+     * fully red
+     */
+    private String getDueLabelTextColor(int dayDifference) {
+        System.out.println(dayDifference);
+        if (dayDifference < 0) {
+            return "#FF0000";
+        }
+        final int red = (int) (255 / (1 + Math.pow(2, dayDifference * 2)));
+        final int green = (int) (127.5 / (1 + Math.pow(2, -dayDifference)));
+        return "#" + StringUtils.leftPad(Integer.toHexString(red), 2, "0") + 
+                     StringUtils.leftPad(Integer.toHexString(green), 2, "0") + "33";
     }
     
     
