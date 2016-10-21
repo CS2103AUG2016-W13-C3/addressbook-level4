@@ -6,7 +6,7 @@ import seedu.commando.model.todo.*;
 import java.util.*;
 
 /**
- * Manages the to-do list provided (not copied)
+ * Manages an internal to-do list provided
  * Supports adding, removing, editing, undoing and redoing
  * based on {@link ToDoListChange}
  */

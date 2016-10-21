@@ -235,4 +235,18 @@ public class EditCommandTest {
             new ToDoBuilder("task2")
                 .build()));
     }
+
+    @Test
+    public void execute_edit_eventWith2DateRanges() throws IllegalValueException {
+        logic.execute("add title from 10 Jan " + nextYear + " 12:00 to 21 Jan " + nextYear + " 13:00");
+
+        logic.execute("edit 1 from today to tomorrow from 10 Nov 2011 1200h to 11 Dec 2012 1300h");
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("from today to tomorrow")
+                .withDateRange(
+                    LocalDateTime.of(2011, 11, 10, 12, 0),
+                    LocalDateTime.of(2012, 12, 11, 13, 0)
+                )
+                .build()));
+    }
 }

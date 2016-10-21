@@ -7,6 +7,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
 import seedu.commando.commons.exceptions.IllegalValueException;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,20 +22,23 @@ public class ToDo implements ReadOnlyToDo {
     private DueDate dueDate;
     private DateRange dateRange;
     private Set<Tag> tags;
-    private boolean isFinished;
+    private LocalDateTime dateFinished; // null if to-do is not finished
+    private LocalDateTime dateCreated;
+    private Recurrence recurrence;
     private StringProperty value;
     {
         value = new ReadOnlyStringWrapper();
-        isFinished = false;
     }
 
     /**
-     * Asserts that value is non-null
+     * Asserts that title is non-null
      */
     public ToDo(Title title) {
         assert title != null;
 
         this.title = title;
+        recurrence = Recurrence.None;
+        dateCreated = LocalDateTime.now();
         updateValue();
     }
 
@@ -45,6 +49,7 @@ public class ToDo implements ReadOnlyToDo {
         assert toDo != null;
 
         this.title = new Title(toDo.getTitle());
+        this.dateCreated = toDo.getDateCreated();
 
         if (toDo.getDueDate().isPresent()) {
             this.dueDate = new DueDate(toDo.getDueDate().get());
@@ -58,7 +63,12 @@ public class ToDo implements ReadOnlyToDo {
             this.tags = toDo.getTags().stream().map(Tag::new).collect(Collectors.toSet());
         }
 
-        this.isFinished = toDo.isFinished();
+        if (toDo.getDateFinished().isPresent()) {
+            this.dateFinished = toDo.getDateFinished().get();
+        }
+
+        this.recurrence = toDo.getRecurrence();
+
         updateValue();
     }
     
@@ -85,7 +95,7 @@ public class ToDo implements ReadOnlyToDo {
         
         this.dateRange = dateRange;
         updateValue();
-        
+
         return this;
     }
 
@@ -98,14 +108,46 @@ public class ToDo implements ReadOnlyToDo {
         return this;
     }
 
-    public ToDo setIsFinished(boolean isFinished) {
-        this.isFinished = isFinished;
+    public ToDo setDateFinished(LocalDateTime date) {
+        this.dateFinished = date;
 
         updateValue();
         
         return this;
     }
-    
+
+    /**
+     * If {@param isFinished} is true, sets to-do's date finished to now
+     * Else, sets remove to-do's date finished
+     */
+    public ToDo setIsFinished(boolean isFinished) {
+        if (isFinished) {
+            dateFinished = LocalDateTime.now();
+        } else {
+            dateFinished = null; // remove date finished if unfinish
+        }
+
+        updateValue();
+
+        return this;
+    }
+
+    public ToDo setDateCreated(LocalDateTime date) {
+        this.dateCreated = date;
+
+        updateValue();
+
+        return this;
+    }
+
+    public ToDo setRecurrence(Recurrence recurrence) {
+        this.recurrence = recurrence;
+
+        updateValue();
+
+        return this;
+    }
+
     public Optional<DueDate> getDueDate() {
         return Optional.ofNullable(dueDate);
     }
@@ -124,9 +166,23 @@ public class ToDo implements ReadOnlyToDo {
 
     @Override
     public boolean isFinished() {
-        return isFinished;
+        return dateFinished != null;
     }
 
+    @Override
+    public Optional<LocalDateTime> getDateFinished() {
+        return Optional.ofNullable(dateFinished);
+    }
+
+    @Override
+    public LocalDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    @Override
+    public Recurrence getRecurrence() {
+        return recurrence;
+    }
 
     @Override
     public ObservableStringValue getObservableValue() {

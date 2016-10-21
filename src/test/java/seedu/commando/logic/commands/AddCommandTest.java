@@ -210,6 +210,19 @@ public class AddCommandTest {
     }
 
     @Test
+    public void execute_add_eventWith2DateRanges() throws IllegalValueException {
+        logic.execute("add walk by the beach from today to tomorrow from 10 Nov 2011 1200h to 11 Dec 2012 1300h");
+
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("walk by the beach from today to tomorrow")
+                .withDateRange(
+                    LocalDateTime.of(2011, 11, 10, 12, 0),
+                    LocalDateTime.of(2012, 12, 11, 13, 0)
+                )
+                .build()));
+    }
+
+    @Test
     public void execute_add_cannotAddDuplicate() throws IllegalValueException {
         logic.execute("add task by 10 Oct 2015");
         eventsCollector.reset();
