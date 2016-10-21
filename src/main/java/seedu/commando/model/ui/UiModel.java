@@ -163,23 +163,46 @@ public class UiModel {
                 return 1; // task2 first
             }
 
-            if (!task1.getDueDate().isPresent() && !task2.getDueDate().isPresent()) {
-                return 0; // both don't have dates, equal
+            if (task1.isFinished() && task2.isFinished()) {
+
+                // If finished dates are the same, put the task which was finished earlier in front
+                int dateComparison = task1.getDateFinished().get()
+                    .compareTo(task2.getDateFinished().get());
+                if (dateComparison == 0) {
+                    return task1.getDateCreated().compareTo(task2.getDateCreated());
+                } else {
+                    return dateComparison;
+                }
+
+            } else {
+                assert !task1.isFinished();
+                assert !task2.isFinished();
+
+                if (task1.getDueDate().isPresent() && !task2.getDueDate().isPresent()) {
+                    return -1; // taskl first
+                }
+
+                if (task2.getDueDate().isPresent() && !task1.getDueDate().isPresent()) {
+                    return 1; // task2 first
+                }
+
+                // If both don't have dates, put the older created task in front
+                if (!task1.getDueDate().isPresent() && !task2.getDueDate().isPresent()) {
+                    return task1.getDateCreated().compareTo(task2.getDateCreated());
+                } else {
+                    assert task1.getDueDate().isPresent();
+                    assert task2.getDueDate().isPresent();
+
+                    // If even due dates are the same, put the task which was finished earlier in front
+                    int dateComparison = task1.getDueDate().get().value
+                        .compareTo(task2.getDueDate().get().value);
+                    if (dateComparison == 0) {
+                        return task1.getDateCreated().compareTo(task2.getDateCreated());
+                    } else {
+                        return dateComparison;
+                    }
+                }
             }
-
-            if (task1.getDueDate().isPresent() && !task2.getDueDate().isPresent()) {
-                return -1; // taskl first
-            }
-
-            if (task2.getDueDate().isPresent() && !task1.getDueDate().isPresent()) {
-                return 1; // task2 first
-            }
-
-            // Here, both have duedates
-            assert task1.getDueDate().isPresent();
-            assert task2.getDueDate().isPresent();
-
-            return task1.getDueDate().get().value.compareTo(task2.getDueDate().get().value);
         });
 
         return tasks;
@@ -195,19 +218,18 @@ public class UiModel {
 
         // For observableEvents, sort by chronological order
         events.sort((event1, event2) -> {
-            // Must have date ranges because they are observableEvents
+            // Must have date ranges because they are events
             assert event2.getDateRange().isPresent();
             assert event2.getDateRange().isPresent();
 
-            if (!event1.isFinished() && event2.isFinished()) {
-                return -1; // event1 first
-            }
+            int rangeComparison = event1.getDateRange().get().startDate.compareTo(event2.getDateRange().get().startDate);
 
-            if (event1.isFinished() && !event2.isFinished()) {
-                return 1; // event2 first
+            // If start dates are the same, put the older created event in front
+            if (rangeComparison == 0) {
+                return event1.getDateCreated().compareTo(event2.getDateCreated());
+            } else {
+                return rangeComparison;
             }
-
-            return event1.getDateRange().get().startDate.compareTo(event2.getDateRange().get().startDate);
         });
 
         return events;
