@@ -57,5 +57,5 @@ public interface Model {
     /**
      * Sets a filter on the UI to-do list
      */
-    void setUiToDoListFilter(Set<String> keywords, Set<String> tags);
+    void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags);
 }

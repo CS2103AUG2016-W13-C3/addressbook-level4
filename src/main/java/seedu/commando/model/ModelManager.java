@@ -104,7 +104,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void setUiToDoListFilter(Set<String> keywords, Set<String> tags) {
+    public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags) {
         uiModel.setToDoListFilter(keywords, tags);
     }
 

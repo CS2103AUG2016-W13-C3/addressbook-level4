@@ -123,19 +123,6 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_edit_titleRemoveTags() throws IllegalValueException {
-        logic.execute("add title #tag1 #tag2");
-
-        CommandResult result = logic.execute("edit 1 new title #");
-        assertFalse(result.hasError());
-
-        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(logic,
-            new ToDoBuilder("new title")
-                .build()));
-    }
-
-    @Test
     public void execute_edit_dueDate() throws IllegalValueException {
         logic.execute("add title by 10 Jan " + nextYear + " 12:00");
 

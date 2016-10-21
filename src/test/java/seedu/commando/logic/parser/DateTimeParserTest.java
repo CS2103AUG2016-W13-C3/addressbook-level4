@@ -196,7 +196,8 @@ public class DateTimeParserTest {
 
     @Test
     public void parseDateTime_relativeDayOfWeek()  {
-        LocalDateTime ldt = now.minusDays(1).with(TemporalAdjusters.next(DayOfWeek.FRIDAY));
+        LocalDateTime ldt = now.plusDays(1).with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
+
         assertEquals(
                 LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),                 
                     DateTimeParser.DefaultLocalTime.getHour(),
@@ -211,7 +212,7 @@ public class DateTimeParserTest {
                 dateTimeParser.parseDateTime("Friday").orElse(null)
         );
 
-        LocalDateTime nextLdt = ldt.plusWeeks(1);
+        LocalDateTime nextLdt = now.with(TemporalAdjusters.next(DayOfWeek.FRIDAY));
         assertEquals(
                 LocalDateTime.of(nextLdt.getYear(), nextLdt.getMonthValue(), nextLdt.getDayOfMonth(),
                     DateTimeParser.DefaultLocalTime.getHour(),

@@ -11,6 +11,7 @@ import seedu.commando.logic.LogicManager;
 import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.ToDoListManager;
 import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.Tag;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -72,7 +73,7 @@ public class UiModel {
      * Sets a filter on the to-do list
      * Asserts {@param keywords} and {@param tags} to be non-null
      */
-    public void setToDoListFilter(Set<String> keywords, Set<String> tags) {
+    public void setToDoListFilter(Set<String> keywords, Set<Tag> tags) {
         assert keywords != null;
         assert tags != null;
 
@@ -232,7 +233,7 @@ public class UiModel {
     //  Private methods for filtering
     //================================================================================
 
-    private boolean ifMatchesFilter(ReadOnlyToDo toDo, Set<String> keywords, Set<String> tags) {
+    private boolean ifMatchesFilter(ReadOnlyToDo toDo, Set<String> keywords, Set<Tag> tags) {
         return (keywords.stream()
             .allMatch(keyword -> checkForKeyword(toDo, keyword))) // contains all keywords
             && (tags.stream()
@@ -244,7 +245,7 @@ public class UiModel {
             toDo.getTags().stream().anyMatch(toDoTag -> StringUtil.substringIgnoreCase(toDoTag.value, keyword));
     }
 
-    private boolean checkForTag(ReadOnlyToDo toDo, String tag) {
-        return toDo.getTags().stream().anyMatch(toDoTag -> toDoTag.value.equalsIgnoreCase(tag));
+    private boolean checkForTag(ReadOnlyToDo toDo, Tag tag) {
+        return toDo.getTags().stream().anyMatch(toDoTag -> toDoTag.value.equalsIgnoreCase(tag.value));
     }
 }

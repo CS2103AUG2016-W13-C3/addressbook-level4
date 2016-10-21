@@ -9,8 +9,8 @@ public class Messages {
     public static final String MISSING_COMMAND_WORD = "Missing command word.";
     public static final String INVALID_COMMAND_FORMAT = "Invalid format for '%1$s' command!";
     public static final String MISSING_TODO_TITLE = "Missing title for to-do.";
-    public static final String MISSING_TODO_DATERANGE_START = "Missing start date for date range of to-do.";
-    public static final String MISSING_TODO_DATERANGE_END = "Missing end date for date range of to-do.";
+    public static final String INVALID_TODO_DATERANGE_START = "Invalid start date for date range of to-do.";
+    public static final String INVALID_TODO_DATERANGE_END = "Invalid end date for date range of to-do.";
     public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.";
     public static final String TODO_DATERANGE_CONSTRAINTS = "The end date of the date range must be after start date.";
     public static final String MISSING_STORE_PATH = "Missing the path to store.";

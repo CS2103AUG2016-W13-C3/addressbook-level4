@@ -20,11 +20,10 @@ public class EditCommand extends Command {
     public static final String COMMAND_WORD = "edit";
 
     private final int toDoIndex;
-    public String title;
-    public LocalDateTime dateRangeStart;
-    public LocalDateTime dateRangeEnd;
-    public LocalDateTime dueDate;
-    public Set<String> tags = null;
+    public Title title;
+    public DateRange dateRange;
+    public DueDate dueDate;
+    public Set<Tag> tags;
 
     public EditCommand(int toDoIndex) {
         this.toDoIndex = toDoIndex;
@@ -45,22 +44,19 @@ public class EditCommand extends Command {
 
         // Set fields if exist
         if (title != null) {
-            newToDo.setTitle(new Title(title));
-        }
-        if (dueDate != null) {
-            newToDo.setDueDate(new DueDate(dueDate));
+            newToDo.setTitle(title);
         }
 
-        if (dateRangeStart != null && dateRangeEnd != null) {
-            newToDo.setDateRange(new DateRange(dateRangeStart, dateRangeEnd));
-        } else if (dateRangeEnd != null) {
-            throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_START);
-        } else if (dateRangeStart != null) {
-            throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_END);
+        if (dueDate != null) {
+            newToDo.setDueDate(dueDate);
+        }
+
+        if (dateRange != null) {
+            newToDo.setDateRange(dateRange);
         }
 
         if (tags != null) {
-            newToDo.setTags(tags.stream().map(Tag::new).collect(Collectors.toSet()));
+            newToDo.setTags(tags);
         }
 
         // Check if to-do has changed
