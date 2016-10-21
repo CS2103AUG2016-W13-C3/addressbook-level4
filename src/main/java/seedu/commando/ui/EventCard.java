@@ -64,7 +64,7 @@ public class EventCard extends UiPart{
     private void setLabelDateTimes() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
-            startLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.startDate) + " To ");
+            startLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.startDate) + " to ");
             endLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.endDate));
         } else {
             startLabel.setText("");
