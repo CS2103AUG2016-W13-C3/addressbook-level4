@@ -1,6 +1,9 @@
 package seedu.commando.ui;
 
 import java.time.LocalDateTime;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -8,7 +11,7 @@ import javafx.scene.layout.HBox;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
-public class TaskCard extends UiPart{
+public class TaskCard extends UiPart {
 
     private static final String FXML = "TaskCard.fxml";
     private boolean isFinished;
@@ -35,6 +38,7 @@ public class TaskCard extends UiPart{
         TaskCard card = new TaskCard();
         card.toDo = toDo;
         card.index = index;
+
         return UiPartLoader.loadUiPart(card);
     }
 
