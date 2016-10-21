@@ -13,12 +13,12 @@
 					<children>
 						<HBox maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
 							<children>
-								<Label fx:id="indexLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="60.0" prefHeight="50.0" text="\$i">
+								<Label fx:id="indexLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="60.0" prefHeight="50.0" text="\$i">
 									<padding>
-										<Insets left="20.0" right="10.0" />
+										<Insets left="20.0" right="10.0" top="13.0" />
 									</padding>
 								</Label>
-								<Label fx:id="titleLabel" wrapText="true" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" text="\$value" />
+								<Label fx:id="titleLabel" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" text="\$value" wrapText="true" />
 							</children>
 						</HBox>
 						<HBox maxHeight="1.7976931348623157E308">
