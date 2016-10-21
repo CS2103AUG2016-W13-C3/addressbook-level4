@@ -2,15 +2,38 @@
     -fx-background-color: derive(#1d1d1d, 20%);
 }
 
+.title-bar {
+	-fx-background-color: derive(#1d1d1d, 10%);
+	-fx-border-color: derive(#1d1d1d, 5%);
+}
+
+.title-bar .title-button, .title-bar .size-button {
+	-fx-background-color: transparent;
+}
+
+.title-bar .size-button {
+	-fx-border-color: transparent;
+}
+
+.event-pane-title-background, .task-pane-title-background {
+	-fx-background-color: derive(#1d1d1d, 20%);
+	-fx-border-color: derive(#1d1d1d, 20%);
+}
+
+.event-pane-title, .task-pane-title {
+	-fx-font-family: "Segoe UI Light";
+	-fx-font-size: 30pt;
+}
+
 .label {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Light";
     -fx-text-fill: #555555;
     -fx-opacity: 0.9;
 }
 
 .label-bright {
-    -fx-font-size: 11pt;
+    -fx-font-size: 12pt;
     -fx-font-family: "Segoe UI Semibold";
     -fx-text-fill: white;
     -fx-opacity: 1;
@@ -75,6 +98,10 @@
     -fx-background-color: -fx-focus-color;
 }
 
+.split-pane-container {
+	
+}
+
 .split-pane:horizontal .split-pane-divider {
     -fx-border-color: transparent #1d1d1d transparent #1d1d1d;
     -fx-background-color: transparent, derive(#1d1d1d, 10%);
@@ -106,14 +133,31 @@
     -fx-text-fill: #010504;
 }
 
-.cell_time_interval_label {
-	-fx-font-size: 16px;
-	-fx-text-fill: blue;
+#startLabel, #endLabel {
+	-fx-text-fill: #053a8e; 
+	-fx-font-family: Microsoft Yahei Light;
 }
 
-.cell_due_date_label {
-	-fx-font-size: 16px;
-	-fx-text-fill: red;
+#dueLabel {
+	-fx-text-fill: #FF0000; 
+	-fx-font-family: Microsoft Yahei Light;
+}
+
+#indexLabel {
+	-fx-font-family: Microsoft Yahei Light;
+	-fx-font-weight: 600;
+}
+
+.task-pane, .event-pane {
+	-fx-background-color: #FFFFFF;
+}
+
+.task-pane-inner, .event-pane-inner {
+	-fx-background-color: #DCDCDC; 
+    -fx-background-radius: 8px;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3px;
+    -fx-border-color:  derive(#1d1d1d, 50%);
 }
 
 .anchor-pane {
@@ -121,8 +165,8 @@
 }
 
 .anchor-pane-with-border {
-     -fx-background-color: derive(#1d1d1d, 20%);
-     -fx-border-color: derive(#1d1d1d, 10%);
+     -fx-background-color: derive(#1d1d1d, 10%);
+     -fx-border-color: derive(#1d1d1d, 5%);
      -fx-border-radius: 1px;
      -fx-border-top-width: 1px;
 }

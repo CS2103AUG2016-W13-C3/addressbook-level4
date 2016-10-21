@@ -62,38 +62,48 @@ public class ToDo implements ReadOnlyToDo {
         updateValue();
     }
     
-    public void setTitle(Title title) {
+    public ToDo setTitle(Title title) {
         assert title != null;
         
         this.title = title;
         updateValue();
+        
+        return this;
     }
 
-    public void setDueDate(DueDate dueDate) {
+    public ToDo setDueDate(DueDate dueDate) {
         assert dueDate != null;
 
         this.dueDate = dueDate;
         updateValue();
+        
+        return this;
     }
 
-    public void setDateRange(DateRange dateRange) {
+    public ToDo setDateRange(DateRange dateRange) {
         assert dateRange != null;
         
         this.dateRange = dateRange;
         updateValue();
+        
+        return this;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public ToDo setTags(Set<Tag> tags) {
         assert tags != null;
         
         this.tags = tags;
         updateValue();
+        
+        return this;
     }
 
-    public void setIsFinished(boolean isFinished) {
+    public ToDo setIsFinished(boolean isFinished) {
         this.isFinished = isFinished;
 
         updateValue();
+        
+        return this;
     }
     
     public Optional<DueDate> getDueDate() {

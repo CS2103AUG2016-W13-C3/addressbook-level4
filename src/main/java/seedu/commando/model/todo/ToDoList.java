@@ -25,7 +25,9 @@ public class ToDoList implements ReadOnlyToDoList {
         protectedList = new UnmodifiableObservableList<>(list);
     }
 
-    public ToDoList() {}
+    public ToDoList() {
+        reset(new ArrayList<ReadOnlyToDo>());
+    }
 
     /**
      * Copy constructor

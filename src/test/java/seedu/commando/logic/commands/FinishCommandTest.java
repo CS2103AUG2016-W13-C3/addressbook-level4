@@ -68,7 +68,7 @@ public class FinishCommandTest {
 
         assertEquals(String.format(Messages.TODO_ITEM_INDEX_INVALID, 0), result.getFeedback());
     }
-
+    
     @Test
     public void execute_finish_invalidIndex2() {
         CommandResult result = logic.execute("finish -1");

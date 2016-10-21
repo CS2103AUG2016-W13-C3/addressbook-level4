@@ -11,9 +11,7 @@ import seedu.commando.commons.core.ComponentManager;
 import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.events.storage.DataSavingExceptionEvent;
-import seedu.commando.commons.events.ui.JumpToListRequestEvent;
 import seedu.commando.commons.events.ui.ShowHelpRequestEvent;
-import seedu.commando.commons.events.ui.ToDoListPanelSelectionChangedEvent;
 import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.model.UserPrefs;
@@ -51,6 +49,7 @@ public class UiManager extends ComponentManager implements Ui {
             mainWindow = MainWindow.load(primaryStage, config, prefs, logic);
             mainWindow.show(); // This should be called before creating other UI parts
             mainWindow.fillInnerParts();
+            mainWindow.disableSplitPaneResize();
 
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));
@@ -108,22 +107,5 @@ public class UiManager extends ComponentManager implements Ui {
     private void handleShowHelpEvent(ShowHelpRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         mainWindow.showHelpAtAnchor(event.getAnchor());
-    }
-
-    @Subscribe
-    private void handleJumpToEventListRequestEvent(JumpToListRequestEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        mainWindow.getEventListPanel().scrollTo(event.targetIndex);
-    }
-    
-    @Subscribe
-    private void handleJumpToTaskListRequestEvent(JumpToListRequestEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        mainWindow.getTaskListPanel().scrollTo(event.targetIndex);
-    }
-
-    @Subscribe
-    private void handleToDoListPanelSelectionChangedEvent(ToDoListPanelSelectionChangedEvent event){
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
     }
 }
