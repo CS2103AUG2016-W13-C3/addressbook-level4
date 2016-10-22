@@ -6,7 +6,7 @@ import seedu.commando.model.todo.*;
 import java.util.*;
 
 /**
- * Manages an internal to-do list provided
+ * Manages a to-do list internally
  * Supports adding, removing, editing, undoing and redoing
  * based on {@link ToDoListChange}
  */
@@ -75,7 +75,6 @@ public class ToDoListManager {
         // move changes to undo list
         toDoListUndoChanges.add(change);
         toDoListChanges.remove(toDoListChanges.size() - 1);
-
 
         return true;
     }

@@ -42,6 +42,24 @@ public interface ReadOnlyToDo {
     }
 
     /**
+     * Returns true if both are considered "similar", which means these fields must be equal:
+     *  - title
+     *  - due date
+     *  - date range
+     *  - tags
+     *  - recurrence
+     */
+    default boolean isSimilar(ReadOnlyToDo other) {
+        return other == this // short circuit if same object
+            || (other != null // this is first to avoid NPE below
+            && other.getTitle().equals(getTitle())
+            && other.getDateRange().equals(getDateRange())
+            && other.getDueDate().equals(getDueDate())
+            && other.getTags().equals(getTags())
+            && other.getRecurrence().equals(getRecurrence()));
+    }
+
+    /**
      * Updates and returns its value, based on the current value of its fields
      */
     default String getText() {

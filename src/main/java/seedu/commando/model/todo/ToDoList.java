@@ -26,7 +26,7 @@ public class ToDoList implements ReadOnlyToDoList {
     }
 
     public ToDoList() {
-        reset(new ArrayList<ReadOnlyToDo>());
+        reset(new ArrayList<>());
     }
 
     /**
@@ -45,47 +45,64 @@ public class ToDoList implements ReadOnlyToDoList {
     //================================================================================
 
     /**
-     * @see #add(List<ReadOnlyToDo>)
+     * @see #add(ReadOnlyToDoList)
      */
-    public void add(ReadOnlyToDo toDo) throws IllegalValueException {
-        add(Collections.singletonList(toDo));
-    }
-    /**
-     * @see #remove(List<ReadOnlyToDo>)
-     */
-    public void remove(ReadOnlyToDo toDo) {
-        remove(Collections.singletonList(toDo));
-    }
-
-
-    /**
-     * Adds deep copies of each of the to-dos in {@param toDos}
-     * @throws IllegalValueException if there are duplicate to-dos
-     */
-    public void add(List<ReadOnlyToDo> toDos) throws IllegalValueException {
-        assert toDos != null;
-
-        // Ensure there are no duplicate to-dos
-        if (toDos.stream().collect(Collectors.toSet()).size() < toDos.size()) {
+    public ToDoList add(ReadOnlyToDo toDo) throws IllegalValueException {
+        if (contains(toDo)) {
             throw new IllegalValueException(Messages.TODO_ALREADY_EXISTS);
         }
 
-        for (ReadOnlyToDo toDo : toDos) {
-            if (list.contains(toDo)) {
+        list.add(toDo);
+
+        return this;
+    }
+    /**
+     * @see #remove(ReadOnlyToDoList)
+     */
+    public ToDoList remove(ReadOnlyToDo toDo) throws IllegalValueException {
+        if (!contains(toDo)) {
+            throw new IllegalValueException(Messages.TODO_NOT_FOUND);
+        }
+
+        list.remove(toDo);
+
+        return this;
+    }
+
+    /**
+     * Add all to-dos in {@param toDoList}
+     * @throws IllegalValueException if any to-do in {@param toDoList} was not found for deletion
+     */
+    public ToDoList add(ReadOnlyToDoList toDoList) throws IllegalValueException {
+        assert toDoList != null;
+
+        for (ReadOnlyToDo toDo : toDoList.getToDos()) {
+            if (contains(toDo)) {
                 throw new IllegalValueException(Messages.TODO_ALREADY_EXISTS);
             }
         }
 
-        list.addAll(toDos);
+        list.addAll(toDoList.getToDos());
+
+        return this;
     }
 
     /**
-     * Removes all to-dos that correspond to any of {@param toDos}
+     * Removes all to-dos in {@param toDoList}
+     * @throws IllegalValueException if any to-do in {@param toDoList} was not found for deletion
      */
-    public void remove(List<ReadOnlyToDo> toDos) {
-        assert toDos != null;
+    public ToDoList remove(ReadOnlyToDoList toDoList) throws IllegalValueException {
+        assert toDoList != null;
 
-        list.removeAll(toDos);
+        for (ReadOnlyToDo toDoToRemove : toDoList.getToDos()) {
+            if (!contains(toDoToRemove)) {
+                throw new IllegalValueException(Messages.TODO_NOT_FOUND);
+            }
+        }
+
+        list.removeAll(toDoList.getToDos());
+
+        return this;
     }
 
     /**
@@ -110,9 +127,23 @@ public class ToDoList implements ReadOnlyToDoList {
         return protectedList;
     }
 
+    /**
+     *  Checks if the list contains a to-do that is similar to the given
+     *  @see ReadOnlyToDo#isSimilar(ReadOnlyToDo)
+     */
     @Override
     public boolean contains(ReadOnlyToDo toDo) {
-        return list.contains(toDo);
+        return list.filtered(x -> x.isSimilar(toDo)).size() > 0;
+    }
+
+    /**
+     *  Checks if to do list is is similar to the given {@param toDoList}
+     *  @see ReadOnlyToDo#isSimilar(ReadOnlyToDo)
+     */
+    @Override
+    public boolean isSimilar(ReadOnlyToDoList toDoList) {
+        return list.size() == toDoList.getToDos().size()
+            && list.filtered(toDoList::contains).size() == list.size();
     }
 
     @Override

@@ -11,10 +11,11 @@ import seedu.commando.logic.LogicManager;
 import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.ToDoListManager;
 import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.Tag;
+import seedu.commando.model.todo.ToDoList;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -27,20 +28,18 @@ public class UiModel {
 
     private final ToDoListManager toDoListManager;
     private final FilteredList<ReadOnlyToDo> filteredToDoList;
-    private final ObservableList<UiToDo> todayEvents;
+    private final ObservableList<UiToDo> events;
     private final ObservableList<UiToDo> upcomingEvents;
     private final ObservableList<UiToDo> tasks;
-    private final UnmodifiableObservableList<UiToDo> protectedUpcomingEvents;
-    private final UnmodifiableObservableList<UiToDo> protectedTodayEvents;
+    private final UnmodifiableObservableList<UiToDo> protectedEvents;
     private final UnmodifiableObservableList<UiToDo> protectedTasks;
     private final ArrayList<UiToDo> toDoAtIndices;
     private int runningIndex;
     {
         upcomingEvents = FXCollections.observableArrayList();
-        todayEvents = FXCollections.observableArrayList();
+        events = FXCollections.observableArrayList();
         tasks = FXCollections.observableArrayList();
-        protectedUpcomingEvents = new UnmodifiableObservableList<>(upcomingEvents);
-        protectedTodayEvents = new UnmodifiableObservableList<>(todayEvents);
+        protectedEvents = new UnmodifiableObservableList<>(events);
         protectedTasks = new UnmodifiableObservableList<>(tasks);
         toDoAtIndices = new ArrayList<>();
     }
@@ -87,16 +86,12 @@ public class UiModel {
         filteredToDoList.setPredicate(null);
     }
 
-    public UnmodifiableObservableList<UiToDo> getTodayEvents() {
-        return protectedTodayEvents;
+    public UnmodifiableObservableList<UiToDo> getEvents() {
+        return protectedEvents;
     }
 
     public UnmodifiableObservableList<UiToDo> getTasks() {
         return protectedTasks;
-    }
-
-    public UnmodifiableObservableList<UiToDo> getUpcomingEvents() {
-        return protectedUpcomingEvents;
     }
 
     /**
@@ -115,22 +110,13 @@ public class UiModel {
 
         Optional<ToDoListChange> change = toDoListManager.getLastToDoListChange();
 
-        List<ReadOnlyToDo> newToDos = change.isPresent()
-            ? change.get().getAddedToDos() : Collections.emptyList();
+        ReadOnlyToDoList newToDos = change.isPresent()
+            ? change.get().getAddedToDos() : new ToDoList();
 
-        List<UiToDo> uiEvents = events.stream().map(
+        this.events.setAll(events.stream().map(
             toDo -> new UiToDo(toDo, ++ runningIndex, newToDos.contains(toDo))
-        ).collect(Collectors.toList());
-
-        // Split to today and upcoming
-        this.todayEvents.setAll(uiEvents.stream().filter(
-            // Before tomorrow
-            event -> event.getDateRange().get().startDate
-                .isBefore(LocalDate.now().plusDays(1).atStartOfDay())
         ).collect(Collectors.toList()));
-
-        this.upcomingEvents.setAll(uiEvents);
-        toDoAtIndices.addAll(uiEvents);
+        toDoAtIndices.addAll(this.events);
 
         // Then do the same for tasks
         this.tasks.setAll(tasks.stream().map(
