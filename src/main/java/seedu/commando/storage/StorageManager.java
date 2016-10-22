@@ -18,7 +18,6 @@ import java.util.logging.Logger;
  * Manages storage of data of to-do list in local storage
  */
 public class StorageManager extends ComponentManager implements Storage {
-
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private ToDoListStorage toDoListStorage;
     private UserPrefsStorage userPrefsStorage;
@@ -45,6 +44,11 @@ public class StorageManager extends ComponentManager implements Storage {
     @Override
     public void saveUserPrefs(UserPrefs userPrefs) throws IOException {
         userPrefsStorage.saveUserPrefs(userPrefs);
+    }
+
+    @Override
+    public void setUserPrefsFilePath(String filePath) {
+        userPrefsStorage.setUserPrefsFilePath(filePath);
     }
 
     //================================================================================
@@ -82,6 +86,7 @@ public class StorageManager extends ComponentManager implements Storage {
     @Subscribe
     public void handleToDoListChangedEvent(ToDoListChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
+
         try {
             saveToDoList(event.toDoList);
         } catch (IOException e) {
@@ -91,7 +96,7 @@ public class StorageManager extends ComponentManager implements Storage {
 
 	@Override
 	public void setToDoListFilePath(String path) {
-		logger.info("Change the toDoListFilePath to " +path );
+		logger.info("Change the to-do list file path to " + path);
 		toDoListStorage.setToDoListFilePath(path);
 	}
 }

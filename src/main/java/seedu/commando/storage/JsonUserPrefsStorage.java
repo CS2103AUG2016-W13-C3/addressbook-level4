@@ -33,6 +33,11 @@ public class JsonUserPrefsStorage implements UserPrefsStorage{
         saveUserPrefs(userPrefs, filePath);
     }
 
+    @Override
+    public void setUserPrefsFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
     /**
      * Similar to {@link #readUserPrefs()}
      * @param prefsFilePath location of the data. Cannot be null.
@@ -51,7 +56,11 @@ public class JsonUserPrefsStorage implements UserPrefsStorage{
         UserPrefs prefs;
 
         try {
-            prefs = FileUtil.deserializeObjectFromJsonFile(prefsFile, UserPrefs.class);
+
+            UserPrefs.JsonObject jsonObject = FileUtil.deserializeObjectFromJsonFile(prefsFile, UserPrefs.JsonObject.class);
+            prefs = new UserPrefs();
+            prefs.setJsonObject(jsonObject);
+
         } catch (IOException e) {
             logger.warning("Error reading from prefs file " + prefsFile + ": " + e);
             throw new DataConversionException(e);
@@ -68,6 +77,6 @@ public class JsonUserPrefsStorage implements UserPrefsStorage{
         assert userPrefs != null;
         assert prefsFilePath != null;
 
-        FileUtil.serializeObjectToJsonFile(new File(prefsFilePath), userPrefs);
+        FileUtil.serializeObjectToJsonFile(new File(prefsFilePath), userPrefs.getJsonObject());
     }
 }

@@ -4,7 +4,7 @@ package seedu.commando.logic.commands;
 import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.events.ui.ShowHelpRequestEvent;
+import seedu.commando.commons.events.logic.ShowHelpRequestEvent;
 import seedu.commando.commons.exceptions.IllegalValueException;
 
 /**
