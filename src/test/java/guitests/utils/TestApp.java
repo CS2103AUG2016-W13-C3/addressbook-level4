@@ -1,4 +1,4 @@
-package guitests.utils;
+ package guitests.utils;
 
 import java.io.IOException;
 import java.util.function.Supplier;

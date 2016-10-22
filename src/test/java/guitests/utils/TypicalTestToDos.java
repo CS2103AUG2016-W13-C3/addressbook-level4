@@ -18,14 +18,20 @@ public class TypicalTestToDos {
             toDoItem1 = new ToDoBuilder("title").build();
             toDoItem2 = new ToDoBuilder("title 2").withTags("tag1", "tag2")
                     .withDateRange(LocalDateTime.of(2016, 11, 1, 20, 1), LocalDateTime.of(2016, 12, 1, 20, 1))
-                    .finish(LocalDateTime.now()).build();
+                    .finish(null).build();
             toDoItem3 = new ToDoBuilder("title 3").withTags("tag1", "tag3")
                     .withDateRange(LocalDateTime.of(2017, 1, 1, 20, 1), LocalDateTime.of(2017, 2, 1, 20, 1))
-                    .finish(LocalDateTime.now()).build();
-            toDoItem4 = new ToDoBuilder("title 4").withDueDate(LocalDateTime.of(2016, 12, 1, 20, 1)).finish(LocalDateTime.now())
+                    .finish(null).build();
+            toDoItem4 = new ToDoBuilder("title 4").withDueDate(LocalDateTime.of(2016, 12, 1, 20, 1)).finish(null)
                     .build();
             toDoItem5 = new ToDoBuilder("title 5").withTags("tag1", "tag2")
-                    .withDueDate(LocalDateTime.of(2017, 11, 1, 20, 1)).finish(LocalDateTime.now()).build();
+                    .withDueDate(LocalDateTime.of(2017, 11, 1, 20, 1)).finish(null).build();
+            testToDoItem1 = new ToDoBuilder("test floating task").build();
+            testToDoItem2 = new ToDoBuilder("test event").withTags("tag8", "tag3")
+                    .withDateRange(LocalDateTime.of(2016, 12, 3, 20, 1), LocalDateTime.of(2017, 2, 4, 20, 1))
+                    .finish(null).build();
+            testToDoItem3 = new ToDoBuilder("test deadline").withTags("abcc", "tag2")
+                    .withDueDate(LocalDateTime.of(2016, 11, 14, 20, 1)).finish(null).build();
 
         } catch (IllegalValueException e) {
             e.printStackTrace();
@@ -35,12 +41,8 @@ public class TypicalTestToDos {
 
     public void loadToDoListWithSampleData(ToDoList todoList) {
         try {
-            todoList
-                .add(new ToDo(toDoItem1))
-                .add(new ToDo(toDoItem2))
-                .add(new ToDo(toDoItem3))
-                .add(new ToDo(toDoItem4))
-                .add(new ToDo(toDoItem5));
+            todoList.add(new ToDo(toDoItem1)).add(new ToDo(toDoItem2)).add(new ToDo(toDoItem3)).add(new ToDo(toDoItem4))
+                    .add(new ToDo(toDoItem5));
         } catch (IllegalValueException e) {
             assert false : "impossible";
         }
@@ -48,7 +50,7 @@ public class TypicalTestToDos {
     }
 
     public ToDo[] getTypicalToDos() {
-        return new ToDo[] { toDoItem2, toDoItem3, toDoItem1, toDoItem4, toDoItem5};
+        return new ToDo[] { toDoItem2, toDoItem3,  toDoItem4, toDoItem5, toDoItem1 };
     }
 
     public ToDoList getTypicalToDoList() {
@@ -56,8 +58,8 @@ public class TypicalTestToDos {
         loadToDoListWithSampleData(todoList);
         return todoList;
     }
-    
-    public ToDo[] getEmptyToDos(){
+
+    public ToDo[] getEmptyToDos() {
         return new ToDo[] {};
     }
 }
