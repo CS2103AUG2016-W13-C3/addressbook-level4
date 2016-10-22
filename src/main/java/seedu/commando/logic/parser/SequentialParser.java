@@ -207,4 +207,40 @@ public class SequentialParser {
 
         return Optional.empty();
     }
+	private static final Pattern INDEXRANGE_PATTERN = Pattern
+			.compile("^(?<firstInt>-?\\d+)" + "\\s*" + "((to)|-)" + "\\s*" + "(?<secondInt>-?\\d+)(?<left>.*?)$");
+	public List<Integer> extractIndicesList() throws IllegalValueException {
+		final Matcher matcher = INDEXRANGE_PATTERN.matcher(input.trim());
+		List<Integer> indices = new ArrayList<Integer>();
+		int firstInt = -1, secondInt = -1;
+		Optional<Integer> aNumber;
+		// Add the index range to a list of indices
+		//Case one: command type : [index] [to|-] [index]
+		if (matcher.find()) {
+			try {
+				firstInt = Integer.parseInt(matcher.group("firstInt"));
+				secondInt = Integer.parseInt(matcher.group("secondInt"));
+			} catch (NumberFormatException exception) {
+				assert false : "Shouldn't be able to fail parsing of integer based on pattern";
+			}
+			if (firstInt > secondInt) {
+				throw new IllegalValueException(Messages.INDEXRANGE_CONSTRAINTS);
+			} else {
+				for (int i = firstInt; i <= secondInt; i++) {
+					indices.add(i);
+				}
+			}
+			input = matcher.group("left").trim();
+		}
+		//Case two: command type : {[index]..}
+		else {
+			aNumber = extractInteger();
+			while (aNumber.isPresent()) {
+				indices.add(aNumber.get());
+				aNumber = extractInteger();
+			}
+		}
+		return indices;
+
+	}
 }
