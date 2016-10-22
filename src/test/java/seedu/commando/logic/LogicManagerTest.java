@@ -8,10 +8,10 @@ import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.events.ui.ExitAppRequestEvent;
 import seedu.commando.logic.commands.*;
 import seedu.commando.model.Model;
 import seedu.commando.model.ModelManager;
+import seedu.commando.model.UserPrefs;
 import seedu.commando.storage.StorageManager;
 import seedu.commando.testutil.EventsCollector;
 
@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static seedu.commando.testutil.TestHelper.*;
 
 /**
  * Contains tests for LogicManager
@@ -39,26 +38,27 @@ public class LogicManagerTest {
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
-    private File toDoListFile;
-    private File userPrefsFile;
 
     @Before
     public void setup() throws IOException {
-        Model model = new ModelManager();
-
-        toDoListFile = folder.newFile();
-        userPrefsFile  = folder.newFile();
-        logic = new LogicManager(model, new StorageManager(
-            toDoListFile.getAbsolutePath(),
-            userPrefsFile.getAbsolutePath()
-        ));
-
         eventsCollector = new EventsCollector();
+        logic = initLogic(folder);
     }
 
     @After
     public void teardown() {
         EventsCenter.clearSubscribers();
+    }
+
+    public static Logic initLogic(TemporaryFolder folder) throws IOException {
+        File toDoListFile = folder.newFile();
+        File userPrefsFile  = folder.newFile();
+        Model model = new ModelManager();
+
+        return new LogicManager(model, new StorageManager(
+            toDoListFile.getAbsolutePath(),
+            userPrefsFile.getAbsolutePath()
+        ), new UserPrefs());
     }
 
     @Test

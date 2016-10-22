@@ -2,6 +2,7 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.model.todo.ToDoList;
 import seedu.commando.model.ui.UiToDo;
 import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListChange;
@@ -35,8 +36,8 @@ public class DeleteCommand extends Command {
 
         try {
             model.changeToDoList(new ToDoListChange(
-                Collections.emptyList(),
-                Collections.singletonList(toDoToDelete.get())
+                new ToDoList(),
+                new ToDoList().add(toDoToDelete.get())
             ));
         } catch (IllegalValueException exception) {
             return new CommandResult(exception.getMessage(), true);

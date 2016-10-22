@@ -39,22 +39,6 @@ public class TestApp extends MainApp {
         }
     }
 
-    protected Config initConfig(String configFilePath) {
-        Config config = super.initConfig(configFilePath);
-        config.setToDoListFilePath(saveFileLocation);
-        config.setUserPrefsFilePath(DEFAULT_PREF_FILE_LOCATION_FOR_TESTING);
-        return config;
-    }
-
-    protected UserPrefs initPrefs(Config config) {
-        UserPrefs userPrefs = super.initPrefs(config);
-        double x = Screen.getPrimary().getVisualBounds().getMinX();
-        double y = Screen.getPrimary().getVisualBounds().getMinY();
-        userPrefs.updateLastUsedGuiSetting(new GuiSettings(1000.0, 750.0, (int) x, (int) y, false));
-        return userPrefs;
-    }
-
-
     @Override
     public void start(Stage primaryStage) {
         ui.start(primaryStage);

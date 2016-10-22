@@ -8,11 +8,11 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * Updates the filter for to-do list to show only to-do items containing all
- * of the keywords and tags (case insensitive)
+ * Changes to history mode, and updates the filter for to-do list
+ * to show only to-do items containing all of the keywords and tags (case insensitive)
  */
-public class FindCommand extends Command {
-    public static final String COMMAND_WORD = "find";
+public class RecallCommand extends Command {
+    public static final String COMMAND_WORD = "recall";
 
     public Set<String> keywords = Collections.emptySet();
     public Set<Tag> tags = Collections.emptySet();
@@ -26,11 +26,11 @@ public class FindCommand extends Command {
 
         // if no keywords or tags are provided, clear filter
         if (keywords.isEmpty() && tags.isEmpty()) {
-            model.clearUiToDoListFilter(false);
-            return new CommandResult(Messages.CLEAR_FIND);
+            model.clearUiToDoListFilter(true);
+            return new CommandResult(Messages.CLEAR_RECALL);
         }
 
-        model.setUiToDoListFilter(keywords, tags, false);
-        return new CommandResult(String.format(Messages.FIND, model.getUiEvents().size(), model.getUiTasks().size()));
+        model.setUiToDoListFilter(keywords, tags, true);
+        return new CommandResult(String.format(Messages.RECALL, model.getUiEvents().size(), model.getUiTasks().size()));
     }
 }

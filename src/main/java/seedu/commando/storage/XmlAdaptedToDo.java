@@ -1,12 +1,7 @@
 package seedu.commando.storage;
 
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.todo.Tag;
-import seedu.commando.model.todo.DateRange;
-import seedu.commando.model.todo.DueDate;
-import seedu.commando.model.todo.ReadOnlyToDo;
-import seedu.commando.model.todo.Title;
-import seedu.commando.model.todo.ToDo;
+import seedu.commando.model.todo.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
  * JAXB-friendly version of the to-do
  */
 public class XmlAdaptedToDo {
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @XmlElement(required = true)
     private String title;
@@ -31,8 +26,12 @@ public class XmlAdaptedToDo {
     private String dateRangeStart;
     @XmlElement(required = true)
     private String dateRangeEnd;
-    @XmlElement(required = true, defaultValue = "false")
-    private boolean isFinished;
+    @XmlElement(required = true)
+    private String dateCreated;
+    @XmlElement(required = true)
+    private String dateFinished;
+    @XmlElement(required = true)
+    private String recurrence;
 
     @XmlElement
     private Set<String> tagged;
@@ -57,7 +56,12 @@ public class XmlAdaptedToDo {
             dateRangeEnd = dateFormatter.format(toDo.getDateRange().get().endDate);
         }
 
-        isFinished = toDo.isFinished();
+        if (toDo.getDateFinished().isPresent()) {
+            dateFinished = dateFormatter.format(toDo.getDateFinished().get());
+        }
+
+        dateCreated = dateFormatter.format(toDo.getDateCreated());
+        recurrence = toDo.getRecurrence().name();
         tagged = toDo.getTags().stream().map(tag -> tag.value).collect(Collectors.toSet());
     }
 
@@ -100,7 +104,24 @@ public class XmlAdaptedToDo {
             }
         }
 
-        todo.setIsFinished(isFinished);
+        // Check if the date finished is empty
+        if (dateFinished != null){
+            todo.setDateFinished(LocalDateTime.parse(dateFinished, dateFormatter));
+        }
+
+        // Check if the date created is empty
+        if (dateCreated != null){
+            System.out.println("CREATED: " + dateCreated);
+            todo.setDateCreated(LocalDateTime.parse(dateCreated, dateFormatter));
+        }
+
+        if (recurrence != null) {
+            try {
+                todo.setRecurrence(Recurrence.valueOf(recurrence));
+            } catch(IllegalArgumentException exception) {
+                // Invalid recurrence, ignore
+            }
+        }
 
         return todo;
     }

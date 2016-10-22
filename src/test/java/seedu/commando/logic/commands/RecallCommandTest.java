@@ -1,5 +1,14 @@
 package seedu.commando.logic.commands;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static seedu.commando.logic.LogicManagerTest.initLogic;
+import static seedu.commando.testutil.TestHelper.ifToDoExistsFiltered;
+import static seedu.commando.testutil.TestHelper.wasToDoListChangedEventPosted;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -12,14 +21,7 @@ import seedu.commando.logic.Logic;
 import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.ToDoBuilder;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-
-import static org.junit.Assert.*;
-import static seedu.commando.logic.LogicManagerTest.initLogic;
-import static seedu.commando.testutil.TestHelper.*;
-
-public class FindCommandTest {
+public class RecallCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
@@ -37,22 +39,27 @@ public class FindCommandTest {
     public void teardown() {
         EventsCenter.clearSubscribers();
     }
-
+    
     @Test
-    public void execute_find_keywords() throws IllegalValueException {
+    public void execute_recall_keywords() throws IllegalValueException {
         logic.execute("add Title"); // case insensitivity
         logic.execute("add title2"); // superstrings
-        logic.execute("add title 3");
+        logic.execute("add title 3"); // spaces
         logic.execute("add somethingelse");
+        
+        logic.execute("finish 1");
+        logic.execute("finish 1");
+        logic.execute("finish 1");
+        logic.execute("finish 1");
 
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        CommandResult result = logic.execute("find title");
+        CommandResult result = logic.execute("recall title");
         assertFalse(result.hasError());
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-
+        
         assertTrue(ifToDoExistsFiltered(logic,
             new ToDoBuilder("Title")
                 .build()));
@@ -66,16 +73,19 @@ public class FindCommandTest {
             new ToDoBuilder("somethingelse")
                 .build()));
     }
-
+    
     @Test
     public void execute_find_tagsWithKeywords() throws IllegalValueException {
         logic.execute("add title #tag");
         logic.execute("add somethingelse");
+        
+        logic.execute("finish 1");
+        logic.execute("finish 1");
 
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        CommandResult result = logic.execute("find tag");
+        CommandResult result = logic.execute("recall tag");
         assertFalse(result.hasError());
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
@@ -96,11 +106,17 @@ public class FindCommandTest {
         logic.execute("add title 3 #tag #tag2"); // multiple tags
         logic.execute("add tag"); // title with tag
         logic.execute("add somethingelse");
+        
+        logic.execute("finish 1");
+        logic.execute("finish 1");
+        logic.execute("finish 1");
+        logic.execute("finish 1");
+        logic.execute("finish 1");
 
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        CommandResult result = logic.execute("find #tag");
+        CommandResult result = logic.execute("recall #tag");
         assertFalse(result.hasError());
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
@@ -131,11 +147,15 @@ public class FindCommandTest {
         logic.execute("add title #tag");
         logic.execute("add title2 #tag #tag2");
         logic.execute("add title3 #tag #tag2 #tag3");
+        
+        logic.execute("finish 1");
+        logic.execute("finish 1");
+        logic.execute("finish 1");
 
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        CommandResult result = logic.execute("find #tag #tag2");
+        CommandResult result = logic.execute("recall #tag #tag2");
         assertFalse(result.hasError());
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
@@ -159,11 +179,15 @@ public class FindCommandTest {
         logic.execute("add title #tag");
         logic.execute("add title3 #tag #tag2");
         logic.execute("add title3");
+        
+        logic.execute("finish 1");
+        logic.execute("finish 1");
+        logic.execute("finish 1");
 
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        CommandResult result = logic.execute("find title 3 #tag");
+        CommandResult result = logic.execute("recall title 3 #tag");
         assertFalse(result.hasError());
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));

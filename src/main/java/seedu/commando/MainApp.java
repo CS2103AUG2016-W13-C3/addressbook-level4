@@ -8,11 +8,8 @@ import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.core.Version;
-import seedu.commando.commons.events.storage.ChangeToDoListFilePathEvent;
-import seedu.commando.commons.events.ui.ExitAppRequestEvent;
-import seedu.commando.commons.events.ui.UpdateFilePathEvent;
+import seedu.commando.commons.events.logic.ExitAppRequestEvent;
 import seedu.commando.commons.exceptions.DataConversionException;
-import seedu.commando.commons.util.ConfigUtil;
 import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.logic.LogicManager;
@@ -25,7 +22,6 @@ import seedu.commando.ui.Ui;
 import seedu.commando.ui.UiManager;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -42,7 +38,6 @@ public class MainApp extends Application {
     protected Storage storage;
     protected Model model;
     protected UserPrefs userPrefs;
-    protected Config config;
     protected EventsCenter eventsCenter;
 
     public MainApp() {}
@@ -51,44 +46,41 @@ public class MainApp extends Application {
     public void init() throws Exception {
         logger.info("=============================[ Initializing " + Config.ApplicationTitle + " ]===========================");
         super.init();
-        
-        config = initConfig(getApplicationParameter("config"));
 
-        storage = new StorageManager(config.getToDoListFilePath(), config.getUserPrefsFilePath());
+        logger.info("Using prefs file: " + Config.DefaultToDoListFilePath);
+        storage = new StorageManager(Config.DefaultToDoListFilePath, Config.UserPrefsFilePath);
 
-        userPrefs = initPrefs(config);
+        userPrefs = initPrefs(storage);
 
         initLogging();
 
         model = initModelManager(storage, userPrefs);
 
-        logic = new LogicManager(model, storage);
+        logic = new LogicManager(model, storage, userPrefs);
 
-        ui = new UiManager(logic, config, userPrefs);
+        ui = new UiManager(logic, userPrefs);
 
         initEventsCenter();
     }
 
-    private String getApplicationParameter(String parameterName){
-        Map<String, String> applicationParameters = getParameters().getNamed();
-        return applicationParameters.get(parameterName);
-    }
-
     private Model initModelManager(Storage storage, UserPrefs userPrefs) {
-        Optional<ReadOnlyToDoList> toDoListOptional;
-        ReadOnlyToDoList initialToDoList;
+        // Set to-do list storage file path to user pref's
+        logger.info("Using to-do list file: " + userPrefs.getToDoListFilePath());
+        storage.setToDoListFilePath(userPrefs.getToDoListFilePath().getValue());
+
+        ReadOnlyToDoList initialToDoList = new ToDoList();
+
         try {
-            toDoListOptional = storage.readToDoList();
-            if(!toDoListOptional.isPresent()){
+            Optional<ReadOnlyToDoList> toDoListOptional = storage.readToDoList();
+            if(toDoListOptional.isPresent()){
+                initialToDoList = toDoListOptional.get();
+            } else {
                 logger.info("Data file not found. Will be starting with an empty to-do list");
             }
-            initialToDoList = toDoListOptional.orElse(new ToDoList());
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty to-do list");
-            initialToDoList = new ToDoList();
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with an empty to-do list");
-            initialToDoList = new ToDoList();
         }
 
         return new ModelManager(initialToDoList, userPrefs);
@@ -98,60 +90,26 @@ public class MainApp extends Application {
         LogsCenter.init(Config.LogLevel);
     }
     
-    protected Config initConfig(String configFilePath) {
-        Config initializedConfig;
-        String configFilePathUsed;
+    protected UserPrefs initPrefs(Storage storage) {
+        UserPrefs initializedPrefs = new UserPrefs();
 
-        configFilePathUsed = Config.DefaultConfigFilePath;
-
-        if (configFilePath != null) {
-            logger.info("Custom Config file specified " + configFilePath);
-            configFilePathUsed = configFilePath;
-        }
-
-        logger.info("Using config file : " + configFilePathUsed);
-
-        try {
-            Optional<Config> configOptional = ConfigUtil.readConfig(configFilePathUsed);
-            initializedConfig = configOptional.orElse(new Config());
-        } catch (DataConversionException e) {
-            logger.warning("Config file at " + configFilePathUsed + " is not in the correct format. " +
-                    "Using default config properties");
-            initializedConfig = new Config();
-        }
-
-        //Update config file in case it was missing to begin with or there are new/unused fields
-        try {
-            ConfigUtil.saveConfig(initializedConfig, configFilePathUsed);
-        } catch (IOException e) {
-            logger.warning("Failed to save config file : " + StringUtil.getDetails(e));
-        }
-        return initializedConfig;
-    }
-
-    protected UserPrefs initPrefs(Config config) {
-    	assert config != null;
-        String prefsFilePath = config.getUserPrefsFilePath();
-        logger.info("Using prefs file: " + prefsFilePath);
-
-        UserPrefs initializedPrefs;
         try {
             Optional<UserPrefs> prefsOptional = storage.readUserPrefs();
-            initializedPrefs = prefsOptional.orElse(new UserPrefs());
+            if (prefsOptional.isPresent()) {
+                initializedPrefs = prefsOptional.get();
+            }
         } catch (DataConversionException e) {
-            logger.warning("UserPrefs file at " + prefsFilePath + " is not in the correct format. " +
-                    "Using default user prefs");
-            initializedPrefs = new UserPrefs();
+            logger.warning("User prefs file is not in the correct format. "
+                + "Using default user prefs...");
         } catch (IOException e) {
-            logger.warning("Problem while reading from the file. Will be starting with an empty CommanDo");
-            initializedPrefs = new UserPrefs();
+            logger.warning("Problem while reading from the file. Using default user prefs...");
         }
 
-        //Update prefs file in case it was missing to begin with or there are new/unused fields
+        // Update prefs file in case it was missing to begin with or there are new/unused fields
         try {
             storage.saveUserPrefs(initializedPrefs);
-        } catch (IOException e) {
-            logger.warning("Failed to save config file: " + StringUtil.getDetails(e));
+        } catch (IOException exception) {
+            logger.warning("Failed to save user prefs file: " + StringUtil.getDetails(exception));
         }
 
         return initializedPrefs;
@@ -184,20 +142,6 @@ public class MainApp extends Application {
     public void handleExitAppRequestEvent(ExitAppRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         this.stop();
-    }
-    
-    @Subscribe
-    public void handleChangeToDoListFilePathEvent(ChangeToDoListFilePathEvent event){
-    	logger.info(LogsCenter.getEventHandlingLogMessage(event));
-    	this.storage.setToDoListFilePath(event.path);
-    	this.config.setToDoListFilePath(event.path);
-    	try {
-			ConfigUtil.saveConfig(this.config, Config.DefaultConfigFilePath);
-		} catch (IOException e) {
-			logger.warning("Failed to save config " + StringUtil.getDetails(e));
-		}
-    	EventsCenter.getInstance().post(new UpdateFilePathEvent());
-    	
     }
 
     public static void main(String[] args) {

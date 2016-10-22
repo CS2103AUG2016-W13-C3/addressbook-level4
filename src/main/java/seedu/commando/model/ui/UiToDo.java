@@ -3,6 +3,7 @@ package seedu.commando.model.ui;
 import javafx.beans.value.ObservableValue;
 import seedu.commando.model.todo.*;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -45,6 +46,21 @@ public class UiToDo implements ReadOnlyToDo {
     @Override
     public boolean isFinished() {
         return toDo.isFinished();
+    }
+
+    @Override
+    public Optional<LocalDateTime> getDateFinished() {
+        return toDo.getDateFinished();
+    }
+
+    @Override
+    public LocalDateTime getDateCreated() {
+        return toDo.getDateCreated();
+    }
+
+    @Override
+    public Recurrence getRecurrence() {
+        return toDo.getRecurrence();
     }
 
     @Override
