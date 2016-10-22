@@ -307,9 +307,10 @@ public class TestUtil {
      * @param todosToAdd The todos that are to be appended behind the original array.
      * @return The modified array of todos.
      */
-    public static ToDo[] addToDosToList(final ToDo[] todos, ToDo... todosToAdd) {
+    public static ToDo[] addToDosToList(final ToDo[] todos, int idx, ToDo... todosToAdd) {
         List<ToDo> listOfToDos = asList(todos);
-        listOfToDos.addAll(asList(todosToAdd));
+        List<ToDo> todoitem = asList(todosToAdd);
+        listOfToDos.addAll(idx, todoitem);
         return listOfToDos.toArray(new ToDo[listOfToDos.size()]);
     }
 

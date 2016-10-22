@@ -11,7 +11,7 @@ import seedu.commando.testutil.ToDoBuilder;
  */
 public class TypicalTestToDos {
 
-    public static ToDo toDoItem1, toDoItem2, toDoItem3, toDoItem4, toDoItem5;
+    public static ToDo toDoItem1, toDoItem2, toDoItem3, toDoItem4, toDoItem5, testToDoItem1, testToDoItem2, testToDoItem3;
 
     public TypicalTestToDos() {
         try {
@@ -27,7 +27,13 @@ public class TypicalTestToDos {
                     .build();
             toDoItem5 = new ToDoBuilder("title 5").withTags("tag1", "tag2")
                     .withDueDate(LocalDateTime.of(2017, 11, 1, 20, 1)).isFinished(true).build();
-
+            
+            testToDoItem1 = new ToDoBuilder("test floating task").build();
+            testToDoItem2 = new ToDoBuilder("test event").withTags("tag8", "tag3")
+                    .withDateRange(LocalDateTime.of(2016, 12, 3, 20, 1), LocalDateTime.of(2017, 2, 4, 20, 1))
+                    .isFinished(false).build();
+            testToDoItem3 = new ToDoBuilder("test deadline").withTags("abcc", "tag2")
+                    .withDueDate(LocalDateTime.of(2016, 11, 14, 20, 1)).isFinished(false).build();
         } catch (IllegalValueException e) {
             e.printStackTrace();
             assert false : "not possible";
@@ -50,7 +56,7 @@ public class TypicalTestToDos {
     }
 
     public ToDo[] getTypicalToDos() {
-        return new ToDo[] { toDoItem1, toDoItem2, toDoItem3, toDoItem4, toDoItem5 };
+        return new ToDo[] { toDoItem2, toDoItem3, toDoItem1, toDoItem4, toDoItem5};
     }
 
     public ToDoList getTypicalToDoList() {

@@ -18,33 +18,70 @@ public class AddCommandTest extends CommanDoGuiTest {
 
     @Test
     public void add() {
+        //add one todo to existing list
+        ToDo[] currentList = td.getTypicalToDos();
+        ToDo toDoToAdd = td.testToDoItem1;
+        assertAddSuccess(toDoToAdd, 3, currentList);
+        currentList = TestUtil.addToDosToList(currentList, 3, toDoToAdd);
+        
+        toDoToAdd = td.testToDoItem2;
+        assertAddSuccess(toDoToAdd, 0, currentList);
+        currentList = TestUtil.addToDosToList(currentList, 0, toDoToAdd);
+        
+        toDoToAdd = td.testToDoItem3;
+        assertAddSuccess(toDoToAdd, 3, currentList);
+        currentList = TestUtil.addToDosToList(currentList, 3, toDoToAdd);
+        
+        //add one todo to empty list
         commandBox.runCommand("clear");
-        //add one todo
-        ToDo[] currentList = td.getEmptyToDos();
-        ToDo toDoToAdd = td.toDoItem2;
-        assertAddSuccess(toDoToAdd, currentList);
-        currentList = TestUtil.addToDosToList(currentList, toDoToAdd);
+        currentList = td.getEmptyToDos();
+        toDoToAdd = td.toDoItem2;
+        assertAddSuccess(toDoToAdd, currentList.length, currentList);
+        currentList = TestUtil.addToDosToList(currentList, currentList.length, toDoToAdd);
 
         //add another todo
         toDoToAdd = td.toDoItem1;
-        assertAddSuccess(toDoToAdd, currentList);
-        currentList = TestUtil.addToDosToList(currentList, toDoToAdd);
-
-        //add duplicate person
+        assertAddSuccess(toDoToAdd, currentList.length, currentList);
+        currentList = TestUtil.addToDosToList(currentList, currentList.length, toDoToAdd);
+        
+        //Invalid add command:
+        
+        //add duplicate todo
         commandBox.runCommand(CommandBuilder.buildAddCommand(td.toDoItem1));
         assertResultMessage(Messages.TODO_ALREADY_EXISTS);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
-
-        //add to empty list
-        commandBox.runCommand("clear");
-        assertAddSuccess(td.toDoItem3);
+        
+        //add missing title
+        commandBox.runCommand("add ");
+        assertResultMessage(Messages.MISSING_TODO_TITLE);
+        assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
+        
+        //add missing startdate ,  empty date
+        commandBox.runCommand("add test from to 1pm");
+        assertResultMessage(Messages.MISSING_TODO_DATERANGE_START);
+        assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
+        
+        //add missing startdate ,  invalid date
+        commandBox.runCommand("add test from abcde to 1pm");
+        assertResultMessage(Messages.MISSING_TODO_DATERANGE_START);
+        assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
+        
+        //add missing enddate , empty date
+        commandBox.runCommand("add test from 1pm to");
+        assertResultMessage(Messages.MISSING_TODO_DATERANGE_END);
+        assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
+        
+        //add missing enddate ,  invalid date
+        commandBox.runCommand("add test from 1pm to abcde");
+        assertResultMessage(Messages.MISSING_TODO_DATERANGE_END);
+        assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
 
         //invalid command
         commandBox.runCommand("adds Johnny");
         assertResultMessage(Messages.UNKNOWN_COMMAND);
     }
 
-    private void assertAddSuccess(ToDo todoToAdd, ToDo... currentList) {
+    private void assertAddSuccess(ToDo todoToAdd, int idx, ToDo... currentList ) {
         commandBox.runCommand(CommandBuilder.buildAddCommand(todoToAdd));
 
         //confirm the new card contains the right data
@@ -58,7 +95,7 @@ public class AddCommandTest extends CommanDoGuiTest {
         assertMatching(todoToAdd, addedCard);
 
         //confirm the list now contains all previous persons plus the new person
-        ToDo[] expectedList = TestUtil.addToDosToList(currentList, todoToAdd);
+        ToDo[] expectedList = TestUtil.addToDosToList(currentList, idx, todoToAdd);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedList));
     }
 
