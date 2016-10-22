@@ -25,9 +25,11 @@ public class Messages {
     public static final String TODO_ADDED = "To-do added: %1$s.";
     public static final String TODO_DELETED = "To-do deleted: %1$s.";
     public static final String TODO_FINISHED = "To-do finished: %1$s.";
+    public static final String TODO_UNFINISHED = "To-do unfinished: %1$s.";
     public static final String TODO_EDITED = "To-do edited: %1$s.";
     public static final String TODO_NO_EDITS = "Nothing interesting happens.";
     public static final String TODO_ALREADY_FINISHED = "To-do already finished: %1$s";
+    public static final String TODO_ALREADY_ONGOING = "To-do already ongoing: %1$s";
     public static final String TODO_NOT_FOUND = "To-do not found: %1$s";
     public static final String FIND = "Found %1$d events and %2$d tasks.";
     public static final String RECALL = "Found %1$d events and %2$d tasks in the past.";

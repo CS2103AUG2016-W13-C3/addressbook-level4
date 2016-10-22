@@ -2,12 +2,12 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.logic.commands.Command.NoModelException;
 import seedu.commando.model.todo.ToDoList;
 import seedu.commando.model.ui.UiToDo;
 import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.todo.ToDo;
-
 
 import java.util.Iterator;
 import java.util.List;
@@ -16,47 +16,47 @@ import java.util.Optional;
 /**
  * Marks a to-do item as done
  */
-public class FinishCommand extends Command {
+public class UnfinishCommand extends Command {
 
-	public static final String COMMAND_WORD = "finish";
+    public static final String COMMAND_WORD = "unfinish";
 
 	public final List<Integer> toDoIndices;
 
-	public FinishCommand(List<Integer> toDoIndices) {
-		this.toDoIndices = toDoIndices;
-	}
+    public UnfinishCommand(List<Integer> toDoIndices) {
+    	this.toDoIndices = toDoIndices;
+    }
 
 	@Override
 	public CommandResult execute() throws IllegalValueException, NoModelException {
 		Model model = getModel();
 		int index;
-		ToDoList listToFinish = new ToDoList();
-		ToDoList finishedToDos = new ToDoList();
+		ToDoList listToUnfinish = new ToDoList();
+		ToDoList unfinishedToDos = new ToDoList();
 		Iterator<Integer> iterator = toDoIndices.iterator();
-		//If to-do with the index is valid and not finished, mark it as finished, else throw error message and return
+		//If to-do with the index is valid and finished, mark it as unfinished, else throw error message and return
 		while (iterator.hasNext()) {
 			index = iterator.next();
-			Optional<UiToDo> toDoToFinish = model.getUiToDoAtIndex(index);
-			if (!toDoToFinish.isPresent()) {
+			Optional<UiToDo> toDoToUnfinish = model.getUiToDoAtIndex(index);
+			if (!toDoToUnfinish.isPresent()) {
 				return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, index), true);
 			}
-			if (toDoToFinish.get().isFinished()) {
+			if (!toDoToUnfinish.get().isFinished()) {
 				return new CommandResult(
-						String.format(Messages.TODO_ALREADY_FINISHED, toDoToFinish.get().getTitle().toString()), true);
+						String.format(Messages.TODO_ALREADY_ONGOING, toDoToUnfinish.get().getTitle().toString()), true);
 			}
-			listToFinish.add(toDoToFinish.get());
-			// Mark as finished
-			finishedToDos.add(new ToDo(toDoToFinish.get()).setIsFinished(true));
+			listToUnfinish.add(toDoToUnfinish.get());
+			// Mark as unfinished
+			unfinishedToDos.add(new ToDo(toDoToUnfinish.get()).setIsFinished(false));
 		}
 
 		try {
 			model.changeToDoList(
-					new ToDoListChange(finishedToDos, listToFinish));
+					new ToDoListChange(unfinishedToDos, listToUnfinish));
 		} catch (IllegalValueException exception) {
 			return new CommandResult(exception.getMessage(), true);
 		}
 
-		return new CommandResult(String.format(Messages.TODO_FINISHED, toDoIndices.toString()));
+		return new CommandResult(String.format(Messages.TODO_UNFINISHED, toDoIndices.toString()));
 	}
 
 }
