@@ -1,11 +1,7 @@
 package seedu.commando.testutil;
 
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.todo.Tag;
-import seedu.commando.model.todo.DateRange;
-import seedu.commando.model.todo.DueDate;
-import seedu.commando.model.todo.Title;
-import seedu.commando.model.todo.ToDo;
+import seedu.commando.model.todo.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -50,8 +46,20 @@ public class ToDoBuilder {
         return this;
     }
 
-    public ToDoBuilder isFinished(boolean isFinished) {
-        toDo.setIsFinished(isFinished);
+    public ToDoBuilder finish(LocalDateTime date) {
+        toDo.setDateFinished(date);
+
+        return this;
+    }
+
+    public ToDoBuilder created(LocalDateTime date) {
+        toDo.setDateCreated(date);
+
+        return this;
+    }
+
+    public ToDoBuilder withRecurrence(Recurrence recurrence) {
+        toDo.setRecurrence(recurrence);
 
         return this;
     }

@@ -134,7 +134,7 @@ public class XmlToDoListStorageTest {
                                    LocalDateTime.of(2016, 4, 1, 20, 1))
                     .build());
         toDoList.add(new ToDoBuilder("valid title 2")
-                    .isFinished(true)
+                    .finish(LocalDateTime.now())
                     .build());
         return toDoList;
     }

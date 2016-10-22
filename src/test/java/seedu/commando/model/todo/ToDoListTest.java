@@ -30,13 +30,11 @@ public class ToDoListTest {
         toDoListItem1 = new ToDoBuilder("title").build();
         toDoListItem2 = new ToDoBuilder("title 2").withTags("tag1", "tag2")
                 .withDueDate(LocalDateTime.of(2016, 5, 1, 20, 1))
-                .withDateRange(LocalDateTime.of(2016, 3, 1, 20, 1), LocalDateTime.of(2016, 4, 1, 20, 1))
-                .isFinished(true).build();
+                .finish(LocalDateTime.of(2016, 6, 3, 20, 20)).build();
         toDoList.add(toDoListItem1);
         toDoList.add(toDoListItem2);
         toDoList2Item1 = new ToDoBuilder("title 3")
                 .withDateRange(LocalDateTime.of(2016, 3, 1, 20, 1), LocalDateTime.of(2016, 4, 1, 20, 1)).build();
-
         toDoList2 = new ToDoList();
         toDoList2.add(toDoList2Item1);
     }

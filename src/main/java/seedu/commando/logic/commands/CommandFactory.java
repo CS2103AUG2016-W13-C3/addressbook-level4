@@ -68,10 +68,28 @@ public class CommandFactory {
             	return buildExportCommand();
             case ImportCommand.COMMAND_WORD:
             	return buildImportCommand();
+            case RecallCommand.COMMAND_WORD:
+                return buildRecallCommand();
             default:
                 throw new IllegalValueException(Messages.UNKNOWN_COMMAND);
         }
     }
+
+    private Command buildRecallCommand() {
+        RecallCommand command = new RecallCommand();
+
+        // Extract tags
+        Set<Tag> tags = sequentialParser.extractTrailingTags();
+        if (!tags.isEmpty()) {
+            command.tags = tags;
+        }
+
+        // Try to find keywords
+        command.keywords = sequentialParser.extractWords().stream().collect(Collectors.toSet());
+
+        return command;
+    }
+
 
     private Command buildExitCommand() throws IllegalValueException {
         if (!sequentialParser.isInputEmpty()) {

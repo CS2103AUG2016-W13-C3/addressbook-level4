@@ -46,10 +46,11 @@ public interface Model {
     /**
      * Clears the filter on the UI to-do list
      */
-    void clearUiToDoListFilter();
+    void clearUiToDoListFilter(boolean ifHistoryMode);
 
     /**
      * Sets a filter on the UI to-do list
+     * @see seedu.commando.model.ui.UiModel#setToDoListFilter(Set, Set, boolean)
      */
-    void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags);
+    void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, boolean ifHistoryMode);
 }

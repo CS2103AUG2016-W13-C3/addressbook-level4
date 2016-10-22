@@ -19,6 +19,8 @@ public class ModelManagerTest {
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
+    private LocalDateTime now = LocalDateTime.now();
+
     private ToDoList toDoList;
     private ToDo toDoListItem1;
     private ToDo toDoListItem2;
@@ -35,11 +37,12 @@ public class ModelManagerTest {
     @Before
     public void setup() throws IllegalValueException {
         toDoList = new ToDoList();
-        toDoListItem1 = new ToDoBuilder("title").build();
+        toDoListItem1 = new ToDoBuilder("title")
+            .created(now.plusYears(-1))
+            .build();
         toDoListItem2 = new ToDoBuilder("title 2")
-            .withTags(
-                "tag1", "tag2"
-            )
+            .created(now)
+            .withTags("tag1", "tag2")
             .withDueDate(
                 LocalDateTime.of(2016, 5, 1, 20, 1)
             )
@@ -47,8 +50,9 @@ public class ModelManagerTest {
                 LocalDateTime.of(2016, 3, 1, 20, 1),
                 LocalDateTime.of(2016, 4, 1, 20, 1)
             )
-            .isFinished(true)
+            .finish(now.plusYears(1))
             .build();
+
         toDoList.add(toDoListItem1);
         toDoList.add(toDoListItem2);
 
@@ -204,4 +208,6 @@ public class ModelManagerTest {
         assertFalse(modelManager.getToDoList().contains(toDoList2Item1));
         assertFalse(modelManager.getToDoList().contains(toDoListItem1));
     }
+
+    // TODO: Add tests for filtering methods
 }

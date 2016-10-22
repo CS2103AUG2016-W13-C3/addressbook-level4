@@ -23,6 +23,11 @@ public interface ReadOnlyToDo {
 
     Recurrence getRecurrence();
 
+    /**
+     * If a date range is set and current datetime is after the end of the range
+     * returns end of date range regardless of whether date finished was set
+     * Else, returns date finished if it is set, empty otherwise
+     */
     Optional<LocalDateTime> getDateFinished();
 
     /**

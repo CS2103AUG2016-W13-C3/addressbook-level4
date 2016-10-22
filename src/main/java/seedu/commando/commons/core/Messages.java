@@ -29,7 +29,9 @@ public class Messages {
     public static final String TODO_ALREADY_FINISHED = "To-do already finished: %1$s";
     public static final String TODO_NOT_FOUND = "To-do not found: %1$s";
     public static final String FIND = "Found %1$d events and %2$d tasks.";
+    public static final String RECALL = "Found %1$d events and %2$d tasks in the past.";
     public static final String CLEAR_FIND = "Listed all to-do items.";
+    public static final String CLEAR_RECALL = "Listed all to-do items in the past.";
     public static final String TODO_ITEM_INDEX_INVALID = "Invalid to-do index: %1$d.";
     public static final String EXIT_APPLICATION = "Exiting application...";
     public static final String TODO_LIST_CLEARED = "Cleared to-do list!";
