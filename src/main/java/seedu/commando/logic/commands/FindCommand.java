@@ -31,6 +31,6 @@ public class FindCommand extends Command {
         }
 
         model.setUiToDoListFilter(keywords, tags);
-        return new CommandResult(String.format(Messages.FIND, model.getUiEventsToday().size(), model.getUiTasks().size()));
+        return new CommandResult(String.format(Messages.FIND, model.getUiEvents().size(), model.getUiTasks().size()));
     }
 }

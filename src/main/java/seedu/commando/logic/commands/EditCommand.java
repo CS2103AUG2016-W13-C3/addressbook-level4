@@ -70,8 +70,8 @@ public class EditCommand extends Command {
         }
 
         model.changeToDoList(new ToDoListChange(
-            Collections.singletonList(newToDo),
-            Collections.singletonList(toDoToEdit.get())
+            new ToDoList().add(newToDo),
+            new ToDoList().add(toDoToEdit.get())
         ));
 
         return new CommandResult(String.format(Messages.TODO_EDITED, newToDo.getTitle().toString()));

@@ -61,7 +61,7 @@ public class StorageManagerTest {
         ToDoList original = ToDoListBuilder.getSample();
         storageManager.saveToDoList(original);
         ReadOnlyToDoList retrieved = storageManager.readToDoList().get();
-        assertEquals(original, new ToDoList(retrieved));
+        assertTrue(original.isSimilar(new ToDoList(retrieved)));
     }
 
     @Test

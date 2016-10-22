@@ -66,6 +66,7 @@ public abstract class CommanDoGuiTest {
             commandBox = mainGui.getCommandBox();
             this.stage = stage;
         });
+
         EventsCenter.clearSubscribers();
         testApp = (TestApp) FxToolkit.setupApplication(() -> new TestApp(this::getInitialData, getDataFileLocation()));
         FxToolkit.showStage();

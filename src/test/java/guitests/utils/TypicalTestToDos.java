@@ -35,17 +35,16 @@ public class TypicalTestToDos {
     }
 
     public static void loadToDoListWithSampleData(ToDoList todoList) {
-
         try {
-            todoList.add(new ToDo(toDoItem1));
-            todoList.add(new ToDo(toDoItem2));
-            todoList.add(new ToDo(toDoItem3));
-            todoList.add(new ToDo(toDoItem4));
-            todoList.add(new ToDo(toDoItem5));
+            todoList
+                .add(new ToDo(toDoItem1))
+                .add(new ToDo(toDoItem2))
+                .add(new ToDo(toDoItem3))
+                .add(new ToDo(toDoItem4))
+                .add(new ToDo(toDoItem5));
         } catch (IllegalValueException e) {
             assert false : "impossible";
         }
-
 
     }
 

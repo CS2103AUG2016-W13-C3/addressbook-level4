@@ -58,8 +58,8 @@ public class AddCommand extends Command {
         }
 
         model.changeToDoList(new ToDoListChange(
-            Collections.singletonList(toDo),
-            Collections.emptyList()
+            new ToDoList().add(toDo),
+            new ToDoList()
         ));
 
         return new CommandResult(String.format(Messages.TODO_ADDED, toDo.getTitle().toString()));
