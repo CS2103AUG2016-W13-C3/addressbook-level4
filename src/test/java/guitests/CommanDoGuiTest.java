@@ -21,9 +21,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * A GUI Test class for AddressBook.
+ * A GUI Test class for CommanDo.
  */
 public abstract class CommanDoGuiTest {
+
+    public static final String SAVE_LOCATION_FOR_TESTING = TestUtil.getFilePathInSandboxFolder("sampleData.xml");
 
     /* The TestName Rule makes the current test name available inside test methods */
     @Rule
@@ -31,7 +33,7 @@ public abstract class CommanDoGuiTest {
 
     TestApp testApp;
 
-    protected TypicalTestToDos td = new TypicalTestToDos();
+    protected static TypicalTestToDos td;
 
     /*
      *   Handles to GUI elements present at the start up are created in advance
@@ -57,6 +59,8 @@ public abstract class CommanDoGuiTest {
 
     @Before
     public void setup() throws Exception {
+        td = new TypicalTestToDos();
+
         FxToolkit.setupStage((stage) -> {
             mainGui = new MainGuiHandle(new GuiRobot(), stage);
             mainMenu = mainGui.getMainMenu();
@@ -68,7 +72,7 @@ public abstract class CommanDoGuiTest {
         });
 
         EventsCenter.clearSubscribers();
-        testApp = (TestApp) FxToolkit.setupApplication(() -> new TestApp(this::getInitialData, getDataFileLocation()));
+        testApp = (TestApp) FxToolkit.setupApplication(() -> new TestApp(this::getInitialData, getToDoListFileLocation()));
         FxToolkit.showStage();
         while (!stage.isShowing());
         mainGui.focusOnMainApp();
@@ -76,20 +80,19 @@ public abstract class CommanDoGuiTest {
 
     /**
      * Override this in child classes to set the initial local data.
-     * Return null to use the data in the file specified in {@link #getDataFileLocation()}
+     * Return null to use the data in the data file at toDoListFilePath specified in file of {@link #getToDoListFileLocation()}
      */
     protected ToDoList getInitialData() {
         ToDoList todoList = TestUtil.generateEmptyAddressBook();
-        TypicalTestToDos.loadToDoListWithSampleData(todoList);
+        td.loadToDoListWithSampleData(todoList);
         return todoList;
     }
 
     /**
-     * Override this in child classes to set the data file location.
-     * @return
+     * Override this in child classes to set the save file location.
      */
-    protected String getDataFileLocation() {
-        return TestApp.SAVE_LOCATION_FOR_TESTING;
+    protected String getToDoListFileLocation() {
+        return SAVE_LOCATION_FOR_TESTING;
     }
 
     @After

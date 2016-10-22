@@ -2,8 +2,7 @@ package guitests.utils;
 
 import com.google.common.io.Files;
 
-import guitests.guihandles.EventCardHandle;
-import guitests.guihandles.TaskCardHandle;
+import guitests.CommanDoGuiTest;
 import guitests.guihandles.ToDoCardHandle;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -111,7 +110,7 @@ public class TestUtil {
     }
 
     public static void createDataFileWithSampleData(String filePath) {
-        createDataFileWithData(generateSampleStorageAddressBook(), filePath);
+        createDataFileWithData(generateSampleStorageToDoList(), filePath);
     }
 
     public static <T> void createDataFileWithData(T data, String filePath) {
@@ -125,14 +124,14 @@ public class TestUtil {
     }
 
     public static void main(String... s) {
-        createDataFileWithSampleData(TestApp.SAVE_LOCATION_FOR_TESTING);
+        createDataFileWithSampleData(CommanDoGuiTest.SAVE_LOCATION_FOR_TESTING);
     }
 
     public static ToDoList generateEmptyAddressBook() {
         return new ToDoList();
     }
 
-    public static XmlSerializableToDoList generateSampleStorageAddressBook() {
+    public static XmlSerializableToDoList generateSampleStorageToDoList() {
         return new XmlSerializableToDoList(generateEmptyAddressBook());
     }
 

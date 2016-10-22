@@ -46,6 +46,11 @@ public class StorageManager extends ComponentManager implements Storage {
         userPrefsStorage.saveUserPrefs(userPrefs);
     }
 
+    @Override
+    public void setUserPrefsFilePath(String filePath) {
+        userPrefsStorage.setUserPrefsFilePath(filePath);
+    }
+
     //================================================================================
     // CRUD to-do list operations
     //================================================================================

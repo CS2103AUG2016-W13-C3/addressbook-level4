@@ -30,8 +30,9 @@ import java.util.logging.Logger;
  */
 public class MainApp extends Application {
     private static final Logger logger = LogsCenter.getLogger(MainApp.class);
+    private static final Version VERSION = new Version(1, 0, 0, true);
 
-    public static final Version VERSION = new Version(1, 0, 0, true);
+    protected String userPrefsFilePath = Config.UserPrefsFilePath;
 
     protected Ui ui;
     protected Logic logic;
@@ -47,8 +48,8 @@ public class MainApp extends Application {
         logger.info("=============================[ Initializing " + Config.ApplicationTitle + " ]===========================");
         super.init();
 
-        logger.info("Using prefs file: " + Config.DefaultToDoListFilePath);
-        storage = new StorageManager(Config.DefaultToDoListFilePath, Config.UserPrefsFilePath);
+        logger.info("Using prefs file: " + userPrefsFilePath);
+        storage = new StorageManager(Config.DefaultToDoListFilePath, userPrefsFilePath);
 
         userPrefs = initPrefs(storage);
 
@@ -63,9 +64,9 @@ public class MainApp extends Application {
         initEventsCenter();
     }
 
-    private Model initModelManager(Storage storage, UserPrefs userPrefs) {
+    protected Model initModelManager(Storage storage, UserPrefs userPrefs) {
         // Set to-do list storage file path to user pref's
-        logger.info("Using to-do list file: " + userPrefs.getToDoListFilePath());
+        logger.info("Using to-do list file: " + userPrefs.getToDoListFilePath().getValue());
         storage.setToDoListFilePath(userPrefs.getToDoListFilePath().getValue());
 
         ReadOnlyToDoList initialToDoList = new ToDoList();

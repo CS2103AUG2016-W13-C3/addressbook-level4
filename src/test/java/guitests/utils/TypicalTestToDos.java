@@ -11,11 +11,10 @@ import seedu.commando.testutil.ToDoBuilder;
  */
 public class TypicalTestToDos {
 
-    public static ToDo toDoItem1, toDoItem2, toDoItem3, toDoItem4, toDoItem5, testToDoItem1, testToDoItem2, testToDoItem3;
+    public ToDo toDoItem1, toDoItem2, toDoItem3, toDoItem4, toDoItem5, testToDoItem1, testToDoItem2, testToDoItem3;
 
     public TypicalTestToDos() {
         try {
-
             toDoItem1 = new ToDoBuilder("title").build();
             toDoItem2 = new ToDoBuilder("title 2").withTags("tag1", "tag2")
                     .withDateRange(LocalDateTime.of(2016, 11, 1, 20, 1), LocalDateTime.of(2016, 12, 1, 20, 1))
@@ -33,7 +32,7 @@ public class TypicalTestToDos {
         }
     }
 
-    public static void loadToDoListWithSampleData(ToDoList todoList) {
+    public void loadToDoListWithSampleData(ToDoList todoList) {
         try {
             todoList
                 .add(new ToDo(toDoItem1))
