@@ -95,7 +95,7 @@ public abstract class UiPart {
      * @param placeholder
      */
     public void setPlaceholder(AnchorPane placeholder) {
-        //Do nothing by default.
+        // Do nothing by default.
     }
 
     public Stage getPrimaryStage() {

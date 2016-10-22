@@ -1,7 +1,6 @@
 package seedu.commando.logic.commands;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -19,6 +18,7 @@ import seedu.commando.logic.Logic;
 import seedu.commando.logic.LogicManager;
 import seedu.commando.model.Model;
 import seedu.commando.model.ModelManager;
+import seedu.commando.model.UserPrefs;
 import seedu.commando.storage.StorageManager;
 import seedu.commando.testutil.EventsCollector;
 
@@ -30,18 +30,17 @@ public class StoreCommandTest {
     private Logic logic;
     private EventsCollector eventsCollector;
     private File toDoListFile;
-    private File userPrefsFile;
 
     @Before
     public void setup() throws IOException {
         model = new ModelManager();
 
         toDoListFile = folder.newFile();
-        userPrefsFile = folder.newFile();
+        File userPrefsFile = folder.newFile();
         logic = new LogicManager(model, new StorageManager(
             toDoListFile.getAbsolutePath(),
             userPrefsFile.getAbsolutePath()
-        ));
+        ), new UserPrefs());
 
         eventsCollector = new EventsCollector();
     }

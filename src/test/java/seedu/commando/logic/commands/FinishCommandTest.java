@@ -10,18 +10,14 @@ import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.Logic;
-import seedu.commando.logic.LogicManager;
-import seedu.commando.model.Model;
-import seedu.commando.model.ModelManager;
-import seedu.commando.storage.StorageManager;
 import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.ToDoBuilder;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.*;
+import static seedu.commando.logic.LogicManagerTest.initLogic;
 import static seedu.commando.testutil.TestHelper.*;
 
 public class FinishCommandTest {
@@ -31,20 +27,10 @@ public class FinishCommandTest {
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
-    private File toDoListFile;
-    private File userPrefsFile;
 
     @Before
     public void setup() throws IOException {
-        Model model = new ModelManager();
-
-        toDoListFile = folder.newFile();
-        userPrefsFile  = folder.newFile();
-        logic = new LogicManager(model, new StorageManager(
-            toDoListFile.getAbsolutePath(),
-            userPrefsFile.getAbsolutePath()
-        ));
-
+        logic = initLogic(folder);
         eventsCollector = new EventsCollector();
     }
 
@@ -109,7 +95,7 @@ public class FinishCommandTest {
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertFalse(ifToDoExists(logic,
+        assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title2")
                 .build()));
         assertTrue(ifToDoExists(logic,

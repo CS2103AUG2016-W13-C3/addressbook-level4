@@ -1,36 +1,38 @@
 package seedu.commando.model;
 
 import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.ToDo;
+import seedu.commando.model.todo.ToDoList;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * An immutable representation of a change in a to-do list
- * Guaranteed: To-dos are unique in {@link #getAddedToDos()} and {@link #getDeletedToDos()}
+ * Input to-do lists are copied
  */
 public class ToDoListChange {
 
-    private Set<ReadOnlyToDo> addedToDos;
-    private Set<ReadOnlyToDo> deletedToDos;
+    private final ToDoList addedToDos;
+    private final ToDoList deletedToDos;
 
-    public ToDoListChange(Collection<ReadOnlyToDo> addedToDos, Collection<ReadOnlyToDo> deletedToDos) {
-        this.addedToDos = addedToDos.stream().map(ToDo::new).collect(Collectors.toSet());
-        this.deletedToDos = deletedToDos.stream().map(ToDo::new).collect(Collectors.toSet());
+    public ToDoListChange(ReadOnlyToDoList addedToDos, ReadOnlyToDoList deletedToDos) {
+        this.addedToDos = new ToDoList(addedToDos);
+        this.deletedToDos = new ToDoList(deletedToDos);
     }
 
-    public List<ReadOnlyToDo> getAddedToDos() {
-        return new LinkedList<>(addedToDos);
+    public ReadOnlyToDoList getAddedToDos() {
+        return addedToDos;
     }
 
-    public List<ReadOnlyToDo> getDeletedToDos() {
-        return new LinkedList<>(deletedToDos);
+    public ReadOnlyToDoList getDeletedToDos() {
+        return deletedToDos;
     }
 
     /**
      * Get the reverse of this change
-     */
+        */
     public ToDoListChange getReverseChange() {
         return new ToDoListChange(deletedToDos, addedToDos);
     }
