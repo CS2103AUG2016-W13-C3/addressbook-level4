@@ -3,13 +3,11 @@ package seedu.commando.logic.commands;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.ToDoList;
-import seedu.commando.model.ui.UiModel;
 import seedu.commando.model.ui.UiToDo;
 import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.todo.ToDo;
 
-import java.util.Collections;
 import java.util.Optional;
 
 /**
@@ -27,7 +25,7 @@ public class FinishCommand extends Command {
 
     @Override
     public CommandResult execute()
-        throws IllegalValueException, NoModelException {
+            throws IllegalValueException, NoModelException {
         Model model = getModel();
 
         Optional<UiToDo> toDoToFinish = model.getUiToDoAtIndex(toDoIndex);
@@ -46,14 +44,14 @@ public class FinishCommand extends Command {
 
         try {
             model.changeToDoList(new ToDoListChange(
-                new ToDoList().add(finishedToDo),
-                new ToDoList().add(toDoToFinish.get())
-            ));
+                    new ToDoList().add(finishedToDo),
+                    new ToDoList().add(toDoToFinish.get())
+                    ));
         } catch (IllegalValueException exception) {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.TODO_FINISHED, toDoToFinish.get().getTitle().toString()));
+        return new CommandResult(String.format(Messages.TODO_UNFINISHED, toDoToFinish.get().getTitle().toString()));
     }
 
 }

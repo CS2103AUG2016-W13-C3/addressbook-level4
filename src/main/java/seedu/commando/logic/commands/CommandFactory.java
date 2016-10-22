@@ -8,8 +8,6 @@ import seedu.commando.model.todo.DueDate;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.Title;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,6 +46,8 @@ public class CommandFactory {
                 return buildDeleteCommand();
             case FinishCommand.COMMAND_WORD:
                 return buildFinishCommand();
+            case UnfinishCommand.COMMAND_WORD:
+                return buildUnfinishCommand();
             case FindCommand.COMMAND_WORD:
                 return buildFindCommand();
             case ExitCommand.COMMAND_WORD:
@@ -182,6 +182,19 @@ public class CommandFactory {
         }
 
         return new FinishCommand(index);
+    }
+    
+    private Command buildUnfinishCommand() throws IllegalValueException {
+        int index = sequentialParser.extractInteger().orElseThrow(
+            () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
+        );
+
+        if (!sequentialParser.isInputEmpty()) {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
+
+        }
+
+        return new UnfinishCommand(index);
     }
 
     private Command buildFindCommand() {
