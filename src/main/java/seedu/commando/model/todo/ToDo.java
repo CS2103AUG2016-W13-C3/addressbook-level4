@@ -165,11 +165,6 @@ public class ToDo implements ReadOnlyToDo {
     }
 
     @Override
-    public boolean isFinished() {
-        return dateFinished != null;
-    }
-
-    @Override
     public Optional<LocalDateTime> getDateFinished() {
         return Optional.ofNullable(dateFinished);
     }
