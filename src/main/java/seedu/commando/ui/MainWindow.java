@@ -270,14 +270,14 @@ public class MainWindow extends UiPart {
                     if (currentlyFocusedPane == FocusPanes.EVENTPANEL) {
                         eventPanel.scrollUp();
                     } else if (currentlyFocusedPane == FocusPanes.TASKPANEL) {
-                        eventPanel.scrollUp();
+                        taskPanel.scrollUp();
                     }
                     break;
                 case DOWN:
                     if (currentlyFocusedPane == FocusPanes.EVENTPANEL) {
                         eventPanel.scrollDown();
                     } else if (currentlyFocusedPane == FocusPanes.TASKPANEL) {
-                        eventPanel.scrollDown();
+                        taskPanel.scrollDown();
                     }
                     break;
                 case TAB:
