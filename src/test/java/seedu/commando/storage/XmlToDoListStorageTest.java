@@ -1,6 +1,5 @@
 package seedu.commando.storage;
 
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -8,14 +7,15 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.exceptions.DataConversionException;
+import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.commons.util.FileUtil;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.ToDoList;
 import seedu.commando.testutil.ToDoBuilder;
-import seedu.commando.testutil.ToDoListBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -61,7 +61,7 @@ public class XmlToDoListStorageTest {
     @Test
     public void readAndSaveToDoList_noModifications() throws Exception {
         String filePath = tempFile.getAbsolutePath();
-        ToDoList original = ToDoListBuilder.getSample();
+        ToDoList original = getSample();
         XmlToDoListStorage xmlStorage = new XmlToDoListStorage(filePath);
 
         // Save in new file and read back
@@ -73,7 +73,7 @@ public class XmlToDoListStorageTest {
     @Test
     public void readAndSaveToDoList_modifyAndOverwrite() throws Exception {
         String filePath = tempFile.getAbsolutePath();
-        ToDoList original = ToDoListBuilder.getSample();
+        ToDoList original = getSample();
         XmlToDoListStorage xmlStorage = new XmlToDoListStorage(filePath);
 
         // Modify data, overwrite exiting file, and read back
@@ -90,7 +90,7 @@ public class XmlToDoListStorageTest {
     @Test
     public void readAndSaveToDoList_filePathNotSpecified() throws Exception {
         String filePath = tempFile.getAbsolutePath();
-        ToDoList original = ToDoListBuilder.getSample();
+        ToDoList original = getSample();
         XmlToDoListStorage xmlStorage = new XmlToDoListStorage(filePath);
 
         // Save and read without specifying file path
@@ -124,4 +124,19 @@ public class XmlToDoListStorageTest {
     private void saveToDoList(ReadOnlyToDoList toDoList, String filePath) throws IOException {
         new XmlToDoListStorage(filePath).saveToDoList(toDoList, addToTestDataPathIfNotNull(filePath));
     }
+    
+    private static ToDoList getSample() throws IllegalValueException {
+        ToDoList toDoList = new ToDoList();
+        toDoList.add(new ToDoBuilder("valid title")
+                    .withTags("tag1", "tag2" )
+                    .withDueDate(LocalDateTime.of(2016, 5, 1, 20, 1))
+                    .withDateRange(LocalDateTime.of(2016, 3, 1, 20, 1),
+                                   LocalDateTime.of(2016, 4, 1, 20, 1))
+                    .build());
+        toDoList.add(new ToDoBuilder("valid title 2")
+                    .isFinished(true)
+                    .build());
+        return toDoList;
+    }
+    
 }

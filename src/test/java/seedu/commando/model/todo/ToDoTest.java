@@ -147,7 +147,7 @@ public class ToDoTest {
         toDo.setIsFinished(true);
         assertTrue(changes.size() == 5);
 
-        toDo.setDateCreated(LocalDateTime.now());
+        toDo.setDateCreated(LocalDateTime.of(2011, 11, 11, 12, 12));
         assertTrue(changes.size() == 6);
 
         toDo.setDateFinished(LocalDateTime.now().plusYears(1));
