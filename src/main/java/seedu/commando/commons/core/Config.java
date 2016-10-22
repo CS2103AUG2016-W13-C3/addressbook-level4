@@ -37,6 +37,7 @@ public class Config {
         put("find", "find");
         put("search logic", "search-logic");
         put("unfinish", "unfinish");
+        put("recall", "recall");
     }};
 
     public Config() {
