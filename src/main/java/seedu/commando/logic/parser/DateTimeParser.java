@@ -22,7 +22,7 @@ public class DateTimeParser {
 
     private static final String MonthWordRegexString = "January|Feburary|March|April|June|July|August|September|October|November|December|" +
         "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec";
-    private static final String DayWordRegexString = "Monday|Tuesday|Wednesday|Thursday|Friday|Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri";
+    private static final String DayWordRegexString = "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri|Sat|Sun";
     private static final String YearRegexString = "(?<year>\\d{4}|\\d{2})";
     private static final String TwoDigitYearRegexString = "\\d{2}$";
 
@@ -32,7 +32,7 @@ public class DateTimeParser {
     private static final String DateWithMonthWordReversedRegexString = "(" + MonthWordRegexString + ")\\s+" +
         "(\\d{1,2})(th|rd|st|nd)?(\\s+" + YearRegexString + ")?";
     private static final String DateWithDayWordRegexString = "((coming|next)\\s+)?(" + DayWordRegexString + ")";
-    private static final String DateWithLaterRegexString = "((\\d+\\d)|([2-9]))\\s+(days|weeks|months|years)\\s+(later)";
+    private static final String DateWithLaterAgoRegexString = "((\\d+\\d)|([2-9]))\\s+(days|weeks|months|years)\\s+(later|ago)";
     private static final String DateWithNextRegexString = "next (week|month|year)";
     private static final String TimeNightRegexString = "(this\\s+)?(night|tonight)";
 
@@ -41,10 +41,9 @@ public class DateTimeParser {
         DateWithMonthWordRegexString,
         DateWithMonthWordReversedRegexString,
         DateWithDayWordRegexString,
-        DateWithLaterRegexString,
+        DateWithLaterAgoRegexString,
         DateWithNextRegexString,
-        "today",
-        "tomorrow|tmr"
+        "today", "tomorrow|tmr", "yesterday"
     };
 
     private static final String[] supportedTimeRegexStrings = new String[] {
@@ -208,7 +207,7 @@ public class DateTimeParser {
 
             // Special case: if DateWithLaterRegexString is used,
             // swap date and time (for parsing in natty)
-            if (dateString.matches(DateWithLaterRegexString)) {
+            if (dateString.matches(DateWithLaterAgoRegexString)) {
                 return Optional.of(timeString + " " + dateString);
             } else {
                 return Optional.of(dateString + " " + timeString);

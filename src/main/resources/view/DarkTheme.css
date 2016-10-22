@@ -113,6 +113,10 @@
     -fx-background-color: derive(#1d1d1d, 20%);
 }
 
+.list-view:focused {
+	-fx-background-color: #27BDD1;
+}
+
 .list-cell {
     -fx-label-padding: 0 0 0 0;
     -fx-graphic-text-gap : 0;
@@ -135,17 +139,20 @@
 
 #startLabel, #endLabel {
 	-fx-text-fill: #053a8e; 
-	-fx-font-family: Microsoft Yahei Light;
+	-fx-font-family: "Segoe UI bold";
 }
 
 #dueLabel {
 	-fx-text-fill: #FF0000; 
-	-fx-font-family: Microsoft Yahei Light;
+	-fx-font-family: "Segoe UI bold";
 }
 
 #indexLabel {
-	-fx-font-family: Microsoft Yahei Light;
-	-fx-font-weight: 600;
+	-fx-background-color: derive(#1d1d1d, 60%);
+	-fx-text-fill: #FFFFFF;
+	-fx-font-family: "Segoe UI bold";
+	-fx-border-width: 0 2px 0 0;
+	-fx-border-color: derive(#1d1d1d, 40%);
 }
 
 .task-pane, .event-pane {

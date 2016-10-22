@@ -43,13 +43,13 @@ public class EventCard extends UiPart{
     @FXML
     public void initialize() {
         titleLabel.setText(toDo.getTitle().value);
-        indexLabel.setText(String.valueOf(index) + ". ");
+        indexLabel.setText(String.valueOf(index));
 
-        setLabelContent();
-        setLabelTags();
+        setDateTimesLabels();
+        setTagLabel();
     }
 
-    private void setLabelTags() {
+    private void setTagLabel() {
         if (!toDo.getTags().isEmpty()) {
             String tags = "";
             for (Tag tag : toDo.getTags()) {
@@ -61,10 +61,10 @@ public class EventCard extends UiPart{
         }
     }
     
-    private void setLabelContent() {
+    private void setDateTimesLabels() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
-            startLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.startDate) + " To ");
+            startLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.startDate) + " to ");
             endLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.endDate));
         } else {
             startLabel.setText("");
@@ -72,7 +72,11 @@ public class EventCard extends UiPart{
         }
     }
     
-    public HBox getLayoutState(boolean isNew, boolean isFinished) {
+    
+    /*
+     * Different CSS styles for different states
+     */
+    protected HBox getLayoutState(boolean isNew, boolean isFinished) {
         this.isFinished = isFinished;
         if (isNew) {
             setRecentlyModifiedState();
@@ -95,7 +99,8 @@ public class EventCard extends UiPart{
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        eventPaneInner.setStyle(ToDoCardStyleManager.finishedStateCSS);
+        eventPaneInner.setStyle(ToDoCardStyleManager.finishedStateContentCSS);
+        indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
     }
 
     /**
@@ -104,14 +109,16 @@ public class EventCard extends UiPart{
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            eventPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateCSS);
+            eventPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateContentCSS);
+            indexLabel.setStyle(ToDoCardStyleManager.activateHoverStateIndexCSS);
         }
     }
     
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            eventPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateCSS);
+            eventPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateContentCSS);
+            indexLabel.setStyle(ToDoCardStyleManager.deactivateHoverStateIndexCSS);
         }
     }
     

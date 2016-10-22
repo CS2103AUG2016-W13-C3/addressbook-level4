@@ -10,20 +10,16 @@ import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.Logic;
-import seedu.commando.logic.LogicManager;
-import seedu.commando.model.Model;
-import seedu.commando.model.ModelManager;
-import seedu.commando.storage.StorageManager;
 import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.ToDoBuilder;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.commando.logic.LogicManagerTest.initLogic;
 import static seedu.commando.testutil.TestHelper.*;
 
 public class AddCommandTest {
@@ -33,20 +29,10 @@ public class AddCommandTest {
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
-    private File toDoListFile;
-    private File userPrefsFile;
 
     @Before
     public void setup() throws IOException {
-        Model model = new ModelManager();
-
-        toDoListFile = folder.newFile();
-        userPrefsFile  = folder.newFile();
-        logic = new LogicManager(model, new StorageManager(
-            toDoListFile.getAbsolutePath(),
-            userPrefsFile.getAbsolutePath()
-        ));
-
+        logic = initLogic(folder);
         eventsCollector = new EventsCollector();
     }
 
@@ -54,7 +40,6 @@ public class AddCommandTest {
     public void teardown() {
         EventsCenter.clearSubscribers();
     }
-
 
     @Test
     public void execute_add_missingTitle() {
@@ -116,7 +101,7 @@ public class AddCommandTest {
         String command = "add valid title from not date to 11 Apr 2017 23:10";
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
-        assertEquals(Messages.MISSING_TODO_DATERANGE_START, result.getFeedback());
+        assertEquals(Messages.INVALID_TODO_DATERANGE_START, result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
@@ -125,7 +110,7 @@ public class AddCommandTest {
         String command = "add valid title from 11 Apr 2017 23:10 to not date";
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
-        assertEquals(Messages.MISSING_TODO_DATERANGE_END, result.getFeedback());
+        assertEquals(Messages.INVALID_TODO_DATERANGE_END, result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
@@ -210,12 +195,16 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_add_cannotHaveDateRangeAndDueDate() throws IllegalValueException {
-        String command = "add task from 2 Oct 11:11 to 12:12 by 1 Oct 09:10";
-        CommandResult result = logic.execute(command);
-        assertTrue(result.hasError());
-        assertEquals(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, result.getFeedback());
-        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    public void execute_add_eventWith2DateRanges() throws IllegalValueException {
+        logic.execute("add walk by the beach from today to tomorrow from 10 Nov 2011 1200h to 11 Dec 2012 1300h");
+
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("walk by the beach from today to tomorrow")
+                .withDateRange(
+                    LocalDateTime.of(2011, 11, 10, 12, 0),
+                    LocalDateTime.of(2012, 12, 11, 13, 0)
+                )
+                .build()));
     }
 
     @Test

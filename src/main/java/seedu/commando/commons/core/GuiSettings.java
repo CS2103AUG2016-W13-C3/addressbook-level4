@@ -11,24 +11,19 @@ import javafx.stage.Screen;
  */
 public class GuiSettings implements Serializable {
 
-    private static final double DEFAULT_HEIGHT = 750;
-    private static final double DEFAULT_WIDTH = 1000;
-    private Double windowWidth;
-    private Double windowHeight;
+    private Double windowWidth = Config.DefaultWindowWidth;
+    private Double windowHeight = Config.DefaultWindowHeight;
     private boolean isMaximized;
-
-    private Point windowCoordinates;
+    private Point windowCoordinates;  // null represent no coordinates
 
     public GuiSettings() {
-        this.windowHeight = DEFAULT_HEIGHT; 
-        this.windowWidth = DEFAULT_WIDTH;
-        this.windowCoordinates = null; // null represent no coordinates
+        this.windowCoordinates = null;
         this.isMaximized = false;
     }
 
     public GuiSettings(double windowWidth, double windowHeight, int xPosition, int yPosition, boolean isMaximized) {
-        this.windowHeight = windowHeight; 
         this.windowWidth = windowWidth;
+        this.windowHeight = windowHeight;
         this.windowCoordinates = new Point(xPosition, yPosition);
         this.isMaximized = isMaximized;
     }
@@ -61,21 +56,20 @@ public class GuiSettings implements Serializable {
         GuiSettings o = (GuiSettings)other;
         return Objects.equals(windowWidth, o.windowWidth)
                 && Objects.equals(windowHeight, o.windowHeight)
-                && Objects.equals(windowCoordinates.x, o.windowCoordinates.x)
-                && Objects.equals(windowCoordinates.y, o.windowCoordinates.y);
+                && Objects.equals(windowCoordinates, o.windowCoordinates);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(windowCoordinates);
+        return Objects.hash(windowWidth, windowHeight, windowCoordinates);
     }
 
     @Override
     public String toString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("Width : " + windowWidth + "\n");
-        sb.append("Height : " + windowHeight + "\n");
-        sb.append("Position : " + windowCoordinates);
-        return sb.toString();
+        return String.join(",",
+            "Width: " + windowWidth,
+            "Height: " + windowHeight,
+            "Position: " + windowCoordinates
+        );
     }
 }

@@ -20,13 +20,12 @@ public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    private final String title;
-    public LocalDateTime dateRangeStart;
-    public LocalDateTime dateRangeEnd;
-    public LocalDateTime dueDate;
-    public Set<String> tags = Collections.emptySet();
+    private final Title title;
+    public DateRange dateRange;
+    public DueDate dueDate;
+    public Set<Tag> tags = Collections.emptySet();
 
-    public AddCommand(String title) {
+    public AddCommand(Title title) {
         assert title != null;
 
         this.title = title;
@@ -38,23 +37,19 @@ public class AddCommand extends Command {
         Model model = getModel();
 
         // Create the to-do to add
-        ToDo toDo = new ToDo(new Title(title));
+        ToDo toDo = new ToDo(title);
 
         // Set fields if exist
         if (dueDate != null) {
-            toDo.setDueDate(new DueDate(dueDate));
+            toDo.setDueDate(dueDate);
         }
 
-        if (dateRangeStart != null && dateRangeEnd != null) {
-            toDo.setDateRange(new DateRange(dateRangeStart, dateRangeEnd));
-        } else if (dateRangeEnd != null) {
-            throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_START);
-        } else if (dateRangeStart != null) {
-            throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_END);
+        if (dateRange != null) {
+            toDo.setDateRange(dateRange);
         }
 
         if (tags != null) {
-            toDo.setTags(tags.stream().map(Tag::new).collect(Collectors.toSet()));
+            toDo.setTags(tags);
         }
 
         // Ensure to-do doesn't have both duedate and daterange
@@ -63,8 +58,8 @@ public class AddCommand extends Command {
         }
 
         model.changeToDoList(new ToDoListChange(
-            Collections.singletonList(toDo),
-            Collections.emptyList()
+            new ToDoList().add(toDo),
+            new ToDoList()
         ));
 
         return new CommandResult(String.format(Messages.TODO_ADDED, toDo.getTitle().toString()));

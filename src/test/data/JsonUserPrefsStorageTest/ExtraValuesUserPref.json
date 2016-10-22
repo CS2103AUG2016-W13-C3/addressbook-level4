@@ -8,5 +8,9 @@
       "y" : 100,
       "z" : 99
     }
-  }
+  },
+
+  "toDoListFilePath": "file path",
+
+  "extra": "some other value"
 }

@@ -9,8 +9,8 @@ public class Messages {
     public static final String MISSING_COMMAND_WORD = "Missing command word.";
     public static final String INVALID_COMMAND_FORMAT = "Invalid format for '%1$s' command!";
     public static final String MISSING_TODO_TITLE = "Missing title for to-do.";
-    public static final String MISSING_TODO_DATERANGE_START = "Missing start date for date range of to-do.";
-    public static final String MISSING_TODO_DATERANGE_END = "Missing end date for date range of to-do.";
+    public static final String INVALID_TODO_DATERANGE_START = "Invalid start date for date range of to-do.";
+    public static final String INVALID_TODO_DATERANGE_END = "Invalid end date for date range of to-do.";
     public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.";
     public static final String TODO_DATERANGE_CONSTRAINTS = "The end date of the date range must be after start date.";
     public static final String MISSING_STORE_PATH = "Missing the path to store.";
@@ -24,12 +24,16 @@ public class Messages {
     public static final String TODO_ADDED = "To-do added: %1$s.";
     public static final String TODO_DELETED = "To-do deleted: %1$s.";
     public static final String TODO_FINISHED = "To-do finished: %1$s.";
+    public static final String TODO_UNFINISHED = "To-do unfinished: %1$s.";
     public static final String TODO_EDITED = "To-do edited: %1$s.";
     public static final String TODO_NO_EDITS = "Nothing interesting happens.";
     public static final String TODO_ALREADY_FINISHED = "To-do already finished: %1$s";
+    public static final String TODO_ALREADY_ONGOING = "To-do already ongoing: %1$s";
     public static final String TODO_NOT_FOUND = "To-do not found: %1$s";
     public static final String FIND = "Found %1$d events and %2$d tasks.";
+    public static final String RECALL = "Found %1$d events and %2$d tasks in the past.";
     public static final String CLEAR_FIND = "Listed all to-do items.";
+    public static final String CLEAR_RECALL = "Listed all to-do items in the past.";
     public static final String TODO_ITEM_INDEX_INVALID = "Invalid to-do index: %1$d.";
     public static final String EXIT_APPLICATION = "Exiting application...";
     public static final String TODO_LIST_CLEARED = "Cleared to-do list!";

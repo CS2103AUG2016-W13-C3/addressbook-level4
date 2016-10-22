@@ -6,12 +6,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import seedu.commando.MainApp;
 import seedu.commando.commons.core.ComponentManager;
 import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.events.storage.DataSavingExceptionEvent;
-import seedu.commando.commons.events.ui.ShowHelpRequestEvent;
+import seedu.commando.commons.events.logic.ShowHelpRequestEvent;
 import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.model.UserPrefs;
@@ -28,28 +29,31 @@ public class UiManager extends ComponentManager implements Ui {
     private Logic logic;
     private UserPrefs prefs;
     private MainWindow mainWindow;
-    private Config config;
 
-    public UiManager(Logic logic, Config config, UserPrefs prefs) {
+    public UiManager(Logic logic, UserPrefs prefs) {
         super();
         this.logic = logic;
         this.prefs = prefs;
-        this.config = config;
     }
 
     @Override
     public void start(Stage primaryStage) {
         logger.info("Starting UI...");
+        if (primaryStage.isShowing()) {
+            primaryStage.close();
+        }
+
         primaryStage.setTitle(Config.ApplicationTitle);
 
         //Set the application icon.
         primaryStage.getIcons().add(getImage(ICON_APPLICATION));
 
         try {
-            mainWindow = MainWindow.load(primaryStage, config, prefs, logic);
+            mainWindow = MainWindow.load(primaryStage, prefs, logic);
             mainWindow.show(); // This should be called before creating other UI parts
             mainWindow.fillInnerParts();
-            mainWindow.disableSplitPaneResize();
+            mainWindow.moreConfigurations(); // This is to set properties of some components that
+                                             // can only be set after loading 
 
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));
@@ -59,7 +63,7 @@ public class UiManager extends ComponentManager implements Ui {
 
     @Override
     public void stop() {
-        prefs.updateLastUsedGuiSetting(mainWindow.getCurrentGuiSetting());
+        prefs.setGuiSettings(mainWindow.getCurrentGuiSetting());
         mainWindow.hide();
     }
 

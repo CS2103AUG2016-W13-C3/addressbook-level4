@@ -1,6 +1,8 @@
 package seedu.commando.ui;
 
 import com.google.common.eventbus.Subscribe;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -13,40 +15,38 @@ import seedu.commando.commons.events.model.ToDoListChangedEvent;
 import seedu.commando.commons.util.FxViewUtil;
 
 import java.util.Date;
+import java.util.Observable;
 import java.util.logging.Logger;
 
 /**
  * A ui for the status bar that is displayed at the footer of the application.
  */
 public class StatusBarFooter extends UiPart {
+    
+    private static final String FXML = "StatusBarFooter.fxml";
     private static final Logger logger = LogsCenter.getLogger(StatusBarFooter.class);
+    
     private StatusBar syncStatus;
     private StatusBar saveLocationStatus;
-
     private GridPane mainPane;
+    private AnchorPane placeHolder;
 
     @FXML
     private AnchorPane saveLocStatusBarPane;
-
     @FXML
     private AnchorPane syncStatusBarPane;
 
-    private AnchorPane placeHolder;
-
-    private static final String FXML = "StatusBarFooter.fxml";
-
-    public static StatusBarFooter load(Stage stage, AnchorPane placeHolder, String saveLocation) {
+    public static StatusBarFooter load(Stage stage, AnchorPane placeHolder, ObservableValue<String> saveLocation) {
         StatusBarFooter statusBarFooter = UiPartLoader.loadUiPart(stage, placeHolder, new StatusBarFooter());
         statusBarFooter.configure(saveLocation);
         return statusBarFooter;
     }
 
-    public void configure(String saveLocation) {
+    public void configure(ObservableValue<String> saveLocation) {
         addMainPane();
         addSyncStatus();
         setSyncStatus("Not updated yet in this session");
-        addSaveLocation();
-        setSaveLocation("./" + saveLocation);
+        addSaveLocation(saveLocation);
         registerAsAnEventHandler(this);
     }
 
@@ -55,14 +55,19 @@ public class StatusBarFooter extends UiPart {
         placeHolder.getChildren().add(mainPane);
     }
 
-    private void setSaveLocation(String location) {
-        this.saveLocationStatus.setText(location);
-    }
-
-    private void addSaveLocation() {
+    private void addSaveLocation(ObservableValue<String> saveLocation) {
         this.saveLocationStatus = new StatusBar();
+
         FxViewUtil.applyAnchorBoundaryParameters(saveLocationStatus, 0.0, 0.0, 0.0, 0.0);
         saveLocStatusBarPane.getChildren().add(saveLocationStatus);
+
+        // Update save location when required
+        updateSaveLocation(saveLocation.getValue());
+        saveLocation.addListener((observable, oldValue, newValue) -> updateSaveLocation(saveLocation.getValue()));
+    }
+
+    private void updateSaveLocation(String saveLocation) {
+        saveLocationStatus.setText("./" + saveLocation);
     }
 
     private void setSyncStatus(String status) {
