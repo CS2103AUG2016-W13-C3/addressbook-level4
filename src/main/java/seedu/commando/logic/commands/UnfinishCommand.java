@@ -44,14 +44,14 @@ public class UnfinishCommand extends Command {
 
         try {
             model.changeToDoList(new ToDoListChange(
-                    new ToDoList().add(unfinishedToDo),
-                    new ToDoList().add(toDoToUnfinish.get())
-                    ));
+                new ToDoList().add(unfinishedToDo),
+                new ToDoList().add(toDoToUnfinish.get())
+            ));
         } catch (IllegalValueException exception) {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.TODO_FINISHED, toDoToUnfinish.get().getTitle().toString()));
+        return new CommandResult(String.format(Messages.TODO_UNFINISHED, toDoToUnfinish.get().getTitle().toString()));
     }
 
 }
