@@ -36,6 +36,8 @@ public class SequentialParser {
     private static final Pattern TAGS_PATTERN = Pattern.compile(
         "(?<left>.*?)(?<tags>((\\s+|^)" + TAG_PREFIX + "\\S*)+)$"
     );
+	private static final Pattern INDEXRANGE_PATTERN = Pattern
+			.compile("^(?<firstInt>-?\\d+)" + "\\s*" + "((to)|-)" + "\\s*" + "(?<secondInt>-?\\d+)(?<left>.*?)$");
 
     private String input;
     private DateTimeParser dateTimeParser;
@@ -207,8 +209,7 @@ public class SequentialParser {
 
         return Optional.empty();
     }
-	private static final Pattern INDEXRANGE_PATTERN = Pattern
-			.compile("^(?<firstInt>-?\\d+)" + "\\s*" + "((to)|-)" + "\\s*" + "(?<secondInt>-?\\d+)(?<left>.*?)$");
+
 	public List<Integer> extractIndicesList() throws IllegalValueException {
 		final Matcher matcher = INDEXRANGE_PATTERN.matcher(input.trim());
 		List<Integer> indices = new ArrayList<Integer>();
