@@ -218,7 +218,7 @@
 
                 <h4>Deleting Time Constraints of To-Dos </h4>
 
-                <p>There are situations where the time window of an Event or the due date of a <em>Task</em> become no longer relevant. Similarly, use the <code>delete</code> command, ending with the keyword <code>time</code>. Note that this means that a target <em>Event</em> will become a <em>Task</em> after such a command.</p>
+                <p>There are situations where the time window of an Event (and its recurrence) or the due date of a <em>Task</em> become no longer relevant. Similarly, use the <code>delete</code> command, ending with the keyword <code>time</code>. Note that this means that a target <em>Event</em> will become a <em>Task</em> after such a command.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span> time</pre>
@@ -229,13 +229,6 @@
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span> tags</pre>
-
-                <h4>Deleting Recurrence of <em>Events</em></h4>
-
-                <p>If you no longer want an <em>Event</em> to repeat, use the <code>delete</code> command and end with the keyword <code>recurrence</code>.</p>
-
-                <span><strong>Command Format:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span> recurrence</pre>
 
                 <h3 id="edit">Editing To-Dos: <code>edit</code></h3>
 
@@ -581,10 +574,6 @@
                             <tr>
                                 <td>Delete Tags of To-Do</td>
                                 <td><pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span> tags</pre></td>
-                            </tr>
-                            <tr>
-                                <td>Delete Recurrence of Event</td>
-                                <td><pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span> recurrence</pre></td>
                             </tr>
                             <tr>
                                 <td>Edit Event</td>
