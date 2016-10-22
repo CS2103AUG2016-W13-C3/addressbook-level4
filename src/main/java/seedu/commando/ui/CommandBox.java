@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import seedu.commando.commons.core.LogsCenter;
-import seedu.commando.commons.events.ui.IncorrectCommandAttemptedEvent;
+import seedu.commando.commons.events.logic.IncorrectCommandAttemptedEvent;
 import seedu.commando.commons.util.FxViewUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.logic.commands.*;

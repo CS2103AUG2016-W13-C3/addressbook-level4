@@ -23,7 +23,7 @@ public interface ToDoListStorage {
     void setToDoListFilePath(String path);
 
     /**
-     * Returns ToDoList data as a {@link ReadOnlyToDoList}.
+     * Returns to-do list data data as a {@link ReadOnlyToDoList}.
      *   Returns {@code Optional.empty()} if storage file is not found.
      * @throws DataConversionException if the data in storage is not in the expected format.
      * @throws IOException if there was any problem when reading from the storage.

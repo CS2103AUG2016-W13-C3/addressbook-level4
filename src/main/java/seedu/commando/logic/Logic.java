@@ -4,6 +4,7 @@ import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.logic.commands.CommandResult;
 import seedu.commando.model.Model;
 import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.ui.UiToDo;
 
 /**
@@ -18,14 +19,9 @@ public interface Logic {
     CommandResult execute(String commandText);
 
     /**
-     * @see Model#getUiEventsToday()
+     * @see Model#getUiEvents()
      * */
-    UnmodifiableObservableList<UiToDo> getUiEventsToday();
-
-    /**
-     * @see Model#getUiEventsUpcoming()
-     * */
-    UnmodifiableObservableList<UiToDo> getUiEventsUpcoming();
+    UnmodifiableObservableList<UiToDo> getUiEvents();
 
     /**
      * @see Model#getUiTasks()
@@ -33,7 +29,7 @@ public interface Logic {
     UnmodifiableObservableList<UiToDo> getUiTasks();
 
     /**
-     * Returns the full list of to-dos
+     * @see Model#getToDoList()
      * */
-    UnmodifiableObservableList<ReadOnlyToDo> getToDos();
+    ReadOnlyToDoList getToDoList();
 }

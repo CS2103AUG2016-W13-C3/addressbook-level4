@@ -8,10 +8,10 @@ import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.events.ui.ExitAppRequestEvent;
 import seedu.commando.logic.commands.*;
 import seedu.commando.model.Model;
 import seedu.commando.model.ModelManager;
+import seedu.commando.model.UserPrefs;
 import seedu.commando.storage.StorageManager;
 import seedu.commando.testutil.EventsCollector;
 
@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static seedu.commando.testutil.TestHelper.*;
 
 /**
  * Contains tests for LogicManager
@@ -39,26 +38,27 @@ public class LogicManagerTest {
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
-    private File toDoListFile;
-    private File userPrefsFile;
 
     @Before
     public void setup() throws IOException {
-        Model model = new ModelManager();
-
-        toDoListFile = folder.newFile();
-        userPrefsFile  = folder.newFile();
-        logic = new LogicManager(model, new StorageManager(
-            toDoListFile.getAbsolutePath(),
-            userPrefsFile.getAbsolutePath()
-        ));
-
         eventsCollector = new EventsCollector();
+        logic = initLogic(folder);
     }
 
     @After
     public void teardown() {
         EventsCenter.clearSubscribers();
+    }
+
+    public static Logic initLogic(TemporaryFolder folder) throws IOException {
+        File toDoListFile = folder.newFile();
+        File userPrefsFile  = folder.newFile();
+        Model model = new ModelManager();
+
+        return new LogicManager(model, new StorageManager(
+            toDoListFile.getAbsolutePath(),
+            userPrefsFile.getAbsolutePath()
+        ), new UserPrefs());
     }
 
     @Test
@@ -73,40 +73,5 @@ public class LogicManagerTest {
         CommandResult result = logic.execute("unknownCommand");
         assertTrue(result.hasError());
         assertEquals(Messages.UNKNOWN_COMMAND, result.getFeedback());
-    }
-
-    @Test
-    public void execute_clear() {
-        logic.execute("add value from 10 Jan 1994 12:00 to 21 Jan 1994 13:00");
-        logic.execute("add title2 #tag1 #tag2");
-
-        eventsCollector.reset();
-        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(logic.getToDos().size() == 2);
-
-        CommandResult result = logic.execute("clear");
-        assertFalse(result.hasError());
-        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(logic.getToDos().size() == 0);
-    }
-
-    @Test
-    public void execute_help() {
-        logic.execute("help");
-        assertTrue(wasShowHelpRequestEventPosted(eventsCollector));
-    }
-
-    @Test
-    public void execute_finish_invalidIndex() {
-        CommandResult result = logic.execute("finish 2");
-        assertTrue(result.hasError());
-
-        assertEquals(String.format(Messages.TODO_ITEM_INDEX_INVALID, 2), result.getFeedback());
-    }
-
-    @Test
-    public void execute_exit()  {
-        logic.execute("exit");
-        assertTrue(eventsCollector.hasCollectedEvent(ExitAppRequestEvent.class));
     }
 }

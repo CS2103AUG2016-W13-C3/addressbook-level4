@@ -1,6 +1,5 @@
 package seedu.commando.model;
 
-import edu.emory.mathcs.backport.java.util.Collections;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -59,24 +58,23 @@ public class ModelManagerTest {
                 LocalDateTime.of(2016, 4, 1, 20, 1)
             )
             .build();
-        toDoList2 = new ToDoList();
-        toDoList2.add(toDoList2Item1);
+        toDoList2 = new ToDoList().add(toDoList2Item1);
 
         modelManager = new ModelManager(toDoList, new UserPrefs());
 
         toDoListChangeAdd1 = new ToDoListChange(
-            Collections.singletonList(toDoList2Item1),
-            Collections.emptyList()
+            new ToDoList().add(toDoList2Item1),
+            new ToDoList()
         );
 
         toDoListChangeDelete1 = new ToDoListChange(
-            Collections.emptyList(),
-            Collections.singletonList(toDoListItem1)
+            new ToDoList(),
+            new ToDoList().add(toDoListItem1)
         );
 
         toDoListChangeEdit1 = new ToDoListChange(
-            Collections.singletonList(toDoList2Item1),
-            Collections.singletonList(toDoListItem1)
+            new ToDoList().add(toDoList2Item1),
+            new ToDoList().add(toDoListItem1)
         );
 
         hasReached = false;
@@ -124,8 +122,8 @@ public class ModelManagerTest {
     @Test
     public void changeToDoList_clear() throws IllegalValueException {
         ToDoListChange clearChange = new ToDoListChange(
-            Collections.emptyList(),
-            modelManager.getToDoList().getToDos()
+            new ToDoList(),
+            modelManager.getToDoList()
         );
         modelManager.changeToDoList(clearChange);
         assertTrue(modelManager.getToDoList().getToDos().size() == 0);

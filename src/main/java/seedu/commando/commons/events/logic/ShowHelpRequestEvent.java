@@ -1,4 +1,4 @@
-package seedu.commando.commons.events.ui;
+package seedu.commando.commons.events.logic;
 
 import seedu.commando.commons.events.BaseEvent;
 

@@ -1,6 +1,7 @@
 package seedu.commando.model;
 
 import seedu.commando.commons.core.ComponentManager;
+import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.events.model.ToDoListChangedEvent;
@@ -79,13 +80,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public UnmodifiableObservableList<UiToDo> getUiEventsToday() {
-        return uiModel.getTodayEvents();
-    }
-
-    @Override
-    public UnmodifiableObservableList<UiToDo> getUiEventsUpcoming() {
-        return uiModel.getUpcomingEvents();
+    public UnmodifiableObservableList<UiToDo> getUiEvents() {
+        return uiModel.getEvents();
     }
 
     @Override
@@ -104,7 +100,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void setUiToDoListFilter(Set<String> keywords, Set<String> tags) {
+    public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags) {
         uiModel.setToDoListFilter(keywords, tags);
     }
 

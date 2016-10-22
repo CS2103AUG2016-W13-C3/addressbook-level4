@@ -26,16 +26,10 @@ public interface Model {
     boolean redoToDoList();
 
     /**
-     * Returns observable list of UI events happening today
+     * Returns observable list of UI events happening from the current day onwards
      * Events are in chronological order, with those finished at the bottom
      * */
-    UnmodifiableObservableList<UiToDo> getUiEventsToday();
-
-    /**
-     * Returns observable list of UI events happening after today
-     * Events are in chronological order, with those finished at the bottom
-     * */
-    UnmodifiableObservableList<UiToDo> getUiEventsUpcoming();
+    UnmodifiableObservableList<UiToDo> getUiEvents();
 
     /**
      *  Return observable list of UI tasks
@@ -57,5 +51,5 @@ public interface Model {
     /**
      * Sets a filter on the UI to-do list
      */
-    void setUiToDoListFilter(Set<String> keywords, Set<String> tags);
+    void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags);
 }

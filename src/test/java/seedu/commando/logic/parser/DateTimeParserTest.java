@@ -155,7 +155,8 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_invalidDate()  {
+        public void parseDateTime_invalidDate()  {
+        // Use of Boundary value analysis
         assertFalse(dateTimeParser.parseDateTime("No date").isPresent());
         assertFalse(dateTimeParser.parseDateTime("10/2016").isPresent());
         assertFalse(dateTimeParser.parseDateTime("1/2/3/4").isPresent());
@@ -169,8 +170,9 @@ public class DateTimeParserTest {
 
     @Test
     public void parseDateTime_invalidTime()  {
+        // Use of Boundary value analysis
         assertFalse(dateTimeParser.parseDateTime("10cm").isPresent());
-        assertFalse(dateTimeParser.parseDateTime("2459").isPresent());
+        assertFalse(dateTimeParser.parseDateTime("2359").isPresent());
         assertFalse(dateTimeParser.parseDateTime("0").isPresent());
         assertFalse(dateTimeParser.parseDateTime("31").isPresent());
         assertFalse(dateTimeParser.parseDateTime("h").isPresent());
@@ -190,7 +192,8 @@ public class DateTimeParserTest {
 
     @Test
     public void parseDateTime_relativeDayOfWeek()  {
-        LocalDateTime ldt = now.minusDays(1).with(TemporalAdjusters.next(DayOfWeek.FRIDAY));
+        LocalDateTime ldt = now.plusDays(1).with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
+
         assertEquals(
                 LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),                 
                     DateTimeParser.DefaultLocalTime.getHour(),
@@ -205,7 +208,7 @@ public class DateTimeParserTest {
                 dateTimeParser.parseDateTime("Friday").orElse(null)
         );
 
-        LocalDateTime nextLdt = ldt.plusWeeks(1);
+        LocalDateTime nextLdt = now.with(TemporalAdjusters.next(DayOfWeek.FRIDAY));
         assertEquals(
                 LocalDateTime.of(nextLdt.getYear(), nextLdt.getMonthValue(), nextLdt.getDayOfMonth(),
                     DateTimeParser.DefaultLocalTime.getHour(),

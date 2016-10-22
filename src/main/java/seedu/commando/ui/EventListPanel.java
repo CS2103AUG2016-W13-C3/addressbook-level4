@@ -46,22 +46,22 @@ public class EventListPanel extends UiPart {
         this.placeHolderPane = pane;
     }
 
-    protected static EventListPanel load(Stage primaryStage, AnchorPane eventListPlaceholder,
-            ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
+    public static EventListPanel load(Stage primaryStage, AnchorPane eventListPlaceholder,
+                                     ObservableList<UiToDo> events) {
         EventListPanel eventListPanel =
                 UiPartLoader.loadUiPart(primaryStage, eventListPlaceholder, new EventListPanel());
-        eventListPanel.configure(eventsToday, eventsUpcoming);
+        eventListPanel.configure(events);
         return eventListPanel;
     }
 
-    private void configure(ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
-        setConnections(eventsToday, eventsUpcoming);
+    private void configure(ObservableList<UiToDo> events) {
+        setConnections(events);
         addToPlaceholder();
         scrollbar = (ScrollBar) eventListView.lookup(".scroll-bar:vertical");
     }
 
-    private void setConnections(ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
-        eventListView.setItems(eventsToday);
+    private void setConnections(ObservableList<UiToDo> events) {
+        eventListView.setItems(events);
         eventListView.setCellFactory(listView -> new ToDoListViewCell(Card.Event));
     }
 

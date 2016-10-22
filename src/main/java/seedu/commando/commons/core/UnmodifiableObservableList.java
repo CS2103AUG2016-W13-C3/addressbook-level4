@@ -308,4 +308,8 @@ public class UnmodifiableObservableList<E> implements ObservableList<E> {
         backingList.forEach(action);
     }
 
+    @Override
+    public String toString() {
+        return backingList.toString();
+    }
 }

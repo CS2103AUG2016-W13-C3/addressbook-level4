@@ -7,14 +7,18 @@ import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.events.model.ToDoListChangedEvent;
 import seedu.commando.commons.events.storage.DataSavingExceptionEvent;
+import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.ReadOnlyToDoList;
+import seedu.commando.model.todo.Title;
+import seedu.commando.model.todo.ToDo;
 import seedu.commando.model.todo.ToDoList;
 import seedu.commando.model.UserPrefs;
 import seedu.commando.testutil.EventsCollector;
-import seedu.commando.testutil.ToDoListBuilder;
+import seedu.commando.testutil.ToDoBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -58,10 +62,10 @@ public class StorageManagerTest {
 
     @Test
     public void toDoListReadSave() throws Exception {
-        ToDoList original = ToDoListBuilder.getSample();
+        ToDoList original = getSample();
         storageManager.saveToDoList(original);
         ReadOnlyToDoList retrieved = storageManager.readToDoList().get();
-        assertEquals(original, new ToDoList(retrieved));
+        assertTrue(original.isSimilar(new ToDoList(retrieved)));
     }
 
     @Test
@@ -93,4 +97,18 @@ public class StorageManagerTest {
         }
     }
 
+    private static ToDoList getSample() throws IllegalValueException {
+        ToDoList toDoList = new ToDoList();
+        toDoList.add(new ToDoBuilder("valid title")
+                    .withTags("tag1", "tag2" )
+                    .withDueDate(LocalDateTime.of(2016, 5, 1, 20, 1))
+                    .withDateRange(LocalDateTime.of(2016, 3, 1, 20, 1),
+                                   LocalDateTime.of(2016, 4, 1, 20, 1))
+                    .build());
+        toDoList.add(new ToDoBuilder("valid title 2")
+                    .isFinished(true)
+                    .build());
+        return toDoList;
+    }
+    
 }

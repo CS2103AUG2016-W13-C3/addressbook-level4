@@ -51,7 +51,7 @@ public class ImportCommand extends Command {
             model.changeToDoList(
                 new ToDoListChange(
                     newXmlToDoList.getToDos(),
-                    model.getToDoList().getToDos()
+                    model.getToDoList()
                 )
             );
 

@@ -1,6 +1,8 @@
 package seedu.commando.ui;
 
 import com.google.common.eventbus.Subscribe;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +15,7 @@ import seedu.commando.commons.events.model.ToDoListChangedEvent;
 import seedu.commando.commons.util.FxViewUtil;
 
 import java.util.Date;
+import java.util.Observable;
 import java.util.logging.Logger;
 
 /**
@@ -33,18 +36,17 @@ public class StatusBarFooter extends UiPart {
     @FXML
     private AnchorPane syncStatusBarPane;
 
-    protected static StatusBarFooter load(Stage stage, AnchorPane placeHolder, String saveLocation) {
+    public static StatusBarFooter load(Stage stage, AnchorPane placeHolder, ObservableValue<String> saveLocation) {
         StatusBarFooter statusBarFooter = UiPartLoader.loadUiPart(stage, placeHolder, new StatusBarFooter());
         statusBarFooter.configure(saveLocation);
         return statusBarFooter;
     }
 
-    protected void configure(String saveLocation) {
+    public void configure(ObservableValue<String> saveLocation) {
         addMainPane();
         addSyncStatus();
         setSyncStatus("Not updated yet in this session");
-        addSaveLocation();
-        setSaveLocation("./" + saveLocation);
+        addSaveLocation(saveLocation);
         registerAsAnEventHandler(this);
     }
 
@@ -53,14 +55,14 @@ public class StatusBarFooter extends UiPart {
         placeHolder.getChildren().add(mainPane);
     }
 
-    private void setSaveLocation(String location) {
-        this.saveLocationStatus.setText(location);
-    }
-
-    private void addSaveLocation() {
+    private void addSaveLocation(ObservableValue<String> saveLocation) {
         this.saveLocationStatus = new StatusBar();
+
         FxViewUtil.applyAnchorBoundaryParameters(saveLocationStatus, 0.0, 0.0, 0.0, 0.0);
         saveLocStatusBarPane.getChildren().add(saveLocationStatus);
+
+        // Update save location when required
+        saveLocation.addListener((observable, oldValue, newValue) -> saveLocationStatus.setText(observable.getValue()));
     }
 
     private void setSyncStatus(String status) {

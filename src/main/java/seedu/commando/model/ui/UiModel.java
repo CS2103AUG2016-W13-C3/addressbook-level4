@@ -11,9 +11,11 @@ import seedu.commando.logic.LogicManager;
 import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.ToDoListManager;
 import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.ReadOnlyToDoList;
+import seedu.commando.model.todo.Tag;
+import seedu.commando.model.todo.ToDoList;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -26,20 +28,18 @@ public class UiModel {
 
     private final ToDoListManager toDoListManager;
     private final FilteredList<ReadOnlyToDo> filteredToDoList;
-    private final ObservableList<UiToDo> todayEvents;
+    private final ObservableList<UiToDo> events;
     private final ObservableList<UiToDo> upcomingEvents;
     private final ObservableList<UiToDo> tasks;
-    private final UnmodifiableObservableList<UiToDo> protectedUpcomingEvents;
-    private final UnmodifiableObservableList<UiToDo> protectedTodayEvents;
+    private final UnmodifiableObservableList<UiToDo> protectedEvents;
     private final UnmodifiableObservableList<UiToDo> protectedTasks;
     private final ArrayList<UiToDo> toDoAtIndices;
     private int runningIndex;
     {
         upcomingEvents = FXCollections.observableArrayList();
-        todayEvents = FXCollections.observableArrayList();
+        events = FXCollections.observableArrayList();
         tasks = FXCollections.observableArrayList();
-        protectedUpcomingEvents = new UnmodifiableObservableList<>(upcomingEvents);
-        protectedTodayEvents = new UnmodifiableObservableList<>(todayEvents);
+        protectedEvents = new UnmodifiableObservableList<>(events);
         protectedTasks = new UnmodifiableObservableList<>(tasks);
         toDoAtIndices = new ArrayList<>();
     }
@@ -72,7 +72,7 @@ public class UiModel {
      * Sets a filter on the to-do list
      * Asserts {@param keywords} and {@param tags} to be non-null
      */
-    public void setToDoListFilter(Set<String> keywords, Set<String> tags) {
+    public void setToDoListFilter(Set<String> keywords, Set<Tag> tags) {
         assert keywords != null;
         assert tags != null;
 
@@ -86,16 +86,12 @@ public class UiModel {
         filteredToDoList.setPredicate(null);
     }
 
-    public UnmodifiableObservableList<UiToDo> getTodayEvents() {
-        return protectedTodayEvents;
+    public UnmodifiableObservableList<UiToDo> getEvents() {
+        return protectedEvents;
     }
 
     public UnmodifiableObservableList<UiToDo> getTasks() {
         return protectedTasks;
-    }
-
-    public UnmodifiableObservableList<UiToDo> getUpcomingEvents() {
-        return protectedUpcomingEvents;
     }
 
     /**
@@ -114,22 +110,13 @@ public class UiModel {
 
         Optional<ToDoListChange> change = toDoListManager.getLastToDoListChange();
 
-        List<ReadOnlyToDo> newToDos = change.isPresent()
-            ? change.get().getAddedToDos() : Collections.emptyList();
+        ReadOnlyToDoList newToDos = change.isPresent()
+            ? change.get().getAddedToDos() : new ToDoList();
 
-        List<UiToDo> uiEvents = events.stream().map(
+        this.events.setAll(events.stream().map(
             toDo -> new UiToDo(toDo, ++ runningIndex, newToDos.contains(toDo))
-        ).collect(Collectors.toList());
-
-        // Split to today and upcoming
-        this.todayEvents.setAll(uiEvents.stream().filter(
-            // Before tomorrow
-            event -> event.getDateRange().get().startDate
-                .isBefore(LocalDate.now().plusDays(1).atStartOfDay())
         ).collect(Collectors.toList()));
-
-        this.upcomingEvents.setAll(uiEvents);
-        toDoAtIndices.addAll(uiEvents);
+        toDoAtIndices.addAll(this.events);
 
         // Then do the same for tasks
         this.tasks.setAll(tasks.stream().map(
@@ -162,23 +149,46 @@ public class UiModel {
                 return 1; // task2 first
             }
 
-            if (!task1.getDueDate().isPresent() && !task2.getDueDate().isPresent()) {
-                return 0; // both don't have dates, equal
+            if (task1.isFinished() && task2.isFinished()) {
+
+                // If finished dates are the same, put the task which was finished earlier in front
+                int dateComparison = task1.getDateFinished().get()
+                    .compareTo(task2.getDateFinished().get());
+                if (dateComparison == 0) {
+                    return task1.getDateCreated().compareTo(task2.getDateCreated());
+                } else {
+                    return dateComparison;
+                }
+
+            } else {
+                assert !task1.isFinished();
+                assert !task2.isFinished();
+
+                if (task1.getDueDate().isPresent() && !task2.getDueDate().isPresent()) {
+                    return -1; // taskl first
+                }
+
+                if (task2.getDueDate().isPresent() && !task1.getDueDate().isPresent()) {
+                    return 1; // task2 first
+                }
+
+                // If both don't have dates, put the older created task in front
+                if (!task1.getDueDate().isPresent() && !task2.getDueDate().isPresent()) {
+                    return task1.getDateCreated().compareTo(task2.getDateCreated());
+                } else {
+                    assert task1.getDueDate().isPresent();
+                    assert task2.getDueDate().isPresent();
+
+                    // If even due dates are the same, put the task which was finished earlier in front
+                    int dateComparison = task1.getDueDate().get().value
+                        .compareTo(task2.getDueDate().get().value);
+                    if (dateComparison == 0) {
+                        return task1.getDateCreated().compareTo(task2.getDateCreated());
+                    } else {
+                        return dateComparison;
+                    }
+                }
             }
-
-            if (task1.getDueDate().isPresent() && !task2.getDueDate().isPresent()) {
-                return -1; // taskl first
-            }
-
-            if (task2.getDueDate().isPresent() && !task1.getDueDate().isPresent()) {
-                return 1; // task2 first
-            }
-
-            // Here, both have duedates
-            assert task1.getDueDate().isPresent();
-            assert task2.getDueDate().isPresent();
-
-            return task1.getDueDate().get().value.compareTo(task2.getDueDate().get().value);
         });
 
         return tasks;
@@ -194,19 +204,18 @@ public class UiModel {
 
         // For observableEvents, sort by chronological order
         events.sort((event1, event2) -> {
-            // Must have date ranges because they are observableEvents
+            // Must have date ranges because they are events
             assert event2.getDateRange().isPresent();
             assert event2.getDateRange().isPresent();
 
-            if (!event1.isFinished() && event2.isFinished()) {
-                return -1; // event1 first
-            }
+            int rangeComparison = event1.getDateRange().get().startDate.compareTo(event2.getDateRange().get().startDate);
 
-            if (event1.isFinished() && !event2.isFinished()) {
-                return 1; // event2 first
+            // If start dates are the same, put the older created event in front
+            if (rangeComparison == 0) {
+                return event1.getDateCreated().compareTo(event2.getDateCreated());
+            } else {
+                return rangeComparison;
             }
-
-            return event1.getDateRange().get().startDate.compareTo(event2.getDateRange().get().startDate);
         });
 
         return events;
@@ -230,7 +239,7 @@ public class UiModel {
     //  Private methods for filtering
     //================================================================================
 
-    private boolean ifMatchesFilter(ReadOnlyToDo toDo, Set<String> keywords, Set<String> tags) {
+    private boolean ifMatchesFilter(ReadOnlyToDo toDo, Set<String> keywords, Set<Tag> tags) {
         return (keywords.stream()
             .allMatch(keyword -> checkForKeyword(toDo, keyword))) // contains all keywords
             && (tags.stream()
@@ -242,7 +251,7 @@ public class UiModel {
             toDo.getTags().stream().anyMatch(toDoTag -> StringUtil.substringIgnoreCase(toDoTag.value, keyword));
     }
 
-    private boolean checkForTag(ReadOnlyToDo toDo, String tag) {
-        return toDo.getTags().stream().anyMatch(toDoTag -> toDoTag.value.equalsIgnoreCase(tag));
+    private boolean checkForTag(ReadOnlyToDo toDo, Tag tag) {
+        return toDo.getTags().stream().anyMatch(toDoTag -> toDoTag.value.equalsIgnoreCase(tag.value));
     }
 }
