@@ -86,6 +86,7 @@ public abstract class UiPart {
      * @param stage
      * @param iconSource e.g. {@code "/images/help_icon.png"}
      */
+    
     protected void setIcon(Stage stage, String iconSource) {
         stage.getIcons().add(AppUtil.getImage(iconSource));
     }

@@ -12,24 +12,24 @@ import seedu.commando.commons.util.FxViewUtil;
  * A ui for the status bar that is displayed at the header of the application.
  */
 public class ResultDisplay extends UiPart {
-    public static final String RESULT_DISPLAY_ID = "resultDisplay";
-    private static final String STATUS_BAR_STYLE_SHEET = "result-display";
-    private TextArea resultDisplayArea;
+    
+    // Fixed variables
+    private final String FXML = "ResultDisplay.fxml";
+    private final String RESULT_DISPLAY_ID = "resultDisplay";
+    private final String STATUS_BAR_STYLE_SHEET = "result-display";
     private final StringProperty displayed = new SimpleStringProperty("");
-
-    private static final String FXML = "ResultDisplay.fxml";
-
+    
+    private TextArea resultDisplayArea;
     private AnchorPane placeHolder;
-
     private AnchorPane mainPane;
 
-    public static ResultDisplay load(Stage primaryStage, AnchorPane placeHolder) {
+    protected static ResultDisplay load(Stage primaryStage, AnchorPane placeHolder) {
         ResultDisplay statusBar = UiPartLoader.loadUiPart(primaryStage, placeHolder, new ResultDisplay());
         statusBar.configure();
         return statusBar;
     }
 
-    public void configure() {
+    protected void configure() {
         resultDisplayArea = new TextArea();
         resultDisplayArea.setEditable(false);
         resultDisplayArea.setId(RESULT_DISPLAY_ID);
@@ -58,7 +58,7 @@ public class ResultDisplay extends UiPart {
         return FXML;
     }
 
-    public void postMessage(String message) {
+    protected void postMessage(String message) {
         displayed.setValue(message);
     }
 

@@ -4,26 +4,25 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.model.ui.UiToDo;
-
-import java.util.logging.Logger;
+import seedu.commando.ui.ToDoListViewCell.Card;
 
 /**
  * Panel containing the list of to-dos
  */
 public class EventListPanel extends UiPart {
-    private final Logger logger = LogsCenter.getLogger(EventListPanel.class);
+
     private static final String FXML = "EventListPanel.fxml";
+
     private VBox panel;
     private AnchorPane placeHolderPane;
+    private ScrollBar scrollbar;
 
     @FXML
     private ListView<UiToDo> eventListView;
@@ -58,11 +57,12 @@ public class EventListPanel extends UiPart {
     private void configure(ObservableList<UiToDo> events) {
         setConnections(events);
         addToPlaceholder();
+        scrollbar = (ScrollBar) eventListView.lookup(".scroll-bar:vertical");
     }
 
     private void setConnections(ObservableList<UiToDo> events) {
         eventListView.setItems(events);
-        eventListView.setCellFactory(listView -> new ToDoListViewCell());
+        eventListView.setCellFactory(listView -> new ToDoListViewCell(Card.Event));
     }
 
     private void addToPlaceholder() {
@@ -70,28 +70,30 @@ public class EventListPanel extends UiPart {
         placeHolderPane.getChildren().add(panel);
     }
 
-    public void scrollTo(int index) {
+    protected void scrollTo(int index) {
         Platform.runLater(() -> {
             eventListView.scrollTo(index);
             eventListView.getSelectionModel().clearAndSelect(index);
         });
     }
-
-    class ToDoListViewCell extends ListCell<UiToDo> {
-
-        public ToDoListViewCell() {
+    
+    protected ListView<UiToDo> getEventListView() {
+        return eventListView;
+    }
+    
+    private boolean isScrollBarPresent() {
+        return scrollbar != null;
+    }
+    
+    protected void scrollDown() {
+        if (isScrollBarPresent()) {
+            scrollbar.increment();
         }
-
-        @Override
-        protected void updateItem(UiToDo toDo, boolean empty) {
-            super.updateItem(toDo, empty);
-            if (empty || toDo == null) {
-                setGraphic(null);
-                setText(null);
-            } else {
-                HBox layout = EventCard.load(toDo, toDo.getIndex()).getLayoutState(toDo.isNew(), toDo.isFinished());
-                setGraphic(layout);
-            }
+    }
+    
+    protected void scrollUp() {
+        if (isScrollBarPresent()) {
+            scrollbar.decrement();
         }
     }
 }

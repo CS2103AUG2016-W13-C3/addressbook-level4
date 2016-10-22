@@ -52,7 +52,8 @@ public class UiManager extends ComponentManager implements Ui {
             mainWindow = MainWindow.load(primaryStage, prefs, logic);
             mainWindow.show(); // This should be called before creating other UI parts
             mainWindow.fillInnerParts();
-            mainWindow.disableSplitPaneResize();
+            mainWindow.moreConfigurations(); // This is to set properties of some components that
+                                             // can only be set after loading 
 
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));

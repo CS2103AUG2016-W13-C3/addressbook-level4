@@ -1,6 +1,7 @@
 package seedu.commando.ui;
 
 import com.google.common.eventbus.Subscribe;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
@@ -22,7 +23,7 @@ public class CommandBox extends UiPart {
     private AnchorPane placeHolderPane;
     private AnchorPane commandPane;
     private ResultDisplay resultDisplay;
-    String previousCommandTest;
+    private String previousCommandTest;
 
     private Logic logic;
 
@@ -30,7 +31,7 @@ public class CommandBox extends UiPart {
     private TextField commandTextField;
     private CommandResult mostRecentResult;
 
-    public static CommandBox load(Stage primaryStage, AnchorPane commandBoxPlaceholder,
+    protected static CommandBox load(Stage primaryStage, AnchorPane commandBoxPlaceholder,
             ResultDisplay resultDisplay, Logic logic) {
         CommandBox commandBox = UiPartLoader.loadUiPart(primaryStage, commandBoxPlaceholder, new CommandBox());
         commandBox.configure(resultDisplay, logic);
@@ -38,7 +39,7 @@ public class CommandBox extends UiPart {
         return commandBox;
     }
 
-    public void configure(ResultDisplay resultDisplay, Logic logic) {
+    protected void configure(ResultDisplay resultDisplay, Logic logic) {
         this.resultDisplay = resultDisplay;
         this.logic = logic;
         registerAsAnEventHandler(this);
@@ -66,7 +67,6 @@ public class CommandBox extends UiPart {
         this.placeHolderPane = pane;
     }
 
-
     @FXML
     private void handleCommandInputChanged() {
         //Take a copy of the command text
@@ -80,7 +80,6 @@ public class CommandBox extends UiPart {
         resultDisplay.postMessage(mostRecentResult.getFeedback());
         logger.info("Result: " + mostRecentResult.getFeedback());
     }
-
 
     /**
      * Sets the command box style to indicate a correct command.
@@ -109,6 +108,10 @@ public class CommandBox extends UiPart {
      */
     private void setStyleToIndicateIncorrectCommand() {
         commandTextField.getStyleClass().add("error");
+    }
+    
+    protected TextField getCommandField() {
+        return commandTextField;
     }
 
 }
