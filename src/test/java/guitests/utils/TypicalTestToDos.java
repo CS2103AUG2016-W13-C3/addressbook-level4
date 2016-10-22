@@ -26,6 +26,7 @@ public class TypicalTestToDos {
                     .build();
             toDoItem5 = new ToDoBuilder("title 5").withTags("tag1", "tag2")
                     .withDueDate(LocalDateTime.of(2017, 11, 1, 20, 1)).finish(LocalDateTime.now()).build();
+
         } catch (IllegalValueException e) {
             e.printStackTrace();
             assert false : "not possible";

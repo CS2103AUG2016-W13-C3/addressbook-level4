@@ -1,10 +1,12 @@
 package guitests.utils;
 
+import java.io.IOException;
 import java.util.function.Supplier;
 
 import javafx.stage.Stage;
 import seedu.commando.MainApp;
 import seedu.commando.commons.core.Config;
+import seedu.commando.commons.util.StringUtil;
 import seedu.commando.model.Model;
 import seedu.commando.model.UserPrefs;
 import seedu.commando.model.todo.ReadOnlyToDoList;
@@ -34,6 +36,12 @@ public class TestApp extends MainApp {
     }
 
     // Override to-do list file path to testing environment's
+    @Override
+    public void init() throws Exception {
+        super.init();
+        saveUserPrefs();
+    }
+
     @Override
     protected UserPrefs initPrefs(Storage storage) {
         UserPrefs userPrefs = super.initPrefs(storage);

@@ -127,12 +127,12 @@ public class TestUtil {
         createDataFileWithSampleData(CommanDoGuiTest.SAVE_LOCATION_FOR_TESTING);
     }
 
-    public static ToDoList generateEmptyAddressBook() {
+    public static ToDoList generateEmptyToDoList() {
         return new ToDoList();
     }
 
     public static XmlSerializableToDoList generateSampleStorageToDoList() {
-        return new XmlSerializableToDoList(generateEmptyAddressBook());
+        return new XmlSerializableToDoList(generateEmptyToDoList());
     }
 
     /**

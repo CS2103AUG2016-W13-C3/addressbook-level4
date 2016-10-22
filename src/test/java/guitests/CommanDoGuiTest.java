@@ -33,7 +33,7 @@ public abstract class CommanDoGuiTest {
 
     TestApp testApp;
 
-    protected static TypicalTestToDos td;
+    protected static TypicalTestToDos td = new TypicalTestToDos();
 
     /*
      *   Handles to GUI elements present at the start up are created in advance
@@ -59,8 +59,6 @@ public abstract class CommanDoGuiTest {
 
     @Before
     public void setup() throws Exception {
-        td = new TypicalTestToDos();
-
         FxToolkit.setupStage((stage) -> {
             mainGui = new MainGuiHandle(new GuiRobot(), stage);
             mainMenu = mainGui.getMainMenu();
@@ -83,7 +81,7 @@ public abstract class CommanDoGuiTest {
      * Return null to use the data in the data file at toDoListFilePath specified in file of {@link #getToDoListFileLocation()}
      */
     protected ToDoList getInitialData() {
-        ToDoList todoList = TestUtil.generateEmptyAddressBook();
+        ToDoList todoList = TestUtil.generateEmptyToDoList();
         td.loadToDoListWithSampleData(todoList);
         return todoList;
     }

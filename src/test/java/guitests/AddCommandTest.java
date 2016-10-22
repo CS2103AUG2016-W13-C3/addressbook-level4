@@ -18,20 +18,20 @@ public class AddCommandTest extends CommanDoGuiTest {
 
     @Test
     public void add() {
-        //add one todo to existing list
+        // add one todo to existing list
         ToDo[] currentList = td.getTypicalToDos();
-        ToDo toDoToAdd = td.testToDoItem1;
+        ToDo toDoToAdd = td.toDoItem1;
         assertAddSuccess(toDoToAdd, 3, currentList);
         currentList = TestUtil.addToDosToList(currentList, 3, toDoToAdd);
-        
-        toDoToAdd = td.testToDoItem2;
+
+        toDoToAdd = td.toDoItem2;
         assertAddSuccess(toDoToAdd, 0, currentList);
         currentList = TestUtil.addToDosToList(currentList, 0, toDoToAdd);
-        
-        toDoToAdd = td.testToDoItem3;
+
+        toDoToAdd = td.toDoItem3;
         assertAddSuccess(toDoToAdd, 3, currentList);
         currentList = TestUtil.addToDosToList(currentList, 3, toDoToAdd);
-        
+
         //add one todo to empty list
         commandBox.runCommand("clear");
         currentList = td.getEmptyToDos();
@@ -43,34 +43,34 @@ public class AddCommandTest extends CommanDoGuiTest {
         toDoToAdd = td.toDoItem1;
         assertAddSuccess(toDoToAdd, currentList.length, currentList);
         currentList = TestUtil.addToDosToList(currentList, currentList.length, toDoToAdd);
-        
+
         //Invalid add command:
-        
+
         //add duplicate todo
         commandBox.runCommand(CommandBuilder.buildAddCommand(td.toDoItem1));
         assertResultMessage(Messages.TODO_ALREADY_EXISTS);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
-        
+
         //add missing title
         commandBox.runCommand("add ");
         assertResultMessage(Messages.MISSING_TODO_TITLE);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
-        
+
         //add missing startdate ,  empty date
         commandBox.runCommand("add test from to 1pm");
         assertResultMessage(Messages.MISSING_TODO_DATERANGE_START);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
-        
+
         //add missing startdate ,  invalid date
         commandBox.runCommand("add test from abcde to 1pm");
         assertResultMessage(Messages.MISSING_TODO_DATERANGE_START);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
-        
+
         //add missing enddate , empty date
         commandBox.runCommand("add test from 1pm to");
         assertResultMessage(Messages.MISSING_TODO_DATERANGE_END);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
-        
+
         //add missing enddate ,  invalid date
         commandBox.runCommand("add test from 1pm to abcde");
         assertResultMessage(Messages.MISSING_TODO_DATERANGE_END);
