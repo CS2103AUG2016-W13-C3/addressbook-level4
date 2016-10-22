@@ -44,6 +44,8 @@ public class DeleteCommand extends Command {
                 new ToDoList(),
                 new ToDoList().add(toDoToDelete.get())
             ));
+
+            return new CommandResult(String.format(Messages.TODO_DELETED, toDoToDelete.get().getTitle().toString()));
         } else {
             ToDo toDoToEdit = new ToDo(toDoToDelete.get());
 
@@ -67,9 +69,9 @@ public class DeleteCommand extends Command {
                 new ToDoList().add(toDoToEdit),
                 new ToDoList().add(toDoToDelete.get())
             ));
-        }
 
-        return new CommandResult(String.format(Messages.TODO_DELETED, toDoToDelete.get().getTitle().toString()));
+            return new CommandResult(String.format(Messages.TODO_EDITED, toDoToDelete.get().getTitle().toString()));
+        }
     }
 
 }
