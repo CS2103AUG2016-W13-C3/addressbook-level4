@@ -22,7 +22,7 @@ public class DateTimeParser {
 
     private static final String MonthWordRegexString = "January|Feburary|March|April|June|July|August|September|October|November|December|" +
         "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec";
-    private static final String DayWordRegexString = "Monday|Tuesday|Wednesday|Thursday|Friday|Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri";
+    private static final String DayWordRegexString = "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri|Sat|Sun";
     private static final String YearRegexString = "(?<year>\\d{4}|\\d{2})";
     private static final String TwoDigitYearRegexString = "\\d{2}$";
 
