@@ -17,6 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.GuiSettings;
@@ -118,6 +119,7 @@ public class MainWindow extends UiPart {
     }
 
     public static MainWindow load(Stage primaryStage, UserPrefs prefs, Logic logic) {
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         MainWindow mainWindow = UiPartLoader.loadUiPart(primaryStage, new MainWindow());
         mainWindow.configure(Config.ApplicationTitle, Config.ApplicationName, prefs, logic);
         return mainWindow;
