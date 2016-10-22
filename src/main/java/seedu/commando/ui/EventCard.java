@@ -1,5 +1,8 @@
 package seedu.commando.ui;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -64,8 +67,16 @@ public class EventCard extends UiPart{
     private void setDateTimesLabels() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
+            final long startDayDifference = 
+                    ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.startDate);
+            final long endDayDifference = 
+                    ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.endDate);
             startLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.startDate) + " to ");
             endLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.endDate));
+            startLabel.setStyle("-fx-text-fill: " + 
+                    ToDoCardStyleManager.getDateProximityBlue((int) startDayDifference));
+            endLabel.setStyle("-fx-text-fill: " + 
+                    ToDoCardStyleManager.getDateProximityBlue((int) endDayDifference));
         } else {
             startLabel.setText("");
             endLabel.setText("");

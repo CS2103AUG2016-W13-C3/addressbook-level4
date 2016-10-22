@@ -46,7 +46,7 @@ public class TaskCard extends UiPart {
         titleLabel.setText(toDo.getTitle().value);
         indexLabel.setText(String.valueOf(index));
 
-        setContentLabel();
+        setDateTimeLabel();
         setTagLabel();
     }
     
@@ -62,13 +62,13 @@ public class TaskCard extends UiPart {
         }
     }
     
-    private void setContentLabel() {
+    private void setDateTimeLabel() {
         if (toDo.getDueDate().isPresent()) {
             final LocalDateTime due = toDo.getDueDate().get().value;
             long dayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), due);
             dueLabel.setText("by " + ToDoCardStyleManager.prettifyDateTime(due));
             dueLabel.setStyle("-fx-text-fill: " + 
-                              ToDoCardStyleManager.getDueLabelTextColor((int) dayDifference));
+                  ToDoCardStyleManager.getDateProximityGreen((int) dayDifference));
         } else {
             dueLabel.setText("");
         }
