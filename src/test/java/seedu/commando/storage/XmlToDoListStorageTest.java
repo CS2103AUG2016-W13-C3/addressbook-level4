@@ -17,6 +17,7 @@ import seedu.commando.testutil.ToDoListBuilder;
 import java.io.File;
 import java.io.IOException;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -66,7 +67,7 @@ public class XmlToDoListStorageTest {
         // Save in new file and read back
         xmlStorage.saveToDoList(original, filePath);
         ReadOnlyToDoList readBack = xmlStorage.readToDoList(filePath).get();
-        assertEquals(original, new ToDoList(readBack));
+        assertTrue(original.isSimilar(new ToDoList(readBack)));
     }
 
     @Test
@@ -83,7 +84,7 @@ public class XmlToDoListStorageTest {
         original.remove(original.getToDos().get(0));
         xmlStorage.saveToDoList(original, filePath);
         ReadOnlyToDoList readBack = xmlStorage.readToDoList(filePath).get();
-        assertEquals(original, new ToDoList(readBack));
+        assertTrue(original.isSimilar(new ToDoList(readBack)));
     }
 
     @Test
@@ -95,7 +96,7 @@ public class XmlToDoListStorageTest {
         // Save and read without specifying file path
         xmlStorage.saveToDoList(original); //file path not specified
         ReadOnlyToDoList readBack = xmlStorage.readToDoList().get(); //file path not specified
-        assertEquals(original, new ToDoList(readBack));
+        assertTrue(original.isSimilar(new ToDoList(readBack)));
     }
 
     @Test
