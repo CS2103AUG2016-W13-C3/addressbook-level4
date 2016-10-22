@@ -23,6 +23,12 @@ public interface ReadOnlyToDo {
 
     Recurrence getRecurrence();
 
+    default boolean hasTimeConstraint() {
+        return getDateRange().isPresent()
+            || getDueDate().isPresent()
+            || getRecurrence() != Recurrence.None;
+    }
+
     /**
      * If a date range is set and current datetime is after the end of the range
      * returns end of date range regardless of whether date finished was set

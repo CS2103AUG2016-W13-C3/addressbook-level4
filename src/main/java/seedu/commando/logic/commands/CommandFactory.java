@@ -8,6 +8,7 @@ import seedu.commando.model.todo.DueDate;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.Title;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
  * Doesn't set context for commands
  */
 public class CommandFactory {
+    public static final String KEYWORD_DELETE_TIME = "time";
+    public static final String KEYWORD_DELETE_TAGS = "tags";
 
     private SequentialParser sequentialParser;
     {
@@ -164,11 +167,28 @@ public class CommandFactory {
             () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
         );
 
-        if (!sequentialParser.isInputEmpty()) {
+        DeleteCommand deleteCommand = new DeleteCommand(index);
+
+        // check for fields
+        List<String> words = sequentialParser.extractWords();
+
+        int fieldsCount = 0;
+        if (words.contains(KEYWORD_DELETE_TAGS)) {
+            deleteCommand.ifDeleteTags = true;
+            fieldsCount ++;
+        }
+
+        if (words.contains(KEYWORD_DELETE_TIME)) {
+            deleteCommand.ifDeleteTime = true;
+            fieldsCount ++;
+        }
+
+        // If there were extra words besides the fields, invalid command format
+        if (fieldsCount != words.size()) {
            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD));
         }
 
-        return new DeleteCommand(index);
+        return deleteCommand;
     }
     
     private Command buildFinishCommand() throws IllegalValueException {

@@ -111,7 +111,6 @@ public class XmlAdaptedToDo {
 
         // Check if the date created is empty
         if (dateCreated != null){
-            System.out.println("CREATED: " + dateCreated);
             todo.setDateCreated(LocalDateTime.parse(dateCreated, dateFormatter));
         }
 

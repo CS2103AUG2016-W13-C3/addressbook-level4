@@ -50,4 +50,6 @@ public class Messages {
     public static final String IMPORT_COMMAND_FILE_NOT_EXIST = "Invalid import file: the file does not exist.";
     public static final String IMPORT_COMMAND_INVALID_DATA = "Invalid import file: the file is of an invalid format.";
     public static final String TODO_ALREADY_EXISTS = "To-do already exists!";
+    public static final String DELETE_COMMAND_NO_TAGS = "To-do has no tags to delete!";
+    public static final String DELETE_COMMAND_NO_TIME_CONSTRAINTS = "To-do has no time constraints to delete!";
 }
