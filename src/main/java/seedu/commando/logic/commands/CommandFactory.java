@@ -160,28 +160,28 @@ public class CommandFactory {
     }
 
     private Command buildDeleteCommand() throws IllegalValueException {
-        int index = sequentialParser.extractInteger().orElseThrow(
-            () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
-        );
-
+    	List<Integer> indices = sequentialParser.extractIndicesList();
+    	if(indices.isEmpty()){
+    		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
+    	}
         if (!sequentialParser.isInputEmpty()) {
            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD));
         }
 
-        return new DeleteCommand(index);
+        return new DeleteCommand(indices);
     }
     
     private Command buildFinishCommand() throws IllegalValueException {
-        int index = sequentialParser.extractInteger().orElseThrow(
-            () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
-        );
-
+    	List<Integer> indices = sequentialParser.extractIndicesList();
+    	if (indices.isEmpty()){
+    		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
+    	}
         if (!sequentialParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
 
         }
 
-        return new FinishCommand(index);
+        return new FinishCommand(indices);
     }
 
     private Command buildFindCommand() {

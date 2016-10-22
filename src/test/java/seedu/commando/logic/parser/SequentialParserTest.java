@@ -4,7 +4,11 @@ import com.google.common.collect.Sets;
 import edu.emory.mathcs.backport.java.util.Collections;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.DueDate;
@@ -12,6 +16,7 @@ import seedu.commando.model.todo.Tag;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertFalse;
@@ -213,5 +218,23 @@ public class SequentialParserTest {
         assertEquals(
             "walk by the beach from today to tomorrow", sequentialParser.extractText().orElse("")
         );
+    }
+    @Test
+    public void extractIndicesList_valid() throws IllegalValueException {
+    	sequentialParser.setInput("2to7");
+    	List<Integer> indices = sequentialParser.extractIndicesList();
+    	assertEquals("[2, 3, 4, 5, 6, 7]",indices.toString());
+    	sequentialParser.setInput("-2-7");
+    	indices = sequentialParser.extractIndicesList();
+    	assertEquals("[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]",indices.toString());
+    	sequentialParser.setInput("-2  -  7");
+    	indices = sequentialParser.extractIndicesList();
+    	assertEquals("[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]",indices.toString());
+    	sequentialParser.setInput("1 2 3 4 5");
+    	indices = sequentialParser.extractIndicesList();
+    	assertEquals("[1, 2, 3, 4, 5]",indices.toString());
+    	sequentialParser.setInput("2to2");
+    	indices = sequentialParser.extractIndicesList();
+    	assertEquals("[2]",indices.toString());
     }
 }

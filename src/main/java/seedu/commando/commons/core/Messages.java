@@ -11,6 +11,7 @@ public class Messages {
     public static final String MISSING_TODO_TITLE = "Missing title for to-do.";
     public static final String INVALID_TODO_DATERANGE_START = "Invalid start date for date range of to-do.";
     public static final String INVALID_TODO_DATERANGE_END = "Invalid end date for date range of to-do.";
+    public static final String INDEXRANGE_CONSTRAINTS = "The end index must be equal or larger than the start index.";
     public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.";
     public static final String TODO_DATERANGE_CONSTRAINTS = "The end date of the date range must be after start date.";
     public static final String MISSING_STORE_PATH = "Missing the path to store.";
