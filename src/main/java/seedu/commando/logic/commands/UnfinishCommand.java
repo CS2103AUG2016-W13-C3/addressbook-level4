@@ -13,13 +13,13 @@ import java.util.Optional;
 /**
  * Marks a to-do item as done
  */
-public class FinishCommand extends Command {
+public class UnfinishCommand extends Command {
 
-    public static final String COMMAND_WORD = "finish";
+    public static final String COMMAND_WORD = "unfinish";
 
     public final int toDoIndex;
 
-    public FinishCommand(int toDoIndex) {
+    public UnfinishCommand(int toDoIndex) {
         this.toDoIndex = toDoIndex;
     }
 
@@ -28,30 +28,30 @@ public class FinishCommand extends Command {
             throws IllegalValueException, NoModelException {
         Model model = getModel();
 
-        Optional<UiToDo> toDoToFinish = model.getUiToDoAtIndex(toDoIndex);
+        Optional<UiToDo> toDoToUnfinish = model.getUiToDoAtIndex(toDoIndex);
 
-        if (!toDoToFinish.isPresent()) {
+        if (!toDoToUnfinish.isPresent()) {
             return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex), true);
         }
 
-        if (toDoToFinish.get().isFinished()) {
-            return new CommandResult(String.format(Messages.TODO_ALREADY_FINISHED, toDoToFinish.get().getTitle().toString()), true);
+        if (!toDoToUnfinish.get().isFinished()) {
+            return new CommandResult(String.format(Messages.TODO_ALREADY_ONGOING, toDoToUnfinish.get().getTitle().toString()), true);
         }
 
-        // Mark as finished
-        ToDo finishedToDo = new ToDo(toDoToFinish.get());
-        finishedToDo.setIsFinished(true);
+        // Mark as unfinished
+        ToDo unfinishedToDo = new ToDo(toDoToUnfinish.get());
+        unfinishedToDo.setIsFinished(false);
 
         try {
             model.changeToDoList(new ToDoListChange(
-                    new ToDoList().add(finishedToDo),
-                    new ToDoList().add(toDoToFinish.get())
+                    new ToDoList().add(unfinishedToDo),
+                    new ToDoList().add(toDoToUnfinish.get())
                     ));
         } catch (IllegalValueException exception) {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.TODO_UNFINISHED, toDoToFinish.get().getTitle().toString()));
+        return new CommandResult(String.format(Messages.TODO_FINISHED, toDoToUnfinish.get().getTitle().toString()));
     }
 
 }
