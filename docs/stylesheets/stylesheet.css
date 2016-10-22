@@ -14,14 +14,6 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }
 
-@font-face {
-  font-family: 'Anonymous Pro';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Anonymous Pro'), local('AnonymousPro'), url(https://fonts.gstatic.com/s/anonymouspro/v9/Zhfjj_gat3waL4JSju74ExEOS6Aq7hJAAidQNR3rgdU.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
-}
-
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -67,7 +59,6 @@ body {
   font-size: 1em;
   line-height: 1.5;
   color: #1d1d1d;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   background: #e7e7e7 url(../images/body-bg.png) 0 0 repeat;
 }
 
@@ -218,7 +209,7 @@ form {
     border: none;
 }
 .datagrid table tbody td {
-    border-left: 2px solid #DBDBDB;
+    border-left: 1px solid #DBDBDB;
     border-bottom: 1px solid #FFFFFF;
     font-weight: normal;
 }
