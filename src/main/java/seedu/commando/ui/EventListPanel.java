@@ -4,12 +4,10 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.commando.model.ui.UiToDo;
@@ -20,7 +18,6 @@ import seedu.commando.ui.ToDoListViewCell.Card;
  */
 public class EventListPanel extends UiPart {
 
-    // Fixed variables
     private static final String FXML = "EventListPanel.fxml";
 
     private VBox panel;
@@ -64,7 +61,7 @@ public class EventListPanel extends UiPart {
     }
 
     private void setConnections(ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
-        eventListView.setItems(eventsUpcoming);
+        eventListView.setItems(eventsToday);
         eventListView.setCellFactory(listView -> new ToDoListViewCell(Card.Event));
     }
 

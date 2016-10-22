@@ -45,11 +45,11 @@ public class EventCard extends UiPart{
         titleLabel.setText(toDo.getTitle().value);
         indexLabel.setText(String.valueOf(index));
 
-        setLabelDateTimes();
-        setLabelTags();
+        setDateTimesLabels();
+        setTagLabel();
     }
 
-    private void setLabelTags() {
+    private void setTagLabel() {
         if (!toDo.getTags().isEmpty()) {
             String tags = "";
             for (Tag tag : toDo.getTags()) {
@@ -61,7 +61,7 @@ public class EventCard extends UiPart{
         }
     }
     
-    private void setLabelDateTimes() {
+    private void setDateTimesLabels() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
             startLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.startDate) + " to ");
@@ -118,7 +118,6 @@ public class EventCard extends UiPart{
             eventPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateCSS);
         }
     }
-    
     
     @Override
     public void setNode(Node node) {

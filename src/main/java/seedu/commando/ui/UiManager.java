@@ -50,7 +50,7 @@ public class UiManager extends ComponentManager implements Ui {
             mainWindow.show(); // This should be called before creating other UI parts
             mainWindow.fillInnerParts();
             mainWindow.moreConfigurations(); // This is to set properties of some components that
-                                          // can only be set after loading 
+                                             // can only be set after loading 
 
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));

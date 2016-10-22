@@ -62,7 +62,7 @@ public class HelpWindow extends UiPart {
     /**
      * Shows a window that navigates to help url, anchored at `#{@param anchor}`
      */
-    protected void show(String anchor) {
+    protected void getHelp(String anchor) {
         visit(helpurl + "#" + anchor);
     }
     

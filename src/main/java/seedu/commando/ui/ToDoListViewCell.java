@@ -1,7 +1,5 @@
 package seedu.commando.ui;
 
-import com.sun.javafx.scene.control.skin.Utils;
-
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import seedu.commando.model.ui.UiToDo;
