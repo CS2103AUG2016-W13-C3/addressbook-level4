@@ -99,7 +99,8 @@ public class EventCard extends UiPart{
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        eventPaneInner.setStyle(ToDoCardStyleManager.finishedStateCSS);
+        eventPaneInner.setStyle(ToDoCardStyleManager.finishedStateContentCSS);
+        indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
     }
 
     /**
@@ -108,14 +109,16 @@ public class EventCard extends UiPart{
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            eventPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateCSS);
+            eventPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateContentCSS);
+            indexLabel.setStyle(ToDoCardStyleManager.activateHoverStateIndexCSS);
         }
     }
     
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            eventPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateCSS);
+            eventPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateContentCSS);
+            indexLabel.setStyle(ToDoCardStyleManager.deactivateHoverStateIndexCSS);
         }
     }
     

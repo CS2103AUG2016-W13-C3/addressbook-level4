@@ -13,9 +13,9 @@
 					<children>
 						<HBox maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
 							<children>
-								<Label fx:id="indexLabel" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="50.0" text="\$i" textOverrun="CLIP">
+								<Label fx:id="indexLabel" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="50.0" text="\$i" textOverrun="CLIP">
 									<padding>
-										<Insets right="20.0" top="13.0" />
+										<Insets top="13.0" />
 									</padding>
 								</Label>
 								<Label fx:id="titleLabel" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" text="\$value" wrapText="true">

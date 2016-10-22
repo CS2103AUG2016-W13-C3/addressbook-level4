@@ -101,7 +101,8 @@ public class TaskCard extends UiPart {
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        taskPaneInner.setStyle(ToDoCardStyleManager.finishedStateCSS);
+        taskPaneInner.setStyle(ToDoCardStyleManager.finishedStateContentCSS);
+        indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
     }
     
     /**
@@ -110,14 +111,16 @@ public class TaskCard extends UiPart {
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            taskPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateCSS);
+            taskPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateContentCSS);
+            indexLabel.setStyle(ToDoCardStyleManager.activateHoverStateIndexCSS);
         }
     }
     
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            taskPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateCSS);
+            taskPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateContentCSS);
+            indexLabel.setStyle(ToDoCardStyleManager.deactivateHoverStateIndexCSS);
         }
     }
 

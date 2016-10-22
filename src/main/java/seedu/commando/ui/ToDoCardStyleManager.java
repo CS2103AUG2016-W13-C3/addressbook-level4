@@ -17,9 +17,15 @@ public class ToDoCardStyleManager {
     //      Finished
     //      Hover and non hover
     public static String recentlyModifiedStateCSS = "-fx-border-color: red";
-    public static String finishedStateCSS = "-fx-background-color: derive(#1d1d1d, 95%);";
-    public static String activateHoverStateCSS = "-fx-background-color: derive(#DCDCDC, 50%);";
-    public static String deactivateHoverStateCSS = "-fx-background-color: #DCDCDC;";
+    
+    public static String finishedStateContentCSS = "-fx-background-color: derive(#1d1d1d, 95%);";
+    public static String finishedStateIndexCSS = "-fx-background-color: derive(#1d1d1d, 30%);";
+    
+    public static String activateHoverStateContentCSS = "-fx-background-color: derive(#DCDCDC, 50%);";
+    public static String activateHoverStateIndexCSS = "-fx-background-color: derive(#1d1d1d, 40%);";
+    
+    public static String deactivateHoverStateContentCSS = "-fx-background-color: #DCDCDC;";
+    public static String deactivateHoverStateIndexCSS = "-fx-background-color: derive(#1d1d1d, 60%);";
     
     // Formatter for displaying the dates for dueLabel in TaskCard, startLabel and endLabel for EventCard
     private static DateTimeFormatter formatter;
