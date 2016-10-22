@@ -54,6 +54,10 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void changeToDoList(ToDoListChange change) throws IllegalValueException {
         toDoListManager.changeToDoList(change);
+
+        // if to-do list has changed, reset any find or history filter
+        clearUiToDoListFilter(false);
+
         indicateToDoListChanged();
     }
 
