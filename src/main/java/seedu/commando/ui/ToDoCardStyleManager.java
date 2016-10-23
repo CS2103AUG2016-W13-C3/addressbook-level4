@@ -29,8 +29,8 @@ public class ToDoCardStyleManager {
     
     // Formatter for displaying the dates for dueLabel in TaskCard, startLabel and endLabel for EventCard
     private static DateTimeFormatter formatter;
-    private static String dateTimePatternNoYear = "d MMM HH:mm";
-    private static String dateTimePattern = "d MMM yyyy HH:mm";
+    private static String dateTimePatternNoYear = "EEE d MMM HH:mm";
+    private static String dateTimePattern = "EEE d MMM yyyy HH:mm";
     private static String timePattern = "HH:mm";
     
     /**
