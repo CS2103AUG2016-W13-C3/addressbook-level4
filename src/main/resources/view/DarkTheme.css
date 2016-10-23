@@ -147,6 +147,10 @@
 	-fx-font-family: "Segoe UI bold";
 }
 
+#tagsLabel {
+	-fx-font-family: "Segoe UI bold";
+}
+
 #indexLabel {
 	-fx-background-color: derive(#1d1d1d, 60%);
 	-fx-text-fill: #FFFFFF;
