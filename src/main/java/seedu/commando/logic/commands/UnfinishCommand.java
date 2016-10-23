@@ -24,8 +24,7 @@ public class UnfinishCommand extends Command {
     }
 
     @Override
-    public CommandResult execute()
-            throws IllegalValueException, NoModelException {
+    public CommandResult execute() throws IllegalValueException, NoModelException {
         Model model = getModel();
 
         Optional<UiToDo> toDoToUnfinish = model.getUiToDoAtIndex(toDoIndex);
@@ -34,8 +33,12 @@ public class UnfinishCommand extends Command {
             return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex), true);
         }
 
+        if (toDoToUnfinish.get().isEvent()) {
+            return new CommandResult(String.format(Messages.UNFINISH_COMMAND_CANNOT_UNFINISH_EVENT, toDoToUnfinish.get().getTitle().toString()), true);
+        }
+
         if (!toDoToUnfinish.get().isFinished()) {
-            return new CommandResult(String.format(Messages.TODO_ALREADY_ONGOING, toDoToUnfinish.get().getTitle().toString()), true);
+            return new CommandResult(String.format(Messages.UNFINISH_COMMAND_ALREADY_ONGOING, toDoToUnfinish.get().getTitle().toString()), true);
         }
 
         // Mark as unfinished
@@ -51,7 +54,7 @@ public class UnfinishCommand extends Command {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.TODO_UNFINISHED, toDoToUnfinish.get().getTitle().toString()));
+        return new CommandResult(String.format(Messages.UNFINISHED_COMMAND, toDoToUnfinish.get().getTitle().toString()));
     }
 
 }

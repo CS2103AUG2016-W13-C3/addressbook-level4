@@ -34,8 +34,12 @@ public class FinishCommand extends Command {
             return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex), true);
         }
 
+        if (toDoToFinish.get().isEvent()) {
+            return new CommandResult(String.format(Messages.FINISH_COMMAND_CANNOT_FINISH_EVENT, toDoToFinish.get().getTitle().toString()), true);
+        }
+
         if (toDoToFinish.get().isFinished()) {
-            return new CommandResult(String.format(Messages.TODO_ALREADY_FINISHED, toDoToFinish.get().getTitle().toString()), true);
+            return new CommandResult(String.format(Messages.FINISH_COMMAND_ALREADY_FINISHED, toDoToFinish.get().getTitle().toString()), true);
         }
 
         // Mark as finished
@@ -51,7 +55,7 @@ public class FinishCommand extends Command {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.TODO_FINISHED, toDoToFinish.get().getTitle().toString()));
+        return new CommandResult(String.format(Messages.FINISH_COMMAND, toDoToFinish.get().getTitle().toString()));
     }
 
 }

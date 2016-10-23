@@ -150,7 +150,7 @@ public class UiModel {
     }
 
     private List<ReadOnlyToDo> processTasks(List<ReadOnlyToDo> toDos) {
-        List<ReadOnlyToDo> tasks = toDos.stream().filter(this::isTask).collect(Collectors.toList());
+        List<ReadOnlyToDo> tasks = toDos.stream().filter(UiToDo::isTask).collect(Collectors.toList());
 
         // For observableTasks, sort by whether they are done,
         // then whether have due dates, then chronological order
@@ -210,7 +210,7 @@ public class UiModel {
 
     private List<ReadOnlyToDo> processEvents(List<ReadOnlyToDo> toDos) {
         List<ReadOnlyToDo> events = toDos.stream()
-            .filter(this::isEvent)
+            .filter(UiToDo::isEvent)
             .collect(Collectors.toList());
 
         // For observableEvents, sort by chronological order
@@ -238,20 +238,6 @@ public class UiModel {
         });
 
         return events;
-    }
-
-    /**
-     * Returns whether a to-do item is an event
-     */
-    private boolean isEvent(ReadOnlyToDo todo) {
-        return todo.getDateRange().isPresent();
-    }
-
-    /**
-     * Returns whether a to-do item is a task
-     */
-    private boolean isTask(ReadOnlyToDo todo) {
-        return !todo.getDateRange().isPresent();
     }
 
     //================================================================================
