@@ -16,6 +16,8 @@ import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ToDoList;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalUnit;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -72,16 +74,18 @@ public class UiModel {
      * Sets a filter on the to-do list
      * Asserts {@param keywords} and {@param tags} to be non-null
      * If {@param ifHistoryMode} is true, only filter finished to-dos, and sort in reverse chronological order
-     * Else, only filter unfinished to-dos, and sort in chronological order
+     * Else, only filter, sorted in chronological order, such that it is not finished or
+     * its finished date is after/during the current day
      */
     public void setToDoListFilter(Set<String> keywords, Set<Tag> tags, boolean ifHistoryMode) {
         assert keywords != null;
         assert tags != null;
 
         filteredToDoList.setPredicate(toDo -> {
-            if (toDo.isFinished() && !ifHistoryMode) {
-                return false; // if normal mode but to-do is finished
-            } else if (!toDo.isFinished() && ifHistoryMode) {
+            if (!ifHistoryMode && toDo.isFinished()
+                && toDo.getDateFinished().get().toLocalDate().isBefore(LocalDate.now())) {
+                return false; // if normal mode but to-do is finished before the current day
+            } else if (ifHistoryMode && !toDo.isFinished()) {
                 return false; // if history mode but to-do is unfinished
             }
 
@@ -211,6 +215,14 @@ public class UiModel {
 
         // For observableEvents, sort by chronological order
         events.sort((event1, event2) -> {
+            if (!event1.isFinished() && event2.isFinished()) {
+                return -1; // event1 first
+            }
+
+            if (event1.isFinished() && !event2.isFinished()) {
+                return 1; // event2 first
+            }
+
             // Must have date ranges because they are events
             assert event2.getDateRange().isPresent();
             assert event2.getDateRange().isPresent();

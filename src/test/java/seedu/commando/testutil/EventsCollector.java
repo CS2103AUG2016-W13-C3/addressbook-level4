@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * A class that collects events raised by other classes.
  */
 public class EventsCollector {
-    List<BaseEvent> events = new ArrayList<BaseEvent>();
+    List<BaseEvent> events = new ArrayList<>();
 
     public EventsCollector(){
         EventsCenter.getInstance().registerHandler(this);

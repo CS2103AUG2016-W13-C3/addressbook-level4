@@ -175,7 +175,13 @@ public class ToDo implements ReadOnlyToDo {
 
     @Override
     public Optional<LocalDateTime> getDateFinished() {
-        return Optional.ofNullable(dateFinished);
+        // If date range exists and currently is is after its end date
+        // return its end date as date finished automatically
+        if (dateRange != null && LocalDateTime.now().isAfter(dateRange.endDate)) {
+            return Optional.of(dateRange.endDate);
+        } else {
+            return Optional.ofNullable(dateFinished);
+        }
     }
 
     @Override
