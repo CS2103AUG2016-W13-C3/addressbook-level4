@@ -4,25 +4,25 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.model.ui.UiToDo;
-
-import java.util.logging.Logger;
+import seedu.commando.ui.ToDoListViewCell.Card;
 
 /**
  * Panel containing the list of to-dos
  */
 public class TaskListPanel extends UiPart {
-    private final Logger logger = LogsCenter.getLogger(TaskListPanel.class);
+
     private static final String FXML = "TaskListPanel.fxml";
+
     private VBox panel;
     private AnchorPane placeHolderPane;
+    private ScrollBar scrollbar;
 
     @FXML
     private ListView<UiToDo> taskListView;
@@ -46,8 +46,8 @@ public class TaskListPanel extends UiPart {
         this.placeHolderPane = pane;
     }
 
-    public static TaskListPanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
-                                     ObservableList<UiToDo> list) {
+    protected static TaskListPanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
+            ObservableList<UiToDo> list) {
         TaskListPanel taskListPanel =
                 UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new TaskListPanel());
         taskListPanel.configure(list);
@@ -57,11 +57,15 @@ public class TaskListPanel extends UiPart {
     private void configure(ObservableList<UiToDo> toDos) {
         setConnections(toDos);
         addToPlaceholder();
+        Platform.runLater(() -> {
+            scrollbar = (ScrollBar) taskListView.lookup(".scroll-bar:vertical");
+            scrollbar.setUnitIncrement(200);
+        });
     }
 
     private void setConnections(ObservableList<UiToDo> list) {
         taskListView.setItems(list);
-        taskListView.setCellFactory(listView -> new ToDoListViewCell());
+        taskListView.setCellFactory(listView -> new ToDoListViewCell(Card.Task));
     }
 
     private void addToPlaceholder() {
@@ -69,28 +73,30 @@ public class TaskListPanel extends UiPart {
         placeHolderPane.getChildren().add(panel);
     }
 
-    public void scrollTo(int index) {
+    protected void scrollTo(int index) {
         Platform.runLater(() -> {
             taskListView.scrollTo(index);
             taskListView.getSelectionModel().clearAndSelect(index);
         });
     }
-
-    class ToDoListViewCell extends ListCell<UiToDo> {
-
-        public ToDoListViewCell() {
+    
+    protected ListView<UiToDo> getTaskListView() {
+        return taskListView;
+    }
+    
+    private boolean isScrollBarPresent() {
+        return scrollbar != null;
+    }
+    
+    protected void scrollDown() {
+        if (isScrollBarPresent()) {
+            scrollbar.increment();
         }
-
-        @Override
-        protected void updateItem(UiToDo toDo, boolean empty) {
-            super.updateItem(toDo, empty);
-
-            if (empty || toDo == null) {
-                setGraphic(null);
-                setText(null);
-            } else {
-                setGraphic(TaskCard.load(toDo, toDo.getIndex()).getLayoutState(toDo.isNew(), toDo.isFinished()));
-            }
+    }
+    
+    protected void scrollUp() {
+        if (isScrollBarPresent()) {
+            scrollbar.decrement();
         }
     }
 }

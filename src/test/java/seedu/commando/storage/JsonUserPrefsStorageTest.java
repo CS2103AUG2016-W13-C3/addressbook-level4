@@ -65,6 +65,7 @@ public class JsonUserPrefsStorageTest {
     public void readUserPrefs_fileInOrder_successfullyRead() throws DataConversionException {
         UserPrefs expected = new UserPrefs();
         expected.setGuiSettings(1000, 500, 300, 100, false);
+        expected.setToDoListFilePath("data/todos.xml");
         UserPrefs actual = readUserPrefs("TypicalUserPref.json").get();
         assertEquals(expected, actual);
     }
@@ -79,6 +80,7 @@ public class JsonUserPrefsStorageTest {
     public void readUserPrefs_extraValuesInFile_extraValuesIgnored() throws DataConversionException {
         UserPrefs expected = new UserPrefs();
         expected.setGuiSettings(1000, 500, 300, 100, false);
+        expected.setToDoListFilePath("file path");
         UserPrefs actual = readUserPrefs("ExtraValuesUserPref.json").get();
 
         assertEquals(expected, actual);
@@ -102,7 +104,6 @@ public class JsonUserPrefsStorageTest {
 
     @Test
     public void saveUserPrefs_allInOrder_success() throws DataConversionException, IOException {
-
         UserPrefs original = new UserPrefs();
         original.setGuiSettings(1200, 200, 0, 2, false);
 

@@ -5,25 +5,28 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox id="eventPane" fx:id="eventPane" styleClass="event-pane" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<HBox id="eventPane" fx:id="eventPane" maxHeight="1.7976931348623157E308" styleClass="event-pane" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<HBox fx:id="eventPaneInner" onMouseEntered="#activateHoverState" onMouseExited="#deactivateHoverState" styleClass="event-pane-inner" HBox.hgrow="ALWAYS">
+		<HBox fx:id="eventPaneInner" maxHeight="1.7976931348623157E308" onMouseEntered="#activateHoverState" onMouseExited="#deactivateHoverState" styleClass="event-pane-inner" HBox.hgrow="ALWAYS">
 			<children>
-				<HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="216.0" spacing="5" HBox.hgrow="ALWAYS">
+				<HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" prefWidth="216.0" spacing="5" HBox.hgrow="ALWAYS">
 					<children>
-						<HBox HBox.hgrow="ALWAYS">
+						<HBox maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
 							<children>
-								<Label fx:id="indexLabel" prefHeight="50.0" text="\$i">
+								<Label fx:id="indexLabel" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="50.0" text="\$i" textOverrun="CLIP">
 									<padding>
-										<Insets left="20.0" right="10.0" />
+										<Insets top="13.0" />
 									</padding>
 								</Label>
-								<Label fx:id="titleLabel" prefHeight="50.0" styleClass="cell_big_label" text="\$value" />
+								<Label fx:id="titleLabel" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" text="\$value" wrapText="true">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding></Label>
 							</children>
 						</HBox>
-						<HBox>
+						<HBox maxHeight="1.7976931348623157E308">
 							<children>
-								<Label fx:id="tagsLabel" prefHeight="50.0" styleClass="cell_big_label" text="\$tags">
+								<Label fx:id="tagsLabel" maxHeight="1.7976931348623157E308" prefHeight="50.0" styleClass="cell_big_label" text="\$tags" wrapText="true">
 									<padding>
 										<Insets left="20.0" />
 									</padding>
@@ -35,16 +38,16 @@
 						</HBox>
 					</children>
 				</HBox>
-				<VBox prefHeight="50.0" prefWidth="150.0">
+				<VBox maxHeight="1.7976931348623157E308" prefWidth="150.0">
 					<children>
-						<HBox>
+						<HBox maxHeight="1.7976931348623157E308">
 							<children>
-								<Label fx:id="startLabel" alignment="BOTTOM_LEFT" maxWidth="Infinity" prefHeight="38.0" text="\$start" />
+								<Label fx:id="startLabel" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="\$start" />
 							</children>
 						</HBox>
-						<HBox>
+						<HBox maxHeight="1.7976931348623157E308">
 							<children>
-								<Label fx:id="endLabel" alignment="TOP_LEFT" maxWidth="Infinity" prefHeight="38.0" text="\$end" />
+								<Label fx:id="endLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="\$end" />
 							</children>
 						</HBox>
 					</children>
@@ -53,6 +56,6 @@
 		</HBox>
 	</children>
 	<padding>
-		<Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+		<Insets bottom="5.0" left="7.0" right="7.0" top="5.0" />
 	</padding>
 </HBox>

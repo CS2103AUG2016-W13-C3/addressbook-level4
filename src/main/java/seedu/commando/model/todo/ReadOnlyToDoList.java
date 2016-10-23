@@ -10,8 +10,16 @@ import java.util.stream.Collectors;
 public interface ReadOnlyToDoList {
     UnmodifiableObservableList<ReadOnlyToDo> getToDos();
 
-    /** Checks if the list contains the given to-do */
+    /**
+     *  Checks if the list contains a to-do that is considered as similar
+     *  as the given to-do
+     */
     boolean contains(ReadOnlyToDo toDo);
+
+    /**
+     *  Checks if the list is considered similar as the given to-do list
+     */
+    boolean isSimilar(ReadOnlyToDoList toDoList);
 
     /**
      * Updates and returns its value, based on the current value of its fields
