@@ -25,7 +25,7 @@ public class EventCard extends UiPart{
     @FXML
     private Label indexLabel;
     @FXML
-    private Label startLabel;
+    private Label dateIntervalLabel;
     @FXML
     private Label endLabel;
     @FXML
@@ -60,25 +60,21 @@ public class EventCard extends UiPart{
             }
             tagsLabel.setText(tags);
         } else {
-            tagsLabel.setText("");
+            tagsLabel.setVisible(false);
         }
     }
     
     private void setDateTimesLabels() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
-            final long startDayDifference = 
-                    ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.startDate);
-            final long endDayDifference = 
-                    ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.endDate);
-            startLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.startDate) + " to ");
-            endLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.endDate));
-            startLabel.setStyle("-fx-text-fill: " + 
+            final long startDayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.startDate);
+            
+            dateIntervalLabel.setText(
+                    ToDoCardStyleManager.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
+            dateIntervalLabel.setStyle("-fx-text-fill: " + 
                     ToDoCardStyleManager.getDateProximityBlue((int) startDayDifference));
-            endLabel.setStyle("-fx-text-fill: " + 
-                    ToDoCardStyleManager.getDateProximityBlue((int) endDayDifference));
         } else {
-            startLabel.setText("");
+            dateIntervalLabel.setText("");
             endLabel.setText("");
         }
     }
