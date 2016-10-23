@@ -109,8 +109,8 @@ public abstract class CommanDoGuiTest {
      * Asserts the size of the person list is equal to the given number.
      */
     protected void assertListSize(int size) {
-        int numberOfPeople = eventListPanel.getNumberOfToDo() + taskListPanel.getNumberOfToDo();
-        assertEquals(size, numberOfPeople);
+        int numberOfToDo = eventListPanel.getNumberOfToDo() + taskListPanel.getNumberOfToDo();
+        assertEquals(size, numberOfToDo);
     }
 
     /**

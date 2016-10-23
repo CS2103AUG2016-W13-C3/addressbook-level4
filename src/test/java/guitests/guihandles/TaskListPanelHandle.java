@@ -40,11 +40,6 @@ public class TaskListPanelHandle extends GuiHandle implements ToDoListPanelHandl
     public ListView<ReadOnlyToDo> getListView() {
         return (ListView<ReadOnlyToDo>) getNode(TASK_LIST_VIEW_ID);
     }
-    
-
-    private int getListViewSize() {
-        return getListView().getItems().size();
-    }
 
     /**
      * Returns true if the list is showing the Todo details correctly and in correct order.
@@ -91,7 +86,7 @@ public class TaskListPanelHandle extends GuiHandle implements ToDoListPanelHandl
     public boolean isListMatching(int startPosition, ReadOnlyToDo... Todos) throws IllegalArgumentException {
         
         assertTrue(this.containsInOrder(startPosition, Todos));
-        for (int i = 0; i < getListViewSize(); i++) {
+        for (int i = 0; i < getNumberOfToDo(); i++) {
             final int scrollTo = i + startPosition;
             guiRobot.interact(() -> getListView().scrollTo(scrollTo));
             guiRobot.sleep(200);
