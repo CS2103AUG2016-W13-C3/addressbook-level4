@@ -36,9 +36,9 @@
                             <li><a href="#delete">Deleting To-Dos and its Fields</a></li>
                             <li><a href="#edit">Editing To-Dos</a></li>
                             <li><a href="#finish">Marking Tasks as Done</a></li>
-                            <li><a href="#unfinish">Marking Tasks as Not Done</a></li>
                             <li><a href="#find">Finding To-Dos</a></li>
                             <li><a href="#recall">Browsing To-Dos that are Done</a></li>
+                            <li><a href="#unfinish">Marking Tasks as Not Done</a></li>
                             <li><a href="#store">Setting Save Location</a></li>
                             <li><a href="#export">Exporting</a></li>
                             <li><a href="#import">Importing</a></li>
@@ -156,7 +156,7 @@
                 </figure>
                
                 <blockquote>
-                    <b>Finding Past <em>Events</em>:</b> <em>CommanDo</em> automatically hides <em>Events</em> that are before the current day. The <a href="#find"><code>find</code> command</a> will allow you to browse through them.
+                    <b>Finding Past <em>Events</em>:</b> <em>CommanDo</em> automatically hides <em>Events</em> that are before the current day. The <a href="#recall"><code>recall</code> command</a> will allow you to browse through them.
                 </blockquote>
 
                 <span><strong>Examples:</strong></span>
@@ -260,7 +260,7 @@
 
                 <h3 id="finish">Marking Tasks as Done: <code>finish</code></h3>
 
-                <p>When you've completed a <em>Task</em>, mark it as done with the <code>finish</code> command. The to-do will initially be moved to the bottom of its list, and subsequently be hidden and archived after 1 day You'll be able to browse through these finished <em>Tasks</em> with the <a href="#find"><code>find</code> command</a>.</p>
+                <p>When you've completed a <em>Task</em>, mark it as done with the <code>finish</code> command. The to-do will initially be moved to the bottom of its list, and subsequently be hidden and archived after 1 day You'll be able to browse through these finished <em>Tasks</em> with the <a href="#recall"><code>recall</code> command</a>.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> finish <span>&lt;index&gt;</span></pre>
@@ -270,23 +270,16 @@
                     <figcaption>Result of <code>finish 1</code></figcaption>
                 </figure>
 
-                <h3 id="unfinish">Marking Tasks as Not Done: <code>unfinish</code></h3>
-
-                <p>Oops, you marked a task as done when it's not exactly done.</p>
-
-                <span><strong>Command Format:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> unfinish <span>&lt;index&gt;</span></pre>
-
                 <h3 id="find">Finding To-Dos: <code>find</code></h3>
 
-                <p>So you already have a long list of to-dos. Perhaps you want to search for specific to-dos by their description or their tags. Perhaps you want to preview what events are in store for you next week. Or perhaps you want to check back on the to-dos you have finished. The <code>find</code> command allows you to do that.</p>
+                <p>So you already have a long list of to-dos. Perhaps you want to search for specific to-dos by their description or their tags. The <code>find</code> command allows you to do that.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> find [<span>&lt;keyword&gt;</span>...] [<span>#&lt;tag&gt;</span>...]</pre>
 
                 <p></p>
                 
-                <p>If you specify a time window, the search narrows to the <em>Events</em> that have happened or are going to happen within that time window. As for <em>Tasks</em>, those which have been finished within that time window will be shown. If you do not specify a time window, the search targets all upcoming <em>Events</em> (from the current day onwards) and all unfinished <em>Tasks</em>.</p>
+                <p>The search targets all upcoming <em>Events</em> (from the current day onwards) and all unfinished <em>Tasks</em>.</p>
 
                 <p>
                     More details on how <code>find</code> works:
@@ -336,6 +329,13 @@
 
                 <pre><span class="inputstart">&gt;&gt;</span> recall <span>lunch meeting</span></pre>
                 <span><strong>What it does: </strong> Filters to show only <em>Events</em> that are already over and <em>Tasks</em> that have been finished, with description or tags matching both <code>lunch</code> and <code>meeting</code>.</span>
+
+                <h3 id="unfinish">Marking Tasks as Not Done: <code>unfinish</code></h3>
+
+                <p>Oops, you marked a task as done when it's not exactly done. Simply bring up the list of finished tasks using the <a href="#recall"><code>recall</code> command</a>, then use the <code>unfinish</code> command.</p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre><span class="inputstart">&gt;&gt;</span> unfinish <span>&lt;index&gt;</span></pre>
 
                 <h3 id="store">Setting Save Location: <code>store</code></h3>
 
