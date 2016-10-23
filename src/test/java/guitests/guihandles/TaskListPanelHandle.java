@@ -95,7 +95,6 @@ public class TaskListPanelHandle extends GuiHandle implements ToDoListPanelHandl
             final int scrollTo = i + startPosition;
             guiRobot.interact(() -> getListView().scrollTo(scrollTo));
             guiRobot.sleep(200);
-            System.out.println(i);
             if (!TestUtil.compareCardAndToDo(getTaskCardHandle(i), Todos[startPosition + i])) {
                 return false;
             }

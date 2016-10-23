@@ -33,6 +33,11 @@ public class JsonUserPrefsStorage implements UserPrefsStorage{
         saveUserPrefs(userPrefs, filePath);
     }
 
+    @Override
+    public void setUserPrefsFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
     /**
      * Similar to {@link #readUserPrefs()}
      * @param prefsFilePath location of the data. Cannot be null.

@@ -1,14 +1,16 @@
-package guitests.utils;
+ package guitests.utils;
 
+import java.io.IOException;
 import java.util.function.Supplier;
 
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seedu.commando.MainApp;
 import seedu.commando.commons.core.Config;
-import seedu.commando.commons.core.GuiSettings;
+import seedu.commando.commons.util.StringUtil;
+import seedu.commando.model.Model;
 import seedu.commando.model.UserPrefs;
 import seedu.commando.model.todo.ReadOnlyToDoList;
+import seedu.commando.storage.Storage;
 import seedu.commando.storage.XmlSerializableToDoList;
 
 /**
@@ -16,27 +18,47 @@ import seedu.commando.storage.XmlSerializableToDoList;
  * testing
  */
 public class TestApp extends MainApp {
-    
-    public static final String SAVE_LOCATION_FOR_TESTING = TestUtil.getFilePathInSandboxFolder("sampleData.xml");
-    protected static final String DEFAULT_PREF_FILE_LOCATION_FOR_TESTING =
-            TestUtil.getFilePathInSandboxFolder("pref_testing.json");
     protected Supplier<ReadOnlyToDoList> initialDataSupplier = () -> null;
-    protected String saveFileLocation = SAVE_LOCATION_FOR_TESTING;
+
+    public static final String PREF_SAVE_LOCATION_FOR_TESTING = TestUtil.getFilePathInSandboxFolder("pref_testing.json");
+
+    protected String toDoListFilePath = Config.DefaultToDoListFilePath;
 
     public TestApp() {
     }
 
-    public TestApp(Supplier<ReadOnlyToDoList> initialDataSupplier, String saveFileLocation) {
-        super();
+    public TestApp(Supplier<ReadOnlyToDoList> initialDataSupplier, String toDoListFilePath) {
         this.initialDataSupplier = initialDataSupplier;
-        this.saveFileLocation = saveFileLocation;
+        this.toDoListFilePath = toDoListFilePath;
 
+        // Override user pref's file path to testing environment's
+        userPrefsFilePath = PREF_SAVE_LOCATION_FOR_TESTING;
+    }
+
+    // Override to-do list file path to testing environment's
+    @Override
+    public void init() throws Exception {
+        super.init();
+        saveUserPrefs();
+    }
+
+    @Override
+    protected UserPrefs initPrefs(Storage storage) {
+        UserPrefs userPrefs = super.initPrefs(storage);
+        userPrefs.setToDoListFilePath(toDoListFilePath);
+        return userPrefs;
+    }
+
+    @Override
+    protected Model initModelManager(Storage storage, UserPrefs userPrefs) {
         // If some initial local data has been provided, write those to the file
         if (initialDataSupplier.get() != null) {
             TestUtil.createDataFileWithData(
-                    new XmlSerializableToDoList(this.initialDataSupplier.get()),
-                    this.saveFileLocation);
+                new XmlSerializableToDoList(this.initialDataSupplier.get()),
+                userPrefs.getToDoListFilePath().getValue());
         }
+
+        return super.initModelManager(storage, userPrefs);
     }
 
     @Override

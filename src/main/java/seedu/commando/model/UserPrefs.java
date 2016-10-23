@@ -12,7 +12,6 @@ import seedu.commando.commons.core.GuiSettings;
  * Represents the user's preferences.
  */
 public class UserPrefs {
-
     private GuiSettings guiSettings = new GuiSettings();
     private StringProperty toDoListFilePath = new SimpleStringProperty(Config.DefaultToDoListFilePath);
 
