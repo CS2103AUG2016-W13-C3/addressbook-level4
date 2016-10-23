@@ -10,67 +10,81 @@ import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListChange;
 
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 /**
- * Deletes a person identified using it's last displayed index from the address book.
+ * Deletes to-do(s), or their fields.
  */
 public class DeleteCommand extends Command {
 
     public static final String COMMAND_WORD = "delete";
 
-    public final int toDoIndex;
+    public final List<Integer> toDoIndices;
     public boolean ifDeleteTime = false;
-    public boolean ifDeleteTags = false;
+    public boolean ifDeleteTag = false;
 
-    public DeleteCommand(int toDoIndex) {
-        this.toDoIndex = toDoIndex;
-    }
+	public DeleteCommand(List<Integer> toDoIndices) {
+		this.toDoIndices = toDoIndices;
+	}
 
     @Override
     public CommandResult execute()
         throws IllegalValueException, NoModelException {
         Model model = getModel();
+        int index;
+		ToDoList listToDelete = new ToDoList();
+		ToDoList listToEdit = new ToDoList();
+		
+		Iterator<Integer> iterator = toDoIndices.iterator();
+		//If to-do with the index is valid, add it to the listToDelete
+		//If delete any fields is required, add it to the listToEdit,too.
+		//else throw error message and return
+		while (iterator.hasNext()) {
+			index = iterator.next();
+			Optional<UiToDo> toDoToDelete = model.getUiToDoAtIndex(index);
+			if (!toDoToDelete.isPresent()) {
+				return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, index), true);
+			}
+			ToDo toDoToEdit = new ToDo(toDoToDelete.get());
+			
+			listToDelete.add(toDoToDelete.get());
 
-        Optional<UiToDo> toDoToDelete = model.getUiToDoAtIndex(toDoIndex);
-
-        if (!toDoToDelete.isPresent()) {
-            return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex), true);
-        }
+			if (ifDeleteTag) {
+				if (toDoToEdit.getTags().size() > 0) {
+					toDoToEdit.setTags(Collections.emptySet());
+				} else {
+					return new CommandResult(String.format(Messages.DELETE_COMMAND_NO_TAGS, index), true);
+				}
+			}
+			if (ifDeleteTime) {
+				if (toDoToEdit.hasTimeConstraint()) {
+					toDoToEdit.clearTimeConstraint();
+				} else {
+					return new CommandResult(String.format(Messages.DELETE_COMMAND_NO_TIME_CONSTRAINTS, index), true);
+				}
+			}
+			listToEdit.add(toDoToEdit);
+		}
 
         // if no deletion of fields, delete the whole to-do
-        if (!ifDeleteTags && !ifDeleteTime) {
-            model.changeToDoList(new ToDoListChange(
-                new ToDoList(),
-                new ToDoList().add(toDoToDelete.get())
-            ));
+        if (!ifDeleteTag && !ifDeleteTime) {
+    		try {
+    			model.changeToDoList(new ToDoListChange(new ToDoList(), listToDelete));
+    		} catch (IllegalValueException exception) {
+    			return new CommandResult(exception.getMessage(), true);
+    		}
 
-            return new CommandResult(String.format(Messages.TODO_DELETED, toDoToDelete.get().getTitle().toString()));
+    		return new CommandResult(String.format(Messages.TODO_DELETED, toDoIndices.toString()));
         } else {
-            ToDo toDoToEdit = new ToDo(toDoToDelete.get());
-
-            if (ifDeleteTags) {
-                if (toDoToEdit.getTags().size() > 0) {
-                    toDoToEdit.setTags(Collections.emptySet());
-                } else {
-                    throw new IllegalValueException(Messages.DELETE_COMMAND_NO_TAGS);
-                }
-            }
-
-            if (ifDeleteTime) {
-                if (toDoToEdit.hasTimeConstraint()) {
-                    toDoToEdit.clearTimeConstraint();
-                } else {
-                    throw new IllegalValueException(Messages.DELETE_COMMAND_NO_TIME_CONSTRAINTS);
-                }
-            }
-
-            model.changeToDoList(new ToDoListChange(
-                new ToDoList().add(toDoToEdit),
-                new ToDoList().add(toDoToDelete.get())
-            ));
-
-            return new CommandResult(String.format(Messages.TODO_EDITED, toDoToDelete.get().getTitle().toString()));
+        // if any deletion of fields, edit the whole to-do
+    		try {
+    			model.changeToDoList(new ToDoListChange(listToEdit, listToDelete));
+    		} catch (IllegalValueException exception) {
+    			return new CommandResult(exception.getMessage(), true);
+    		}
+            return new CommandResult(String.format(Messages.TODO_EDITED, toDoIndices.toString()));
         }
     }
 

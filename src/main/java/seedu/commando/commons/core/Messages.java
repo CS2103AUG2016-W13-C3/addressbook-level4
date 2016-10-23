@@ -15,6 +15,7 @@ public class Messages {
     public static final String INVALID_TODO_DATERANGE_END = "Invalid end date for date range of to-do.";
     public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.";
     public static final String TODO_DATERANGE_CONSTRAINTS = "The end date of the date range must be after start date.";
+    public static final String INDEXRANGE_CONSTRAINTS = "The end index must be equal or larger than the start index.";
     public static final String MISSING_STORE_PATH = "Missing the path to store.";
     public static final String MISSING_STORE_FILE = "Missing the file name to store.";
     public static final String MISSING_EXPORT_PATH = "Missing the path to export.";
@@ -52,6 +53,6 @@ public class Messages {
     public static final String IMPORT_COMMAND_FILE_NOT_EXIST = "Invalid import file: the file does not exist.";
     public static final String IMPORT_COMMAND_INVALID_DATA = "Invalid import file: the file is of an invalid format.";
     public static final String TODO_ALREADY_EXISTS = "To-do already exists!";
-    public static final String DELETE_COMMAND_NO_TAGS = "To-do has no tags to delete!";
-    public static final String DELETE_COMMAND_NO_TIME_CONSTRAINTS = "To-do has no time constraints to delete!";
+    public static final String DELETE_COMMAND_NO_TAGS = "To-do with index '%1$s' has no tags to delete!";
+    public static final String DELETE_COMMAND_NO_TIME_CONSTRAINTS = "To-do with index '%1$s' has no time constraints to delete!";
 }

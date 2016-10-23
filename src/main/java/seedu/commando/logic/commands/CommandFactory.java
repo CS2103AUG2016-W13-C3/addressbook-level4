@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  */
 public class CommandFactory {
     public static final String KEYWORD_DELETE_TIME = "time";
-    public static final String KEYWORD_DELETE_TAGS = "tags";
+    public static final String KEYWORD_DELETE_TAG = "tag";
 
     private SequentialParser sequentialParser;
     {
@@ -163,18 +163,19 @@ public class CommandFactory {
     }
 
     private Command buildDeleteCommand() throws IllegalValueException {
-        int index = sequentialParser.extractInteger().orElseThrow(
-            () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
-        );
+    	List<Integer> indices = sequentialParser.extractIndicesList();
+    	if (indices.isEmpty()){
+    		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
+    	}
 
-        DeleteCommand deleteCommand = new DeleteCommand(index);
+        DeleteCommand deleteCommand = new DeleteCommand(indices);
 
         // check for fields
         List<String> words = sequentialParser.extractWords();
 
         int fieldsCount = 0;
-        if (words.contains(KEYWORD_DELETE_TAGS)) {
-            deleteCommand.ifDeleteTags = true;
+        if (words.contains(KEYWORD_DELETE_TAG)) {
+            deleteCommand.ifDeleteTag = true;
             fieldsCount ++;
         }
 
@@ -192,28 +193,28 @@ public class CommandFactory {
     }
     
     private Command buildFinishCommand() throws IllegalValueException {
-        int index = sequentialParser.extractInteger().orElseThrow(
-            () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
-        );
-
+    	List<Integer> indices = sequentialParser.extractIndicesList();
+    	if (indices.isEmpty()){
+    		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
+    	}
         if (!sequentialParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
 
         }
 
-        return new FinishCommand(index);
+        return new FinishCommand(indices);
     }
     
     private Command buildUnfinishCommand() throws IllegalValueException {
-        int index = sequentialParser.extractInteger().orElseThrow(
-            () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
-        );
-
+    	List<Integer> indices = sequentialParser.extractIndicesList();
+    	if (indices.isEmpty()){
+    		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
+    	}
         if (!sequentialParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
         }
 
-        return new UnfinishCommand(index);
+        return new UnfinishCommand(indices);
     }
 
     private Command buildFindCommand() {
