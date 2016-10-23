@@ -13,12 +13,8 @@ import seedu.commando.commons.core.GuiSettings;
  */
 public class UserPrefs {
 
-    private GuiSettings guiSettings;
-    private StringProperty toDoListFilePath;
-    {
-        guiSettings = new GuiSettings();
-        toDoListFilePath = new SimpleStringProperty(Config.DefaultToDoListFilePath);
-    }
+    private GuiSettings guiSettings = new GuiSettings();
+    private StringProperty toDoListFilePath = new SimpleStringProperty(Config.DefaultToDoListFilePath);
 
     public UserPrefs() {}
 

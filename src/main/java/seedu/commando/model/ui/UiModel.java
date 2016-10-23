@@ -29,14 +29,12 @@ public class UiModel {
     private final ToDoListManager toDoListManager;
     private final FilteredList<ReadOnlyToDo> filteredToDoList;
     private final ObservableList<UiToDo> events;
-    private final ObservableList<UiToDo> upcomingEvents;
     private final ObservableList<UiToDo> tasks;
     private final UnmodifiableObservableList<UiToDo> protectedEvents;
     private final UnmodifiableObservableList<UiToDo> protectedTasks;
     private final ArrayList<UiToDo> toDoAtIndices;
     private int runningIndex;
     {
-        upcomingEvents = FXCollections.observableArrayList();
         events = FXCollections.observableArrayList();
         tasks = FXCollections.observableArrayList();
         protectedEvents = new UnmodifiableObservableList<>(events);
@@ -48,11 +46,13 @@ public class UiModel {
         this.toDoListManager = toDoListManager;
         filteredToDoList = new FilteredList<>(toDoListManager.getToDoList().getToDos());
 
-        updateEventsAndTasks(filteredToDoList);
+        setToDoListFilter(Collections.emptySet(), Collections.emptySet(), false);
+
+        updateEventsAndTasks();
         filteredToDoList.addListener(new ListChangeListener<ReadOnlyToDo>() {
             @Override
             public void onChanged(Change<? extends ReadOnlyToDo> change) {
-                updateEventsAndTasks(filteredToDoList);
+                updateEventsAndTasks();
             }
         });
     }
@@ -71,19 +71,29 @@ public class UiModel {
     /**
      * Sets a filter on the to-do list
      * Asserts {@param keywords} and {@param tags} to be non-null
+     * If {@param ifHistoryMode} is true, only filter finished to-dos, and sort in reverse chronological order
+     * Else, only filter unfinished to-dos, and sort in chronological order
      */
-    public void setToDoListFilter(Set<String> keywords, Set<Tag> tags) {
+    public void setToDoListFilter(Set<String> keywords, Set<Tag> tags, boolean ifHistoryMode) {
         assert keywords != null;
         assert tags != null;
 
-        filteredToDoList.setPredicate(toDo -> ifMatchesFilter(toDo, keywords, tags));
+        filteredToDoList.setPredicate(toDo -> {
+            if (toDo.isFinished() && !ifHistoryMode) {
+                return false; // if normal mode but to-do is finished
+            } else if (!toDo.isFinished() && ifHistoryMode) {
+                return false; // if history mode but to-do is unfinished
+            }
+
+            return ifMatchesFilter(toDo, keywords, tags);
+        });
     }
 
     /**
      * Clears the filter on the to-do list
      */
-    public void clearToDoListFilter() {
-        filteredToDoList.setPredicate(null);
+    public void clearToDoListFilter(boolean ifHistoryMode) {
+        setToDoListFilter(Collections.emptySet(), Collections.emptySet(), ifHistoryMode);
     }
 
     public UnmodifiableObservableList<UiToDo> getEvents() {
@@ -97,10 +107,10 @@ public class UiModel {
     /**
      * Called to update the to-do list when it changes
      */
-    private void updateEventsAndTasks(List<ReadOnlyToDo> list) {
+    private void updateEventsAndTasks() {
         // Sort and filter observableEvents and observableTasks for UI
-        List<ReadOnlyToDo> events = processEvents(list);
-        List<ReadOnlyToDo> tasks = processTasks(list);
+        List<ReadOnlyToDo> events = processEvents(filteredToDoList);
+        List<ReadOnlyToDo> tasks = processTasks(filteredToDoList);
 
         toDoAtIndices.clear();
 
@@ -128,7 +138,7 @@ public class UiModel {
         assert runningIndex == toDoAtIndices.size();
 
         // log events and tasks shown
-        logger.info("Events: " + this.upcomingEvents.stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
+        logger.info("Events: " + this.events.stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
             .collect(Collectors.joining(",")));
 
         logger.info("Tasks: " + this.tasks.stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
@@ -197,10 +207,7 @@ public class UiModel {
     private List<ReadOnlyToDo> processEvents(List<ReadOnlyToDo> toDos) {
         List<ReadOnlyToDo> events = toDos.stream()
             .filter(this::isEvent)
-            .filter(
-                // filter all to-dos from today onwards
-                event -> event.getDateRange().get().endDate.isAfter(LocalDate.now().atStartOfDay())
-            ).collect(Collectors.toList());
+            .collect(Collectors.toList());
 
         // For observableEvents, sort by chronological order
         events.sort((event1, event2) -> {

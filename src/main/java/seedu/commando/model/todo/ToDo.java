@@ -99,6 +99,15 @@ public class ToDo implements ReadOnlyToDo {
         return this;
     }
 
+    public ToDo clearTimeConstraint() {
+        dateRange = null;
+        dueDate = null;
+        recurrence = Recurrence.None;
+        updateValue();
+
+        return this;
+    }
+
     public ToDo setTags(Set<Tag> tags) {
         assert tags != null;
         
@@ -162,11 +171,6 @@ public class ToDo implements ReadOnlyToDo {
         } else {
             return new HashSet<>(tags);
         }
-    }
-
-    @Override
-    public boolean isFinished() {
-        return dateFinished != null;
     }
 
     @Override

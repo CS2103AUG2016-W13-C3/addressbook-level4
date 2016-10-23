@@ -36,8 +36,9 @@
                             <li><a href="#delete">Deleting To-Dos and its Fields</a></li>
                             <li><a href="#edit">Editing To-Dos</a></li>
                             <li><a href="#finish">Marking Tasks as Done</a></li>
-                            <li><a href="#unfinish">Marking Tasks as Not Done</a></li>
                             <li><a href="#find">Finding To-Dos</a></li>
+                            <li><a href="#recall">Browsing To-Dos that are Done</a></li>
+                            <li><a href="#unfinish">Marking Tasks as Not Done</a></li>
                             <li><a href="#store">Setting Save Location</a></li>
                             <li><a href="#export">Exporting</a></li>
                             <li><a href="#import">Importing</a></li>
@@ -138,10 +139,10 @@
                 <p>An <em>Event</em> is an activity happening within a time window, with <code>start_datetime</code> and <code>end_datetime</code> fields to represent the time window. To associate tags with the <em>Event</em>, prefix each of them with a <code>#</code>. In <em>CommanDo</em>, every <em>Event</em> from the current day onwards is listed in the left panel chronologically:</p>
 
                 <span><strong>Command Format:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> add <span>&lt;description&gt;</span> from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span> [weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...]</pre>
+                <pre><span class="inputstart">&gt;&gt;</span> add <span>&lt;description&gt;</span> from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span> [daily/weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...]</pre>
                
                 <p>
-                    The use of keywords <code>weekly</code>, <code>monthly</code> or <code>yearly</code> allows you to have recurring events on the same day of every week, month or year.
+                    The use of keywords <code>daily</code>, <code>weekly</code>, <code>monthly</code> or <code>yearly</code> allows you to have recurring events on the same day of every day, week, month or year.
                 </p>
                  
                 <blockquote>
@@ -155,7 +156,7 @@
                 </figure>
                
                 <blockquote>
-                    <b>Finding Past <em>Events</em>:</b> <em>CommanDo</em> automatically hides <em>Events</em> that are before the current day. The <a href="#find"><code>find</code> command</a> will allow you to browse through them.
+                    <b>Finding Past <em>Events</em>:</b> <em>CommanDo</em> automatically hides <em>Events</em> that are before the current day. The <a href="#recall"><code>recall</code> command</a> will allow you to browse through them.
                 </blockquote>
 
                 <span><strong>Examples:</strong></span>
@@ -217,7 +218,7 @@
 
                 <h4>Deleting Time Constraints of To-Dos </h4>
 
-                <p>There are situations where the time window of an Event or the due date of a <em>Task</em> become no longer relevant. Similarly, use the <code>delete</code> command, ending with the keyword <code>time</code>. Note that this means that a target <em>Event</em> will become a <em>Task</em> after such a command.</p>
+                <p>There are situations where the time window of an Event (and its recurrence) or the due date of a <em>Task</em> become no longer relevant. Similarly, use the <code>delete</code> command, ending with the keyword <code>time</code>. Note that this means that a target <em>Event</em> will become a <em>Task</em> after such a command.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span> time</pre>
@@ -229,20 +230,13 @@
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span> tags</pre>
 
-                <h4>Deleting Recurrence of <em>Events</em></h4>
-
-                <p>If you no longer want an <em>Event</em> to repeat, use the <code>delete</code> command and end with the keyword <code>recurrence</code>.</p>
-
-                <span><strong>Command Format:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span> recurrence</pre>
-
                 <h3 id="edit">Editing To-Dos: <code>edit</code></h3>
 
                 <p>More often than not, you'll need to edit the fields of a to-do after adding it, such as when you made a mistake, when an <em>Event</em> gets postponed, or when you receive more details for a <em>Task</em>.</p>
 
                 <h4>Editing Events</h4>
                 <span><strong>Command Format:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> edit <span>&lt;index&gt; [&lt;description&gt;</span>] [from <span>&lt;start_datetime&gt;</span>] [to <span>&lt;end_datetime&gt;</span>] [weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...]</pre>
+                <pre><span class="inputstart">&gt;&gt;</span> edit <span>&lt;index&gt; [&lt;description&gt;</span>] [from <span>&lt;start_datetime&gt;</span>] [to <span>&lt;end_datetime&gt;</span>] [daily/weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...]</pre>
 
                 <p>By including suitable fields and their keywords, you'll be able to replace the description, the time window, the tags and the recurrence of an <em>Event</em>. Note that if tags are provided in an edit, the old tags will be completely replaced by the new ones. To remove the time window, the tags, or the recurrence of a <em>Event</em> instead, use the <a href="#delete"><code>delete</code> command</a>.</p>
 
@@ -266,7 +260,7 @@
 
                 <h3 id="finish">Marking Tasks as Done: <code>finish</code></h3>
 
-                <p>When you've completed a <em>Task</em>, mark it as done with the <code>finish</code> command. The to-do will initially be moved to the bottom of its list, and subsequently be hidden and archived after 1 day You'll be able to browse through these finished <em>Tasks</em> with the <a href="#finding-to-do-find"><code>find</code> command</a>.</p>
+                <p>When you've completed a <em>Task</em>, mark it as done with the <code>finish</code> command. The to-do will initially be moved to the bottom of its list, and subsequently be hidden and archived after 1 day You'll be able to browse through these finished <em>Tasks</em> with the <a href="#recall"><code>recall</code> command</a>.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> finish <span>&lt;index&gt;</span></pre>
@@ -276,23 +270,16 @@
                     <figcaption>Result of <code>finish 1</code></figcaption>
                 </figure>
 
-                <h3 id="unfinish">Marking Tasks as Not Done: <code>unfinish</code></h3>
-
-                <p>Oops, you marked a task as done when it's not exactly done.</p>
-
-                <span><strong>Command Format:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> unfinish <span>&lt;index&gt;</span></pre>
-
                 <h3 id="find">Finding To-Dos: <code>find</code></h3>
 
-                <p>So you already have a long list of to-dos. Perhaps you want to search for specific to-dos by their description or their tags. Perhaps you want to preview what events are in store for you next week. Or perhaps you want to check back on the to-dos you have finished. The <code>find</code> command allows you to do that.</p>
+                <p>So you already have a long list of to-dos. Perhaps you want to search for specific to-dos by their description or their tags. The <code>find</code> command allows you to do that.</p>
 
                 <span><strong>Command Format:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> find [<span>&lt;keyword&gt;</span>...] [from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span>] [<span>#&lt;tag&gt;</span>...]</pre>
+                <pre><span class="inputstart">&gt;&gt;</span> find [<span>&lt;keyword&gt;</span>...] [<span>#&lt;tag&gt;</span>...]</pre>
 
                 <p></p>
                 
-                <p>If you specify a time window, the search narrows to the <em>Events</em> that have happened or are going to happen within that time window. As for <em>Tasks</em>, those which have been finished within that time window will be shown. If you do not specify a time window, the search targets all upcoming <em>Events</em> (from the current day onwards) and all unfinished <em>Tasks</em>.</p>
+                <p>The search targets all upcoming <em>Events</em> (from the current day onwards) and all unfinished <em>Tasks</em>.</p>
 
                 <p>
                     More details on how <code>find</code> works:
@@ -320,14 +307,35 @@
                 <pre><span class="inputstart">&gt;&gt;</span> find <span>lunch meeting</span></pre>
                 <span><strong>What it does: </strong> Filters to show only <em>Events</em> and <em>Tasks</em> from the current day onwards, with description or tags matching both <code>lunch</code> and <code>meeting</code>.</span>
 
-                <pre><span class="inputstart">&gt;&gt;</span> find from <span>1 Feb 2020</span> to <span>29 Feb 2020 #lunch</span></pre>
-                <span><strong>What it does: </strong> Filters to show only <em>Events</em> and <em>Tasks</em> on the month of Feburary 2020, with a tag named <code>lunch</code>.</span>
-
-                <pre><span class="inputstart">&gt;&gt;</span> find from <span>last week</span> to <span>today #boss</span></pre>
-                <span><strong>What it does: </strong> Filters to show only <em>Events</em> and <em>Tasks</em> from the previous week to the current day, with a tag named <code>boss</code>.</span>
-
                 <pre><span class="inputstart">&gt;&gt;</span> find</pre>
                 <span><strong>What it does: </strong> Clears previous <code>find</code> command and shows all to-dos from the current day onwards.</span>
+
+                <h3 id="recall">Browsing To-Dos that are Done: <code>recall</code></h3>
+
+                <p>When you need to review, refer back to, or search through the <em>Events</em> that are over or <em>Tasks</em> that you have finished, use the <code>recall</code> command. It works exactly the same way as the <code>find</code> command - except it only shows to-dos that are considered done. </p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre><span class="inputstart">&gt;&gt;</span> recall [<span>&lt;keyword&gt;</span>...] [<span>#&lt;tag&gt;</span>...]</pre>
+
+                <figure>
+                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/find.png" width="600">
+                    <figcaption>Result of <code>recall wedding</code></figcaption>
+                </figure>
+
+                <span><strong>Examples:</strong></span>
+
+                <pre><span class="inputstart">&gt;&gt;</span> recall</pre>
+                <span><strong>What it does: </strong> Show only <em>Events</em> that are already over and <em>Tasks</em> that have been finished. </span>
+
+                <pre><span class="inputstart">&gt;&gt;</span> recall <span>lunch meeting</span></pre>
+                <span><strong>What it does: </strong> Filters to show only <em>Events</em> that are already over and <em>Tasks</em> that have been finished, with description or tags matching both <code>lunch</code> and <code>meeting</code>.</span>
+
+                <h3 id="unfinish">Marking Tasks as Not Done: <code>unfinish</code></h3>
+
+                <p>Oops, you marked a task as done when it's not exactly done. Simply bring up the list of finished tasks using the <a href="#recall"><code>recall</code> command</a>, then use the <code>unfinish</code> command.</p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre><span class="inputstart">&gt;&gt;</span> unfinish <span>&lt;index&gt;</span></pre>
 
                 <h3 id="store">Setting Save Location: <code>store</code></h3>
 
@@ -477,7 +485,7 @@
                         <thead>
                             <tr>
                                 <th>24 hour notation</th>
-                                <th>Using am/pm</th>
+                                <th>Using AM/PM</th>
                                 <th>Presets</th>
                             </tr>
                         </thead>
@@ -494,7 +502,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><code>0911h</code></td>
+                                <td>
+                                    <code>0932h</code> <em>(hhmm)h</em>
+                                </td>
                                 <td>
                                     <code>9am</code>
                                 </td>
@@ -522,7 +532,7 @@
                                 <td></td>
                                 <td></td>
                                 <td>
-                                    <code>midnight</code>
+                                    <code>midnight</code> <em>(0000h)</em>
                                 </td>
                             </tr>
                         </tbody>
@@ -545,7 +555,7 @@
                         <tbody>
                             <tr>
                                 <td>Add Event</td>
-                                <td><pre><span class="inputstart">&gt;&gt;</span> add <span>&lt;description&gt;</span> from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span> [weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...]</pre></td>
+                                <td><pre><span class="inputstart">&gt;&gt;</span> add <span>&lt;description&gt;</span> from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span> [daily/weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...]</pre></td>
                             </tr>
                             <tr>
                                 <td>Add Task</td>
@@ -568,12 +578,8 @@
                                 <td><pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span> tags</pre></td>
                             </tr>
                             <tr>
-                                <td>Delete Recurrence of Event</td>
-                                <td><pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span> recurrence</pre></td>
-                            </tr>
-                            <tr>
                                 <td>Edit Event</td>
-                                <td><pre><span class="inputstart">&gt;&gt;</span> edit <span>&lt;index&gt; [&lt;description&gt;</span>] [from <span>&lt;start_datetime&gt;</span>] [to <span>&lt;end_datetime&gt;</span>] [weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...]</pre></td>
+                                <td><pre><span class="inputstart">&gt;&gt;</span> edit <span>&lt;index&gt; [&lt;description&gt;</span>] [from <span>&lt;start_datetime&gt;</span>] [to <span>&lt;end_datetime&gt;</span>] [daily/weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...]</pre></td>
                             </tr>
                             <tr>
                                 <td>Edit Task</td>
@@ -589,7 +595,7 @@
                             </tr>
                             <tr>
                                 <td>Find To-Dos</td>
-                                <td><pre><span class="inputstart">&gt;&gt;</span> find [<span>&lt;keyword&gt;</span>...] [from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span>] [<span>#&lt;tag&gt;</span>...]</pre></td>
+                                <td><pre><span class="inputstart">&gt;&gt;</span> find [<span>&lt;keyword&gt;</span>...]  [<span>#&lt;tag&gt;</span>...]</pre></td>
                             </tr>
                             <tr>
                                 <td>Finish To-Do</td>
@@ -602,6 +608,10 @@
                             <tr>
                                 <td>Import</td>
                                 <td><pre><span class="inputstart">&gt;&gt;</span> import <span>&lt;file_path&gt;</span></pre></td>
+                            </tr>
+                            <tr>
+                                <td>Recall</td>
+                                <td><pre><span class="inputstart">&gt;&gt;</span> recall [<span>&lt;keyword&gt;</span>...]  [<span>#&lt;tag&gt;</span>...]</pre></td>
                             </tr>
                             <tr>
                                 <td>Redo</td>

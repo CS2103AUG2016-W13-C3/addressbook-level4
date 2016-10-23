@@ -92,7 +92,6 @@ public class ToDoTest {
         assertFalse(toDo.isFinished());
         assertFalse(toDo.getDateFinished().isPresent());
         toDo.setIsFinished(true);
-        assertTrue(toDo.isFinished());
         assertTrue(toDo.getDateFinished().isPresent());
         assertTrue(toDo.getDateFinished().get().toLocalDate().equals(LocalDate.now()));
         toDo.setIsFinished(false);

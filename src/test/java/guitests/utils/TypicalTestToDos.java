@@ -19,14 +19,14 @@ public class TypicalTestToDos {
             toDoItem1 = new ToDoBuilder("title").build();
             toDoItem2 = new ToDoBuilder("title 2").withTags("tag1", "tag2")
                     .withDateRange(LocalDateTime.of(2016, 11, 1, 20, 1), LocalDateTime.of(2016, 12, 1, 20, 1))
-                    .isFinished(true).build();
+                    .finish(LocalDateTime.now()).build();
             toDoItem3 = new ToDoBuilder("title 3").withTags("tag1", "tag3")
                     .withDateRange(LocalDateTime.of(2017, 1, 1, 20, 1), LocalDateTime.of(2017, 2, 1, 20, 1))
-                    .isFinished(true).build();
-            toDoItem4 = new ToDoBuilder("title 4").withDueDate(LocalDateTime.of(2016, 12, 1, 20, 1)).isFinished(true)
+                    .finish(LocalDateTime.now()).build();
+            toDoItem4 = new ToDoBuilder("title 4").withDueDate(LocalDateTime.of(2016, 12, 1, 20, 1)).finish(LocalDateTime.now())
                     .build();
             toDoItem5 = new ToDoBuilder("title 5").withTags("tag1", "tag2")
-                    .withDueDate(LocalDateTime.of(2017, 11, 1, 20, 1)).isFinished(true).build();
+                    .withDueDate(LocalDateTime.of(2017, 11, 1, 20, 1)).finish(LocalDateTime.now()).build();
 
         } catch (IllegalValueException e) {
             e.printStackTrace();

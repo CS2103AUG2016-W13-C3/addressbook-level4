@@ -120,6 +120,15 @@ public class DateTimeParserTest {
                 DateTimeParser.DefaultLocalTime.getMinute()),
             dateTimeParser.parseDateTime("tmr").orElse(null)
         );
+
+        // yesterday
+        LocalDateTime yesterday = now.minusDays(1);
+        assertEquals(
+            LocalDateTime.of(yesterday.getYear(), yesterday.getMonth(), yesterday.getDayOfMonth(),
+                DateTimeParser.DefaultLocalTime.getHour(),
+                DateTimeParser.DefaultLocalTime.getMinute()),
+            dateTimeParser.parseDateTime("yesterday").orElse(null)
+        );
     }
 
     @Test
@@ -208,46 +217,48 @@ public class DateTimeParserTest {
                 dateTimeParser.parseDateTime("Friday").orElse(null)
         );
 
-        LocalDateTime nextLdt = now.with(TemporalAdjusters.next(DayOfWeek.FRIDAY));
+        LocalDateTime nextLdt = now.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
         assertEquals(
                 LocalDateTime.of(nextLdt.getYear(), nextLdt.getMonthValue(), nextLdt.getDayOfMonth(),
                     DateTimeParser.DefaultLocalTime.getHour(),
                     DateTimeParser.DefaultLocalTime.getMinute()),
-                dateTimeParser.parseDateTime("next fri").orElse(null)
+                dateTimeParser.parseDateTime("next sun").orElse(null)
         );
 
         // With time
         assertEquals(
             LocalDateTime.of(nextLdt.getYear(), nextLdt.getMonthValue(), nextLdt.getDayOfMonth(),
                13, 13),
-            dateTimeParser.parseDateTime("next fri 1313h").orElse(null)
+            dateTimeParser.parseDateTime("next sun 1313h").orElse(null)
         );
     }
     
     @Test
-    public void parseDateTime_relativeDaysLater()  {
-        LocalDateTime ldt = now.plusDays(12);
+    public void parseDateTime_relativeDaysLaterAgo()  {
+        LocalDateTime plus12Days = now.plusDays(12);
         assertEquals(
-                LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
+                LocalDateTime.of(plus12Days.getYear(), plus12Days.getMonthValue(), plus12Days.getDayOfMonth(),
                     DateTimeParser.DefaultLocalTime.getHour(),
                     DateTimeParser.DefaultLocalTime.getMinute()),
                 dateTimeParser.parseDateTime("12 days later").orElse(null)
         );
 
+        LocalDateTime minus8Days = now.minusDays(8);
+        assertEquals(
+            LocalDateTime.of(minus8Days.getYear(), minus8Days.getMonthValue(), minus8Days.getDayOfMonth(),
+                DateTimeParser.DefaultLocalTime.getHour(),
+                DateTimeParser.DefaultLocalTime.getMinute()),
+            dateTimeParser.parseDateTime("8 days ago").orElse(null)
+        );
+
         // 0 and 1 days invalid
         assertFalse(dateTimeParser.parseDateTime("1 day later").isPresent());
         assertFalse(dateTimeParser.parseDateTime("0 days later").isPresent());
-
-        // With time
-        assertEquals(
-            LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
-                10, 23),
-            dateTimeParser.parseDateTime("12 days later 1023h").orElse(null)
-        );
+        assertFalse(dateTimeParser.parseDateTime("0 days ago").isPresent());
     }
 
     @Test
-    public void parseDateTime_relativeWeeksMonthsYearsLater()  {
+    public void parseDateTime_relativeWeeksMonthsYearsLaterAgo()  {
         LocalDateTime ldt = now.plusWeeks(2);
         assertEquals(
             LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
@@ -264,17 +275,18 @@ public class DateTimeParserTest {
             dateTimeParser.parseDateTime("2 months later").orElse(null)
         );
 
-        ldt = now.plusYears(2);
+        ldt = now.minusYears(2);
         assertEquals(
             LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
                 DateTimeParser.DefaultLocalTime.getHour(),
                 DateTimeParser.DefaultLocalTime.getMinute()),
-            dateTimeParser.parseDateTime("2 years later").orElse(null)
+            dateTimeParser.parseDateTime("2 years ago").orElse(null)
         );
 
         // 0 and 1 weeks invalid
         assertFalse(dateTimeParser.parseDateTime("1 week later").isPresent());
         assertFalse(dateTimeParser.parseDateTime("0 weeks later").isPresent());
+        assertFalse(dateTimeParser.parseDateTime("0 weeks ago").isPresent());
 
         // With time
         ldt = now.plusWeeks(3);

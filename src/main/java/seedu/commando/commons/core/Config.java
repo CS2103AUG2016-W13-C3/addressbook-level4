@@ -11,6 +11,7 @@ import java.util.logging.Level;
 public class Config {
     public static final String ApplicationTitle = "CommanDo";
     public static final String ApplicationName = "CommanDo";
+    public static final String ApplicationIcon = "/images/calendar.png";
     public static final Level LogLevel = Level.INFO;
     public static final String UserPrefsFilePath = "preferences.json";
     public static final String DefaultToDoListFilePath = "data/todos.xml";
@@ -38,6 +39,7 @@ public class Config {
         put("find", "find");
         put("search logic", "search-logic");
         put("unfinish", "unfinish");
+        put("recall", "recall");
     }};
 
     public Config() {

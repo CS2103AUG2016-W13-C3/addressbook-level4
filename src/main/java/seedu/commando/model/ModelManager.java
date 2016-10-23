@@ -54,6 +54,10 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void changeToDoList(ToDoListChange change) throws IllegalValueException {
         toDoListManager.changeToDoList(change);
+
+        // if to-do list has changed, reset any find or history filter
+        clearUiToDoListFilter(false);
+
         indicateToDoListChanged();
     }
 
@@ -95,13 +99,13 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void clearUiToDoListFilter() {
-        uiModel.clearToDoListFilter();
+    public void clearUiToDoListFilter(boolean ifHistoryMode) {
+        uiModel.clearToDoListFilter(ifHistoryMode);
     }
 
     @Override
-    public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags) {
-        uiModel.setToDoListFilter(keywords, tags);
+    public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, boolean ifHistoryMode) {
+        uiModel.setToDoListFilter(keywords, tags, ifHistoryMode);
     }
 
     /** Raises an event to indicate the model has changed */

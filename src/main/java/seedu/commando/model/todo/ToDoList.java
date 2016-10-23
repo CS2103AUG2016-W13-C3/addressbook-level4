@@ -26,7 +26,6 @@ public class ToDoList implements ReadOnlyToDoList {
     }
 
     public ToDoList() {
-        reset(new ArrayList<>());
     }
 
     /**
@@ -34,10 +33,6 @@ public class ToDoList implements ReadOnlyToDoList {
      */
     public ToDoList(ReadOnlyToDoList listToBeCopied) {
         reset(listToBeCopied.getToDos());
-    }
-
-    public ToDoList(List<ReadOnlyToDo> listToBeCopied) {
-        reset(listToBeCopied);
     }
 
     //================================================================================

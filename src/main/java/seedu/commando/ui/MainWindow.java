@@ -33,7 +33,6 @@ import seedu.commando.model.ui.UiToDo;
 public class MainWindow extends UiPart {
     
     // Fixed variables
-    private final String ICON = "/images/calendar.png";
     private final String FXML = "MainWindow.fxml";
     private final String maximizeButtonSymbol = "⬜";
     private final String unMaximizeButtonSymbol = "❐";
@@ -119,7 +118,13 @@ public class MainWindow extends UiPart {
     }
 
     public static MainWindow load(Stage primaryStage, UserPrefs prefs, Logic logic) {
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        // Try to remove title bar of window
+        try {
+            primaryStage.initStyle(StageStyle.UNDECORATED);
+        } catch (IllegalStateException exception) {
+            // Ignore, window has been made visible already
+        }
+
         MainWindow mainWindow = UiPartLoader.loadUiPart(primaryStage, new MainWindow());
         mainWindow.configure(Config.ApplicationTitle, Config.ApplicationName, prefs, logic);
         return mainWindow;
@@ -135,7 +140,7 @@ public class MainWindow extends UiPart {
         setTitle(appTitle);
         
         // Icon and App size settings
-        setIcon(ICON);
+        setIcon(Config.ApplicationIcon);
         setWindowDefaultSize(prefs);
         
         scene = new Scene(rootLayout);

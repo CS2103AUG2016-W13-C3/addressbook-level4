@@ -9,8 +9,6 @@ import seedu.commando.commons.events.model.ToDoListChangedEvent;
 import seedu.commando.commons.events.storage.DataSavingExceptionEvent;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.ReadOnlyToDoList;
-import seedu.commando.model.todo.Title;
-import seedu.commando.model.todo.ToDo;
 import seedu.commando.model.todo.ToDoList;
 import seedu.commando.model.UserPrefs;
 import seedu.commando.testutil.EventsCollector;
@@ -106,7 +104,7 @@ public class StorageManagerTest {
                                    LocalDateTime.of(2016, 4, 1, 20, 1))
                     .build());
         toDoList.add(new ToDoBuilder("valid title 2")
-                    .isFinished(true)
+                    .finish(LocalDateTime.of(2017, 2, 3, 22, 5))
                     .build());
         return toDoList;
     }

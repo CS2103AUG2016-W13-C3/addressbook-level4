@@ -11,14 +11,10 @@ import javafx.stage.Screen;
  */
 public class GuiSettings implements Serializable {
 
-    private Double windowWidth;
-    private Double windowHeight;
+    private Double windowWidth = Config.DefaultWindowWidth;
+    private Double windowHeight = Config.DefaultWindowHeight;
     private boolean isMaximized;
     private Point windowCoordinates;  // null represent no coordinates
-    {
-        windowWidth = Config.DefaultWindowWidth;
-        windowHeight = Config.DefaultWindowHeight;
-    }
 
     public GuiSettings() {
         this.windowCoordinates = null;

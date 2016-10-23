@@ -62,7 +62,12 @@ public class StatusBarFooter extends UiPart {
         saveLocStatusBarPane.getChildren().add(saveLocationStatus);
 
         // Update save location when required
-        saveLocation.addListener((observable, oldValue, newValue) -> saveLocationStatus.setText(observable.getValue()));
+        updateSaveLocation(saveLocation.getValue());
+        saveLocation.addListener((observable, oldValue, newValue) -> updateSaveLocation(saveLocation.getValue()));
+    }
+
+    private void updateSaveLocation(String saveLocation) {
+        saveLocationStatus.setText("./" + saveLocation);
     }
 
     private void setSyncStatus(String status) {

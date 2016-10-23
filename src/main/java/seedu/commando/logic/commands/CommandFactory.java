@@ -8,7 +8,6 @@ import seedu.commando.model.todo.DueDate;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.Title;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -20,6 +19,8 @@ import java.util.stream.Collectors;
  * Doesn't set context for commands
  */
 public class CommandFactory {
+    public static final String KEYWORD_DELETE_TIME = "time";
+    public static final String KEYWORD_DELETE_TAGS = "tags";
 
     private SequentialParser sequentialParser;
     {
@@ -48,6 +49,8 @@ public class CommandFactory {
                 return buildDeleteCommand();
             case FinishCommand.COMMAND_WORD:
                 return buildFinishCommand();
+            case UnfinishCommand.COMMAND_WORD:
+                return buildUnfinishCommand();
             case FindCommand.COMMAND_WORD:
                 return buildFindCommand();
             case ExitCommand.COMMAND_WORD:
@@ -68,10 +71,28 @@ public class CommandFactory {
             	return buildExportCommand();
             case ImportCommand.COMMAND_WORD:
             	return buildImportCommand();
+            case RecallCommand.COMMAND_WORD:
+                return buildRecallCommand();
             default:
                 throw new IllegalValueException(Messages.UNKNOWN_COMMAND);
         }
     }
+
+    private Command buildRecallCommand() {
+        RecallCommand command = new RecallCommand();
+
+        // Extract tags
+        Set<Tag> tags = sequentialParser.extractTrailingTags();
+        if (!tags.isEmpty()) {
+            command.tags = tags;
+        }
+
+        // Try to find keywords
+        command.keywords = sequentialParser.extractWords().stream().collect(Collectors.toSet());
+
+        return command;
+    }
+
 
     private Command buildExitCommand() throws IllegalValueException {
         if (!sequentialParser.isInputEmpty()) {
@@ -146,11 +167,28 @@ public class CommandFactory {
             () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
         );
 
-        if (!sequentialParser.isInputEmpty()) {
+        DeleteCommand deleteCommand = new DeleteCommand(index);
+
+        // check for fields
+        List<String> words = sequentialParser.extractWords();
+
+        int fieldsCount = 0;
+        if (words.contains(KEYWORD_DELETE_TAGS)) {
+            deleteCommand.ifDeleteTags = true;
+            fieldsCount ++;
+        }
+
+        if (words.contains(KEYWORD_DELETE_TIME)) {
+            deleteCommand.ifDeleteTime = true;
+            fieldsCount ++;
+        }
+
+        // If there were extra words besides the fields, invalid command format
+        if (fieldsCount != words.size()) {
            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD));
         }
 
-        return new DeleteCommand(index);
+        return deleteCommand;
     }
     
     private Command buildFinishCommand() throws IllegalValueException {
@@ -164,6 +202,18 @@ public class CommandFactory {
         }
 
         return new FinishCommand(index);
+    }
+    
+    private Command buildUnfinishCommand() throws IllegalValueException {
+        int index = sequentialParser.extractInteger().orElseThrow(
+            () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
+        );
+
+        if (!sequentialParser.isInputEmpty()) {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
+        }
+
+        return new UnfinishCommand(index);
     }
 
     private Command buildFindCommand() {
