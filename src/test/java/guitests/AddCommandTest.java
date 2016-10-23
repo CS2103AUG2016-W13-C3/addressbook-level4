@@ -60,10 +60,8 @@ public class AddCommandTest extends CommanDoGuiTest {
 
         //add missing startdate ,  empty date --> consider as floating task
         commandBox.runCommand("add test from to 1pm");
-        toDoToAdd = new ToDoBuilder("test from to 1pm").build();
-        ToDo[] expectedList = TestUtil.addToDosToList(currentList, currentList.length, toDoToAdd);
-        assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedList));
-        currentList = expectedList;
+        assertResultMessage(Messages.MISSING_TODO_DATERANGE_START);
+        assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
        
         //add missing startdate ,  invalid date
         commandBox.runCommand("add test from abcde to 1pm");
@@ -72,10 +70,8 @@ public class AddCommandTest extends CommanDoGuiTest {
 
         //add missing enddate , empty date --> consider as floating task
         commandBox.runCommand("add test from 1pm to");
-        toDoToAdd = new ToDoBuilder("test from 1pm to").build();
-        expectedList = TestUtil.addToDosToList(currentList, currentList.length, toDoToAdd);
-        assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedList));
-        currentList = expectedList;
+        assertResultMessage(Messages.MISSING_TODO_DATERANGE_END);
+        assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
         
         //add missing enddate ,  invalid date
         commandBox.runCommand("add test from 1pm to abcde");

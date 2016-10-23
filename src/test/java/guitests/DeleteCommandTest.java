@@ -32,17 +32,20 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         assertDeleteSuccess(targetIndex, currentList);
 
        //invalid index
-        commandBox.runCommand("delete " + currentList.length + 1);
-        assertResultMessage("Invalid to-do index: " + currentList.length + 1 + ".");
+        targetIndex = currentList.length + 1;
+        commandBox.runCommand("delete " + targetIndex);
+        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, "[" + targetIndex + "]"));
         
-        commandBox.runCommand("delete " + "0");
-        assertResultMessage("Invalid to-do index: 0.");
+        targetIndex = 0;
+        commandBox.runCommand("delete " + targetIndex);
+        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, "[" + targetIndex + "]"));
         
-        commandBox.runCommand("delete " + "-1");
-        assertResultMessage("Invalid to-do index: -1.");
+        targetIndex = -1;
+        commandBox.runCommand("delete " + targetIndex);
+        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, "[" + targetIndex + "]"));
         
         //invalid params  or empty index
-        commandBox.runCommand("delete abc" + "1");
+        commandBox.runCommand("delete abc 1");
         assertResultMessage(Messages.MISSING_TODO_ITEM_INDEX);
         
         commandBox.runCommand("delete   ");
@@ -80,13 +83,13 @@ public class DeleteCommandTest extends CommanDoGuiTest {
     @Test
     public void delete_multiple_index() {
         ToDo[] currentList = td.getTypicalToDos();
-        assertDeleteMultipleSuccess(2, 3, currentList);
+        assertDeleteConsectiveSuccess(2, 3, currentList);
     }
 
     /**
      * Runs the delete command to delete the single Todo at specified index and confirms the result is correct.
      * @param targetIndexOneIndexed e.g. to delete the first Todos in the list, 1 should be given as the target index.
-     * @param currentList A copy of the current list of Todoss (before deletion).
+     * @param currentList A copy of the current list of Todos (before deletion).
      */
     private void assertDeleteSuccess(int targetIndexOneIndexed, final ToDo[] currentList) {
         
@@ -95,14 +98,14 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         
         commandBox.runCommand("delete " + targetIndexOneIndexed);
 
-        //confirm the list now contains all previous Todoss except the deleted Todos
+        //confirm the list now contains all previous Todos except the deleted Todos
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedRemainder));
 
         //confirm the result message is correct
         assertResultMessage(String.format(Messages.TODO_DELETED, "[" + targetIndexOneIndexed + "]"));
     }
     
-    private void assertDeleteMultipleSuccess(int startIndex, int endIndex, final ToDo[] currentList) {
+    private void assertDeleteConsectiveSuccess(int startIndex, int endIndex, final ToDo[] currentList) {
         ToDo TodosToDelete = null;
         ToDo[] expectedRemainder = currentList;
         String range = "[";
