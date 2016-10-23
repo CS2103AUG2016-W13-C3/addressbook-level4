@@ -10,6 +10,8 @@ import seedu.commando.commons.core.Messages;
 import seedu.commando.model.todo.ToDo;
 
 public class FinishCommandTest extends CommanDoGuiTest {
+    
+    
     @Test
     public void finish_one_index() {
         //finish one item

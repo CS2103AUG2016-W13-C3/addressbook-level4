@@ -15,7 +15,7 @@ public class TypicalTestToDos {
 
     public TypicalTestToDos() {
         try {
-            toDoItem1 = new ToDoBuilder("title").build();
+            toDoItem1 = new ToDoBuilder("title").finish(null).build();
             toDoItem2 = new ToDoBuilder("title 2").withTags("tag1", "tag2")
                     .withDateRange(LocalDateTime.of(2016, 11, 1, 20, 1), LocalDateTime.of(2016, 12, 1, 20, 1))
                     .finish(null).build();
