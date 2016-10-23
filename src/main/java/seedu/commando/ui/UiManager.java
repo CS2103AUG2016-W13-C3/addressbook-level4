@@ -39,9 +39,6 @@ public class UiManager extends ComponentManager implements Ui {
     @Override
     public void start(Stage primaryStage) {
         logger.info("Starting UI...");
-        if (primaryStage.isShowing()) {
-            primaryStage.close();
-        }
 
         primaryStage.setTitle(Config.ApplicationTitle);
 
@@ -54,7 +51,6 @@ public class UiManager extends ComponentManager implements Ui {
             mainWindow.fillInnerParts();
             mainWindow.moreConfigurations(); // This is to set properties of some components that
                                              // can only be set after loading 
-
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));
             showFatalErrorDialogAndShutdown("Fatal error during initializing", e);

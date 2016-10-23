@@ -38,7 +38,6 @@ public class MainApp extends Application {
     protected Storage storage;
     protected Model model;
     protected UserPrefs userPrefs;
-    protected EventsCenter eventsCenter;
 
     public MainApp() {}
 
