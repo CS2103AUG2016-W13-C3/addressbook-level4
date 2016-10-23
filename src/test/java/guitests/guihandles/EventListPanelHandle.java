@@ -41,10 +41,6 @@ public class EventListPanelHandle extends GuiHandle implements ToDoListPanelHand
         return (ListView<ReadOnlyToDo>) getNode(EVENT_LIST_VIEW_ID);
     }
     
-    public int getListViewSize() {
-        return getListView().getItems().size();
-    }
-    
     /**
      * Returns true if the list is showing the Todo details correctly and in correct order.
      * @param Todos A list of Todo in the correct order.
@@ -90,7 +86,7 @@ public class EventListPanelHandle extends GuiHandle implements ToDoListPanelHand
     public boolean isListMatching(int startPosition, ReadOnlyToDo... Todos) throws IllegalArgumentException {
         
         assertTrue(this.containsInOrder(startPosition, Todos));
-        for (int i = 0; i < this.getListViewSize(); i++) {
+        for (int i = 0; i < this.getNumberOfToDo(); i++) {
             final int scrollTo = i + startPosition;
             guiRobot.interact(() -> getListView().scrollTo(scrollTo));
             guiRobot.sleep(200);
