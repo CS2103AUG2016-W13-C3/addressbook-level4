@@ -29,8 +29,8 @@ public class SequentialParser {
     private static final Pattern FIRST_WORD_PATTERN = Pattern.compile("^(?<word>\\S+)(?<left>.*?)$");
     private static final Pattern FIRST_INTEGER_PATTERN = Pattern.compile("^(?<integer>-?\\d+)(?<left>.*?)$");
     private static final Pattern DATERANGE_PATTERN = Pattern.compile(
-        "(?<left>.*)" + KEYWORD_DATERANGE_START + "\\s+" + "(?<start>.+?)" + "\\s+"
-            + KEYWORD_DATERANGE_END + "\\s+" + "(?<end>.+?)"
+        "(?<left>.*)" + KEYWORD_DATERANGE_START + "\\s+" + "(?<start>(.+\\s+)?)"
+            + KEYWORD_DATERANGE_END + "(?<end>(\\s+.+?)?)"
             + "(?<recurrence>(\\s+" + KEYWORD_RECURRENCE + ")?)$",
         Pattern.CASE_INSENSITIVE
     );
@@ -120,9 +120,23 @@ public class SequentialParser {
             Optional<LocalDateTime> startDateTime = dateTimeParser.parseDateTime(startString);
             Optional<LocalDateTime> endDateTime = dateTimeParser.parseDateTime(endString);
 
-            if (startDateTime.isPresent() && endDateTime.isPresent()) {
+            if (startDateTime.isPresent() && !endDateTime.isPresent()) {
+                if (endString.isEmpty()) {
+                    throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_END);
+                } else {
+                    throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_END);
+                }
+            } else if (endDateTime.isPresent() && !startDateTime.isPresent()) {
+               if (startString.isEmpty()) {
+                   throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_START);
+               } else {
+                   throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_START);
+               }
+            }
 
+            if (startDateTime.isPresent() && endDateTime.isPresent()) {
                 // Legit date range
+                // Extract date range from input
                 input = matcher.group("left").trim();
 
                 // Parse recurrence
@@ -131,10 +145,6 @@ public class SequentialParser {
                 assert recurrence != null : "Regex should ensure that recurrence string is valid";
 
                 return Optional.of(new DateRange(startDateTime.get(), endDateTime.get(), recurrence));
-            } else if (startDateTime.isPresent()) {
-                throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_END);
-            } else if (endDateTime.isPresent()) {
-                throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_START);
             }
         }
 

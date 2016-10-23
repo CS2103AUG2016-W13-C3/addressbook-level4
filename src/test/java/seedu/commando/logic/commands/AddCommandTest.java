@@ -246,4 +246,19 @@ public class AddCommandTest {
         assertEquals(Messages.TODO_DATERANGE_RECURRENCE_INVALID, result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
+
+    @Test
+    public void execute_add_missingStartEndDates() throws IllegalValueException {
+        CommandResult result = logic.execute("add event from to 12 Oct");
+        assertTrue(result.hasError());
+        assertEquals(Messages.MISSING_TODO_DATERANGE_START, result.getFeedback());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+
+        eventsCollector.reset();
+
+        result = logic.execute("add event from 12 Oct to");
+        assertTrue(result.hasError());
+        assertEquals(Messages.MISSING_TODO_DATERANGE_END, result.getFeedback());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
 }
