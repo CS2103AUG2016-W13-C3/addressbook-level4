@@ -59,7 +59,6 @@ public class TaskListPanel extends UiPart {
         addToPlaceholder();
         Platform.runLater(() -> {
             scrollbar = (ScrollBar) taskListView.lookup(".scroll-bar:vertical");
-            scrollbar.setUnitIncrement(200);
         });
     }
 
@@ -90,13 +89,13 @@ public class TaskListPanel extends UiPart {
     
     protected void scrollDown() {
         if (isScrollBarPresent()) {
-            scrollbar.increment();
+            scrollbar.setValue(Math.min(scrollbar.getValue() + 0.1, 1));
         }
     }
     
     protected void scrollUp() {
         if (isScrollBarPresent()) {
-            scrollbar.decrement();
+            scrollbar.setValue(Math.max(scrollbar.getValue() - 0.1, 0));
         }
     }
 }
