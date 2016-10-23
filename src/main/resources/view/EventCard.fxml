@@ -38,7 +38,7 @@
 						</HBox>
 					</children>
 				</HBox>
-				<VBox maxHeight="1.7976931348623157E308" prefWidth="150.0">
+				<VBox maxHeight="1.7976931348623157E308">
 					<children>
 						<HBox maxHeight="1.7976931348623157E308">
 							<children>
@@ -51,6 +51,9 @@
 							</children>
 						</HBox>
 					</children>
+               <padding>
+                  <Insets right="7.0" />
+               </padding>
 				</VBox>
 			</children>
 		</HBox>

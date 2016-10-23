@@ -38,9 +38,9 @@
 						</HBox>
 					</children>
 				</HBox>
-				<VBox alignment="BOTTOM_RIGHT" prefWidth="150.0" VBox.vgrow="ALWAYS">
+				<VBox alignment="BOTTOM_RIGHT" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
 					<children>
-						<Label fx:id="dueLabel" />
+						<Label fx:id="dueLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="\$due" />
 					</children>
 					<padding>
 						<Insets bottom="5.0" left="7.0" right="7.0" top="5.0" />
