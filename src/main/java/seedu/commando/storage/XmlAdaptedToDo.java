@@ -54,6 +54,7 @@ public class XmlAdaptedToDo {
         if (toDo.getDateRange().isPresent()) {
             dateRangeStart = dateFormatter.format(toDo.getDateRange().get().startDate);
             dateRangeEnd = dateFormatter.format(toDo.getDateRange().get().endDate);
+            recurrence = toDo.getDateRange().get().recurrence.toString();
         }
 
         if (toDo.getDateFinished().isPresent()) {
@@ -61,7 +62,6 @@ public class XmlAdaptedToDo {
         }
 
         dateCreated = dateFormatter.format(toDo.getDateCreated());
-        recurrence = toDo.getRecurrence().name();
         tagged = toDo.getTags().stream().map(tag -> tag.value).collect(Collectors.toSet());
     }
 
@@ -94,10 +94,21 @@ public class XmlAdaptedToDo {
 
         // Check if the dateRange is empty
         if (dateRangeStart != null && dateRangeEnd != null){
+
+            Recurrence validRecurrence = Recurrence.None;
+            if (recurrence != null) {
+                try {
+                    validRecurrence = Recurrence.valueOf(recurrence);
+                } catch(IllegalArgumentException exception) {
+                    // Invalid recurrence, ignore
+                }
+            }
+
             try {
                 todo.setDateRange(new DateRange(
                     LocalDateTime.parse(dateRangeStart, dateFormatter),
-                    LocalDateTime.parse(dateRangeEnd, dateFormatter)
+                    LocalDateTime.parse(dateRangeEnd, dateFormatter),
+                    validRecurrence
                 ));
             } catch (DateTimeParseException exception) {
                 // invalid date range, ignore
@@ -112,14 +123,6 @@ public class XmlAdaptedToDo {
         // Check if the date created is empty
         if (dateCreated != null){
             todo.setDateCreated(LocalDateTime.parse(dateCreated, dateFormatter));
-        }
-
-        if (recurrence != null) {
-            try {
-                todo.setRecurrence(Recurrence.valueOf(recurrence));
-            } catch(IllegalArgumentException exception) {
-                // Invalid recurrence, ignore
-            }
         }
 
         return todo;

@@ -74,11 +74,6 @@ public class UiToDo implements ReadOnlyToDo {
     }
 
     @Override
-    public Recurrence getRecurrence() {
-        return toDo.getRecurrence();
-    }
-
-    @Override
     public ObservableValue getObservableValue() {
         return toDo.getObservableValue();
     }

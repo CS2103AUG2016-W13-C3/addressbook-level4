@@ -12,7 +12,8 @@ public class Messages {
     public static final String INVALID_TODO_DATERANGE_START = "Invalid start date for date range of to-do.";
     public static final String INVALID_TODO_DATERANGE_END = "Invalid end date for date range of to-do.";
     public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.";
-    public static final String TODO_DATERANGE_CONSTRAINTS = "The end date of the date range must be after start date.";
+    public static final String TODO_DATERANGE_END_MUST_AFTER_START = "The end date of the date range must be after start date.";
+    public static final String TODO_DATERANGE_RECURRENCE_INVALID = "The recurrence for the given date range is not valid.";
     public static final String MISSING_STORE_PATH = "Missing the path to store.";
     public static final String MISSING_STORE_FILE = "Missing the file name to store.";
     public static final String MISSING_EXPORT_PATH = "Missing the path to export.";

@@ -21,12 +21,9 @@ public interface ReadOnlyToDo {
 
     LocalDateTime getDateCreated();
 
-    Recurrence getRecurrence();
-
     default boolean hasTimeConstraint() {
         return getDateRange().isPresent()
-            || getDueDate().isPresent()
-            || getRecurrence() != Recurrence.None;
+            || getDueDate().isPresent();
     }
 
     /**
@@ -67,8 +64,7 @@ public interface ReadOnlyToDo {
             && other.getDueDate().equals(getDueDate())
             && other.getTags().equals(getTags())
             && other.getDateFinished().equals(getDateFinished())
-            && other.getDateCreated().equals(getDateCreated())
-            && other.getRecurrence().equals(getRecurrence())); // state checks here onwards
+            && other.getDateCreated().equals(getDateCreated())); // state checks here onwards
     }
 
     /**
@@ -77,7 +73,6 @@ public interface ReadOnlyToDo {
      * - due date
      * - date range
      * - tags
-     * - recurrence
      */
     default boolean isSimilar(ReadOnlyToDo other) {
         return other == this // short circuit if same object
@@ -85,8 +80,7 @@ public interface ReadOnlyToDo {
             && other.getTitle().equals(getTitle())
             && other.getDateRange().equals(getDateRange())
             && other.getDueDate().equals(getDueDate())
-            && other.getTags().equals(getTags())
-            && other.getRecurrence().equals(getRecurrence()));
+            && other.getTags().equals(getTags()));
     }
 
     /**
@@ -99,7 +93,6 @@ public interface ReadOnlyToDo {
             "Due Date: " + (getDueDate().isPresent() ? getDueDate().get() : "none"),
             "Tags: " + getTags(),
             "Date Created: " + getDateCreated(),
-            "Date Finished: " + (getDateFinished().isPresent() ? getDateFinished().get() : "none"),
-            "Recurrence: " + getRecurrence());
+            "Date Finished: " + (getDateFinished().isPresent() ? getDateFinished().get() : "none"));
     }
 }
