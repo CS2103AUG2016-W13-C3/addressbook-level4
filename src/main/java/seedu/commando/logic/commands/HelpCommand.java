@@ -40,7 +40,9 @@ public class HelpCommand extends Command {
             anchor = Config.getUserGuideAnchorForCommandWord(
                 commandWord
             ).orElseThrow(
-                () -> new IllegalValueException(Messages.UNKNOWN_COMMAND_FOR_HELP)
+                () -> new IllegalValueException(
+                        String.format(Messages.UNKNOWN_COMMAND_FOR_HELP, commandWord)
+                        )
             );
         }
 
