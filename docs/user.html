@@ -205,8 +205,9 @@
                 <p>If you want to delete a to-do that is no longer relevant, whether it is an <em>Event</em> or a <em>Task</em>, use the <code>delete</code> command.</p>
 
                 <span><strong>Command Format:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span></pre>
-
+                <pre><span class="inputstart">&gt;&gt;</span> delete [<span>&lt;index&gt;</span>...]</pre>
+                <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;start index&gt;</span> to <span>&lt;end index&gt;</span></pre>
+                <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;start index&gt;</span> - <span>&lt;end index&gt;</span></pre>
                 <blockquote>
                     <b>Index of a To-Do:</b> To refer to an existing to-do in <em>CommanDo</em>, its <em>Index</em> is used, which is the number visually tagged to a to-do on the interface. This is clarified in the following figure:
 
@@ -221,14 +222,18 @@
                 <p>There are situations where the time window of an Event (and its recurrence) or the due date of a <em>Task</em> become no longer relevant. Similarly, use the <code>delete</code> command, ending with the keyword <code>time</code>. Note that this means that a target <em>Event</em> will become a <em>Task</em> after such a command.</p>
 
                 <span><strong>Command Format:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span> time</pre>
+                <pre><span class="inputstart">&gt;&gt;</span> delete [<span>&lt;index&gt;</span>...] time</pre>
+                <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;start index&gt;</span> to <span>&lt;end index&gt;</span> time</pre>
+                <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;start index&gt;</span> - <span>&lt;end index&gt;</span> time</pre>
 
                 <h4>Deleting Tags of To-Dos</h4>
 
-                <p>To clear the tags of a to-do, use the <code>delete</code> command as well, but end with the keyword <code>tags</code>.</p>
+                <p>To clear the tags of a to-do, use the <code>delete</code> command as well, but end with the keyword <code>tag</code>.</p>
 
                 <span><strong>Command Format:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span> tags</pre>
+                      <pre><span class="inputstart">&gt;&gt;</span> delete [<span>&lt;index&gt;</span>...] tag</pre>
+                <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;start index&gt;</span> to <span>&lt;end index&gt;</span> tag</pre>
+                <pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;start index&gt;</span> - <span>&lt;end index&gt;</span> tag</pre>
 
                 <h3 id="edit">Editing To-Dos: <code>edit</code></h3>
 
@@ -263,7 +268,9 @@
                 <p>When you've completed a <em>Task</em>, mark it as done with the <code>finish</code> command. The to-do will initially be moved to the bottom of its list, and subsequently be hidden and archived after 1 day You'll be able to browse through these finished <em>Tasks</em> with the <a href="#recall"><code>recall</code> command</a>.</p>
 
                 <span><strong>Command Format:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> finish <span>&lt;index&gt;</span></pre>
+                <pre><span class="inputstart">&gt;&gt;</span> finish [<span>&lt;index&gt;</span>...] </pre>
+                <pre><span class="inputstart">&gt;&gt;</span> finish <span>&lt;start index&gt;</span> to <span>&lt;end index&gt;</span> </pre>
+                <pre><span class="inputstart">&gt;&gt;</span> finish <span>&lt;start index&gt;</span> - <span>&lt;end index&gt;</span> </pre>
 
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/finish.png" width="600">
@@ -335,7 +342,10 @@
                 <p>Oops, you marked a task as done when it's not exactly done. Simply bring up the list of finished tasks using the <a href="#recall"><code>recall</code> command</a>, then use the <code>unfinish</code> command.</p>
 
                 <span><strong>Command Format:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> unfinish <span>&lt;index&gt;</span></pre>
+                <pre><span class="inputstart">&gt;&gt;</span> unfinish [<span>&lt;index&gt;</span>...] </pre>
+                <pre><span class="inputstart">&gt;&gt;</span> unfinish <span>&lt;start index&gt;</span> to <span>&lt;end index&gt;</span> </pre>
+                <pre><span class="inputstart">&gt;&gt;</span> unfinish <span>&lt;start index&gt;</span> - <span>&lt;end index&gt;</span> </pre>
+
 
                 <h3 id="store">Setting Save Location: <code>store</code></h3>
 
