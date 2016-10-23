@@ -23,6 +23,21 @@ public class UiToDo implements ReadOnlyToDo {
         this.index = index;
     }
 
+    /**
+     * Returns whether a to-do item is an event
+     */
+    public static boolean isEvent(ReadOnlyToDo todo) {
+        return todo.getDateRange().isPresent();
+    }
+
+    /**
+     * Returns whether a to-do item is a task
+     */
+    public static boolean isTask(ReadOnlyToDo todo) {
+        return !todo.getDateRange().isPresent();
+    }
+
+
     @Override
     public Title getTitle() {
         return toDo.getTitle();
@@ -59,11 +74,6 @@ public class UiToDo implements ReadOnlyToDo {
     }
 
     @Override
-    public Recurrence getRecurrence() {
-        return toDo.getRecurrence();
-    }
-
-    @Override
     public ObservableValue getObservableValue() {
         return toDo.getObservableValue();
     }
@@ -73,6 +83,14 @@ public class UiToDo implements ReadOnlyToDo {
     }
 
     public boolean isNew() { return isNew; }
+
+    public boolean isEvent() {
+        return isEvent(this);
+    }
+
+    public boolean isTask() {
+        return isTask(this);
+    }
 
     @Override
     public boolean equals(Object other) {

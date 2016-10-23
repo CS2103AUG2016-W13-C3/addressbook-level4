@@ -161,7 +161,7 @@ public class EditCommandTest {
         String command = "edit 1 from 10 Dec " + nextYear + " 11:59 to 11 Apr " + nextYear + " 23:10";
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
-        assertEquals(Messages.TODO_DATERANGE_CONSTRAINTS, result.getFeedback());
+        assertEquals(Messages.TODO_DATERANGE_END_MUST_AFTER_START, result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 

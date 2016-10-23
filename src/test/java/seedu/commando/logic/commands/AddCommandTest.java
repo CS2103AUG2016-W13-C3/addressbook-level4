@@ -10,6 +10,7 @@ import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.Logic;
+import seedu.commando.model.todo.Recurrence;
 import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.ToDoBuilder;
 
@@ -92,7 +93,7 @@ public class AddCommandTest {
         String command = "add valid title from 10 Dec 2017 11:59 to 11 Apr 2017 23:10";
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
-        assertEquals(Messages.TODO_DATERANGE_CONSTRAINTS, result.getFeedback());
+        assertEquals(Messages.TODO_DATERANGE_END_MUST_AFTER_START, result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
@@ -215,6 +216,34 @@ public class AddCommandTest {
         CommandResult result = logic.execute("add task by 10 Oct 2015");
         assertTrue(result.hasError());
         assertEquals(Messages.TODO_ALREADY_EXISTS, result.getFeedback());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
+
+    @Test
+    public void execute_add_eventWithRecurrence() throws IllegalValueException {
+        logic.execute("add event from 10 Oct 1200h to 11 Oct 1300h monthly");
+
+        LocalDateTime startDate = LocalDateTime.of(now.getYear(), 10, 10, 12, 0);
+        LocalDateTime endDate = LocalDateTime.of(now.getYear(), 10, 11, 13, 0);
+
+        while (startDate.isBefore(LocalDateTime.now())) {
+            startDate = startDate.plusMonths(1);
+            endDate = endDate.plusMonths(1);
+        }
+
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("event")
+                .withDateRange(
+                    startDate, endDate, Recurrence.Monthly
+                )
+                .build()));
+    }
+
+    @Test
+    public void execute_add_eventWithInvalidRecurrence() throws IllegalValueException {
+        CommandResult result = logic.execute("add event from 10 Oct to 12 Oct daily");
+        assertTrue(result.hasError());
+        assertEquals(Messages.TODO_DATERANGE_RECURRENCE_INVALID, result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 }
