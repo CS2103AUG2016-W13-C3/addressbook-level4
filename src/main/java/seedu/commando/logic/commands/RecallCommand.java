@@ -27,10 +27,10 @@ public class RecallCommand extends Command {
         // if no keywords or tags are provided, clear filter
         if (keywords.isEmpty() && tags.isEmpty()) {
             model.clearUiToDoListFilter(true);
-            return new CommandResult(Messages.CLEAR_RECALL);
+            return new CommandResult(Messages.RECALL_COMMAND_CLEAR);
         }
 
         model.setUiToDoListFilter(keywords, tags, true);
-        return new CommandResult(String.format(Messages.RECALL, model.getUiEvents().size(), model.getUiTasks().size()));
+        return new CommandResult(String.format(Messages.RECALL_COMMAND, model.getUiEvents().size(), model.getUiTasks().size()));
     }
 }

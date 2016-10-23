@@ -4,6 +4,7 @@ import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.DueDate;
+import seedu.commando.model.todo.Recurrence;
 import seedu.commando.model.todo.Tag;
 
 import java.time.LocalDateTime;
@@ -22,22 +23,29 @@ public class SequentialParser {
     public static final String KEYWORD_DATERANGE_START = "from";
     public static final String KEYWORD_DATERANGE_END = "to";
     public static final String KEYWORD_DUEDATE = "by";
+    public static final String KEYWORD_RECURRENCE = "daily|weekly|monthly|yearly";
     public static final String TAG_PREFIX = "#";
 
     private static final Pattern FIRST_WORD_PATTERN = Pattern.compile("^(?<word>\\S+)(?<left>.*?)$");
     private static final Pattern FIRST_INTEGER_PATTERN = Pattern.compile("^(?<integer>-?\\d+)(?<left>.*?)$");
     private static final Pattern DATERANGE_PATTERN = Pattern.compile(
-        "(?<left>.*)" + KEYWORD_DATERANGE_START + "\\s+" + "(?<start>.+?)" + "\\s+"
-            + KEYWORD_DATERANGE_END + "\\s+" + "(?<end>.+?)$"
+        "(?<left>.*)" + KEYWORD_DATERANGE_START + "\\s+" + "(?<start>(.+\\s+)?)"
+            + KEYWORD_DATERANGE_END + "(?<end>(\\s+.+?)?)"
+            + "(?<recurrence>(\\s+" + KEYWORD_RECURRENCE + ")?)$",
+        Pattern.CASE_INSENSITIVE
     );
     private static final Pattern DUEDATE_PATTERN = Pattern.compile(
-        "(?<left>.*)" + KEYWORD_DUEDATE + "\\s+" + "(?<date>.+?)$"
+        "(?<left>.*)" + KEYWORD_DUEDATE + "\\s+" + "(?<date>.+?)$",
+        Pattern.CASE_INSENSITIVE
     );
     private static final Pattern TAGS_PATTERN = Pattern.compile(
-        "(?<left>.*?)(?<tags>((\\s+|^)" + TAG_PREFIX + "\\S*)+)$"
+        "(?<left>.*?)(?<tags>((\\s+|^)" + TAG_PREFIX + "\\S*)+)$",
+        Pattern.CASE_INSENSITIVE
     );
     private static final Pattern INDEXRANGE_PATTERN = Pattern.compile(
-    		"^(?<firstInt>-?\\d+)" + "\\s*" + "((to)|-)" + "\\s*" + "(?<secondInt>-?\\d+)(?<left>.*?)$");
+        "^(?<firstInt>-?\\d+)" + "\\s*" + "((to)|-)" + "\\s*" + "(?<secondInt>-?\\d+)(?<left>.*?)$",
+        Pattern.CASE_INSENSITIVE
+    );
 
     private String input;
     private DateTimeParser dateTimeParser;
@@ -94,7 +102,8 @@ public class SequentialParser {
 
     /**
      * Extract a trailing date range from the input.
-     * Date range is defined by: "from (valid_datetime) to (valid_datetime)", and must be at the end of the string to be considered.
+     * Date range is defined by: "from (valid_datetime) to (valid_datetime)" + optional "(valid recurrence),
+     * and must be at the end of the string to be considered.
      * If a trailing date range pattern is found but both datetimes are not valid, also returns empty
      * @throws IllegalValueException if a trailing date range pattern is found but either one of the datetime is valid, other invalid,
      * or parsed DateRange is not invalid
@@ -105,19 +114,37 @@ public class SequentialParser {
         if (matcher.find()) {
             String startString = matcher.group("start");
             String endString = matcher.group("end");
+            String recurrenceString = matcher.group("recurrence");
 
             // Check if datetimes can be parsed
             Optional<LocalDateTime> startDateTime = dateTimeParser.parseDateTime(startString);
             Optional<LocalDateTime> endDateTime = dateTimeParser.parseDateTime(endString);
 
+            if (startDateTime.isPresent() && !endDateTime.isPresent()) {
+                if (endString.isEmpty()) {
+                    throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_END);
+                } else {
+                    throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_END);
+                }
+            } else if (endDateTime.isPresent() && !startDateTime.isPresent()) {
+               if (startString.isEmpty()) {
+                   throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_START);
+               } else {
+                   throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_START);
+               }
+            }
+
             if (startDateTime.isPresent() && endDateTime.isPresent()) {
                 // Legit date range
+                // Extract date range from input
                 input = matcher.group("left").trim();
-                return Optional.of(new DateRange(startDateTime.get(), endDateTime.get()));
-            } else if (startDateTime.isPresent()) {
-                throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_END);
-            } else if (endDateTime.isPresent()) {
-                throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_START);
+
+                // Parse recurrence
+                Recurrence recurrence = parseRecurrence(recurrenceString);
+
+                assert recurrence != null : "Regex should ensure that recurrence string is valid";
+
+                return Optional.of(new DateRange(startDateTime.get(), endDateTime.get(), recurrence));
             }
         }
 
@@ -162,12 +189,10 @@ public class SequentialParser {
 
     /**
      * From start, extracts a single word in input, if found
-     *
      * @return optional of word extracted from input, empty if not found
      */
     public Optional<String> extractWord() {
         final Matcher matcher = FIRST_WORD_PATTERN.matcher(input.trim());
-
         if (matcher.find()) {
             // Remove extracted first word
             input = matcher.group("left").trim();
@@ -209,13 +234,15 @@ public class SequentialParser {
 
         return Optional.empty();
     }
+
 	public List<Integer> extractIndicesList() throws IllegalValueException {
 		final Matcher matcher = INDEXRANGE_PATTERN.matcher(input.trim());
 		List<Integer> indices = new ArrayList<Integer>();
 		int firstInt = -1, secondInt = -1;
 		Optional<Integer> aNumber;
+
 		// Add the index range to a list of indices
-		//Case one: command type : [index] [to|-] [index]
+		// Case one: command type : [index] [to|-] [index]
 		if (matcher.find()) {
 			try {
 				firstInt = Integer.parseInt(matcher.group("firstInt"));
@@ -232,7 +259,7 @@ public class SequentialParser {
 			}
 			input = matcher.group("left").trim();
 		}
-		//Case two: command type : {[index]..}
+		// Case two: command type : {[index]..}
 		else {
 			aNumber = extractInteger();
 			while (aNumber.isPresent()) {
@@ -243,4 +270,19 @@ public class SequentialParser {
 		return indices;
 
 	}
+
+    // Returns null if invalid recurrence
+    // Returns Recurrence.None if empty string
+    private Recurrence parseRecurrence(String recurrence) {
+        recurrence = recurrence.trim().toLowerCase();
+
+        switch (recurrence) {
+            case "daily": return Recurrence.Daily;
+            case "weekly": return Recurrence.Weekly;
+            case "monthly": return Recurrence.Monthly;
+            case "yearly": return Recurrence.Yearly;
+            case "": return Recurrence.None;
+            default: return null;
+        }
+    }
 }

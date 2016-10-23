@@ -27,10 +27,10 @@ public class FindCommand extends Command {
         // if no keywords or tags are provided, clear filter
         if (keywords.isEmpty() && tags.isEmpty()) {
             model.clearUiToDoListFilter(false);
-            return new CommandResult(Messages.CLEAR_FIND);
+            return new CommandResult(Messages.FIND_COMMAND_CLEAR);
         }
 
         model.setUiToDoListFilter(keywords, tags, false);
-        return new CommandResult(String.format(Messages.FIND, model.getUiEvents().size(), model.getUiTasks().size()));
+        return new CommandResult(String.format(Messages.FIND_COMMAND, model.getUiEvents().size(), model.getUiTasks().size()));
     }
 }

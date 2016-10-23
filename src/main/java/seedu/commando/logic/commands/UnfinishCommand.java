@@ -25,7 +25,6 @@ public class UnfinishCommand extends Command {
     	this.toDoIndices = toDoIndices;
     }
 
-
 	@Override
 	public CommandResult execute() throws IllegalValueException, NoModelException {
 		Model model = getModel();
@@ -33,18 +32,26 @@ public class UnfinishCommand extends Command {
 		ToDoList listToUnfinish = new ToDoList();
 		ToDoList unfinishedToDos = new ToDoList();
 		Iterator<Integer> iterator = toDoIndices.iterator();
-		//If to-do with the index is valid and finished, mark it as unfinished, else throw error message and return
+
+		// If to-do with the index is valid and finished, mark it as unfinished, else throw error message and return
 		while (iterator.hasNext()) {
 			index = iterator.next();
 			Optional<UiToDo> toDoToUnfinish = model.getUiToDoAtIndex(index);
+
 			if (!toDoToUnfinish.isPresent()) {
 				return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, index), true);
 			}
+
+			if (toDoToUnfinish.get().isEvent()) {
+				return new CommandResult(String.format(Messages.UNFINISH_COMMAND_CANNOT_UNFINISH_EVENT, toDoToUnfinish.get().getTitle().toString()), true);
+			}
+
 			if (!toDoToUnfinish.get().isFinished()) {
 				return new CommandResult(
-						String.format(Messages.TODO_ALREADY_ONGOING, toDoToUnfinish.get().getTitle().toString()), true);
+						String.format(Messages.UNFINISH_COMMAND_ALREADY_ONGOING, toDoToUnfinish.get().getTitle().toString()), true);
 			}
 			listToUnfinish.add(toDoToUnfinish.get());
+
 			// Mark as unfinished
 			unfinishedToDos.add(new ToDo(toDoToUnfinish.get()).setIsFinished(false));
 		}
@@ -56,7 +63,6 @@ public class UnfinishCommand extends Command {
 			return new CommandResult(exception.getMessage(), true);
 		}
 
-		return new CommandResult(String.format(Messages.TODO_UNFINISHED, toDoIndices.toString()));
+		return new CommandResult(String.format(Messages.UNFINISHED_COMMAND, toDoIndices.toString()));
 	}
-
 }
