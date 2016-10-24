@@ -70,7 +70,8 @@ public class DeleteCommandTest {
         CommandResult result = logic.execute("delete 1 #troll");
         assertTrue(result.hasError());
 
-        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD), result.getFeedback());
+        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD)
+                + "\n" + Messages.getInvalidCommandFormatMessage("delete").get(), result.getFeedback());
     }
 
     @Test
@@ -78,7 +79,8 @@ public class DeleteCommandTest {
         CommandResult result = logic.execute("delete missing index");
         assertTrue(result.hasError());
 
-        assertEquals(Messages.MISSING_TODO_ITEM_INDEX, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_ITEM_INDEX
+                + "\n" + Messages.getInvalidCommandFormatMessage("delete").get(), result.getFeedback());
     }
 
     @Test
@@ -200,7 +202,8 @@ public class DeleteCommandTest {
         CommandResult result = logic.execute("delete 1 invalid field");
         assertTrue(result.hasError());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD), result.getFeedback() );
+        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD)
+                + "\n" + Messages.getInvalidCommandFormatMessage("delete").get(), result.getFeedback() );
     }
 
 
