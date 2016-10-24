@@ -62,7 +62,12 @@ public class AddCommandTest extends CommanDoGuiTest {
         commandBox.runCommand(CommandBuilder.buildAddCommand(td.toDoItem1));
         assertResultMessage(Messages.TODO_ALREADY_EXISTS);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
-
+        
+        //enddate is earlier than start date
+        commandBox.runCommand("add test from tomorrow to today");
+        assertResultMessage(Messages.TODO_DATERANGE_END_MUST_AFTER_START);
+        assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
+        
         //add missing title
         commandBox.runCommand("add ");
         assertResultMessage(Messages.MISSING_TODO_TITLE);
