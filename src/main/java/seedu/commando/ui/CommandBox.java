@@ -1,7 +1,5 @@
 package seedu.commando.ui;
 
-import com.google.common.eventbus.Subscribe;
-
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
@@ -9,7 +7,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import seedu.commando.commons.core.LogsCenter;
-import seedu.commando.commons.events.logic.IncorrectCommandAttemptedEvent;
 import seedu.commando.commons.util.FxViewUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.logic.commands.*;

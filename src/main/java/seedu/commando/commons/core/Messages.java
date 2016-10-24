@@ -5,9 +5,8 @@ package seedu.commando.commons.core;
  */
 public class Messages {
     public static final String UNKNOWN_COMMAND = "Unknown command: '%1$s'. Input 'help' for instructions on how to use this application.";
-    public static final String UNKNOWN_COMMAND_FOR_HELP = "Unknown topic for help: '%1$s'. " + 
-                                                          "Available Topics: add, edit, delete, find, clear, finish, unfinish, recall, undo, redo," + 
-                                                          " faq, search logic, datetime formats, cheatsheet";
+    public static final String UNKNOWN_COMMAND_FOR_HELP = "Unknown topic for help: '%1$s'.\n" + 
+                                                          "Available Topics: add, edit, delete, find, clear, finish, unfinish, recall, undo, redo, faq, search logic, datetime formats, cheatsheet";
     public static final String MISSING_COMMAND_WORD = "Missing command word.";
     public static final String INVALID_COMMAND_FORMAT = "Invalid format for '%1$s' command!";
     public static final String MISSING_TODO_TITLE = "Missing title for to-do.";
