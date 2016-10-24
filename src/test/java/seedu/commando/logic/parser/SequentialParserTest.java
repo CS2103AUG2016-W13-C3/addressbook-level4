@@ -4,14 +4,18 @@ import com.google.common.collect.Sets;
 import edu.emory.mathcs.backport.java.util.Collections;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.DueDate;
+import seedu.commando.model.todo.Recurrence;
 import seedu.commando.model.todo.Tag;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertFalse;
@@ -19,6 +23,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SequentialParserTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     private SequentialParser sequentialParser = new SequentialParser();
 
     @Before
@@ -213,5 +220,53 @@ public class SequentialParserTest {
         assertEquals(
             "walk by the beach from today to tomorrow", sequentialParser.extractText().orElse("")
         );
+    }
+
+    @Test
+    public void extractIndicesList_valid() throws IllegalValueException {
+        sequentialParser.setInput("2to7");
+        List<Integer> indices = sequentialParser.extractIndicesList();
+        assertEquals("[2, 3, 4, 5, 6, 7]", indices.toString());
+        sequentialParser.setInput("-2-7");
+        indices = sequentialParser.extractIndicesList();
+        assertEquals("[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]", indices.toString());
+        sequentialParser.setInput("-2  -  7");
+        indices = sequentialParser.extractIndicesList();
+        assertEquals("[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]", indices.toString());
+        sequentialParser.setInput("1 2 3 4 5");
+        indices = sequentialParser.extractIndicesList();
+        assertEquals("[1, 2, 3, 4, 5]", indices.toString());
+        sequentialParser.setInput("2to2");
+        indices = sequentialParser.extractIndicesList();
+        assertEquals("[2]", indices.toString());
+    }
+
+    @Test
+    public void extractTrailingDateRange_recurrence() throws IllegalValueException {
+        sequentialParser.setInput("walk nowhere from 28 Oct 2018 1200h to 29 Nov 2018 1300h yearly");
+        Optional<DateRange> dateRange = sequentialParser.extractTrailingDateRange();
+        assertTrue(dateRange.isPresent());
+        assertEquals(
+            LocalDateTime.of(2018, 10, 28, 12, 0),
+            dateRange.get().startDate
+        );
+        assertEquals(
+            LocalDateTime.of(2018, 11, 29, 13, 0),
+            dateRange.get().endDate
+        );
+        assertEquals(
+            Recurrence.Yearly,
+            dateRange.get().recurrence
+        );
+        assertEquals(
+            "walk nowhere", sequentialParser.extractText().orElse("")
+        );
+    }
+
+    @Test
+    public void extractTrailingDateRange_recurrenceInvalid() throws IllegalValueException {
+        sequentialParser.setInput("walk nowhere from 28 Oct 2018 1200h to 29 Nov 2018 1300h daily");
+        thrown.expect(IllegalValueException.class);
+        sequentialParser.extractTrailingDateRange();
     }
 }

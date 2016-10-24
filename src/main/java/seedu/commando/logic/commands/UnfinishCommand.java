@@ -8,50 +8,61 @@ import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.todo.ToDo;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 /**
- * Marks a to-do item as done
+ * Marks a to-do item as not done
  */
 public class UnfinishCommand extends Command {
 
     public static final String COMMAND_WORD = "unfinish";
 
-    public final int toDoIndex;
+	public final List<Integer> toDoIndices;
 
-    public UnfinishCommand(int toDoIndex) {
-        this.toDoIndex = toDoIndex;
+    public UnfinishCommand(List<Integer> toDoIndices) {
+    	this.toDoIndices = toDoIndices;
     }
 
-    @Override
-    public CommandResult execute()
-            throws IllegalValueException, NoModelException {
-        Model model = getModel();
+	@Override
+	public CommandResult execute() throws IllegalValueException, NoModelException {
+		Model model = getModel();
+		int index;
+		ToDoList listToUnfinish = new ToDoList();
+		ToDoList unfinishedToDos = new ToDoList();
+		Iterator<Integer> iterator = toDoIndices.iterator();
 
-        Optional<UiToDo> toDoToUnfinish = model.getUiToDoAtIndex(toDoIndex);
+		// If to-do with the index is valid and finished, mark it as unfinished, else throw error message and return
+		while (iterator.hasNext()) {
+			index = iterator.next();
+			Optional<UiToDo> toDoToUnfinish = model.getUiToDoAtIndex(index);
 
-        if (!toDoToUnfinish.isPresent()) {
-            return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex), true);
-        }
+			if (!toDoToUnfinish.isPresent()) {
+				return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, index), true);
+			}
 
-        if (!toDoToUnfinish.get().isFinished()) {
-            return new CommandResult(String.format(Messages.TODO_ALREADY_ONGOING, toDoToUnfinish.get().getTitle().toString()), true);
-        }
+			if (toDoToUnfinish.get().isEvent()) {
+				return new CommandResult(String.format(Messages.UNFINISH_COMMAND_CANNOT_UNFINISH_EVENT, toDoToUnfinish.get().getTitle().toString()), true);
+			}
 
-        // Mark as unfinished
-        ToDo unfinishedToDo = new ToDo(toDoToUnfinish.get());
-        unfinishedToDo.setIsFinished(false);
+			if (!toDoToUnfinish.get().isFinished()) {
+				return new CommandResult(
+						String.format(Messages.UNFINISH_COMMAND_ALREADY_ONGOING, toDoToUnfinish.get().getTitle().toString()), true);
+			}
+			listToUnfinish.add(toDoToUnfinish.get());
 
-        try {
-            model.changeToDoList(new ToDoListChange(
-                new ToDoList().add(unfinishedToDo),
-                new ToDoList().add(toDoToUnfinish.get())
-            ));
-        } catch (IllegalValueException exception) {
-            return new CommandResult(exception.getMessage(), true);
-        }
+			// Mark as unfinished
+			unfinishedToDos.add(new ToDo(toDoToUnfinish.get()).setIsFinished(false));
+		}
 
-        return new CommandResult(String.format(Messages.TODO_UNFINISHED, toDoToUnfinish.get().getTitle().toString()));
-    }
+		try {
+			model.changeToDoList(
+					new ToDoListChange(unfinishedToDos, listToUnfinish));
+		} catch (IllegalValueException exception) {
+			return new CommandResult(exception.getMessage(), true);
+		}
 
+		return new CommandResult(String.format(Messages.UNFINISHED_COMMAND, toDoIndices.toString()));
+	}
 }

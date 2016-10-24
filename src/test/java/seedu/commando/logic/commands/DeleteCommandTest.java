@@ -108,10 +108,11 @@ public class DeleteCommandTest {
     @Test
     public void execute_delete_tags() throws IllegalValueException {
         logic.execute("add title from 22 Oct 2014 1300h to 23 Oct 2016 1400h #tag1 #tag2");
-
+        logic.execute("recall");
+        
         eventsCollector.reset();
 
-        CommandResult result = logic.execute("delete 1 tags");
+        CommandResult result = logic.execute("delete 1 tag");
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
@@ -130,9 +131,9 @@ public class DeleteCommandTest {
 
         eventsCollector.reset();
 
-        CommandResult result = logic.execute("delete 1 tags");
+        CommandResult result = logic.execute("delete 1 tag");
         assertTrue(result.hasError());
-        assertEquals(Messages.DELETE_COMMAND_NO_TAGS, result.getFeedback());
+        assertEquals(String.format(Messages.DELETE_COMMAND_NO_TAGS, "1"), result.getFeedback());
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
         assertTrue(ifToDoExists(logic,
@@ -149,7 +150,7 @@ public class DeleteCommandTest {
 
         CommandResult result = logic.execute("delete 1 time");
         assertTrue(result.hasError());
-        assertEquals(Messages.DELETE_COMMAND_NO_TIME_CONSTRAINTS, result.getFeedback());
+        assertEquals(String.format(Messages.DELETE_COMMAND_NO_TIME_CONSTRAINTS, "1"), result.getFeedback());
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
         assertTrue(ifToDoExists(logic,
@@ -176,6 +177,7 @@ public class DeleteCommandTest {
     @Test
     public void execute_delete_timeDateRange() throws IllegalValueException {
         logic.execute("add title from 22 Oct 2014 to 23 Oct 2016 #tag1");
+        logic.execute("recall");
 
         eventsCollector.reset();
 
@@ -205,10 +207,11 @@ public class DeleteCommandTest {
     @Test
     public void execute_delete_tagsAndTime() throws IllegalValueException {
         logic.execute("add title from 22 Oct 2014 to 23 Oct 2016 #tag1");
-
+        logic.execute("recall");
+        
         eventsCollector.reset();
 
-        CommandResult result = logic.execute("delete 1 time tags");
+        CommandResult result = logic.execute("delete 1 time tag");
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));

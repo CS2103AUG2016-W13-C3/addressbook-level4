@@ -3,10 +3,7 @@ package seedu.commando.logic.commands;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.parser.SequentialParser;
-import seedu.commando.model.todo.DateRange;
-import seedu.commando.model.todo.DueDate;
-import seedu.commando.model.todo.Tag;
-import seedu.commando.model.todo.Title;
+import seedu.commando.model.todo.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,15 +17,17 @@ import java.util.stream.Collectors;
  */
 public class CommandFactory {
     public static final String KEYWORD_DELETE_TIME = "time";
-    public static final String KEYWORD_DELETE_TAGS = "tags";
+    public static final String KEYWORD_DELETE_TAG = "tag";
 
     private SequentialParser sequentialParser;
+
     {
         sequentialParser = new SequentialParser();
     }
 
     /**
      * Interprets an input string as a command, initializes it, and returns it
+     *
      * @return instance of a command based on {@param parsable}
      * @throws IllegalValueException if the command is invalid
      */
@@ -66,11 +65,11 @@ public class CommandFactory {
             case RedoCommand.COMMAND_WORD:
                 return buildRedoCommand();
             case StoreCommand.COMMAND_WORD:
-            	return buildStoreCommand();
+                return buildStoreCommand();
             case ExportCommand.COMMAND_WORD:
-            	return buildExportCommand();
+                return buildExportCommand();
             case ImportCommand.COMMAND_WORD:
-            	return buildImportCommand();
+                return buildImportCommand();
             case RecallCommand.COMMAND_WORD:
                 return buildRecallCommand();
             default:
@@ -103,34 +102,34 @@ public class CommandFactory {
     }
 
     private Command buildImportCommand() throws IllegalValueException {
-    	// Extract the file path
-    	String path = sequentialParser.extractText()
+        // Extract the file path
+        String path = sequentialParser.extractText()
             .orElseThrow(
                 () -> new IllegalValueException(Messages.MISSING_IMPORT_PATH)
             );
 
-		return new ImportCommand(path);
-	}
+        return new ImportCommand(path);
+    }
 
-	private Command buildExportCommand() throws IllegalValueException {
-    	// Extract the file path
+    private Command buildExportCommand() throws IllegalValueException {
+        // Extract the file path
         String path = sequentialParser.extractText()
             .orElseThrow(
                 () -> new IllegalValueException(Messages.MISSING_EXPORT_PATH)
             );
 
         return new ExportCommand(path);
-	}
+    }
 
-	private Command buildStoreCommand() throws IllegalValueException {
-    	// Extract the file path
+    private Command buildStoreCommand() throws IllegalValueException {
+        // Extract the file path
         String path = sequentialParser.extractText()
             .orElseThrow(
                 () -> new IllegalValueException(Messages.MISSING_STORE_PATH)
             );
 
-    	return new StoreCommand(path);
-	}
+        return new StoreCommand(path);
+    }
 
     private Command buildAddCommand() throws IllegalValueException {
         // Extract tags
@@ -163,57 +162,59 @@ public class CommandFactory {
     }
 
     private Command buildDeleteCommand() throws IllegalValueException {
-        int index = sequentialParser.extractInteger().orElseThrow(
-            () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
-        );
+    	List<Integer> indices = sequentialParser.extractIndicesList();
+    	if (indices.isEmpty()){
+    		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
+    	}
 
-        DeleteCommand deleteCommand = new DeleteCommand(index);
+        DeleteCommand deleteCommand = new DeleteCommand(indices);
 
         // check for fields
         List<String> words = sequentialParser.extractWords();
 
         int fieldsCount = 0;
-        if (words.contains(KEYWORD_DELETE_TAGS)) {
-            deleteCommand.ifDeleteTags = true;
+
+        if (words.contains(KEYWORD_DELETE_TAG)) {
+            deleteCommand.ifDeleteTag = true;
             fieldsCount ++;
         }
 
         if (words.contains(KEYWORD_DELETE_TIME)) {
             deleteCommand.ifDeleteTime = true;
-            fieldsCount ++;
+            fieldsCount++;
         }
 
         // If there were extra words besides the fields, invalid command format
         if (fieldsCount != words.size()) {
-           throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD));
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD));
         }
 
         return deleteCommand;
     }
-    
+
     private Command buildFinishCommand() throws IllegalValueException {
-        int index = sequentialParser.extractInteger().orElseThrow(
-            () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
-        );
-
+    	List<Integer> indices = sequentialParser.extractIndicesList();
+    	if (indices.isEmpty()){
+    		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
+    	}
         if (!sequentialParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
 
         }
 
-        return new FinishCommand(index);
+        return new FinishCommand(indices);
     }
-    
-    private Command buildUnfinishCommand() throws IllegalValueException {
-        int index = sequentialParser.extractInteger().orElseThrow(
-            () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
-        );
 
+    private Command buildUnfinishCommand() throws IllegalValueException {
+    	List<Integer> indices = sequentialParser.extractIndicesList();
+    	if (indices.isEmpty()){
+    		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
+    	}
         if (!sequentialParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
         }
 
-        return new UnfinishCommand(index);
+        return new UnfinishCommand(indices);
     }
 
     private Command buildFindCommand() {
@@ -282,7 +283,7 @@ public class CommandFactory {
 
         return command;
     }
-    
+
     private Command buildUndoCommand() throws IllegalValueException {
         if (!sequentialParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, UndoCommand.COMMAND_WORD));

@@ -18,6 +18,16 @@ public class ToDoBuilder {
         toDo = new ToDo(new Title(title));
     }
 
+    public ToDoBuilder withDateRange(LocalDateTime startDate, LocalDateTime endDate,
+                                     Recurrence recurrence)
+        throws IllegalValueException {
+        toDo.setDateRange(new DateRange(
+            startDate, endDate, recurrence
+        ));
+
+        return this;
+    }
+
     public ToDoBuilder withDateRange(LocalDateTime startDate, LocalDateTime endDate)
         throws IllegalValueException {
         toDo.setDateRange(new DateRange(
@@ -54,12 +64,6 @@ public class ToDoBuilder {
 
     public ToDoBuilder created(LocalDateTime date) {
         toDo.setDateCreated(date);
-
-        return this;
-    }
-
-    public ToDoBuilder withRecurrence(Recurrence recurrence) {
-        toDo.setRecurrence(recurrence);
 
         return this;
     }

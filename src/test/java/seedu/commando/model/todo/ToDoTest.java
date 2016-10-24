@@ -29,7 +29,6 @@ public class ToDoTest {
         ToDo toDo = new ToDo(new Title("title"));
         assertEquals(toDo.getTitle(), new Title("title"));
         assertTrue(toDo.getDateCreated().toLocalDate().equals(LocalDate.now()));
-        assertEquals(Recurrence.None, toDo.getRecurrence());
     }
 
     @Test
@@ -40,7 +39,8 @@ public class ToDoTest {
 
         toDo.setDateRange(new DateRange(
             LocalDateTime.of(2001, 10, 8, 12, 59),
-            LocalDateTime.of(2002, 10, 8, 11, 59)
+            LocalDateTime.of(2001, 10, 8, 15, 59),
+            Recurrence.Weekly
         ));
         toDo.setDueDate(new DueDate(
             LocalDateTime.of(2001, 10, 8, 12, 59)
@@ -78,12 +78,12 @@ public class ToDoTest {
         assertFalse(toDo.getDateRange().isPresent());
         toDo.setDateRange(new DateRange(
             LocalDateTime.of(2001, 10, 8, 12, 59),
-            LocalDateTime.of(2002, 10, 8, 11, 59)
+            LocalDateTime.of(2001, 10, 8, 13, 59)
         ));
         assertTrue(toDo.getDateRange().isPresent());
         assertEquals(toDo.getDateRange().get(), new DateRange(
             LocalDateTime.of(2001, 10, 8, 12, 59),
-            LocalDateTime.of(2002, 10, 8, 11, 59)
+            LocalDateTime.of(2001, 10, 8, 13, 59)
         ));
     }
 
@@ -114,12 +114,6 @@ public class ToDoTest {
     }
 
     @Test
-    public void setRecurrence() throws IllegalValueException {
-        toDo.setRecurrence(Recurrence.Monthly);
-        assertEquals(Recurrence.Monthly, toDo.getRecurrence());
-    }
-
-    @Test
     public void getObservableValue_allFields() throws IllegalValueException {
         List<String> changes = new LinkedList<>();
         toDo.getObservableValue().addListener((observable, oldValue, newValue) -> {
@@ -129,30 +123,30 @@ public class ToDoTest {
         toDo.setTitle(new Title("new title"));
         assertTrue(changes.size() == 1);
 
+        toDo.setIsFinished(true);
+        assertTrue(changes.size() == 2);
+
         toDo.setDateRange(new DateRange(
             LocalDateTime.of(2001, 10, 8, 12, 59),
             LocalDateTime.of(2002, 10, 8, 11, 59)
         ));
-        assertTrue(changes.size() == 2);
+        assertTrue(changes.size() == 3);
 
         toDo.setDueDate(new DueDate(
             LocalDateTime.of(2001, 10, 8, 12, 59)
         ));
-        assertTrue(changes.size() == 3);
-
-        toDo.setTags(Sets.newHashSet(new Tag("tag1"), new Tag("tag2")));
         assertTrue(changes.size() == 4);
 
-        toDo.setIsFinished(true);
+        toDo.setTags(Sets.newHashSet(new Tag("tag1"), new Tag("tag2")));
         assertTrue(changes.size() == 5);
 
         toDo.setDateCreated(LocalDateTime.of(2011, 11, 11, 12, 12));
         assertTrue(changes.size() == 6);
 
-        toDo.setDateFinished(LocalDateTime.now().plusYears(1));
+        toDo.clearTimeConstraint(); // with date range, date finished won't change
         assertTrue(changes.size() == 7);
 
-        toDo.setRecurrence(Recurrence.Yearly);
+        toDo.setDateFinished(LocalDateTime.now().plusYears(1));
         assertTrue(changes.size() == 8);
     }
 }

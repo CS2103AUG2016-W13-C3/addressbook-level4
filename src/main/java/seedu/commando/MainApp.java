@@ -29,9 +29,10 @@ import java.util.logging.Logger;
  * The main entry point to the application.
  */
 public class MainApp extends Application {
-    private static final Logger logger = LogsCenter.getLogger(MainApp.class);
+    protected static final Logger logger = LogsCenter.getLogger(MainApp.class);
+    private static final Version VERSION = new Version(1, 0, 0, true);
 
-    public static final Version VERSION = new Version(1, 0, 0, true);
+    protected String userPrefsFilePath = Config.UserPrefsFilePath;
 
     protected Ui ui;
     protected Logic logic;
@@ -46,8 +47,8 @@ public class MainApp extends Application {
         logger.info("=============================[ Initializing " + Config.ApplicationTitle + " ]===========================");
         super.init();
 
-        logger.info("Using prefs file: " + Config.DefaultToDoListFilePath);
-        storage = new StorageManager(Config.DefaultToDoListFilePath, Config.UserPrefsFilePath);
+        logger.info("Using prefs file: " + userPrefsFilePath);
+        storage = new StorageManager(Config.DefaultToDoListFilePath, userPrefsFilePath);
 
         userPrefs = initPrefs(storage);
 
@@ -62,9 +63,9 @@ public class MainApp extends Application {
         initEventsCenter();
     }
 
-    private Model initModelManager(Storage storage, UserPrefs userPrefs) {
+    protected Model initModelManager(Storage storage, UserPrefs userPrefs) {
         // Set to-do list storage file path to user pref's
-        logger.info("Using to-do list file: " + userPrefs.getToDoListFilePath());
+        logger.info("Using to-do list file: " + userPrefs.getToDoListFilePath().getValue());
         storage.setToDoListFilePath(userPrefs.getToDoListFilePath().getValue());
 
         ReadOnlyToDoList initialToDoList = new ToDoList();
@@ -85,7 +86,7 @@ public class MainApp extends Application {
         return new ModelManager(initialToDoList, userPrefs);
     }
 
-    private void initLogging() {
+    protected void initLogging() {
         LogsCenter.init(Config.LogLevel);
     }
     
@@ -114,7 +115,7 @@ public class MainApp extends Application {
         return initializedPrefs;
     }
 
-    private void initEventsCenter() {
+    protected void initEventsCenter() {
         EventsCenter.getInstance().registerHandler(this);
     }
 
@@ -124,15 +125,19 @@ public class MainApp extends Application {
         ui.start(primaryStage);
     }
 
-    @Override
-    public void stop() {
-        logger.info("============================ [ Stopping " + Config.ApplicationTitle + " ] =============================");
-        ui.stop();
+    public void saveUserPrefs() {
         try {
             storage.saveUserPrefs(userPrefs);
         } catch (IOException e) {
             logger.severe("Failed to save preferences " + StringUtil.getDetails(e));
         }
+    }
+
+    @Override
+    public void stop() {
+        logger.info("============================ [ Stopping " + Config.ApplicationTitle + " ] =============================");
+        ui.stop();
+        saveUserPrefs();
         Platform.exit();
         System.exit(0);
     }

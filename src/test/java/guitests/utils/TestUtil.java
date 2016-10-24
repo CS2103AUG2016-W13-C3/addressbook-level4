@@ -2,8 +2,7 @@ package guitests.utils;
 
 import com.google.common.io.Files;
 
-import guitests.guihandles.EventCardHandle;
-import guitests.guihandles.TaskCardHandle;
+import guitests.CommanDoGuiTest;
 import guitests.guihandles.ToDoCardHandle;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -111,7 +110,7 @@ public class TestUtil {
     }
 
     public static void createDataFileWithSampleData(String filePath) {
-        createDataFileWithData(generateSampleStorageAddressBook(), filePath);
+        createDataFileWithData(generateSampleStorageToDoList(), filePath);
     }
 
     public static <T> void createDataFileWithData(T data, String filePath) {
@@ -125,15 +124,15 @@ public class TestUtil {
     }
 
     public static void main(String... s) {
-        createDataFileWithSampleData(TestApp.SAVE_LOCATION_FOR_TESTING);
+        createDataFileWithSampleData(CommanDoGuiTest.SAVE_LOCATION_FOR_TESTING);
     }
 
-    public static ToDoList generateEmptyAddressBook() {
+    public static ToDoList generateEmptyToDoList() {
         return new ToDoList();
     }
 
-    public static XmlSerializableToDoList generateSampleStorageAddressBook() {
-        return new XmlSerializableToDoList(generateEmptyAddressBook());
+    public static XmlSerializableToDoList generateSampleStorageToDoList() {
+        return new XmlSerializableToDoList(generateEmptyToDoList());
     }
 
     /**
@@ -307,9 +306,10 @@ public class TestUtil {
      * @param todosToAdd The todos that are to be appended behind the original array.
      * @return The modified array of todos.
      */
-    public static ToDo[] addToDosToList(final ToDo[] todos, ToDo... todosToAdd) {
+    public static ToDo[] addToDosToList(final ToDo[] todos, int idx, ToDo... todosToAdd) {
         List<ToDo> listOfToDos = asList(todos);
-        listOfToDos.addAll(asList(todosToAdd));
+        List<ToDo> todoitem = asList(todosToAdd);
+        listOfToDos.addAll(idx, todoitem);
         return listOfToDos.toArray(new ToDo[listOfToDos.size()]);
     }
 

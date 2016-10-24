@@ -26,4 +26,5 @@ public interface UserPrefsStorage {
      */
     void saveUserPrefs(UserPrefs userPrefs) throws IOException;
 
+    void setUserPrefsFilePath(String filePath);
 }
