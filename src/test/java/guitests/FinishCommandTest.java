@@ -53,7 +53,6 @@ public class FinishCommandTest extends CommanDoGuiTest {
         TodosToFinish.setIsFinished(true);
         ToDo[] expectedRemainder = TestUtil.removeToDoFromList(currentList, targetIndex);
         expectedRemainder = TestUtil.addToDosToList(expectedRemainder, expectedRemainder.length, TodosToFinish);
-        
         commandBox.runCommand("finish " + targetIndex);
 
         //confirm the list now contains all previous Todos with one marked as done
@@ -65,25 +64,25 @@ public class FinishCommandTest extends CommanDoGuiTest {
     }
     
     private void assertFinishConsectiveSuccess(int startIndex, int endIndex, ToDo[] currentList) {
-        ToDo TodosToFinish = null;
         ToDo[] expectedRemainder = currentList;
-        String range = "[";
+        String finishedIndices = "[";
+        
+        //setfinish for all target todos and reinsert them into the list
         for (int i = startIndex; i<= endIndex; i++){
-            TodosToFinish = expectedRemainder[startIndex-1]; //-1 because array uses zero indexing
+            ToDo TodosToFinish = expectedRemainder[startIndex-1]; //-1 because array uses zero indexing
             TodosToFinish.setIsFinished(true);
             expectedRemainder = TestUtil.removeToDoFromList(expectedRemainder, startIndex);
             expectedRemainder = TestUtil.addToDosToList(expectedRemainder, expectedRemainder.length, TodosToFinish);
-            range += i + ", ";
+            finishedIndices += i + ", ";
         }
         commandBox.runCommand("finish " + startIndex + " to " + endIndex);
         
         //confirm the list now contains all previous Todoss except the deleted Todos
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedRemainder));
-
-        range = range.substring(0, range.length()-2) + "]";
+        finishedIndices = finishedIndices.substring(0, finishedIndices.length()-2) + "]";
         
         //confirm the result message is correct
-        assertResultMessage(String.format(Messages.FINISH_COMMAND, range));
+        assertResultMessage(String.format(Messages.FINISH_COMMAND, finishedIndices));
         
     }
 }
