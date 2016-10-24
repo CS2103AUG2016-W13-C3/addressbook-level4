@@ -72,6 +72,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         assertResultMessage(String.format(Messages.TODO_EDITED, "[1]"));
     }
     
+    
     @Test
     public void delete_oneField_deadline() {
         ToDo[] currentList = td.getTypicalToDos();
@@ -90,14 +91,14 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         ToDo[] currentList = td.getTypicalToDos();
         int targetIndex = currentList.length + 1;
         commandBox.runCommand("delete " + targetIndex);
-        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, "[" + targetIndex + "]"));
+        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex ));
         targetIndex = 0;
         commandBox.runCommand("delete " + targetIndex);
-        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, "[" + targetIndex + "]"));
+        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex ));
 
         targetIndex = -1;
         commandBox.runCommand("delete " + targetIndex);
-        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, "[" + targetIndex + "]"));
+        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex ));
         // invalid params or empty index
         commandBox.runCommand("delete abc 1");
         assertResultMessage(Messages.MISSING_TODO_ITEM_INDEX);

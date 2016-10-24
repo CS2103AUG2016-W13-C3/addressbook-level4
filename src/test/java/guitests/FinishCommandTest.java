@@ -22,22 +22,16 @@ public class FinishCommandTest extends CommanDoGuiTest {
         //finish invalid index
         targetIndex = 7;
         commandBox.runCommand("finish " + targetIndex);
-        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, "[" + targetIndex + "]"));
+        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex ));
         
         targetIndex = 0;
         commandBox.runCommand("finish " + targetIndex);
-        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, "[" + targetIndex + "]"));
+        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex ));
         
         //finish event
         targetIndex = 1;
         commandBox.runCommand("finish " + targetIndex);
-        assertResultMessage(String.format(Messages.FINISH_COMMAND_CANNOT_FINISH_EVENT, "[" + targetIndex + "]"));
-        
-        //finish finished task
-        targetIndex = 5;
-        commandBox.runCommand("finish " + targetIndex);
-        assertResultMessage(String.format(Messages.FINISH_COMMAND_ALREADY_FINISHED, "[" + targetIndex + "]"));
-        
+        assertResultMessage(String.format(Messages.FINISH_COMMAND_CANNOT_FINISH_EVENT, currentList[targetIndex-1].getTitle().toString()));
         
     }
     
@@ -60,6 +54,11 @@ public class FinishCommandTest extends CommanDoGuiTest {
 
         //confirm the result message is correct
         assertResultMessage(String.format(Messages.FINISH_COMMAND, "[" + targetIndex + "]"));
+        
+        //finish finished task
+        targetIndex = 5;
+        commandBox.runCommand("finish " + targetIndex);
+        assertResultMessage(String.format(Messages.FINISH_COMMAND_ALREADY_FINISHED, expectedRemainder[targetIndex-1].getTitle().toString()));
         
     }
     
@@ -84,5 +83,6 @@ public class FinishCommandTest extends CommanDoGuiTest {
         //confirm the result message is correct
         assertResultMessage(String.format(Messages.FINISH_COMMAND, finishedIndices));
         
+
     }
 }
