@@ -2,7 +2,6 @@ package seedu.commando.ui;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -27,16 +26,19 @@ public class ToDoCardStyleManager {
     public static String deactivateHoverStateIndexCSS = "-fx-background-color: derive(#1d1d1d, 60%);";
     
     // Formatter for displaying the dates for dueLabel in TaskCard, startLabel and endLabel for EventCard
-    private static DateTimeFormatter formatDateTimeNoYear = DateTimeFormatter.ofPattern("EEE d MMM HH:mm");
-    private static DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("EEE d MMM yyyy HH:mm");
     private static DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("HH:mm");
-    private static DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("EEE d MMM");
+    private static DateTimeFormatter formatDay = DateTimeFormatter.ofPattern("EEE d");
+    private static DateTimeFormatter formatMonth = DateTimeFormatter.ofPattern("MMM");
     
     // In case I want to change them for some reason
-    private static String to = "to";
-    private static String today = "tdy";
-    private static String tomorrow = "tmr";
-    private static String yesterday = "ytd";
+    private static String keywordTo = "to";
+    private static String keywordToday = "Today";
+    private static String keywordTomorrow = "Tomorrow";
+    private static String keywordYesterday = "Yesterday";
+    
+    private static LocalDate todayDate = LocalDate.now();
+    private static LocalDate tomorrowDate = todayDate.plusDays(1);
+    private static LocalDate yesterdayDate = todayDate.minusDays(1);
     
     
     /**
@@ -56,10 +58,11 @@ public class ToDoCardStyleManager {
         
         boolean sameYear = false;
         boolean sameMonth = false;
+        boolean sameDay = false;
         
         if (startDateTime.getYear() == endDateTime.getYear()) {
             // If start year is equals to end year
-            if (endDateTime.getYear() != LocalDateTime.now().getYear()) {
+            if (endDateTime.getYear() != todayDate.getYear()) {
                 // If both start year and end year is not this year
                 end += " " + endDateTime.getYear();
                 // Else, don't display any year
@@ -72,49 +75,59 @@ public class ToDoCardStyleManager {
             start += " " + startDateTime.getYear();
         }
         
-        LocalDate startDate = startDateTime.toLocalDate();
-        LocalDate endDate = endDateTime.toLocalDate();
-
-        LocalDate todayDate = LocalDate.now();
-        LocalDate tomorrowDate = todayDate.plusDays(1);
-        LocalDate yesterdayDate = todayDate.minusDays(1);
-        
-        // This means that the event is a day event (happening only within one day)
-        if (startDate.equals(endDate)) {
-            if (startDate.equals(yesterdayDate)) {
-                end = formatTime.format(endDateTime) + " " + yesterday + end;
-            } else if (startDate.equals(todayDate)) {
-                end = formatTime.format(endDateTime) + " " + today + end;
-            } else if (startDate.equals(tomorrowDate)) {
-                end = formatTime.format(endDateTime) + " " + tomorrow + end;
-            } else {
-                end = formatDateTime.format(endDateTime) + end;
-            }
-            start = formatTime.format(startDateTime) + start;
-            return start + " " + to + " " + end;
-        }
-
-        // If same year and not same month
-        if (sameYear && startDateTime.getMonthValue() != endDateTime.getMonthValue()) {
+        if (sameYear && startDateTime.getMonthValue() == endDateTime.getMonthValue()) {
+            // If same year and same month
             // Display one month
-            end = formatDate.format(endDateTime) + end;
+            end = " " + getMonth(endDateTime) + end;
             sameMonth = true;
         } else {
             // Display both months
-            start = formatDate.format(startDateTime) + start;
-            end = formatDate.format(endDateTime) + end;
+            start = " " + getMonth(startDateTime) + start;
+            end = " " + getMonth(endDateTime) + end;
+        }
+        
+        if (sameYear && sameMonth && startDateTime.getDayOfMonth() == endDateTime.getDayOfMonth()) {
+            // If same year and same month and same day
+            // Display one month
+            end = " " + getDay(endDateTime) + end;
+            sameDay = true;
+        } else {
+            // Display both months
+            start = " " + getDay(startDateTime) + start;
+            end = " " + getDay(endDateTime) + end;
         }
 
         // If exactly the same date, start will be "", hence there is a need to get rid 
         // of the extra space
-        start = formatTime.format(startDateTime) + (start.isEmpty() ? "" : " " + start);
-        end = formatTime.format(endDateTime) + (start.isEmpty() ? "" : " " + end);
+        start = getTime(startDateTime) + start;
+        end = getTime(endDateTime) + end;
         
-        if (!sameYear || !sameMonth) {
-            return start + " " + to + "\n" + end;
+        if (!sameYear || !sameMonth || !sameDay) {
+            return start + " " + keywordTo + "\n" + end;
         } else {
-            return start + " " + to + " " + end;
+            return start + " " + keywordTo + " " + end;
         }
+    }
+    
+    private static String getDay(LocalDateTime ldt) {
+        final LocalDate ld = ldt.toLocalDate();
+        if (ld.isEqual(yesterdayDate)) {
+            return keywordYesterday;
+        } else if (ld.isEqual(todayDate)) {
+            return keywordToday;
+        } else if (ld.isEqual(tomorrowDate)) {
+            return keywordTomorrow;
+        } else {
+            return formatDay.format(ldt);
+        }
+    }
+    
+    private static String getMonth(LocalDateTime ldt) {
+        return formatMonth.format(ldt);
+    }
+    
+    private static String getTime(LocalDateTime ldt) {
+        return formatTime.format(ldt);
     }
     
     /**
@@ -125,20 +138,14 @@ public class ToDoCardStyleManager {
      * I.e. Dates that are tomrorow show up as "Tmr"
      */
     protected static String prettifyDateTime(LocalDateTime dateTime) {
-        final LocalDate date = dateTime.toLocalDate();
-        final LocalTime time = dateTime.toLocalTime();
+        String output = getTime(dateTime) + " " + 
+                        getDay(dateTime) + " " + 
+                        getMonth(dateTime);
         
-        if (date.equals(LocalDate.now())) {
-            return "Today " + formatTime.format(time);
-        } else if (date.equals(LocalDate.now().plusDays(1))) {
-            return "Tmr " + formatTime.format(time);
+        if (dateTime.getYear() != todayDate.getYear()) {
+            output += " " + dateTime.getYear();
         }
-        
-        if (date.getYear() == LocalDateTime.now().getYear()) {
-            return formatDateTimeNoYear.format(dateTime);
-        } else {
-            return formatDateTime.format(dateTime);
-        }
+        return output;
     }
     
     /**

@@ -26,7 +26,7 @@ public class ExportCommand extends Command {
 	 * Asserts that {@code model} are non-null
 	 */
 	@Override
-	public CommandResult execute() throws NoModelException, IllegalValueException {
+	public CommandResult execute() throws NoModelException {
 		Model model = getModel();
 
 		File file = new File(path);

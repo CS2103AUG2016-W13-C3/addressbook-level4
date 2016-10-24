@@ -26,7 +26,7 @@ public class FinishCommand extends Command {
 	}
 
 	@Override
-	public CommandResult execute() throws IllegalValueException, NoModelException {
+	public CommandResult execute() throws NoModelException {
 		Model model = getModel();
 		int index;
 		ToDoList listToFinish = new ToDoList();
@@ -50,15 +50,19 @@ public class FinishCommand extends Command {
 				return new CommandResult(
 						String.format(Messages.FINISH_COMMAND_ALREADY_FINISHED, toDoToFinish.get().getTitle().toString()), true);
 			}
-			listToFinish.add(toDoToFinish.get());
 
-            // Mark as finished
-			finishedToDos.add(new ToDo(toDoToFinish.get()).setIsFinished(true));
+            try {
+                listToFinish.add(toDoToFinish.get());
+
+                // Mark as finished
+                finishedToDos.add(new ToDo(toDoToFinish.get()).setIsFinished(true));
+            } catch (IllegalValueException exception) {
+                return new CommandResult(exception.getMessage(), true);
+            }
 		}
 
 		try {
-			model.changeToDoList(
-					new ToDoListChange(finishedToDos, listToFinish));
+			model.changeToDoList(new ToDoListChange(finishedToDos, listToFinish));
 		} catch (IllegalValueException exception) {
 			return new CommandResult(exception.getMessage(), true);
 		}

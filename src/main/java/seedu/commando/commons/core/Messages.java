@@ -1,13 +1,17 @@
 package seedu.commando.commons.core;
 
+import seedu.commando.logic.commands.RecallCommand;
+import seedu.commando.logic.commands.StoreCommand;
+
+import java.util.Optional;
+
 /**
  * Container for user visible messages.
  */
 public class Messages {
     public static final String UNKNOWN_COMMAND = "Unknown command: '%1$s'. Input 'help' for instructions on how to use this application.";
-    public static final String UNKNOWN_COMMAND_FOR_HELP = "Unknown topic for help: '%1$s'. " + 
-                                                          "Available Topics: add, edit, delete, find, clear, finish, unfinish, recall, undo, redo," + 
-                                                          " faq, search logic, datetime formats, cheatsheet";
+    public static final String UNKNOWN_COMMAND_FOR_HELP = "Unknown topic for help: '%1$s'.\n" + 
+                                                          "Available Topics: add, edit, delete, find, clear, finish, unfinish, recall, undo, redo, faq, search logic, datetime formats, cheatsheet";
     public static final String MISSING_COMMAND_WORD = "Missing command word.";
     public static final String INVALID_COMMAND_FORMAT = "Invalid format for '%1$s' command!";
     public static final String MISSING_TODO_TITLE = "Missing title for to-do.";
@@ -60,4 +64,20 @@ public class Messages {
     public static final String TODO_ALREADY_EXISTS = "To-do already exists!";
     public static final String DELETE_COMMAND_NO_TAGS = "To-do with index '%1$s' has no tags to delete!";
     public static final String DELETE_COMMAND_NO_TIME_CONSTRAINTS = "To-do with index '%1$s' has no time constraints to delete!";
+
+    public static final String STORE_COMMAND_FORMAT = "Sample command: store ../../Dropbox/work/todolist.xml.";
+
+    /**
+     * Returns an additional invalid command format message to be appended
+     * for a {@param commandWord}.
+     */
+    public static Optional<String> getInvalidCommandFormatMessage(String commandWord) {
+        switch (commandWord) {
+            case StoreCommand.COMMAND_WORD:
+                return Optional.of(STORE_COMMAND_FORMAT);
+            default: break;
+        }
+
+        return Optional.empty();
+    }
 }

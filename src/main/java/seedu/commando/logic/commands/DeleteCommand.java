@@ -30,17 +30,16 @@ public class DeleteCommand extends Command {
 	}
 
     @Override
-    public CommandResult execute()
-        throws IllegalValueException, NoModelException {
+    public CommandResult execute() throws NoModelException {
         Model model = getModel();
         int index;
 		ToDoList listToDelete = new ToDoList();
 		ToDoList listToEdit = new ToDoList();
 		
 		Iterator<Integer> iterator = toDoIndices.iterator();
-		//If to-do with the index is valid, add it to the listToDelete
-		//If delete any fields is required, add it to the listToEdit,too.
-		//else throw error message and return
+		// If to-do with the index is valid, add it to the listToDelete
+		// If delete any fields is required, add it to the listToEdit,too.
+		// else throw error message and return
 		while (iterator.hasNext()) {
 			index = iterator.next();
 			Optional<UiToDo> toDoToDelete = model.getUiToDoAtIndex(index);
@@ -48,10 +47,14 @@ public class DeleteCommand extends Command {
 				return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, index), true);
 			}
 			ToDo toDoToEdit = new ToDo(toDoToDelete.get());
-			
-			listToDelete.add(toDoToDelete.get());
 
-			if (ifDeleteTag) {
+            try {
+                listToDelete.add(toDoToDelete.get());
+            } catch (IllegalValueException exception) {
+                return new CommandResult(exception.getMessage(), true);
+            }
+
+            if (ifDeleteTag) {
 				if (toDoToEdit.getTags().size() > 0) {
 					toDoToEdit.setTags(Collections.emptySet());
 				} else {
@@ -65,8 +68,12 @@ public class DeleteCommand extends Command {
 					return new CommandResult(String.format(Messages.DELETE_COMMAND_NO_TIME_CONSTRAINTS, index), true);
 				}
 			}
-			listToEdit.add(toDoToEdit);
-		}
+            try {
+                listToEdit.add(toDoToEdit);
+            } catch (IllegalValueException exception) {
+                return new CommandResult(exception.getMessage(), true);
+            }
+        }
 
         // if no deletion of fields, delete the whole to-do
         if (!ifDeleteTag && !ifDeleteTime) {
