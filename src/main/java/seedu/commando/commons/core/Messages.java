@@ -1,5 +1,10 @@
 package seedu.commando.commons.core;
 
+import seedu.commando.logic.commands.RecallCommand;
+import seedu.commando.logic.commands.StoreCommand;
+
+import java.util.Optional;
+
 /**
  * Container for user visible messages.
  */
@@ -60,4 +65,20 @@ public class Messages {
     public static final String TODO_ALREADY_EXISTS = "To-do already exists!";
     public static final String DELETE_COMMAND_NO_TAGS = "To-do with index '%1$s' has no tags to delete!";
     public static final String DELETE_COMMAND_NO_TIME_CONSTRAINTS = "To-do with index '%1$s' has no time constraints to delete!";
+
+    public static final String STORE_COMMAND_FORMAT = "Sample command: store ../../Dropbox/work/todolist.xml.";
+
+    /**
+     * Returns an additional invalid command format message to be appended
+     * for a {@param commandWord}.
+     */
+    public static Optional<String> getInvalidCommandFormatMessage(String commandWord) {
+        switch (commandWord) {
+            case StoreCommand.COMMAND_WORD:
+                return Optional.of(STORE_COMMAND_FORMAT);
+            default: break;
+        }
+
+        return Optional.empty();
+    }
 }

@@ -26,7 +26,7 @@ public class UnfinishCommand extends Command {
     }
 
 	@Override
-	public CommandResult execute() throws IllegalValueException, NoModelException {
+	public CommandResult execute() throws NoModelException {
 		Model model = getModel();
 		int index;
 		ToDoList listToUnfinish = new ToDoList();
@@ -48,12 +48,17 @@ public class UnfinishCommand extends Command {
 
 			if (!toDoToUnfinish.get().isFinished()) {
 				return new CommandResult(
-						String.format(Messages.UNFINISH_COMMAND_ALREADY_ONGOING, toDoToUnfinish.get().getTitle().toString()), true);
+						String.format(Messages.UNFINISH_COMMAND_ALREADY_ONGOING, toDoToUnfinish.get().getTitle().toString()), true
+				);
 			}
-			listToUnfinish.add(toDoToUnfinish.get());
+            try {
+                listToUnfinish.add(toDoToUnfinish.get());
 
-			// Mark as unfinished
-			unfinishedToDos.add(new ToDo(toDoToUnfinish.get()).setIsFinished(false));
+                // Mark as unfinished
+                unfinishedToDos.add(new ToDo(toDoToUnfinish.get()).setIsFinished(false));
+            } catch (IllegalValueException e) {
+                return new CommandResult(e.getMessage(), true);
+            }
 		}
 
 		try {

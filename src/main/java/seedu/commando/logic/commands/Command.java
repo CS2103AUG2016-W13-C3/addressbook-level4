@@ -59,6 +59,5 @@ public abstract class Command {
      * Executes the command
      * @return result of the command
      */
-    public abstract CommandResult execute()
-        throws IllegalValueException, NoModelException, NoEventsCenterException;
+    public abstract CommandResult execute() throws NoModelException, NoEventsCenterException;
 }

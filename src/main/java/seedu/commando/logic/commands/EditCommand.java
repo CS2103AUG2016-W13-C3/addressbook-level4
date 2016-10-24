@@ -29,8 +29,7 @@ public class EditCommand extends Command {
         this.toDoIndex = toDoIndex;
     }
 
-    public CommandResult execute()
-        throws IllegalValueException, NoModelException {
+    public CommandResult execute() throws NoModelException {
         Model model = getModel();
 
         Optional<UiToDo> toDoToEdit = model.getUiToDoAtIndex(toDoIndex);
@@ -66,13 +65,17 @@ public class EditCommand extends Command {
 
         // Ensure to-do doesn't have both duedate and daterange
         if (newToDo.getDateRange().isPresent() && newToDo.getDueDate().isPresent()) {
-            throw new IllegalValueException(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE);
+            return new CommandResult(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, true);
         }
 
-        model.changeToDoList(new ToDoListChange(
-            new ToDoList().add(newToDo),
-            new ToDoList().add(toDoToEdit.get())
-        ));
+        try {
+            model.changeToDoList(new ToDoListChange(
+                new ToDoList().add(newToDo),
+                new ToDoList().add(toDoToEdit.get())
+            ));
+        } catch (IllegalValueException exception) {
+            return new CommandResult(exception.getMessage(), true);
+        }
 
         return new CommandResult(String.format(Messages.TODO_EDITED, newToDo.getTitle().toString()));
     }
