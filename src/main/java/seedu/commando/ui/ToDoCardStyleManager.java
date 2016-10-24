@@ -94,8 +94,8 @@ public class ToDoCardStyleManager {
             return start + " " + to + " " + end;
         }
 
-        // If not same month
-        if (sameYear && startDateTime.getMonthValue() == endDateTime.getMonthValue()) {
+        // If same year and not same month
+        if (sameYear && startDateTime.getMonthValue() != endDateTime.getMonthValue()) {
             // Display one month
             end = formatDate.format(endDateTime) + end;
             sameMonth = true;
