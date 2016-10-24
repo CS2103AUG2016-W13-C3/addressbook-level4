@@ -184,8 +184,9 @@
     -fx-text-fill: black;
 }
 
-.result-display {
-    -fx-background-color: #ffffff;
+.result-display, .result-display .content {
+	-fx-background-radius: 4px;
+    -fx-background-color: derive(#dcdcdc, -10%);
 }
 
 .result-display .label {
