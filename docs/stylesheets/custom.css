@@ -10,10 +10,6 @@ a:hover {
   color: #c5000c;
 }
 
-ul {
-    list-style-type: none;
-}
-
 blockquote {
     border-left: 5px solid #CC4444;
     padding: 10px;
@@ -125,8 +121,12 @@ ul#search-logic li:before {
     padding-right: 5px;
 }
 
-ul#first-layer ul#second-layer li:before {
+
+ul#first-layer ul#second-layer {
     list-style: none;
+}
+
+ul#first-layer ul#second-layer li:before {
     margin-left: 0;
     background-size: 12px 12px;
     background-position: 0.3em .3em;
