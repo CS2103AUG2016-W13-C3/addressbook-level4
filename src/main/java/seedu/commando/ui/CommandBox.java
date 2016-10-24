@@ -77,6 +77,12 @@ public class CommandBox extends UiPart {
          */
         setStyleToIndicateCorrectCommand();
         mostRecentResult = logic.execute(previousCommandTest);
+        
+        if (mostRecentResult.hasError()) {
+            setStyleToIndicateIncorrectCommand();
+            restoreCommandText();
+        }
+        
         resultDisplay.postMessage(mostRecentResult.getFeedback());
         logger.info("Result: " + mostRecentResult.getFeedback());
     }
@@ -87,13 +93,6 @@ public class CommandBox extends UiPart {
     private void setStyleToIndicateCorrectCommand() {
         commandTextField.getStyleClass().remove("error");
         commandTextField.setText("");
-    }
-
-    @Subscribe
-    private void handleIncorrectCommandAttempted(IncorrectCommandAttemptedEvent event){
-        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Invalid command: " + previousCommandTest));
-        setStyleToIndicateIncorrectCommand();
-        restoreCommandText();
     }
 
     /**
