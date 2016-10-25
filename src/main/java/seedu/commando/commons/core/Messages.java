@@ -25,19 +25,21 @@ public class Messages {
     public static final String MISSING_COMMAND_WORD = "Missing command word.";
     public static final String INVALID_COMMAND_FORMAT = "Invalid format for '%1$s' command!";
     public static final String MISSING_TODO_TITLE = "Missing title for to-do.";
+    
     public static final String MISSING_TODO_DATERANGE_START = "Missing start date for date range of to-do.";
     public static final String MISSING_TODO_DATERANGE_END = "Missing end date for date range of to-do.";
     public static final String INVALID_TODO_DATERANGE_START = "Invalid start date for date range of to-do.";
     public static final String INVALID_TODO_DATERANGE_END = "Invalid end date for date range of to-do.";
-    public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.\n";
-    
-    public static final String INDEXRANGE_CONSTRAINTS = "The end index must be equal or larger than the start index.";
     public static final String TODO_DATERANGE_END_MUST_AFTER_START = "The end date of the date range must be after start date.";
     public static final String TODO_DATERANGE_RECURRENCE_INVALID = "The recurrence for the given date range is not valid.";
     
-    public static final String MISSING_STORE_PATH = "Missing the path to store. Sample usage include:";
-    public static final String MISSING_IMPORT_PATH = "Missing the path to import. Sample usage include:";
-    public static final String MISSING_EXPORT_PATH = "Missing the path to export. Sample usage include:";
+    public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.";
+    
+    public static final String INDEXRANGE_CONSTRAINTS = "The end index must be equal or larger than the start index.";
+    
+    public static final String MISSING_STORE_PATH = "Missing the path to store.";
+    public static final String MISSING_IMPORT_PATH = "Missing the path to import.";
+    public static final String MISSING_EXPORT_PATH = "Missing the path to export.";
     
     public static final String MISSING_STORE_FILE = "Missing the file name to store.";
     public static final String MISSING_EXPORT_FILE = "Missing the file name to export.";
@@ -91,6 +93,8 @@ public class Messages {
     public static final String EDIT_COMMAND_FORMAT = ">> edit 1 change in description";
     public static final String FINISH_COMMAND_FORMAT = ">> finish 1";
     public static final String UNFINISH_COMMAND_FORMAT = ">> unfinish 1";
+    
+    public static final String DATE_FORMAT = "Date Time Formats: 9 jan 2018 23:59 | Jan 9 2019 1900h | coming friday morning | today 23:59";
 
     /**
      * Returns an additional invalid command format message to be appended

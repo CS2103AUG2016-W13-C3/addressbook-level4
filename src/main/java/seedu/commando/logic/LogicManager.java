@@ -67,7 +67,7 @@ public class LogicManager extends ComponentManager implements Logic {
             }
 
         } catch (CommandFactory.UnknownCommandWordException e) {
-            return new CommandResult(Messages.UNKNOWN_COMMAND, true);
+            return new CommandResult(String.format(Messages.UNKNOWN_COMMAND, e.commandWord), true);
         } catch (CommandFactory.MissingCommandWordException e) {
             return new CommandResult(Messages.MISSING_COMMAND_WORD, true);
         }

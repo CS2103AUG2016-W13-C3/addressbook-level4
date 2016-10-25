@@ -53,7 +53,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         
         //invalid command name
         commandBox.runCommand("deleted 1");
-        assertResultMessage(Messages.UNKNOWN_COMMAND);
+        assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "deleted"));
     }
     
     @Test

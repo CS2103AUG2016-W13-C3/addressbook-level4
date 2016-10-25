@@ -19,7 +19,8 @@ public class DueDate {
      */
     public DueDate(LocalDateTime value) throws IllegalValueException {
         if (!isValid(value)) {
-            throw new IllegalValueException(Messages.TODO_DUEDATE_CONSTRAINTS);
+            throw new IllegalValueException(Messages.TODO_DUEDATE_CONSTRAINTS + 
+                    "\n" + Messages.getInvalidCommandFormatMessage("finish").get());
         }
 
         this.value = value;

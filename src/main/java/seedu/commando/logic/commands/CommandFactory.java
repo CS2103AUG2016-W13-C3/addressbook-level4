@@ -30,7 +30,13 @@ public class CommandFactory {
         }
     }
 
-    public static class UnknownCommandWordException extends Exception {}
+    public static class UnknownCommandWordException extends Exception {
+        public final String commandWord;
+        UnknownCommandWordException(String commandWord) {
+            this.commandWord = commandWord;
+        }
+    }
+    
     public static class MissingCommandWordException extends Exception {}
 
     /**
@@ -82,7 +88,7 @@ public class CommandFactory {
                 case RecallCommand.COMMAND_WORD:
                     return buildRecallCommand();
                 default:
-                    throw new UnknownCommandWordException();
+                    throw new UnknownCommandWordException(processedCommandWord);
             }
         } catch (IllegalValueException e) {
             throw new InvalidCommandFormatException(e.getMessage(), processedCommandWord);

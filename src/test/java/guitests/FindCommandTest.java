@@ -30,7 +30,7 @@ public class FindCommandTest extends CommanDoGuiTest {
     @Test
     public void find_invalidCommand_fail() {
         commandBox.runCommand("findgeorge");
-        assertResultMessage(Messages.UNKNOWN_COMMAND);
+        assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "findgeorge"));
     }
 
     private void assertFindResult(String command, ToDo... expectedHits ) {
