@@ -39,15 +39,12 @@
                             <li><a href="#features">Features</a></li>
                         </ul>
                         <li><a href="#setting-up">Setting Up</a></li>
-                        <li><a href="#design">Design</a></li>
-                        <ul id="second-layer">
-                            <li><a href="#architecture">Architecture</a></li>
-                            <li><a href="#ui-api">UI API</a></li>
-                            <li><a href="#logic-api">Logic API</a></li>
-                            <li><a href="#model-api">Model API</a></li>
-                            <li><a href="#storage-api">Storage API</a></li>
-                        </ul>
-                        <li><a href="#implementation">Implementation</a></li>
+                        <li><a href="#architecture">Architecture</a></li>
+                        <li><a href="#ui-component">UI Component</a></li>
+                        <li><a href="#logic-component">Logic Component</a></li>
+                        <li><a href="#storage-component">Storage Component</a></li>
+                        <li><a href="#model-component">Model Component</a></li>
+                        <li><a href="#commons-package">Commons Package</a></li>
                         <ul id="second-layer">
                             <li><a href="#event-driven-design">Event Driven Design</a></li>
                             <li><a href="#logging">Logging</a></li>
@@ -74,7 +71,7 @@
 
                 <figure>
                     <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
-                    <figcaption><em>CommanDo</em> complete view</figcaption>
+                    <figcaption>A typical view of <em>CommanDo</em> in action</figcaption>
                 </figure>
 
                 <p>This guide describes the development of <em>CommanDo</em>, how it is currently designed and implemented at a technical level, some of the known issues, and some future plans and extensions for it.</p>
@@ -154,14 +151,14 @@
                     </li>
                 </ol>
 
-                <h2 id="design">Design</h2>
+                <h2 id="architecture">Architecture</h2>
 
                 <p>This section explains the high level design of the application.</p>
 
-                <h3 id="architecture-diagram">Architecture</h3>
+                <h3>Overview</h3>
 
                 <figure>
-                    <img src="images/Architecture.png" width="600">
+                    <img src="images/diagrams/architecture.png" width="600">
                     <figcaption>Architecture diagram for <em>CommanDo</em></figcaption>
                 </figure>
 
@@ -176,16 +173,16 @@
 
                 <ul>
                     <li>
-                        <a href="#ui-api"><strong><em>UI</em> Component</strong></a>: Acts as the middleman between the user and the API provided by <em>Logic</em> (package <code>seedu.commando.ui</code>)
+                        <a href="#ui-component"><strong><em>UI</em> Component</strong></a>: Acts as the middleman between the user and the API provided by <em>Logic</em> (package <code>seedu.commando.ui</code>)
                     </li>
                     <li>
-                        <a href="#logic-api"><strong><em>Logic</em> Component</strong></a>: Executes commands from the UI, using the API provided by <em>Model</em> and <em>Storage</em> (package <code>seedu.commando.logic</code>)
+                        <a href="#logic-component"><strong><em>Logic</em> Component</strong></a>: Executes commands from the UI, using the API provided by <em>Model</em> and <em>Storage</em> (package <code>seedu.commando.logic</code>)
                     </li>
                     <li>
-                        <a href="#model-api"><strong><em>Model</em> Component</strong></a>: Defines how data is represented and holds the data of the application in-memory (package <code>seedu.commando.model</code>)
+                        <a href="#model-component"><strong><em>Model</em> Component</strong></a>: Defines how data is represented and holds the data of the application in-memory (package <code>seedu.commando.model</code>)
                     </li>
                     <li>
-                        <a href="#storage-api"><strong><em>Storage</em> Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.commando.storage</code>)
+                        <a href="#storage-component"><strong><em>Storage</em> Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.commando.storage</code>)
                     </li>
                 </ul>
 
@@ -214,19 +211,26 @@
                     </div>
 
                     <blockquote>
-                        Note that for the <em>Model</em> component, besides the API defined by <code>Model.java</code>, it also contains data structures such as <code>UserPrefs.java</code> and <code>ReadOnlyToDo.java</code> that the other components are dependent on. Such dependencies are listed in the later section <a href="#model-api">Model API</a>
+                        Note that for the <em>Model</em> component, besides the API defined by <code>Model.java</code>, it also contains data structures such as <code>UserPrefs.java</code> and <code>ReadOnlyToDo.java</code> that the other components are dependent on. Such dependencies are listed in the later section <a href="#model-component">Model Component.</a>
                     </blockquote>
 
-                <p>Underlying all 4 components is the package <code>seedu.commando.commons</code>. It is a collection of utility classes and application constants that are used throughout the application. We also use <a href="#event-driven-design">Event Driven Design</a> for components to communicate with one another.</p>
+                <p>Underlying all 4 components is the package <code>seedu.commando.commons</code>. It is a collection of utility classes and application constants that are used in all the components. We also use <a href="#event-driven-design">Event Driven Design</a> for components to communicate with one another.</p>
 
-                <h4>What happens in a command execution</h4>
+                <h3>What Happens in a Command Execution</h3>
+
+                <p>When the user types a command and presses <kbd class="light">Enter</kbd>, the <em>UI</em> calls the <code>execute(String)</code> method of <em>Logic</em> with the input string. <em>Logic</em> parses the input string amd determines the command type. Then, <em>Logic</em> would take the appropriate action, either by calling methods of the <em>Model</em> or posting events to the <em>Events Center</em>. Refer to the following diagram for the execution of command <code>>> add task</code>.</p>
 
                 <figure>
-                    <img src="https://i.imgur.com/OvMZBs9.jpg" width="600">
-                    <figcaption>Sequence Diagram of command <code>add plan shopping trip #lunch</code></figcaption>
+                    <img src="images/diagrams/command-execution-sd.png" width="600">
+                    <figcaption>Sequence diagram for executing command <code>>> add task</code></figcaption>
                 </figure>
 
-                <p>(Step-by-step description on the flow of execution)</p>
+                <p>Typically, a command would modify the to-do list in the <em>Model</em> (<code>add</code>, <code>edit</code>, <code>delete</code>, etc). Within <em>Model</em>, as we have used JavaFX's <em>Observable</em> classes, the modification would trigger a call to the <em>UI</em> to update its view of the to-do list. On top of that, <em>Model</em> would post a <code>ToDoListChangedEvent</code> to the <em>Events Center</em>, which would trigger <em>Logic</em> to call the <code>saveToDoList(ReadOnlyToDoList)</code> method of <em>Storage</em>. Subsequently, when the to-do list is successfully saved to the file system, the event <code>ToDoListSavedEvent</code> would be posted to update the status bar in <em>UI</em>. Refer to the following diagram for a graphical walkthrough of this sequence.</p>
+
+                <figure>
+                    <img src="images/diagrams/to-do-list-changed-event-sd.png" width="800">
+                    <figcaption>Sequence diagram for "<em>to-do list changed event</em>"</figcaption>
+                </figure>
 
                 <h3 id="ui-api">UI API and Component</h3>
 
