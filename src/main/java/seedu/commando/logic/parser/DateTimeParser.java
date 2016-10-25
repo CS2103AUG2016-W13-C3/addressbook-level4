@@ -35,6 +35,7 @@ public class DateTimeParser {
     private static final String DateWithLaterAgoRegexString = "((\\d+\\d)|([2-9]))\\s+(days|weeks|months|years)\\s+(later|ago)";
     private static final String DateWithNextRegexString = "next (week|month|year)";
     private static final String TimeNightRegexString = "(this\\s+)?(night|tonight)";
+    private static final String TimeHourRegexString = "(?<hours>\\d{1,2})(?<minutes>\\d{2})h";
 
     private static final String[] supportedDateRegexStrings = new String[] {
         DateWithSlashesRegexString,
@@ -48,7 +49,7 @@ public class DateTimeParser {
 
     private static final String[] supportedTimeRegexStrings = new String[] {
         "(\\d{2})(\\.|:)(\\d{2})",
-        "(\\d{2}):?(\\d{2})h",
+        TimeHourRegexString,
         "(\\d{1,2})(\\.|:)?(\\d{2})?(am|pm)",
         "(this\\s+)?(morning|afternoon|noon|evening|midnight)",
         TimeNightRegexString
@@ -185,11 +186,15 @@ public class DateTimeParser {
             // If matched from the start
             if (matcher.find() && matcher.start() == 0) {
 
+                // Special case: for TimeHourRegexString format,
+                // Change to colon format (natty parses it wrongly when there is no year in the date)
+                if (regexString.equals(TimeHourRegexString)) {
+                    timeString = matcher.group("hours") + ":" + matcher.group("minutes");
+                }
                 // Special case: for TimeNightRegexString format,
                 // Set time to 9pm
-                if (regexString.equals(TimeNightRegexString)) {
+                else if (regexString.equals(TimeNightRegexString)) {
                     timeString = NightLocalTime.toString();
-                    System.out.println(NightLocalTime);
                 } else {
                     timeString = matcher.group().trim();
                 }
