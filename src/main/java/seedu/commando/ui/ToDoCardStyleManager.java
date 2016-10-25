@@ -60,7 +60,9 @@ public class ToDoCardStyleManager {
         boolean sameMonth = startDateTime.getMonthValue() == endDateTime.getMonthValue();
         boolean sameDay = startDateTime.getDayOfMonth() == endDateTime.getDayOfMonth();
         boolean sameDayAndIsYtdOrTdyOrTmr = sameYear && sameMonth && 
-                (Math.abs(startDateTime.getDayOfMonth() - todayDate.getDayOfMonth()) <= 1);
+                (startDateTime.toLocalDate().isEqual(todayDate) ||
+                 startDateTime.toLocalDate().isEqual(tomorrowDate) ||
+                 startDateTime.toLocalDate().isEqual(yesterdayDate));
         
         // Damn corner cases. If its Yesterday or Today or Tomorrow, shouldn't show month and year
         if (sameDayAndIsYtdOrTdyOrTmr) {
@@ -80,6 +82,9 @@ public class ToDoCardStyleManager {
             end += " " + endDateTime.getYear();
             start += " " + startDateTime.getYear();
         }
+        
+        System.out.println(startDateTime.toString());
+        System.out.println(endDateTime.toString());
         
         if (sameYear && sameMonth) {
             // If same year and same month
