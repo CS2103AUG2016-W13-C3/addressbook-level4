@@ -19,25 +19,31 @@ import static org.junit.Assert.assertTrue;
 public class AddCommandTest extends CommanDoGuiTest {
 
     @Test
-    public void add() throws IllegalValueException {
+    public void add_nonemptyList() throws IllegalValueException {
         // add one todo to existing list
+        // add floating task
         ToDo[] currentList = td.getTypicalToDos();
         ToDo toDoToAdd = td.testToDoItem1;
         assertAddSuccess(toDoToAdd, 5, currentList);
         currentList = TestUtil.addToDosToList(currentList, 5, toDoToAdd);
 
+        // add event
         toDoToAdd = td.testToDoItem2;
         assertAddSuccess(toDoToAdd, 1, currentList);
         currentList = TestUtil.addToDosToList(currentList, 1, toDoToAdd);
 
+        // add deadline
         toDoToAdd = td.testToDoItem3;
         assertAddSuccess(toDoToAdd, 3, currentList);
         currentList = TestUtil.addToDosToList(currentList, 3, toDoToAdd);
-
+    }
+    
+    @Test
+    public void add_emptyList() {
         //add one todo to empty list
         commandBox.runCommand("clear");
-        currentList = td.getEmptyToDos();
-        toDoToAdd = td.toDoItem2;
+        ToDo[] currentList = td.getEmptyToDos();
+        ToDo toDoToAdd = td.toDoItem2;
         assertAddSuccess(toDoToAdd, currentList.length, currentList);
         currentList = TestUtil.addToDosToList(currentList, currentList.length, toDoToAdd);
 
@@ -45,20 +51,29 @@ public class AddCommandTest extends CommanDoGuiTest {
         toDoToAdd = td.toDoItem1;
         assertAddSuccess(toDoToAdd, currentList.length, currentList);
         currentList = TestUtil.addToDosToList(currentList, currentList.length, toDoToAdd);
-
+    }
+    
+    @Test
+    public void add_invalidCommand() {
         //Invalid add command:
-
+        ToDo[] currentList = td.getTypicalToDos();
+        
         //add duplicate todo
         commandBox.runCommand(CommandBuilder.buildAddCommand(td.toDoItem1));
         assertResultMessage(Messages.TODO_ALREADY_EXISTS);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
-
+        
+        //enddate is earlier than start date
+        commandBox.runCommand("add test from tomorrow to today");
+        assertResultMessage(Messages.TODO_DATERANGE_END_MUST_AFTER_START);
+        assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
+        
         //add missing title
         commandBox.runCommand("add ");
         assertResultMessage(Messages.MISSING_TODO_TITLE);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
 
-        //add missing startdate ,  empty date --> consider as floating task
+        //add missing startdate ,  empty date
         commandBox.runCommand("add test from to 1pm");
         assertResultMessage(Messages.MISSING_TODO_DATERANGE_START);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
@@ -68,7 +83,7 @@ public class AddCommandTest extends CommanDoGuiTest {
         assertResultMessage(Messages.INVALID_TODO_DATERANGE_START);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
 
-        //add missing enddate , empty date --> consider as floating task
+        //add missing enddate , empty date
         commandBox.runCommand("add test from 1pm to");
         assertResultMessage(Messages.MISSING_TODO_DATERANGE_END);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
@@ -82,7 +97,7 @@ public class AddCommandTest extends CommanDoGuiTest {
         commandBox.runCommand("adds Johnny");
         assertResultMessage(Messages.UNKNOWN_COMMAND);
     }
-
+    
     private void assertAddSuccess(ToDo todoToAdd, int idx, ToDo... currentList ) {
         commandBox.runCommand(CommandBuilder.buildAddCommand(todoToAdd));
 

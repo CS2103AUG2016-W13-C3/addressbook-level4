@@ -35,9 +35,8 @@ public class FindCommandTest extends CommanDoGuiTest {
 
     private void assertFindResult(String command, ToDo... expectedHits ) {
         commandBox.runCommand(command);
-        assertListSize(expectedHits.length);
-        assertResultMessage("Found " + eventListPanel.getNumberOfToDo() + " events and " + 
-                                        taskListPanel.getNumberOfToDo() + " tasks.");
+        assertListSize(expectedHits.length); //number of expected todos = number of listed todos in result
+        assertResultMessage(String.format(Messages.FIND_COMMAND, eventListPanel.getNumberOfToDo(), taskListPanel.getNumberOfToDo()));
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedHits));
     }
 }
