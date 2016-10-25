@@ -20,13 +20,15 @@ import java.util.stream.Collectors;
  */
 public class SequentialParser {
 
-    public static final String KEYWORD_DATERANGE_START = "from";
-    public static final String KEYWORD_DATERANGE_END = "to";
-    public static final String KEYWORD_DUEDATE = "by";
-    public static final String KEYWORD_RECURRENCE = "daily|weekly|monthly|yearly";
-    public static final String TAG_PREFIX = "#";
+    private static final String KEYWORD_DATERANGE_START = "from";
+    private static final String KEYWORD_DATERANGE_END = "to";
+    private static final String KEYWORD_DUEDATE = "by";
+    private static final String KEYWORD_RECURRENCE = "daily|weekly|monthly|yearly";
+    private static final String TAG_PREFIX = "#";
+    private static final String QUOTE_CHARACTER = "`";
 
     private static final Pattern FIRST_WORD_PATTERN = Pattern.compile("^(?<word>\\S+)(?<left>.*?)$");
+    private static final Pattern FIRST_QUOTED_TEXT_PATTERN = Pattern.compile("^" + QUOTE_CHARACTER + "(?<text>.*)" + QUOTE_CHARACTER + "(?<left>.*?)$");
     private static final Pattern FIRST_INTEGER_PATTERN = Pattern.compile("^(?<integer>-?\\d+)(?<left>.*?)$");
     private static final Pattern DATERANGE_PATTERN = Pattern.compile(
         "(?<left>.*)" + KEYWORD_DATERANGE_START + "\\s+" + "(?<start>(.+\\s+)?)"
@@ -159,6 +161,31 @@ public class SequentialParser {
         input = "";
 
         return text.isEmpty() ? Optional.empty() : Optional.of(text);
+    }
+
+
+    /**
+     * From start, extracts a quoted title in input, if found
+     * e.g. "`quoted` text" returns "quoted" and retains input "text"
+     * @return quoted text with quotes removed and trimmed if found,
+     * empty if no quotes found
+     * @throws IllegalValueException if quoted title found is empty
+     */
+    public Optional<String> extractQuotedTitle() throws IllegalValueException {
+        final Matcher matcher = FIRST_QUOTED_TEXT_PATTERN.matcher(input);
+
+        if (matcher.find()) {
+            String text = matcher.group("text").trim();
+
+            if (text.isEmpty()) {
+                throw new IllegalValueException(Messages.MISSING_TODO_TITLE);
+            }
+
+            input = matcher.group("left").trim();
+            return Optional.of(text);
+        }
+
+        return Optional.empty();
     }
 
     /**
