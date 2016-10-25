@@ -91,24 +91,24 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         ToDo[] currentList = td.getTypicalToDos();
         int targetIndex = currentList.length + 1;
         commandBox.runCommand("delete " + targetIndex);
-        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex ));
+        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex));
         targetIndex = 0;
         commandBox.runCommand("delete " + targetIndex);
-        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex ));
+        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex));
 
         targetIndex = -1;
         commandBox.runCommand("delete " + targetIndex);
-        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex ));
+        assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex));
         // invalid params or empty index
         commandBox.runCommand("delete abc 1");
-        assertResultMessage(Messages.MISSING_TODO_ITEM_INDEX);
+        assertResultMessage(Messages.MISSING_TODO_ITEM_INDEX + "\n" + Messages.DELETE_COMMAND_FORMAT);
 
         commandBox.runCommand("delete   ");
-        assertResultMessage(Messages.MISSING_TODO_ITEM_INDEX);
+        assertResultMessage(Messages.MISSING_TODO_ITEM_INDEX + "\n" + Messages.DELETE_COMMAND_FORMAT);
 
         // invalid command name
         commandBox.runCommand("deleted 1");
-        assertResultMessage(Messages.UNKNOWN_COMMAND);
+        assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "deleted"));
     }
 
     /**
