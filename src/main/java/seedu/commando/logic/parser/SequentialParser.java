@@ -234,7 +234,11 @@ public class SequentialParser {
 
         return Optional.empty();
     }
-
+    /**
+     * From start, extracts multiple integers in input, it can be a range of integers or different integers separate by space.
+     * @return A List of integers found
+     * @throws IllegalValueException
+     */
 	public List<Integer> extractIndicesList() throws IllegalValueException {
 		final Matcher matcher = INDEXRANGE_PATTERN.matcher(input.trim());
 		List<Integer> indices = new ArrayList<Integer>();
