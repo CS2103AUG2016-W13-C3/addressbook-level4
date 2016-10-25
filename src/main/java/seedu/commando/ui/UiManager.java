@@ -16,7 +16,6 @@ import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.model.UserPrefs;
 
-import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
 /**
@@ -24,7 +23,6 @@ import java.util.logging.Logger;
  */
 public class UiManager extends ComponentManager implements Ui {
     private static final Logger logger = LogsCenter.getLogger(UiManager.class);
-    private static final String ICON_APPLICATION = "/images/calendar.png";
 
     private Logic logic;
     private UserPrefs prefs;
@@ -43,7 +41,7 @@ public class UiManager extends ComponentManager implements Ui {
         primaryStage.setTitle(Config.ApplicationTitle);
 
         //Set the application icon.
-        primaryStage.getIcons().add(getImage(ICON_APPLICATION));
+        primaryStage.getIcons().add(getImage(Config.ApplicationIcon));
 
         try {
             mainWindow = MainWindow.load(primaryStage, prefs, logic);

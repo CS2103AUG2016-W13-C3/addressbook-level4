@@ -34,7 +34,7 @@ public class ToDoCardStyleManager {
     private static String timePattern = "HH:mm";
     
     /**
-     * @param the date and time (LocalDateTime)
+     * @param ldt is the date and time (LocalDateTime)
      * @return format in a way that is intuitive to the user
      * I.e. Dates that in the current year will not show the years
      * I.e. Dates that are today show up as "today"

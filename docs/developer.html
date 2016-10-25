@@ -40,10 +40,10 @@
                         </ul>
                         <li><a href="#setting-up">Setting Up</a></li>
                         <li><a href="#architecture">Architecture</a></li>
-                        <li><a href="#ui-component">UI Component</a></li>
-                        <li><a href="#logic-component">Logic Component</a></li>
-                        <li><a href="#storage-component">Storage Component</a></li>
-                        <li><a href="#model-component">Model Component</a></li>
+                        <li><a href="#ui-component"><em>UI</em> Component</a></li>
+                        <li><a href="#logic-component"><em>Logic</em> Component</a></li>
+                        <li><a href="#storage-component"><em>Storage</em> Component</a></li>
+                        <li><a href="#model-component"><em>Model</em> Component</a></li>
                         <li><a href="#commons-package">Commons Package</a></li>
                         <ul id="second-layer">
                             <li><a href="#event-driven-design">Event Driven Design</a></li>
@@ -218,7 +218,7 @@
 
                 <h3>What Happens in a Command Execution</h3>
 
-                <p>When the user types a command and presses <kbd class="light">Enter</kbd>, the <em>UI</em> calls the <code>execute(String)</code> method of <em>Logic</em> with the input string. <em>Logic</em> parses the input string amd determines the command type. Then, <em>Logic</em> would take the appropriate action, either by calling methods of the <em>Model</em> or posting events to the <em>Events Center</em>. Refer to the following diagram for the execution of command <code>>> add task</code>.</p>
+                <p>When the user types a command and presses <kbd class="light">Enter</kbd>, the <em>UI</em> calls the <code>execute(String)</code> method of <em>Logic</em> with the input string. <em>Logic</em> parses the input string amd determines the command type. Then, <em>Logic</em> would call methods of the <em>Model</em> to modify the to-do list, or post events to the <em>Events Center</em> (which would in turn trigger the relevant components to take action). Refer to the following diagram for the execution of command <code>>> add task</code>.</p>
 
                 <figure>
                     <img src="images/diagrams/command-execution-sd.png" width="600">
@@ -229,18 +229,29 @@
 
                 <figure>
                     <img src="images/diagrams/to-do-list-changed-event-sd.png" width="800">
-                    <figcaption>Sequence diagram for "<em>to-do list changed event</em>"</figcaption>
+                    <figcaption>Sequence diagram for <em>to-do list changed event</em></figcaption>
                 </figure>
 
-                <h3 id="ui-api">UI API and Component</h3>
+                <h3 id="ui-component"><em>UI</em> Component</h3>
 
                 <figure>
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/UI API.PNG" max-width="600">
-                    <figcaption>API of UI component</figcaption>
+                    <img src="images/diagrams/ui-component.png" max-width="600">
+                    <figcaption>Structure of <em>UI</em> component</figcaption>
                 </figure>
 
+                <p>The <em>UI</em> component (package <code>seedu.commando.ui</code>) is in charge of:
+                
+                    <ul>
+                        <li>Handing user input</li>
+                        <li>Passing user input to the appropriate methods of the <em>Logic</em> component</li>
+                        <li>Displaying the graphical user interface (GUI)</li>
+                        <li>Updating the GUI automatically when data in the <em>Model</em> component changes, done by binding itself to the data using JavaFX's <em>Observable</em> collections</li>
+                        <li>Responding to events posted in <em>EventsCenter</em> that involve a change in the GUI (e.g. opening the help window when <code>ShowHelpRequestEvent</code> is posted)</li>
+                    </ul> 
+                
+                
                 <p>
-                    (Description about what the API does to be filled in here)
+                    It uses the JavaFX UI framework (more information about JavaFX <a href="http://docs.oracle.com/javase/8/javase-clienttechnologies.htm">here</a>) - it is made up of GUI parts such as <code>CommandBox</code>, <code>ResultDisplay</code> and <code>EventListPanel</code>. Each part has a class inheriting from the abstract <code>UiPart</code> class (which may be loaded with <code>UiPartLoader</code>), and has a layout defined in a corresponding <code>.fxml</code> file of the same name, located in the <code>resources/view</code> folder. For example, the layout of the <code>MainWindow</code> class is specified in <code>resources/view/MainWindow.fxml</code>.
                 </p>
 
                 <h3 id="logic-api">Logic API and Component</h3>
