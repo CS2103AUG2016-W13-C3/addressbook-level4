@@ -208,6 +208,4 @@ public class ModelManagerTest {
         assertFalse(modelManager.getToDoList().contains(toDoList2Item1));
         assertFalse(modelManager.getToDoList().contains(toDoListItem1));
     }
-
-    // TODO: Add tests for filtering methods
 }

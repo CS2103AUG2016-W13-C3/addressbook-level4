@@ -42,7 +42,8 @@ public class ToDoCardStyleManager {
     
     
     /**
-     * @param Start datetime and end datetime
+     * @param startDateTime start date time
+     * @param endDateTime end date time
      * @return format in a way that is intuitive to the user
      * I.e. Dates that in the current year will not show the years
      * I.e. Dates that are in the same year will only show the year once

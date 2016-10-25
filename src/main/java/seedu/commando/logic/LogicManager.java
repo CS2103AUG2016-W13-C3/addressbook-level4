@@ -6,6 +6,8 @@ import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.events.logic.ToDoListFilePathChangeRequestEvent;
+import seedu.commando.commons.events.model.ToDoListChangedEvent;
+import seedu.commando.commons.events.storage.DataSavingExceptionEvent;
 import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.commands.Command;
 import seedu.commando.logic.commands.CommandFactory;
@@ -29,17 +31,13 @@ public class LogicManager extends ComponentManager implements Logic {
     private final Model model;
     private final Storage storage;
     private final UserPrefs userPrefs;
-    private final CommandFactory commandFactory;
-    {
-        commandFactory = new CommandFactory();
-    }
+    private final CommandFactory commandFactory = new CommandFactory();
 
     public LogicManager(Model model, Storage storage, UserPrefs userPrefs) {
         this.model = model;
         this.storage = storage;
         this.userPrefs = userPrefs;
     }
-
 
     @Override
     public CommandResult execute(String commandText) {
@@ -86,6 +84,23 @@ public class LogicManager extends ComponentManager implements Logic {
     @Override
     public ReadOnlyToDoList getToDoList() {
         return model.getToDoList();
+    }
+
+    /**
+     * Saves the current version of the to-do list to the hard disk
+     * at the default filepath
+     * Creates the data file if it is missing.
+     * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
+     */
+    @Subscribe
+    public void handleToDoListChangedEvent(ToDoListChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
+
+        try {
+            storage.saveToDoList(event.toDoList);
+        } catch (IOException e) {
+            raise(new DataSavingExceptionEvent(e));
+        }
     }
 
     /**

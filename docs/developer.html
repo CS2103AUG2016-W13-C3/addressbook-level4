@@ -39,18 +39,15 @@
                             <li><a href="#features">Features</a></li>
                         </ul>
                         <li><a href="#setting-up">Setting Up</a></li>
-                        <li><a href="#design">Design</a></li>
+                        <li><a href="#architecture">Architecture</a></li>
+                        <li><a href="#ui-component"><em>UI</em> Component</a></li>
+                        <li><a href="#logic-component"><em>Logic</em> Component</a></li>
+                        <li><a href="#storage-component"><em>Storage</em> Component</a></li>
+                        <li><a href="#model-component"><em>Model</em> Component</a></li>
+                        <li><a href="#commons-package">Commons Package</a></li>
                         <ul id="second-layer">
-                            <li><a href="#architecture">Architecture</a></li>
-                            <li><a href="#ui-api">UI API</a></li>
-                            <li><a href="#logic-api">Logic API</a></li>
-                            <li><a href="#model-api">Model API</a></li>
-                            <li><a href="#storage-api">Storage API</a></li>
-                        </ul>
-                        <li><a href="#implementation">Implementation</a></li>
-                        <ul id="second-layer">
-                            <li><a href="#event-driven-design">Event Driven Design</a></li>
-                            <li><a href="#logging">Logging</a></li>
+                            <li><a href="#eventscenter"><em>EventsCenter</em> and Event Driven Design</a></li>
+                            <li><a href="#logscenter"><em>LogsCenter</em> and Logging</a></li>
                         </ul>
                         <li><a href="#testing">Testing</a></li>
                         <li><a href="#dev-ops">Dev Ops</a></li>
@@ -74,7 +71,7 @@
 
                 <figure>
                     <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
-                    <figcaption><em>CommanDo</em> complete view</figcaption>
+                    <figcaption>A typical view of <em>CommanDo</em> in action</figcaption>
                 </figure>
 
                 <p>This guide describes the development of <em>CommanDo</em>, how it is currently designed and implemented at a technical level, some of the known issues, and some future plans and extensions for it.</p>
@@ -154,14 +151,12 @@
                     </li>
                 </ol>
 
-                <h2 id="design">Design</h2>
+                <h2 id="architecture">Architecture</h2>
 
                 <p>This section explains the high level design of the application.</p>
 
-                <h3 id="architecture-diagram">Architecture</h3>
-
                 <figure>
-                    <img src="images/Architecture.png" width="600">
+                    <img src="images/diagrams/architecture.png" width="600">
                     <figcaption>Architecture diagram for <em>CommanDo</em></figcaption>
                 </figure>
 
@@ -176,16 +171,16 @@
 
                 <ul>
                     <li>
-                        <a href="#ui-api"><strong><em>UI</em> Component</strong></a>: Acts as the middleman between the user and the API provided by <em>Logic</em> (package <code>seedu.commando.ui</code>)
+                        <a href="#ui-component"><strong><em>UI</em> Component</strong></a>: Acts as the middleman between the user and the API provided by <em>Logic</em> (package <code>seedu.commando.ui</code>)
                     </li>
                     <li>
-                        <a href="#logic-api"><strong><em>Logic</em> Component</strong></a>: Executes commands from the UI, using the API provided by <em>Model</em> and <em>Storage</em> (package <code>seedu.commando.logic</code>)
+                        <a href="#logic-component"><strong><em>Logic</em> Component</strong></a>: Executes commands from the UI, using the API provided by <em>Model</em> and <em>Storage</em> (package <code>seedu.commando.logic</code>)
                     </li>
                     <li>
-                        <a href="#model-api"><strong><em>Model</em> Component</strong></a>: Defines how data is represented and holds the data of the application in-memory (package <code>seedu.commando.model</code>)
+                        <a href="#model-component"><strong><em>Model</em> Component</strong></a>: Defines how data is represented and holds the data of the application in-memory (package <code>seedu.commando.model</code>)
                     </li>
                     <li>
-                        <a href="#storage-api"><strong><em>Storage</em> Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.commando.storage</code>)
+                        <a href="#storage-component"><strong><em>Storage</em> Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.commando.storage</code>)
                     </li>
                 </ul>
 
@@ -214,93 +209,185 @@
                     </div>
 
                     <blockquote>
-                        Note that for the <em>Model</em> component, besides the API defined by <code>Model.java</code>, it also contains data structures such as <code>UserPrefs.java</code> and <code>ReadOnlyToDo.java</code> that the other components are dependent on. Such dependencies are listed in the later section <a href="#model-api">Model API</a>
+                        Note that for the <em>Model</em> component, besides the API defined by <code>Model.java</code>, it also contains data structures such as <code>UserPrefs.java</code> and <code>ReadOnlyToDo.java</code> that the other components are dependent on. Such dependencies are listed in the later section <a href="#model-component">Model Component.</a>
                     </blockquote>
 
-                <p>Underlying all 4 components is the package <code>seedu.commando.commons</code>. It is a collection of utility classes and application constants that are used throughout the application. We also use <a href="#event-driven-design">Event Driven Design</a> for components to communicate with one another.</p>
+                <p>Underlying all 4 components is the package <code>seedu.commando.commons</code>. It is a collection of utility classes and application constants that are used in all the components. We also use <a href="#eventscenter">Event Driven Design</a> for components to communicate with one another.</p>
 
-                <h4>What happens in a command execution</h4>
+                <h3>What Happens in a Command Execution</h3>
 
-                <figure>
-                    <img src="https://i.imgur.com/OvMZBs9.jpg" width="600">
-                    <figcaption>Sequence Diagram of command <code>add plan shopping trip #lunch</code></figcaption>
-                </figure>
-
-                <p>(Step-by-step description on the flow of execution)</p>
-
-                <h3 id="ui-api">UI API and Component</h3>
+                <p>When the user types a command and presses <kbd class="light">Enter</kbd>, the <em>UI</em> calls the <code>execute(String)</code> method of <em>Logic</em> with the input string. <em>Logic</em> parses the input string amd determines the command type. Then, <em>Logic</em> would call methods of the <em>Model</em> to modify the to-do list, or post events to the <em>Events Center</em> (which would in turn trigger the relevant components to take action). Refer to the following diagram for the execution of command <code>>> add task</code>.</p>
 
                 <figure>
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/UI API.PNG" max-width="600">
-                    <figcaption>API of UI component</figcaption>
+                    <img src="images/diagrams/command-execution-sd.png" width="600">
+                    <figcaption>Sequence diagram for executing command <code>>> add task</code></figcaption>
                 </figure>
 
+                <p>Typically, a command would modify the to-do list in the <em>Model</em> (<code>add</code>, <code>edit</code>, <code>delete</code>, etc). Within <em>Model</em>, as we have used JavaFX's <em>Observable</em> classes, the modification would trigger a call to the <em>UI</em> to update its view of the to-do list. On top of that, <em>Model</em> would post a <code>ToDoListChangedEvent</code> to the <em>Events Center</em>, which would trigger <em>Logic</em> to call the <code>saveToDoList(ReadOnlyToDoList)</code> method of <em>Storage</em>. Subsequently, when the to-do list is successfully saved to the file system, the event <code>ToDoListSavedEvent</code> would be posted to update the status bar in <em>UI</em>. Refer to the following diagram for a graphical walkthrough of this sequence.</p>
+
+                <figure>
+                    <img src="images/diagrams/to-do-list-changed-event-sd.png" width="800">
+                    <figcaption>Sequence diagram for <em>to-do list changed event</em></figcaption>
+                </figure>
+
+                <h2 id="ui-component"><em>UI</em> Component</h2>
+
+                <figure>
+                    <img src="images/diagrams/ui-component.png" max-width="600">
+                    <figcaption>Structure of <em>UI</em> component</figcaption>
+                </figure>
+
+                <p>The <em>UI</em> component (package <code>seedu.commando.ui</code>) is in charge of:
+                
+                    <ul>
+                        <li>Handing and passing user input to the appropriate methods of the <em>Logic</em> component.</li>
+                        <li>Displaying the graphical user interface (GUI).</li>
+                        <li>Updating the GUI automatically when data in the <em>Model</em> component changes, done by binding itself to the data using JavaFX's <em>Observable</em> collections.</li>
+                        <li>Responding to events posted in <em>EventsCenter</em> that involve a change in the GUI (e.g. opening the help window when <code>ShowHelpRequestEvent</code> is posted).</li>
+                    </ul> 
                 <p>
-                    (Description about what the API does to be filled in here)
+                    It uses the JavaFX UI framework (more information about JavaFX <a href="http://docs.oracle.com/javase/8/javase-clienttechnologies.htm">here</a>) - it is made up of GUI parts such as <code>CommandBox</code>, <code>ResultDisplay</code> and <code>EventListPanel</code>. Each part has a class inheriting from the abstract <code>UiPart</code> class (which may be loaded with <code>UiPartLoader</code>), and has a layout defined in a corresponding <code>.fxml</code> file of the same name, located in the <code>resources/view</code> folder. For example, the layout of the <code>MainWindow</code> class is specified in <code>resources/view/MainWindow.fxml</code>.
                 </p>
 
-                <h3 id="logic-api">Logic API and Component</h3>
+                <h2 id="logic-component"><em>Logic</em> Component</h2>
 
                 <figure>
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Logic API.PNG" max-width="600">
-                    <figcaption>API of Logic component</figcaption>
+                    <img src="images/diagrams/logic-component.png" max-width="500">
+                    <figcaption>Structure of <em>Logic</em> component</figcaption>
                 </figure>
 
                 <p>
-                    (Description about what the API does to be filled in here)
+                    The <em>Logic</em> component (package <code>seedu.commando.logic</code>) is in charge of:
+
+                    <ul>
+                        <li>Parsing the string commands from the <em>UI</em> component through the <code>excute(String)</code> method.</li>
+                        <li>Calling the appropriate methods of <em>Model</em> and <em>Storage</em> components, or posting the appropriate events on <em>EventsCenter</em> based on the commands.</li>
+                        <li>Informing the <em>UI</em> of the results of the commands executed.</li>
+                        <li>Responding to any events from <em>EventsCenter</em> that would require an action on the <code>Model</code> or <code>Storage</code> components (e.g. saving the to-do list to the file system with <em>Storage</em> when the <code>ToDoListChangeEvent</code> is posted).</li>
+                        <li>Relaying the data of <em>Model</em> to the <em>UI</em> through the <code>getUiEvents()</code>, <code>getUiTasks()</code> and <code>getToDoList()</code></li>
+                    </ul> 
                 </p>
 
-                <h3 id="model-api">Model API and Component</h3>
+                <p>The <code>Logic</code> interface has the following methods:</p>
+                
+                <div class="datagrid class">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>&lt;&lt;interface&gt;&gt;<br />Logic</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>+ execute(commandText: String): CommandResult</td></tr>
+                            <tr><td>+ getUiEvents(): UnmodifiableObservableList&lt;UiToDo&gt;</td></tr>
+                            <tr><td>+ getUiTasks(): UnmodifiableObservableList&lt;UiToDo&gt;</td></tr>
+                             <tr><td>+ getToDoList(): ReadOnlyToDoList</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>When <code>execute(String)</code> is Called</h3>
+                <p>
+                    When the <em>UI</em> calls <code>execute(String)</code>, <code>LogicManager</code> passes the string command to <code>CommandFactory</code>. <code>CommandFactory</code>, with the help of <code>CommandParser</code>, would determine the type of command and parse it accordingly, creating one of the sub-class of the abstract <code>Command</code> class. The <code>Command</code> would then have its <code>execute()</code> method called in <code>LogicManager</code>, producing a <code>CommandResult</code>. The <code>CommandResult</code> is finally returned to <em>UI</em>, which contains the user feedback message and indicates whether the command was successful. Refer to the following diagram for a graphical walkthrough.
+                </p>
 
                 <figure>
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Model API 1.PNG" max-width="600">
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Model API 2.PNG" max-width="600">
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Model API 3.PNG" max-width="600">
-                    <figcaption>API of Model component</figcaption>
+                    <img src="images/diagrams/finish-command-in-logic-sd.png" max-width="500">
+                    <figcaption>Sequence diagram for <em>Logic</em> when command <code>>> finish 2</code> is executed</figcaption>
+                </figure>
+
+                <h2 id="model-component"><em>Model</em> Component</h2>
+
+                <figure>
+                    <img src="images/diagrams/model-component.png" max-width="500">
+                    <figcaption>Structure of <em>Model</em> component</figcaption>
                 </figure>
 
                 <p>
-                    (Description about what the API does to be filled in here)
+                    The <em>Model</em> component (package <code>seedu.commando.model</code>) is in charge of:
+
+                    <ul>
+                        <li>Defining how data in <em>CommanDo</em> is represented in the form of classes (e.g. <code>ToDo</code>, <code>ToDoList</code>).</li>
+                        <li>Keeping the user's to-do list in memory and supporting CRUD functionality to it.</li>
+                        <li>Keeping track of changes to the to-do list and support undoing and redoing of these changes.</li>
+                        <li>Exposing <em>Observable</em> collections of <em>Events</em> and <em>Tasks</em> that are to be shown on the GUI, as well as the filtering, sorting and assigning of indices to these to-dos for the GUI.</li>
+                    </ul>
                 </p>
 
-                <h3 id="storage-api">Storage API and Component</h3>
+                <p>The <code>Model</code> interface has the following methods:</p>
+
+                <div class="datagrid class">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>&lt;&lt;interface&gt;&gt;<br />Model</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>+ getUiEvents(): UnmodifiableObservableList&lt;UiToDo&gt;</td></tr>
+                            <tr><td>+ getUiTasks(): UnmodifiableObservableList&lt;UiToDo&gt;</td></tr>
+                            <tr><td>+ getToDoList(): ReadOnlyToDoList</td></tr>
+                            <tr><td>+ getUiToDoAtIndex(index: int): Optional&lt;UiToDo&gt;</td></tr>
+                            <tr><td>+ changeToDoList(change: ToDoListChange)</td></tr>
+                            <tr><td>+ undoToDoList()</td></tr>
+                            <tr><td>+ redoToDoList()</td></tr>
+                            <tr><td>+ clearUiToDoListFilter(ifHistoryMode: boolean)</td></tr>
+                            <tr><td>+ setUiToDoListFilter(keywords: Set&lt;String&gt;, tags: Set&lt;Tags&gt;, ifHistoryMode: boolean)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 id="storage-component"><em>Storage</em> Component</h2>
 
                 <figure>
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Storage API.PNG" max-width="600">
-                    <figcaption>API of Storage component</figcaption>
+                    <img src="images/diagrams/storage-component.png" max-width="450">
+                    <figcaption>Structure of <em>Storage</em> component</figcaption>
                 </figure>
 
                 <p>
-                    (Description about what the API does to be filled in here)
+                    The <em>Storage</em> component (package <code>seedu.commando.storage</code>) is in charge of the reading of the data for the to-do list and the data for user preferences on the file system, as well as the saving of this data to the file system.
                 </p>
 
+                <p>The <code>Storage</code> interface has the following methods:</p>
 
-                <h2 id="implementation">Commons Implementation</h2>
+                <div class="datagrid class">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>&lt;&lt;interface&gt;&gt;<br />Storage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>+ setToDoListFilePath(path: String)</td></tr>
+                            <tr><td>+ readToDoList(): Optional&lt;ReadOnlyToDoList&gt;</td></tr>
+                            <tr><td>+ readToDoList(path: String): Optional&lt;ReadOnlyToDoList&gt;</td></tr>
+                            <tr><td>+ saveToDoList(toDoList: ReadOnlyToDoList)</td></tr>
+                            <tr><td>+ saveToDoList(toDoList: ReadOnlyToDoList, path: String)</td></tr>
+                            <tr><td>+ readUserPrefs(): Optional&lt;UserPrefs&gt;</td></tr>
+                            <tr><td>+ saveUserPrefs(userPrefs: UserPrefs)</td></tr>
+                            <tr><td>+ setUserPrefsFilePath(path: String)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
 
-                <h3 id="event-driven-design">Event Driven Design</h3>
+
+                <h2 id="commons-package">Commons Package</h2>
+
+                <h3 id="eventscenter"><code>EventsCenter</code> and Event Driven Design</h3>
 
                 <p>
-                    For components to inform one another that something has happened, we use <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a>, packaged in <code>EventsCenter.java</code> within <code>seedu.commando.commons</code>. This is especially important for lower-level components to communicate with higher-level components that they should not be dependent on.
+                    For components to inform one another that something has happened, we use <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a>, packaged in the <code>EventsCenter</code> class within <code>seedu.commando.commons</code>. This is especially important for lower-level components to communicate with higher-level components that they should not be dependent on. An example is the posting of <code>ExitAppRequestEvent</code> by <em>Logic</em> to inform <code>MainApp.java</code> to close the window.
                 </p>
 
                 <blockquote>
                     All events should extend <code>BaseEvent.java</code> and be placed in package <code>seedu.commando.commons.events</code>.
                 </blockquote>
 
-                <p>
-                    An example is the posting of <code>ExitAppRequestEvent</code> by <em>Logic</em> to inform <code>MainApp.java</code> to close the window:
-                </p>
+                <h3 id="logscenter"><code>LogsCenter</code> and Logging</h3>
 
-                <figure>
-                    <img src="https://i.imgur.com/OvMZBs9.jpg" width="600">
-                    <figcaption>Sequence Diagram of command <code>exit</code></figcaption>
-                </figure>
+                <p> We are using the <code>java.util.logging</code> package for logging. The <code>LogsCenter</code> class is used to manage the logging levels and logging destinations. The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level. </p>
 
-                <h3 id="logging">Logging</h3>
-
-                <p> We are using the <code>java.util.logging</code> package for logging. <code>LogsCenter.java</code> is used to manage the logging levels and logging destinations. The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level. </p>
-
-                <p>Currently log messages are output through the console and to a <code>.log</code> file.</p>
+                <p>Currently, log messages are output through the console and to a <code>.log</code> file.</p>
 
                 <h4>Logging Levels</h4>
                 <ul>
@@ -865,8 +952,12 @@
                     <li>
                         <strong>Task</strong>: A to-do item without a date range, and optionally has a deadline.
                     </li>
+
                     <li>
                         <strong>Index of to-do item</strong>: The number visually tagged to a to-do item on the UI (changes with how to-dos are listed).
+                    </li>
+                    <li>
+                        <strong>CRUD</strong>: Create, read, update and delete
                     </li>
                 </ul>
 

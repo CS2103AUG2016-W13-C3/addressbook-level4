@@ -6,7 +6,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import seedu.commando.MainApp;
 import seedu.commando.commons.core.ComponentManager;
 import seedu.commando.commons.core.Config;
@@ -24,7 +23,6 @@ import java.util.logging.Logger;
  */
 public class UiManager extends ComponentManager implements Ui {
     private static final Logger logger = LogsCenter.getLogger(UiManager.class);
-    private static final String ICON_APPLICATION = "/images/calendar.png";
 
     private Logic logic;
     private UserPrefs prefs;
@@ -43,7 +41,7 @@ public class UiManager extends ComponentManager implements Ui {
         primaryStage.setTitle(Config.ApplicationTitle);
 
         //Set the application icon.
-        primaryStage.getIcons().add(getImage(ICON_APPLICATION));
+        primaryStage.getIcons().add(getImage(Config.ApplicationIcon));
 
         try {
             mainWindow = MainWindow.load(primaryStage, prefs, logic);

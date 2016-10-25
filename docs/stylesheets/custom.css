@@ -169,3 +169,11 @@ kbd.light {
     background: #440000;
     position: relative;
 }
+
+.datagrid.class table {
+    width: auto;
+}
+
+.datagrid.class table th {
+    text-align: center;
+}

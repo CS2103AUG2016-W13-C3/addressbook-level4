@@ -1,12 +1,9 @@
 package seedu.commando.model;
 
-import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.ReadOnlyToDoList;
-import seedu.commando.model.todo.ToDo;
 import seedu.commando.model.todo.ToDoList;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * An immutable representation of a change in a to-do list

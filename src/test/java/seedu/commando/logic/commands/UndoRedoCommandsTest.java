@@ -29,7 +29,7 @@ public class UndoRedoCommandsTest {
 
     @Before
     public void setup() throws IOException {
-        logic = initLogic(folder);
+        logic = initLogic();
         eventsCollector = new EventsCollector();
     }
 

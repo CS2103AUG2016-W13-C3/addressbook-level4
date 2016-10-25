@@ -18,11 +18,7 @@ import java.util.stream.Collectors;
 public class XmlSerializableToDoList {
 
     @XmlElement
-    private List<XmlAdaptedToDo> toDos;
-
-    {
-        toDos = new ArrayList<>();
-    }
+    private List<XmlAdaptedToDo> toDos = new ArrayList<>();
 
     /**
      * Empty constructor required for marshalling
