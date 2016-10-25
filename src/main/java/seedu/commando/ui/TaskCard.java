@@ -50,6 +50,7 @@ public class TaskCard extends UiPart {
         setTagLabel();
     }
     
+    //@@author A0139080J
     private void setTagLabel() {
         if (!toDo.getTags().isEmpty()) {
             String tags = "";
@@ -73,7 +74,7 @@ public class TaskCard extends UiPart {
             dueLabel.setText("");
         }
     }
-    
+    //@@author
     
     /*
      * Different CSS styles for different states
@@ -89,6 +90,7 @@ public class TaskCard extends UiPart {
         return taskPane;
     }
     
+    //@@author A0139080J
     /**
      * Every recently modified event will have a red border
      * This includes modification via undo, edit, add
@@ -123,7 +125,7 @@ public class TaskCard extends UiPart {
             indexLabel.setStyle(ToDoCardStyleManager.deactivateHoverStateIndexCSS);
         }
     }
-
+    //@@author
     
     @Override
     public void setNode(Node node) {

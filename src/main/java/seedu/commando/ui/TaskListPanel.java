@@ -57,9 +57,11 @@ public class TaskListPanel extends UiPart {
     private void configure(ObservableList<UiToDo> toDos) {
         setConnections(toDos);
         addToPlaceholder();
+        //@@author A0139080J
         Platform.runLater(() -> {
             scrollbar = (ScrollBar) taskListView.lookup(".scroll-bar:vertical");
         });
+        //@@author
     }
 
     private void setConnections(ObservableList<UiToDo> list) {
@@ -72,6 +74,7 @@ public class TaskListPanel extends UiPart {
         placeHolderPane.getChildren().add(panel);
     }
 
+    //@@author A0139080J
     protected ListView<UiToDo> getTaskListView() {
         return taskListView;
     }
@@ -91,4 +94,5 @@ public class TaskListPanel extends UiPart {
             scrollbar.setValue(Math.max(scrollbar.getValue() - 0.1, 0));
         }
     }
+    //@@author
 }

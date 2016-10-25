@@ -68,6 +68,7 @@ public class EventCard extends UiPart{
         }
     }
     
+    //@@author A0139080J
     private void setRecurrenceLabel() {
         if (toDo.getDateRange().isPresent() && toDo.getDateRange().get().recurrence != Recurrence.None) {
             recurrenceLabel.setText(toDo.getDateRange().get().recurrence.toString());
@@ -140,6 +141,7 @@ public class EventCard extends UiPart{
             indexLabel.setStyle(ToDoCardStyleManager.deactivateHoverStateIndexCSS);
         }
     }
+    //@@author
     
     @Override
     public void setNode(Node node) {
