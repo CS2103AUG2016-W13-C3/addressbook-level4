@@ -1,7 +1,13 @@
 package seedu.commando.ui;
 
+import org.apache.commons.lang.StringUtils;
+
+import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
@@ -37,6 +43,25 @@ public class ResultDisplay extends UiPart {
         resultDisplayArea.getStyleClass().add(STATUS_BAR_STYLE_SHEET);
         resultDisplayArea.setText("");
         resultDisplayArea.textProperty().bind(displayed);
+        
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                resultDisplayArea.lookup(".scroll-bar:vertical").setDisable(true);
+            }
+        });
+        
+        SimpleIntegerProperty initHeight = new SimpleIntegerProperty(30);
+        resultDisplayArea.prefHeightProperty().bindBidirectional(initHeight);
+        resultDisplayArea.minHeightProperty().bindBidirectional(initHeight);
+        //resultDisplayArea.prefWidthProperty().bind(mainPane.widthProperty());
+        resultDisplayArea.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> observable, final String oldValue, final String newValue) {
+                final int count = StringUtils.countMatches(newValue, "\n");
+                initHeight.setValue(30 + count * 22);
+            }
+        });
         FxViewUtil.applyAnchorBoundaryParameters(resultDisplayArea, 0.0, 0.0, 0.0, 0.0);
         mainPane.getChildren().add(resultDisplayArea);
         FxViewUtil.applyAnchorBoundaryParameters(mainPane, 0.0, 0.0, 0.0, 0.0);

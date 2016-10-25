@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Contains the common functions and variables that EventCard and TaskCard shares
  * and additional styling choices of elements that are doen programmatically
@@ -28,34 +26,126 @@ public class ToDoCardStyleManager {
     public static String deactivateHoverStateIndexCSS = "-fx-background-color: derive(#1d1d1d, 60%);";
     
     // Formatter for displaying the dates for dueLabel in TaskCard, startLabel and endLabel for EventCard
-    private static DateTimeFormatter formatter;
-    private static String dateTimePatternNoYear = "d MMM HH:mm";
-    private static String dateTimePattern = "d MMM yyyy HH:mm";
-    private static String timePattern = "HH:mm";
+    private static DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("HH:mm");
+    private static DateTimeFormatter formatDay = DateTimeFormatter.ofPattern("EEE d");
+    private static DateTimeFormatter formatMonth = DateTimeFormatter.ofPattern("MMM");
+    
+    // In case I want to change them for some reason
+    private static String keywordTo = "to";
+    private static String keywordToday = "Today";
+    private static String keywordTomorrow = "Tomorrow";
+    private static String keywordYesterday = "Yesterday";
+    
+    private static LocalDate todayDate = LocalDate.now();
+    private static LocalDate tomorrowDate = todayDate.plusDays(1);
+    private static LocalDate yesterdayDate = todayDate.minusDays(1);
+    
+    
+    /**
+     * @param Start datetime and end datetime
+     * @return format in a way that is intuitive to the user
+     * I.e. Dates that in the current year will not show the years
+     * I.e. Dates that are in the same year will only show the year once
+     * I.e. Dates that are tomorrow show up as "tomorrow" (Similarly, yesterday and today)
+     * I.e. Dates that are in the same month will only show the month once, provided that 
+     *      the year is the same
+     * I.e. Times will be displayed for both no matter what, even if datetimes are exactly the same
+     */
+    protected static String prettifyDateTimeRange(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        
+        String start = "";
+        String end = "";
+        
+        boolean sameYear = false;
+        boolean sameMonth = false;
+        boolean sameDay = false;
+        
+        if (startDateTime.getYear() == endDateTime.getYear()) {
+            // If start year is equals to end year
+            if (endDateTime.getYear() != todayDate.getYear()) {
+                // If both start year and end year is not this year
+                end += " " + endDateTime.getYear();
+                // Else, don't display any year
+            }
+            sameYear = true;
+        } else {
+            // Start and end year are not equal
+            // Hence display both
+            end += " " + endDateTime.getYear();
+            start += " " + startDateTime.getYear();
+        }
+        
+        if (sameYear && startDateTime.getMonthValue() == endDateTime.getMonthValue()) {
+            // If same year and same month
+            // Display one month
+            end = " " + getMonth(endDateTime) + end;
+            sameMonth = true;
+        } else {
+            // Display both months
+            start = " " + getMonth(startDateTime) + start;
+            end = " " + getMonth(endDateTime) + end;
+        }
+        
+        if (sameYear && sameMonth && startDateTime.getDayOfMonth() == endDateTime.getDayOfMonth()) {
+            // If same year and same month and same day
+            // Display one month
+            end = " " + getDay(endDateTime) + end;
+            sameDay = true;
+        } else {
+            // Display both months
+            start = " " + getDay(startDateTime) + start;
+            end = " " + getDay(endDateTime) + end;
+        }
+
+        // If exactly the same date, start will be "", hence there is a need to get rid 
+        // of the extra space
+        start = getTime(startDateTime) + start;
+        end = getTime(endDateTime) + end;
+        
+        if (!sameYear || !sameMonth || !sameDay) {
+            return start + " " + keywordTo + "\n" + end;
+        } else {
+            return start + " " + keywordTo + " " + end;
+        }
+    }
+    
+    private static String getDay(LocalDateTime ldt) {
+        final LocalDate ld = ldt.toLocalDate();
+        if (ld.isEqual(yesterdayDate)) {
+            return keywordYesterday;
+        } else if (ld.isEqual(todayDate)) {
+            return keywordToday;
+        } else if (ld.isEqual(tomorrowDate)) {
+            return keywordTomorrow;
+        } else {
+            return formatDay.format(ldt);
+        }
+    }
+    
+    private static String getMonth(LocalDateTime ldt) {
+        return formatMonth.format(ldt);
+    }
+    
+    private static String getTime(LocalDateTime ldt) {
+        return formatTime.format(ldt);
+    }
     
     /**
      * @param the date and time (LocalDateTime)
      * @return format in a way that is intuitive to the user
      * I.e. Dates that in the current year will not show the years
-     * I.e. Dates that are today show up as "today"
-     * I.e. Dates that are tomrorow show up as "tomorrow"
+     * I.e. Dates that are today show up as "Today"
+     * I.e. Dates that are tomrorow show up as "Tmr"
      */
-    protected static String prettifyDateTime(LocalDateTime ldt) {
-        if ((ldt.toLocalDate()).equals(LocalDate.now())) {
-            formatter = DateTimeFormatter.ofPattern(timePattern);
-            return "Today " + formatter.format(ldt);
-        } else if ((ldt.toLocalDate()).equals(LocalDate.now().plusDays(1))) {
-            formatter = DateTimeFormatter.ofPattern(timePattern);
-            return "Tomorrow " + formatter.format(ldt);
-        }
+    protected static String prettifyDateTime(LocalDateTime dateTime) {
+        String output = getTime(dateTime) + " " + 
+                        getDay(dateTime) + " " + 
+                        getMonth(dateTime);
         
-        if (ldt.getYear() != LocalDateTime.now().getYear()) {
-            formatter = DateTimeFormatter.ofPattern(dateTimePattern);
-        } else {
-            formatter = DateTimeFormatter.ofPattern(dateTimePatternNoYear);
+        if (dateTime.getYear() != todayDate.getYear()) {
+            output += " " + dateTime.getYear();
         }
-        
-        return formatter.format(ldt);
+        return output;
     }
     
     /**

@@ -1,13 +1,17 @@
 package seedu.commando.commons.core;
 
+import seedu.commando.logic.commands.RecallCommand;
+import seedu.commando.logic.commands.StoreCommand;
+
+import java.util.Optional;
+
 /**
  * Container for user visible messages.
  */
 public class Messages {
     public static final String UNKNOWN_COMMAND = "Unknown command: '%1$s'. Input 'help' for instructions on how to use this application.";
-    public static final String UNKNOWN_COMMAND_FOR_HELP = "Unknown topic for help: '%1$s'. " + 
-                                                          "Available Topics: add, edit, delete, find, clear, finish, unfinish, recall, undo, redo," + 
-                                                          " faq, search logic, datetime formats, cheatsheet";
+    public static final String UNKNOWN_COMMAND_FOR_HELP = "Unknown topic for help: '%1$s'.\n" + 
+                                                          "Available Topics: add, edit, delete, find, clear, finish, unfinish, recall, undo, redo, faq, search logic, datetime formats, cheatsheet";
     public static final String MISSING_COMMAND_WORD = "Missing command word.";
     public static final String INVALID_COMMAND_FORMAT = "Invalid format for '%1$s' command!";
     public static final String MISSING_TODO_TITLE = "Missing title for to-do.";
@@ -30,16 +34,16 @@ public class Messages {
     public static final String TODO_ADDED = "To-do added: %1$s.";
     public static final String TODO_DELETED = "To-do deleted: %1$s.";
     public static final String TODO_EDITED = "To-do edited: %1$s.";
-    public static final String TODO_NO_EDITS = "Nothing interesting happens.";
+    public static final String TODO_NO_EDITS = "But nothing happened.";
     public static final String TODO_NOT_FOUND = "To-do not found: %1$s";
-    public static final String TODO_ITEM_INDEX_INVALID = "Invalid to-do index: %1$d.";
+    public static final String TODO_ITEM_INDEX_INVALID = "Invalid to-do index: %1$s.";
     public static final String EXIT_APPLICATION = "Exiting application...";
-    public static final String TODO_LIST_CLEARED = "Cleared to-do list!";
+    public static final String TODO_LIST_CLEARED = "Boom. Cleared to-do list!";
     public static final String HELP_WINDOW_SHOWN = "Opened help window.";
     public static final String FIND_COMMAND = "Found %1$d events and %2$d tasks.";
-    public static final String RECALL_COMMAND = "Found %1$d events and %2$d tasks in the past.";
+    public static final String RECALL_COMMAND = "Found %1$d past events and %2$d completed tasks.";
     public static final String FIND_COMMAND_CLEAR = "Listed all to-do items.";
-    public static final String RECALL_COMMAND_CLEAR = "Listed all to-do items in the past.";
+    public static final String RECALL_COMMAND_CLEAR = "Listed all past to-do items.";
     public static final String FINISH_COMMAND = "Task marked as done: %1$s.";
     public static final String FINISH_COMMAND_ALREADY_FINISHED = "Task already marked done: %1$s";
     public static final String FINISH_COMMAND_CANNOT_FINISH_EVENT = "To-do must be a task to be marked done: %1$s.";
@@ -60,4 +64,20 @@ public class Messages {
     public static final String TODO_ALREADY_EXISTS = "To-do already exists!";
     public static final String DELETE_COMMAND_NO_TAGS = "To-do with index '%1$s' has no tags to delete!";
     public static final String DELETE_COMMAND_NO_TIME_CONSTRAINTS = "To-do with index '%1$s' has no time constraints to delete!";
+
+    public static final String STORE_COMMAND_FORMAT = "Sample command: store ../../Dropbox/work/todolist.xml.";
+
+    /**
+     * Returns an additional invalid command format message to be appended
+     * for a {@param commandWord}.
+     */
+    public static Optional<String> getInvalidCommandFormatMessage(String commandWord) {
+        switch (commandWord) {
+            case StoreCommand.COMMAND_WORD:
+                return Optional.of(STORE_COMMAND_FORMAT);
+            default: break;
+        }
+
+        return Optional.empty();
+    }
 }

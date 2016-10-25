@@ -20,31 +20,34 @@
 								</Label>
 								<Label fx:id="titleLabel" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" text="\$value" wrapText="true">
                            <padding>
-                              <Insets left="20.0" />
+                              <Insets left="15.0" right="7.0" />
                            </padding></Label>
 							</children>
 						</HBox>
-						<HBox maxHeight="1.7976931348623157E308">
+						<HBox fillHeight="false" maxHeight="1.7976931348623157E308">
 							<children>
-								<Label fx:id="tagsLabel" maxHeight="1.7976931348623157E308" prefHeight="50.0" styleClass="cell_big_label" text="\$tags">
+								<Label fx:id="tagsLabel" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="cell_big_label" text="\$tags" wrapText="true">
 									<padding>
-										<Insets left="20.0" />
+										<Insets left="3.0" right="3.0" />
 									</padding>
 								</Label>
 							</children>
-							<padding>
-								<Insets right="30.0" />
-							</padding>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="4.0" right="4.0" top="10.0" />
+                     </padding>
 						</HBox>
 					</children>
 				</HBox>
-				<VBox alignment="BOTTOM_RIGHT" prefWidth="150.0" VBox.vgrow="ALWAYS">
+				<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
 					<children>
-						<Label fx:id="dueLabel" />
+						<Label fx:id="dueLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="\$due" />
 					</children>
-					<padding>
-						<Insets bottom="5.0" left="7.0" right="7.0" top="5.0" />
-					</padding>
+               <padding>
+                  <Insets left="7.0" right="7.0" />
+               </padding>
 				</VBox>
 			</children>
 		</HBox>

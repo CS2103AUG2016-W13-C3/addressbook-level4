@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 
 <HBox id="eventPane" fx:id="eventPane" maxHeight="1.7976931348623157E308" styleClass="event-pane" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
@@ -20,38 +19,32 @@
 								</Label>
 								<Label fx:id="titleLabel" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" text="\$value" wrapText="true">
                            <padding>
-                              <Insets left="20.0" />
+                              <Insets left="15.0" right="7.0" />
                            </padding></Label>
 							</children>
 						</HBox>
-						<HBox maxHeight="1.7976931348623157E308">
+						<HBox fillHeight="false" maxHeight="1.7976931348623157E308">
 							<children>
-								<Label fx:id="tagsLabel" maxHeight="1.7976931348623157E308" prefHeight="50.0" styleClass="cell_big_label" text="\$tags" wrapText="true">
+								<Label fx:id="tagsLabel" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" styleClass="cell_big_label" text="\$tags" wrapText="true">
 									<padding>
-										<Insets left="20.0" />
+										<Insets left="3.0" right="3.0" />
 									</padding>
 								</Label>
 							</children>
-							<padding>
-								<Insets right="30.0" />
-							</padding>
+                     <padding>
+                        <Insets left="4.0" right="4.0" top="10.0" />
+                     </padding>
 						</HBox>
 					</children>
 				</HBox>
-				<VBox maxHeight="1.7976931348623157E308" prefWidth="150.0">
-					<children>
-						<HBox maxHeight="1.7976931348623157E308">
+						<HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308">
 							<children>
-								<Label fx:id="startLabel" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="\$start" />
+								<Label fx:id="dateIntervalLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="\$interval" />
 							</children>
+               <padding>
+                  <Insets left="7.0" right="7.0" />
+               </padding>
 						</HBox>
-						<HBox maxHeight="1.7976931348623157E308">
-							<children>
-								<Label fx:id="endLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="\$end" />
-							</children>
-						</HBox>
-					</children>
-				</VBox>
 			</children>
 		</HBox>
 	</children>
