@@ -166,3 +166,11 @@ kbd.light {
     border-radius: 3px;
     box-shadow: inset 0 -1px 0 #bbb;
 }
+
+.datagrid.class table {
+    width: auto;
+}
+
+.datagrid.class table th {
+    text-align: center;
+}
