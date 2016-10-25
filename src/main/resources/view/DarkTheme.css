@@ -137,7 +137,7 @@
     -fx-text-fill: #010504;
 }
 
-#indexLabel, #dateIntervalLabel, #dueLabel, #tagsLabel {
+#indexLabel, #dateIntervalLabel, #dueLabel, #tagsLabel, #recurrenceLabel {
 	-fx-font-family: "Segoe UI bold";
 }
 
@@ -147,6 +147,15 @@
 	-fx-border-color: derive(#1d1d1d, 60%); 
 	-fx-background-radius: 10px;
 	-fx-background-color: derive(#DCDCDC, 30%);
+}
+
+#recurrenceLabel {
+	-fx-border-radius: 10px;
+	-fx-border-width: 2 2 2 2;
+	-fx-background-color: derive(#1d1d1d, 60%); 
+	-fx-background-radius: 10px;
+	-fx-border-color: derive(#DCDCDC, -80%);
+	-fx-text-fill: derive(#DCDCDC, 80%);
 }
 
 #indexLabel {

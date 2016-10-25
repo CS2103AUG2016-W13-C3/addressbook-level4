@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <HBox id="eventPane" fx:id="eventPane" maxHeight="1.7976931348623157E308" styleClass="event-pane" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
@@ -25,15 +26,35 @@
 						</HBox>
 						<HBox fillHeight="false" maxHeight="1.7976931348623157E308">
 							<children>
-								<Label fx:id="tagsLabel" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" styleClass="cell_big_label" text="\$tags" wrapText="true">
-									<padding>
-										<Insets left="3.0" right="3.0" />
-									</padding>
-								</Label>
+                        <VBox>
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <Label fx:id="recurrenceLabel" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" styleClass="cell_big_label" text="\$recurr" wrapText="true">
+                                       <padding>
+                                          <Insets left="3.0" right="3.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox>
+                                 <children>
+            								<Label fx:id="tagsLabel" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" styleClass="cell_big_label" text="\$tags" wrapText="true">
+            									<padding>
+            										<Insets left="3.0" right="3.0" />
+            									</padding>
+            								</Label>
+                                 </children>
+                                 <padding>
+                                    <Insets top="5.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="4.0" right="4.0" top="5.0" />
+                           </padding>
+                        </VBox>
 							</children>
-                     <padding>
-                        <Insets left="4.0" right="4.0" top="10.0" />
-                     </padding>
 						</HBox>
 					</children>
 				</HBox>

@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.Recurrence;
 
 public class EventCard extends UiPart{
 
@@ -30,6 +31,8 @@ public class EventCard extends UiPart{
     private Label endLabel;
     @FXML
     private Label tagsLabel;
+    @FXML
+    private Label recurrenceLabel;
 
     private ReadOnlyToDo toDo;
     private int index;
@@ -49,6 +52,7 @@ public class EventCard extends UiPart{
         indexLabel.setText(String.valueOf(index));
 
         setDateTimesLabels();
+        setRecurrenceLabel();
         setTagLabel();
     }
 
@@ -61,6 +65,14 @@ public class EventCard extends UiPart{
             tagsLabel.setText(tags);
         } else {
             tagsLabel.setVisible(false);
+        }
+    }
+    
+    private void setRecurrenceLabel() {
+        if (toDo.getDateRange().isPresent() && toDo.getDateRange().get().recurrence != Recurrence.None) {
+            recurrenceLabel.setText(toDo.getDateRange().get().recurrence.toString());
+        } else {
+            recurrenceLabel.setVisible(false);
         }
     }
     
