@@ -46,8 +46,8 @@
                         <li><a href="#model-component"><em>Model</em> Component</a></li>
                         <li><a href="#commons-package">Commons Package</a></li>
                         <ul id="second-layer">
-                            <li><a href="#event-driven-design">Event Driven Design</a></li>
-                            <li><a href="#logging">Logging</a></li>
+                            <li><a href="#eventscenter"><em>EventsCenter</em> and Event Driven Design</a></li>
+                            <li><a href="#logscenter"><em>LogsCenter</em> and Logging</a></li>
                         </ul>
                         <li><a href="#testing">Testing</a></li>
                         <li><a href="#dev-ops">Dev Ops</a></li>
@@ -212,7 +212,7 @@
                         Note that for the <em>Model</em> component, besides the API defined by <code>Model.java</code>, it also contains data structures such as <code>UserPrefs.java</code> and <code>ReadOnlyToDo.java</code> that the other components are dependent on. Such dependencies are listed in the later section <a href="#model-component">Model Component.</a>
                     </blockquote>
 
-                <p>Underlying all 4 components is the package <code>seedu.commando.commons</code>. It is a collection of utility classes and application constants that are used in all the components. We also use <a href="#event-driven-design">Event Driven Design</a> for components to communicate with one another.</p>
+                <p>Underlying all 4 components is the package <code>seedu.commando.commons</code>. It is a collection of utility classes and application constants that are used in all the components. We also use <a href="#eventscenter">Event Driven Design</a> for components to communicate with one another.</p>
 
                 <h3>What Happens in a Command Execution</h3>
 
@@ -268,7 +268,7 @@
                     </ul> 
                 </p>
 
-                <p>The <em>Logic</em> interface has the following methods:</p>
+                <p>The <code>Logic</code> interface has the following methods:</p>
                 
                 <div class="datagrid class">
                     <table>
@@ -314,7 +314,7 @@
                     </ul>
                 </p>
 
-                <p>The <em>Model</em> interface has the following methods:</p>
+                <p>The <code>Model</code> interface has the following methods:</p>
 
                 <div class="datagrid class">
                     <table>
@@ -340,41 +340,54 @@
                 <h2 id="storage-component"><em>Storage</em> Component</h2>
 
                 <figure>
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Storage API.PNG" max-width="600">
-                    <figcaption>API of Storage component</figcaption>
+                    <img src="images/diagrams/storage-component.png" max-width="450">
+                    <figcaption>Structure of <em>Storage</em> component</figcaption>
                 </figure>
 
                 <p>
-                    (Description about what the API does to be filled in here)
+                    The <em>Storage</em> component (package <code>seedu.commando.storage</code>) is in charge of the reading of the data for the to-do list and the data for user preferences on the file system, as well as the saving of this data to the file system.
                 </p>
 
+                <p>The <code>Storage</code> interface has the following methods:</p>
 
-                <h2 id="implementation">Commons Implementation</h2>
+                <div class="datagrid class">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>&lt;&lt;interface&gt;&gt;<br />Storage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>+ setToDoListFilePath(path: String)</td></tr>
+                            <tr><td>+ readToDoList(): Optional&lt;ReadOnlyToDoList&gt;</td></tr>
+                            <tr><td>+ readToDoList(path: String): Optional&lt;ReadOnlyToDoList&gt;</td></tr>
+                            <tr><td>+ saveToDoList(toDoList: ReadOnlyToDoList)</td></tr>
+                            <tr><td>+ saveToDoList(toDoList: ReadOnlyToDoList, path: String)</td></tr>
+                            <tr><td>+ readUserPrefs(): Optional&lt;UserPrefs&gt;</td></tr>
+                            <tr><td>+ saveUserPrefs(userPrefs: UserPrefs)</td></tr>
+                            <tr><td>+ setUserPrefsFilePath(path: String)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
 
-                <h3 id="event-driven-design">Event Driven Design</h3>
+
+                <h2 id="commons-package">Commons Package</h2>
+
+                <h3 id="eventscenter"><code>EventsCenter</code> and Event Driven Design</h3>
 
                 <p>
-                    For components to inform one another that something has happened, we use <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a>, packaged in <code>EventsCenter.java</code> within <code>seedu.commando.commons</code>. This is especially important for lower-level components to communicate with higher-level components that they should not be dependent on.
+                    For components to inform one another that something has happened, we use <a href="https://github.com/google/guava/wiki/EventBusExplained">Google's Event Bus library</a>, packaged in the <code>EventsCenter</code> class within <code>seedu.commando.commons</code>. This is especially important for lower-level components to communicate with higher-level components that they should not be dependent on. An example is the posting of <code>ExitAppRequestEvent</code> by <em>Logic</em> to inform <code>MainApp.java</code> to close the window.
                 </p>
 
                 <blockquote>
                     All events should extend <code>BaseEvent.java</code> and be placed in package <code>seedu.commando.commons.events</code>.
                 </blockquote>
 
-                <p>
-                    An example is the posting of <code>ExitAppRequestEvent</code> by <em>Logic</em> to inform <code>MainApp.java</code> to close the window:
-                </p>
+                <h3 id="logscenter"><code>LogsCenter</code> and Logging</h3>
 
-                <figure>
-                    <img src="https://i.imgur.com/OvMZBs9.jpg" width="600">
-                    <figcaption>Sequence Diagram of command <code>exit</code></figcaption>
-                </figure>
+                <p> We are using the <code>java.util.logging</code> package for logging. The <code>LogsCenter</code> class is used to manage the logging levels and logging destinations. The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level. </p>
 
-                <h3 id="logging">Logging</h3>
-
-                <p> We are using the <code>java.util.logging</code> package for logging. <code>LogsCenter.java</code> is used to manage the logging levels and logging destinations. The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level. </p>
-
-                <p>Currently log messages are output through the console and to a <code>.log</code> file.</p>
+                <p>Currently, log messages are output through the console and to a <code>.log</code> file.</p>
 
                 <h4>Logging Levels</h4>
                 <ul>
