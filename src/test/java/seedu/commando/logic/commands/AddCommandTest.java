@@ -167,7 +167,6 @@ public class AddCommandTest {
         String command = "add valid title by 1 Mar 2016 20:01 #tag1 #tag2";
         CommandResult result = logic.execute(command);
         assertFalse(result.hasError());
-
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("valid title")
@@ -182,8 +181,9 @@ public class AddCommandTest {
 
     @Test
     public void execute_add_emptyTag() throws IllegalValueException {
-        logic.execute("add title #    ");
-
+        CommandResult result = logic.execute("add title #    ");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .build()));
@@ -191,8 +191,9 @@ public class AddCommandTest {
 
     @Test
     public void execute_add_taskWithFromToBy() throws IllegalValueException {
-        logic.execute("add walk by the beach from here to there");
-
+        CommandResult result = logic.execute("add walk by the beach from here to there");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("walk by the beach from here to there")
                 .build()));
@@ -200,8 +201,9 @@ public class AddCommandTest {
 
     @Test
     public void execute_add_eventWith2DateRanges() throws IllegalValueException {
-        logic.execute("add walk by the beach from today to tomorrow from 10 Nov 2011 1200h to 11 Dec 2012 1300h");
-
+        CommandResult result = logic.execute("add walk by the beach from today to tomorrow from 10 Nov 2011 1200h to 11 Dec 2012 1300h");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("walk by the beach from today to tomorrow")
                 .withDateRange(
@@ -266,5 +268,30 @@ public class AddCommandTest {
         assertEquals(Messages.MISSING_TODO_DATERANGE_END + "\n" + Messages.DATE_FORMAT + "\n" + 
                 Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
+
+    @Test
+    public void execute_add_quotedTitle() throws IllegalValueException {
+        CommandResult result = logic.execute("add `event from today to tomorrow`");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("event from today to tomorrow")
+                .build()));
+    }
+
+    @Test
+    public void execute_add_trailingTextAfterQuotedTitle() throws IllegalValueException {
+        CommandResult result = logic.execute("add `event from today to` tomorrow");
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
+
+    @Test
+    public void execute_add_emptyQuotedTitle() throws IllegalValueException {
+        CommandResult result = logic.execute("add `  ` from today to tomorrow");
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertEquals(Messages.MISSING_TODO_TITLE, result.getFeedback());
     }
 }

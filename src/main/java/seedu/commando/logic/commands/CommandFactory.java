@@ -150,6 +150,9 @@ public class CommandFactory {
     }
 
     private Command buildAddCommand() throws IllegalValueException {
+        // Check if quoted title exists
+        Optional<String> quotedTitle = sequentialParser.extractQuotedTitle();
+
         // Extract tags
         Set<Tag> tags = sequentialParser.extractTrailingTags();
 
@@ -159,10 +162,16 @@ public class CommandFactory {
         // Extract due date, if exists
         Optional<DueDate> dueDate = sequentialParser.extractTrailingDueDate();
 
-        // Extract title
-        String title = sequentialParser.extractText().orElseThrow(() -> new IllegalValueException(Messages.MISSING_TODO_TITLE));
-
-        AddCommand command = new AddCommand(new Title(title));
+        // Initialize command
+        // Extract title, if there was no quoted title
+        // Otherwise, use the quoted title
+        AddCommand command;
+        if (quotedTitle.isPresent()) {
+            command = new AddCommand(new Title(quotedTitle.get()));
+        } else {
+            String title = sequentialParser.extractText().orElseThrow(() -> new IllegalValueException(Messages.MISSING_TODO_TITLE));
+            command = new AddCommand(new Title(title));
+        }
 
         // Put in fields
         if (!tags.isEmpty()) {
@@ -274,6 +283,8 @@ public class CommandFactory {
             () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
         );
 
+        Optional<String> quotedTitle = sequentialParser.extractQuotedTitle();
+
         EditCommand command = new EditCommand(index);
 
         // Extract tags
@@ -294,10 +305,19 @@ public class CommandFactory {
             x -> command.dueDate = x
         );
 
-        // Extract title
-        sequentialParser.extractText().ifPresent(title -> {
-            command.title = new Title(title);
-        });
+        // Try to extract title, if there was no quoted title
+        // Otherwise, use the quoted title
+        if (quotedTitle.isPresent()) {
+            command.title = new Title(quotedTitle.get());
+        } else {
+            sequentialParser.extractText().ifPresent(
+                title -> command.title = new Title(title)
+            );
+        }
+
+        if (!sequentialParser.isInputEmpty()) {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, EditCommand.COMMAND_WORD));
+        }
 
         return command;
     }
