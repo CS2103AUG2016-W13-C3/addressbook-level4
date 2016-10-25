@@ -28,8 +28,15 @@ Responsibilities: Storage
 
 #### [Song Zhiwen](https://github.com/zzzzwen) 
 <img src="images/SongZhiwen.JPG" width="150"><br>
- Role: Testing and code quality <br>  
- Responsibilities: Model
+ * Components in charge of: Model
+ * Aspects/tools in charge of:Testing
+ * Features implemented:
+ 	* ToDo model
+ 	* Undo and Redo command
+ 	* Gui testing
+ 	* Non-gui testing
+ * Other major contribution:
+ 	* Developer guide appendices formatting
  
  -----
 
