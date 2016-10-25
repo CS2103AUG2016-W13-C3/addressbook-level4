@@ -48,10 +48,7 @@ public class CommandParser {
     );
 
     private String input;
-    private DateTimeParser dateTimeParser;
-    {
-        dateTimeParser = new DateTimeParser();
-    }
+    private DateTimeParser dateTimeParser = new DateTimeParser();
 
     /**
      * Set the current input the parser is working on

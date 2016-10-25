@@ -30,10 +30,7 @@ public class LogicManager extends ComponentManager implements Logic {
     private final Model model;
     private final Storage storage;
     private final UserPrefs userPrefs;
-    private final CommandFactory commandFactory;
-    {
-        commandFactory = new CommandFactory();
-    }
+    private final CommandFactory commandFactory = new CommandFactory();
 
     public LogicManager(Model model, Storage storage, UserPrefs userPrefs) {
         this.model = model;

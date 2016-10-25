@@ -242,27 +242,35 @@
                 <p>The <em>UI</em> component (package <code>seedu.commando.ui</code>) is in charge of:
                 
                     <ul>
-                        <li>Handing user input</li>
-                        <li>Passing user input to the appropriate methods of the <em>Logic</em> component</li>
-                        <li>Displaying the graphical user interface (GUI)</li>
-                        <li>Updating the GUI automatically when data in the <em>Model</em> component changes, done by binding itself to the data using JavaFX's <em>Observable</em> collections</li>
-                        <li>Responding to events posted in <em>EventsCenter</em> that involve a change in the GUI (e.g. opening the help window when <code>ShowHelpRequestEvent</code> is posted)</li>
+                        <li>Handing and passing user input to the appropriate methods of the <em>Logic</em> component.</li>
+                        <li>Displaying the graphical user interface (GUI).</li>
+                        <li>Updating the GUI automatically when data in the <em>Model</em> component changes, done by binding itself to the data using JavaFX's <em>Observable</em> collections.</li>
+                        <li>Responding to events posted in <em>EventsCenter</em> that involve a change in the GUI (e.g. opening the help window when <code>ShowHelpRequestEvent</code> is posted).</li>
                     </ul> 
-                
-                
                 <p>
                     It uses the JavaFX UI framework (more information about JavaFX <a href="http://docs.oracle.com/javase/8/javase-clienttechnologies.htm">here</a>) - it is made up of GUI parts such as <code>CommandBox</code>, <code>ResultDisplay</code> and <code>EventListPanel</code>. Each part has a class inheriting from the abstract <code>UiPart</code> class (which may be loaded with <code>UiPartLoader</code>), and has a layout defined in a corresponding <code>.fxml</code> file of the same name, located in the <code>resources/view</code> folder. For example, the layout of the <code>MainWindow</code> class is specified in <code>resources/view/MainWindow.fxml</code>.
                 </p>
 
-                <h3 id="logic-api">Logic API and Component</h3>
+                <h3 id="logic-component"><em>Logic</em> Component</h3>
 
                 <figure>
-                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Logic API.PNG" max-width="600">
-                    <figcaption>API of Logic component</figcaption>
+                    <img src="images/diagrams/logic-component.png" max-width="500">
+                    <figcaption>API of <em>Logic</em> component</figcaption>
                 </figure>
 
                 <p>
-                    (Description about what the API does to be filled in here)
+                    The <em>Logic</em> component (package <code>seedu.commando.logic</code>) is in charge of:
+
+                    <ul>
+                        <li>Parsing the string commands from the <em>UI</em> component.</li>
+                        <li>Calling the appropriate methods of <em>Model</em> and <em>Storage</em> components, or posting the appropriate events on <em>EventsCenter</em> based on the commands.</li>
+                        <li>Informing the <em>UI</em> of the results of the commands executed.</li>
+                        <li>Responding to any events from <em>EventsCenter</em> that would require an action on the <code>Model</code> or <code>Storage</code> components (e.g. saving the to-do list to the file system with <em>Storage</em> when the <code>ToDoListChangeEvent</code> is posted).</li>
+                    </ul> 
+                </p>
+
+                <p>
+                    When the <em>UI</em> calls <code>execute(String)</code>, <code>LogicManager</code> passes the string command to <code>CommandFactory</code>. <code>CommandFactory</code>, with the help of <code>CommandParser</code>, would determine the type of command and parse it accordingly, creating one of the sub-class of the abstract <code>Command</code> class. The <code>Command</code> would then have its <code>execute()</code> method called in <code>LogicManager</code>, producing a <code>CommandResult</code>. The <code>CommandResult</code> is finally returned to <em>UI</em>, which contains the user feedback message and indicates whether the command was successful. Refer to the following diagram for a graphical walkthrough.
                 </p>
 
                 <h3 id="model-api">Model API and Component</h3>

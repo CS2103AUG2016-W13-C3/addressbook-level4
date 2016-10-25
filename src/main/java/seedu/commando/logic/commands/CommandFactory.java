@@ -19,11 +19,7 @@ public class CommandFactory {
     public static final String KEYWORD_DELETE_TIME = "time";
     public static final String KEYWORD_DELETE_TAG = "tag";
 
-    private CommandParser commandParser;
-
-    {
-        commandParser = new CommandParser();
-    }
+    private CommandParser commandParser = new CommandParser();
 
     /**
      * Interprets an input string as a command, initializes it, and returns it
