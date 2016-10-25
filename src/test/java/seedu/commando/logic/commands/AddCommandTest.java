@@ -292,6 +292,6 @@ public class AddCommandTest {
         CommandResult result = logic.execute("add `  ` from today to tomorrow");
         assertTrue(result.hasError());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertEquals(Messages.MISSING_TODO_TITLE, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_TITLE + "\n" + Messages.ADD_COMMAND_FORMAT, result.getFeedback());
     }
 }

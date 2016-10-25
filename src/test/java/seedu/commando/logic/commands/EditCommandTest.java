@@ -297,6 +297,6 @@ public class EditCommandTest {
         CommandResult result = logic.execute("edit 1 ``");
         assertTrue(result.hasError());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertEquals(Messages.MISSING_TODO_TITLE, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_TITLE + "\n" + Messages.EDIT_COMMAND_FORMAT, result.getFeedback());
     }
 }

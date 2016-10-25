@@ -85,14 +85,17 @@ public class Messages {
     public static final String STORE_COMMAND_FORMAT = ">> store ../../Dropbox/work/todolist.xml.";
     public static final String IMPORT_COMMAND_FORMAT = ">> import ../../Dropbox/work/todolist.xml.";
     public static final String EXPORT_COMMAND_FORMAT = ">> export ../../Dropbox/work/todolist.xml.";
-    public static final String ADD_COMMAND_FORMAT = ">> add watch ‘Fantastic Beast and where to find them’ #movie\n" + 
-                                                    ">> add Math Exam from 26 nov 1300h to 1430h";
-    public static final String DELETE_COMMAND_FORMAT = ">> delete 1";
-    public static final String FIND_COMMAND_FORMAT = ">> find\n" + ">> find thing #tag";
-    public static final String RECALL_COMMAND_FORMAT = ">> recall\n" + ">> recall thing #tag";
-    public static final String EDIT_COMMAND_FORMAT = ">> edit 1 change in description";
-    public static final String FINISH_COMMAND_FORMAT = ">> finish 1";
-    public static final String UNFINISH_COMMAND_FORMAT = ">> unfinish 1";
+    public static final String ADD_COMMAND_FORMAT = ">> add <task description> #tag1 #tag2...\n" + 
+                                                    ">> add <task description> by <deadline>\n" + 
+                                                    ">> add <event description> from <start time> to <end time>";
+    public static final String DELETE_COMMAND_FORMAT = ">> delete <index>";
+    public static final String FIND_COMMAND_FORMAT = ">> find\n" + ">> find <keyword(s)> #tag1 #tag2...";
+    public static final String RECALL_COMMAND_FORMAT = ">> recall\n" + ">> recall <keyword(s)> #tag1 #tag2...";
+    public static final String EDIT_COMMAND_FORMAT = ">> edit <index> <change in description>\n" + 
+                                                     ">> edit <index> `<change in description`\n" + 
+                                                     "(If you want to start your description by keywords such as `by`, `from` and `to`";
+    public static final String FINISH_COMMAND_FORMAT = ">> finish <index>";
+    public static final String UNFINISH_COMMAND_FORMAT = ">> unfinish <index>";
     
     public static final String DATE_FORMAT = "Date Time Formats: 9 jan 2018 23:59 | Jan 9 2019 1900h | coming friday morning | today 23:59";
 
