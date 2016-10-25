@@ -124,15 +124,15 @@ public class SequentialParser {
 
             if (startDateTime.isPresent() && !endDateTime.isPresent()) {
                 if (endString.isEmpty()) {
-                    throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_END);
+                    throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_END + "\n" + Messages.DATE_FORMAT);
                 } else {
-                    throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_END);
+                    throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_END + "\n" + Messages.DATE_FORMAT);
                 }
             } else if (endDateTime.isPresent() && !startDateTime.isPresent()) {
                if (startString.isEmpty()) {
-                   throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_START);
+                   throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_START + "\n" + Messages.DATE_FORMAT);
                } else {
-                   throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_START);
+                   throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_START + "\n" + Messages.DATE_FORMAT);
                }
             }
 

@@ -7,10 +7,8 @@ import seedu.commando.model.ToDoListChange;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.*;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Adds a to-do to the to-do list
@@ -32,8 +30,7 @@ public class AddCommand extends Command {
     }
 
     @Override
-    public CommandResult execute()
-        throws IllegalValueException, NoModelException {
+    public CommandResult execute() throws NoModelException {
         Model model = getModel();
 
         // Create the to-do to add
@@ -54,13 +51,17 @@ public class AddCommand extends Command {
 
         // Ensure to-do doesn't have both duedate and daterange
         if (toDo.getDateRange().isPresent() && toDo.getDueDate().isPresent()) {
-            throw new IllegalValueException(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE);
+            return new CommandResult(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, true);
         }
 
-        model.changeToDoList(new ToDoListChange(
-            new ToDoList().add(toDo),
-            new ToDoList()
-        ));
+        try {
+            model.changeToDoList(new ToDoListChange(
+                new ToDoList().add(toDo),
+                new ToDoList()
+            ));
+        } catch (IllegalValueException exception) {
+            return new CommandResult(exception.getMessage(), true);
+        }
 
         return new CommandResult(String.format(Messages.TODO_ADDED, toDo.getTitle().toString()));
     }

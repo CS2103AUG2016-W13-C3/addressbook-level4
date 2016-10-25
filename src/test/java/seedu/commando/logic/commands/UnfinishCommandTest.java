@@ -68,15 +68,16 @@ public class UnfinishCommandTest {
         CommandResult result = logic.execute("unfinish missing index");
         assertTrue(result.hasError());
 
-        assertEquals(Messages.MISSING_TODO_ITEM_INDEX, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_ITEM_INDEX
+                + "\n" + Messages.getInvalidCommandFormatMessage("unfinish").get(), result.getFeedback());
     }
 
     @Test
     public void execute_unfinish_invalidFormat() {
         CommandResult result = logic.execute("unfinish 1 #troll");
         assertTrue(result.hasError());
-
-        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD), result.getFeedback());
+        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD)
+                + "\n" + Messages.getInvalidCommandFormatMessage("unfinish").get(), result.getFeedback());
     }
 
     @Test

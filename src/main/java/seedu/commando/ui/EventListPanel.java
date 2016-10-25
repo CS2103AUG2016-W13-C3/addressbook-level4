@@ -1,6 +1,5 @@
 package seedu.commando.ui;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -70,13 +69,6 @@ public class EventListPanel extends UiPart {
         placeHolderPane.getChildren().add(panel);
     }
 
-    protected void scrollTo(int index) {
-        Platform.runLater(() -> {
-            eventListView.scrollTo(index);
-            eventListView.getSelectionModel().clearAndSelect(index);
-        });
-    }
-    
     protected ListView<UiToDo> getEventListView() {
         return eventListView;
     }
@@ -87,13 +79,13 @@ public class EventListPanel extends UiPart {
     
     protected void scrollDown() {
         if (isScrollBarPresent()) {
-            scrollbar.increment();
+            scrollbar.setValue(Math.min(scrollbar.getValue() + 0.1, 1));
         }
     }
     
     protected void scrollUp() {
         if (isScrollBarPresent()) {
-            scrollbar.decrement();
+            scrollbar.setValue(Math.max(scrollbar.getValue() - 0.1, 0));
         }
     }
 }

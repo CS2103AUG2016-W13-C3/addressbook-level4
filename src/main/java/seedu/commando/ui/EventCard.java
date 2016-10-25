@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.Recurrence;
 
 public class EventCard extends UiPart{
 
@@ -25,11 +26,13 @@ public class EventCard extends UiPart{
     @FXML
     private Label indexLabel;
     @FXML
-    private Label startLabel;
+    private Label dateIntervalLabel;
     @FXML
     private Label endLabel;
     @FXML
     private Label tagsLabel;
+    @FXML
+    private Label recurrenceLabel;
 
     private ReadOnlyToDo toDo;
     private int index;
@@ -49,6 +52,7 @@ public class EventCard extends UiPart{
         indexLabel.setText(String.valueOf(index));
 
         setDateTimesLabels();
+        setRecurrenceLabel();
         setTagLabel();
     }
 
@@ -60,25 +64,29 @@ public class EventCard extends UiPart{
             }
             tagsLabel.setText(tags);
         } else {
-            tagsLabel.setText("");
+            tagsLabel.setManaged(false);
+        }
+    }
+    
+    private void setRecurrenceLabel() {
+        if (toDo.getDateRange().isPresent() && toDo.getDateRange().get().recurrence != Recurrence.None) {
+            recurrenceLabel.setText(toDo.getDateRange().get().recurrence.toString());
+        } else {
+            recurrenceLabel.setManaged(false);
         }
     }
     
     private void setDateTimesLabels() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
-            final long startDayDifference = 
-                    ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.startDate);
-            final long endDayDifference = 
-                    ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.endDate);
-            startLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.startDate) + " to ");
-            endLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.endDate));
-            startLabel.setStyle("-fx-text-fill: " + 
+            final long startDayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.startDate);
+            
+            dateIntervalLabel.setText(
+                    ToDoCardStyleManager.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
+            dateIntervalLabel.setStyle("-fx-text-fill: " + 
                     ToDoCardStyleManager.getDateProximityBlue((int) startDayDifference));
-            endLabel.setStyle("-fx-text-fill: " + 
-                    ToDoCardStyleManager.getDateProximityBlue((int) endDayDifference));
         } else {
-            startLabel.setText("");
+            dateIntervalLabel.setText("");
             endLabel.setText("");
         }
     }

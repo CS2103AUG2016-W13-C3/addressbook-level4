@@ -20,38 +20,44 @@
 								</Label>
 								<Label fx:id="titleLabel" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" text="\$value" wrapText="true">
                            <padding>
-                              <Insets left="20.0" />
+                              <Insets left="15.0" right="7.0" />
                            </padding></Label>
 							</children>
 						</HBox>
-						<HBox maxHeight="1.7976931348623157E308">
+						<HBox fillHeight="false" maxHeight="1.7976931348623157E308">
 							<children>
-								<Label fx:id="tagsLabel" maxHeight="1.7976931348623157E308" prefHeight="50.0" styleClass="cell_big_label" text="\$tags" wrapText="true">
-									<padding>
-										<Insets left="20.0" />
-									</padding>
-								</Label>
+                        <VBox>
+                           <children>
+                              <Label fx:id="recurrenceLabel" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" styleClass="cell_big_label" text="\$recurr" wrapText="true">
+                                 <padding>
+                                    <Insets left="3.0" right="3.0" />
+                                 </padding>
+                              </Label>
+      								<Label fx:id="tagsLabel" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" styleClass="cell_big_label" text="\$tags" wrapText="true">
+      									<padding>
+      										<Insets left="3.0" right="3.0" />
+      									</padding>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+      								</Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="4.0" right="4.0" top="5.0" />
+                           </padding>
+                        </VBox>
 							</children>
-							<padding>
-								<Insets right="30.0" />
-							</padding>
 						</HBox>
 					</children>
 				</HBox>
-				<VBox maxHeight="1.7976931348623157E308" prefWidth="150.0">
-					<children>
-						<HBox maxHeight="1.7976931348623157E308">
+						<HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308">
 							<children>
-								<Label fx:id="startLabel" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="\$start" />
+								<Label fx:id="dateIntervalLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="\$interval" />
 							</children>
+               <padding>
+                  <Insets left="7.0" right="7.0" />
+               </padding>
 						</HBox>
-						<HBox maxHeight="1.7976931348623157E308">
-							<children>
-								<Label fx:id="endLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="\$end" />
-							</children>
-						</HBox>
-					</children>
-				</VBox>
 			</children>
 		</HBox>
 	</children>

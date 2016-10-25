@@ -16,64 +16,82 @@ import java.util.stream.Collectors;
  * Doesn't set context for commands
  */
 public class CommandFactory {
-    public static final String KEYWORD_DELETE_TIME = "time";
-    public static final String KEYWORD_DELETE_TAG = "tag";
+    private static final String KEYWORD_DELETE_TIME = "time";
+    private static final String KEYWORD_DELETE_TAG = "tag";
 
-    private SequentialParser sequentialParser;
+    private SequentialParser sequentialParser  = new SequentialParser();
 
-    {
-        sequentialParser = new SequentialParser();
+    public static class InvalidCommandFormatException extends Exception {
+        public final String command;
+
+        public InvalidCommandFormatException(String message, String command) {
+            super(message);
+            this.command = command;
+        }
     }
+
+    public static class UnknownCommandWordException extends Exception {
+        public final String commandWord;
+        UnknownCommandWordException(String commandWord) {
+            this.commandWord = commandWord;
+        }
+    }
+    
+    public static class MissingCommandWordException extends Exception {}
 
     /**
      * Interprets an input string as a command, initializes it, and returns it
-     *
-     * @return instance of a command based on {@param parsable}
-     * @throws IllegalValueException if the command is invalid
+     * @return instance of a command
      */
-    public Command build(String inputString) throws IllegalValueException {
+    public Command build(String inputString) throws InvalidCommandFormatException,
+        UnknownCommandWordException, MissingCommandWordException {
         sequentialParser.setInput(inputString);
 
         // Check if command word exists
         Optional<String> commandWord = sequentialParser.extractWord();
 
         if (!commandWord.isPresent()) {
-            throw new IllegalValueException(Messages.MISSING_COMMAND_WORD);
+            throw new MissingCommandWordException();
         }
 
-        switch (commandWord.get().toLowerCase()) {
-            case AddCommand.COMMAND_WORD:
-                return buildAddCommand();
-            case DeleteCommand.COMMAND_WORD:
-                return buildDeleteCommand();
-            case FinishCommand.COMMAND_WORD:
-                return buildFinishCommand();
-            case UnfinishCommand.COMMAND_WORD:
-                return buildUnfinishCommand();
-            case FindCommand.COMMAND_WORD:
-                return buildFindCommand();
-            case ExitCommand.COMMAND_WORD:
-                return buildExitCommand();
-            case ClearCommand.COMMAND_WORD:
-                return buildClearCommand();
-            case HelpCommand.COMMAND_WORD:
-                return buildHelpCommand();
-            case EditCommand.COMMAND_WORD:
-                return buildEditCommand();
-            case UndoCommand.COMMAND_WORD:
-                return buildUndoCommand();
-            case RedoCommand.COMMAND_WORD:
-                return buildRedoCommand();
-            case StoreCommand.COMMAND_WORD:
-                return buildStoreCommand();
-            case ExportCommand.COMMAND_WORD:
-                return buildExportCommand();
-            case ImportCommand.COMMAND_WORD:
-                return buildImportCommand();
-            case RecallCommand.COMMAND_WORD:
-                return buildRecallCommand();
-            default:
-                throw new IllegalValueException(Messages.UNKNOWN_COMMAND);
+        String processedCommandWord = commandWord.get().toLowerCase();
+        try {
+            switch (processedCommandWord) {
+                case AddCommand.COMMAND_WORD:
+                    return buildAddCommand();
+                case DeleteCommand.COMMAND_WORD:
+                    return buildDeleteCommand();
+                case FinishCommand.COMMAND_WORD:
+                    return buildFinishCommand();
+                case UnfinishCommand.COMMAND_WORD:
+                    return buildUnfinishCommand();
+                case FindCommand.COMMAND_WORD:
+                    return buildFindCommand();
+                case ExitCommand.COMMAND_WORD:
+                    return buildExitCommand();
+                case ClearCommand.COMMAND_WORD:
+                    return buildClearCommand();
+                case HelpCommand.COMMAND_WORD:
+                    return buildHelpCommand();
+                case EditCommand.COMMAND_WORD:
+                    return buildEditCommand();
+                case UndoCommand.COMMAND_WORD:
+                    return buildUndoCommand();
+                case RedoCommand.COMMAND_WORD:
+                    return buildRedoCommand();
+                case StoreCommand.COMMAND_WORD:
+                    return buildStoreCommand();
+                case ExportCommand.COMMAND_WORD:
+                    return buildExportCommand();
+                case ImportCommand.COMMAND_WORD:
+                    return buildImportCommand();
+                case RecallCommand.COMMAND_WORD:
+                    return buildRecallCommand();
+                default:
+                    throw new UnknownCommandWordException(processedCommandWord);
+            }
+        } catch (IllegalValueException e) {
+            throw new InvalidCommandFormatException(e.getMessage(), processedCommandWord);
         }
     }
 

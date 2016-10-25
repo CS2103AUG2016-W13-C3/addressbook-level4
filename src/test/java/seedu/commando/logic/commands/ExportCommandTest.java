@@ -56,10 +56,12 @@ public class ExportCommandTest {
     public void execute_export_emptyPath() {
         CommandResult result = logic.execute("export");
         assertTrue(result.hasError());
-        assertEquals(Messages.MISSING_EXPORT_PATH, result.getFeedback());
+        assertEquals(Messages.MISSING_EXPORT_PATH
+                + "\n" + Messages.getInvalidCommandFormatMessage("export").get(), result.getFeedback());
         logic.execute("export    ");
         assertTrue(result.hasError());
-        assertEquals(Messages.MISSING_EXPORT_PATH, result.getFeedback());
+        assertEquals(Messages.MISSING_EXPORT_PATH
+                + "\n" + Messages.getInvalidCommandFormatMessage("export").get(), result.getFeedback());
     }
 
     @Test

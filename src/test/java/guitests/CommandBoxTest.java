@@ -8,11 +8,12 @@ import static org.junit.Assert.assertEquals;
 
 public class CommandBoxTest extends CommanDoGuiTest {
 
+    /*
     @Test
     public void commandBox_commandSucceeds_textCleared() {
         commandBox.runCommand(CommandBuilder.buildAddCommand(td.toDoItem5));
         assertEquals(commandBox.getCommandInput(), "");
-    }
+    }*/
 
     /*
     @Test

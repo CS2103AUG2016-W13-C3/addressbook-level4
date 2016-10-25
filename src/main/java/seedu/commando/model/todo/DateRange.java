@@ -29,8 +29,10 @@ public class DateRange {
      * - {@param endDate} must not be before {@param startDate}
      * - gap between {@param startDate} and {@param endDate} must not be more than the recurrence interval
      * @throws IllegalValueException if given set of values is invalid
+     * @throws IllegalDateFormatException if given date is invalid
      */
-    public DateRange(LocalDateTime startDate, LocalDateTime endDate, Recurrence recurrence) throws IllegalValueException {
+    public DateRange(LocalDateTime startDate, LocalDateTime endDate, Recurrence recurrence) 
+            throws IllegalValueException {
         assert !CollectionUtil.isAnyNull(startDate,endDate, recurrence);
 
         checkIfValid(startDate, endDate, recurrence);
@@ -53,7 +55,7 @@ public class DateRange {
         throws IllegalValueException {
 
         if (endDate.isBefore(startDate)) {
-            throw new IllegalValueException(Messages.TODO_DATERANGE_END_MUST_AFTER_START);
+            throw new IllegalValueException(Messages.TODO_DATERANGE_END_MUST_AFTER_START + "\n" + Messages.DATE_FORMAT);
         }
 
         boolean isRecurrenceValid = true;
@@ -68,7 +70,7 @@ public class DateRange {
         }
 
         if (!isRecurrenceValid) {
-            throw new IllegalValueException(Messages.TODO_DATERANGE_RECURRENCE_INVALID);
+            throw new IllegalValueException(Messages.TODO_DATERANGE_RECURRENCE_INVALID + "\n" + Messages.DATE_FORMAT);
         }
     }
 

@@ -70,7 +70,8 @@ public class EditCommandTest {
         CommandResult result = logic.execute("edit missing index");
         assertTrue(result.hasError());
 
-        assertEquals(Messages.MISSING_TODO_ITEM_INDEX, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_ITEM_INDEX
+                + "\n" + Messages.getInvalidCommandFormatMessage("edit").get(), result.getFeedback());
     }
 
     @Test
@@ -163,7 +164,8 @@ public class EditCommandTest {
         String command = "edit 1 from 10 Dec " + nextYear + " 11:59 to 11 Apr " + nextYear + " 23:10";
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
-        assertEquals(Messages.TODO_DATERANGE_END_MUST_AFTER_START, result.getFeedback());
+        assertEquals(Messages.TODO_DATERANGE_END_MUST_AFTER_START + "\n" + Messages.DATE_FORMAT + "\n" + 
+                Messages.getInvalidCommandFormatMessage("edit").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
@@ -295,6 +297,6 @@ public class EditCommandTest {
         CommandResult result = logic.execute("edit 1 ``");
         assertTrue(result.hasError());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
-        assertEquals(Messages.MISSING_TODO_TITLE, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_TITLE + "\n" + Messages.EDIT_COMMAND_FORMAT, result.getFeedback());
     }
 }

@@ -68,7 +68,7 @@ public class FinishCommandTest {
         CommandResult result = logic.execute("finish missing index");
         assertTrue(result.hasError());
 
-        assertEquals(Messages.MISSING_TODO_ITEM_INDEX, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_ITEM_INDEX + "\n" + Messages.getInvalidCommandFormatMessage("finish").get(), result.getFeedback());
     }
 
     @Test
@@ -76,7 +76,8 @@ public class FinishCommandTest {
         CommandResult result = logic.execute("finish 1 #troll");
         assertTrue(result.hasError());
 
-        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD), result.getFeedback());
+        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD)
+                + "\n" + Messages.getInvalidCommandFormatMessage("finish").get(), result.getFeedback());
     }
 
     @Test
