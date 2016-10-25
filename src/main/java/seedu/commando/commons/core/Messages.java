@@ -86,7 +86,7 @@ public class Messages {
     public static final String IMPORT_COMMAND_FORMAT = ">> import ../../Dropbox/work/todolist.xml.";
     public static final String EXPORT_COMMAND_FORMAT = ">> export ../../Dropbox/work/todolist.xml.";
     public static final String ADD_COMMAND_FORMAT = ">> add watch ‘Fantastic Beast and where to find them’ #movie\n" + 
-                                                    ">> add Math Exam from 26 nov 1300h to 1430h\n";
+                                                    ">> add Math Exam from 26 nov 1300h to 1430h";
     public static final String DELETE_COMMAND_FORMAT = ">> delete 1";
     public static final String FIND_COMMAND_FORMAT = ">> find\n" + ">> find thing #tag";
     public static final String RECALL_COMMAND_FORMAT = ">> recall\n" + ">> recall thing #tag";
