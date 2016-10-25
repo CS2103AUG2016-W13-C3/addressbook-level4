@@ -28,7 +28,7 @@ public class DeleteCommand extends Command {
 	public DeleteCommand(List<Integer> toDoIndices) {
 		this.toDoIndices = toDoIndices;
 	}
-
+	//@@author A0142230B
     @Override
     public CommandResult execute() throws NoModelException {
         Model model = getModel();
