@@ -298,7 +298,7 @@ public class CommandFactory {
         }
 
         if (!sequentialParser.isInputEmpty()) {
-            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, UndoCommand.COMMAND_WORD));
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, EditCommand.COMMAND_WORD));
         }
 
         return command;
