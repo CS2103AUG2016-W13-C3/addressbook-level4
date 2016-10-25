@@ -2,7 +2,7 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.logic.parser.SequentialParser;
+import seedu.commando.logic.parser.CommandParser;
 import seedu.commando.model.todo.*;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Maps and builds commands from input strings, using {@link SequentialParser}
+ * Maps and builds commands from input strings, using {@link CommandParser}
  * In charge of splitting up input strings to required parts for commands
  * Doesn't set context for commands
  */
@@ -19,10 +19,10 @@ public class CommandFactory {
     public static final String KEYWORD_DELETE_TIME = "time";
     public static final String KEYWORD_DELETE_TAG = "tag";
 
-    private SequentialParser sequentialParser;
+    private CommandParser commandParser;
 
     {
-        sequentialParser = new SequentialParser();
+        commandParser = new CommandParser();
     }
 
     /**
@@ -32,10 +32,10 @@ public class CommandFactory {
      * @throws IllegalValueException if the command is invalid
      */
     public Command build(String inputString) throws IllegalValueException {
-        sequentialParser.setInput(inputString);
+        commandParser.setInput(inputString);
 
         // Check if command word exists
-        Optional<String> commandWord = sequentialParser.extractWord();
+        Optional<String> commandWord = commandParser.extractWord();
 
         if (!commandWord.isPresent()) {
             throw new IllegalValueException(Messages.MISSING_COMMAND_WORD);
@@ -81,20 +81,20 @@ public class CommandFactory {
         RecallCommand command = new RecallCommand();
 
         // Extract tags
-        Set<Tag> tags = sequentialParser.extractTrailingTags();
+        Set<Tag> tags = commandParser.extractTrailingTags();
         if (!tags.isEmpty()) {
             command.tags = tags;
         }
 
         // Try to find keywords
-        command.keywords = sequentialParser.extractWords().stream().collect(Collectors.toSet());
+        command.keywords = commandParser.extractWords().stream().collect(Collectors.toSet());
 
         return command;
     }
 
 
     private Command buildExitCommand() throws IllegalValueException {
-        if (!sequentialParser.isInputEmpty()) {
+        if (!commandParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ExitCommand.COMMAND_WORD));
         }
 
@@ -103,7 +103,7 @@ public class CommandFactory {
 
     private Command buildImportCommand() throws IllegalValueException {
         // Extract the file path
-        String path = sequentialParser.extractText()
+        String path = commandParser.extractText()
             .orElseThrow(
                 () -> new IllegalValueException(Messages.MISSING_IMPORT_PATH)
             );
@@ -113,7 +113,7 @@ public class CommandFactory {
 
     private Command buildExportCommand() throws IllegalValueException {
         // Extract the file path
-        String path = sequentialParser.extractText()
+        String path = commandParser.extractText()
             .orElseThrow(
                 () -> new IllegalValueException(Messages.MISSING_EXPORT_PATH)
             );
@@ -123,7 +123,7 @@ public class CommandFactory {
 
     private Command buildStoreCommand() throws IllegalValueException {
         // Extract the file path
-        String path = sequentialParser.extractText()
+        String path = commandParser.extractText()
             .orElseThrow(
                 () -> new IllegalValueException(Messages.MISSING_STORE_PATH)
             );
@@ -133,16 +133,16 @@ public class CommandFactory {
 
     private Command buildAddCommand() throws IllegalValueException {
         // Extract tags
-        Set<Tag> tags = sequentialParser.extractTrailingTags();
+        Set<Tag> tags = commandParser.extractTrailingTags();
 
         // Extract date range, if exists
-        Optional<DateRange> dateRange = sequentialParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
 
         // Extract due date, if exists
-        Optional<DueDate> dueDate = sequentialParser.extractTrailingDueDate();
+        Optional<DueDate> dueDate = commandParser.extractTrailingDueDate();
 
         // Extract title
-        String title = sequentialParser.extractText().orElseThrow(() -> new IllegalValueException(Messages.MISSING_TODO_TITLE));
+        String title = commandParser.extractText().orElseThrow(() -> new IllegalValueException(Messages.MISSING_TODO_TITLE));
 
         AddCommand command = new AddCommand(new Title(title));
 
@@ -154,7 +154,7 @@ public class CommandFactory {
         dueDate.ifPresent(x -> command.dueDate = x);
         dateRange.ifPresent(x -> command.dateRange = x);
 
-        if (!sequentialParser.isInputEmpty()) {
+        if (!commandParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, AddCommand.COMMAND_WORD));
         }
 
@@ -162,7 +162,7 @@ public class CommandFactory {
     }
 
     private Command buildDeleteCommand() throws IllegalValueException {
-    	List<Integer> indices = sequentialParser.extractIndicesList();
+    	List<Integer> indices = commandParser.extractIndicesList();
     	if (indices.isEmpty()){
     		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
     	}
@@ -170,7 +170,7 @@ public class CommandFactory {
         DeleteCommand deleteCommand = new DeleteCommand(indices);
 
         // check for fields
-        List<String> words = sequentialParser.extractWords();
+        List<String> words = commandParser.extractWords();
 
         int fieldsCount = 0;
 
@@ -193,11 +193,11 @@ public class CommandFactory {
     }
 
     private Command buildFinishCommand() throws IllegalValueException {
-    	List<Integer> indices = sequentialParser.extractIndicesList();
+    	List<Integer> indices = commandParser.extractIndicesList();
     	if (indices.isEmpty()){
     		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
     	}
-        if (!sequentialParser.isInputEmpty()) {
+        if (!commandParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
 
         }
@@ -206,11 +206,11 @@ public class CommandFactory {
     }
 
     private Command buildUnfinishCommand() throws IllegalValueException {
-    	List<Integer> indices = sequentialParser.extractIndicesList();
+    	List<Integer> indices = commandParser.extractIndicesList();
     	if (indices.isEmpty()){
     		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
     	}
-        if (!sequentialParser.isInputEmpty()) {
+        if (!commandParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
         }
 
@@ -221,19 +221,19 @@ public class CommandFactory {
         FindCommand command = new FindCommand();
 
         // Extract tags
-        Set<Tag> tags = sequentialParser.extractTrailingTags();
+        Set<Tag> tags = commandParser.extractTrailingTags();
         if (!tags.isEmpty()) {
             command.tags = tags;
         }
 
         // Try to find keywords
-        command.keywords = sequentialParser.extractWords().stream().collect(Collectors.toSet());
+        command.keywords = commandParser.extractWords().stream().collect(Collectors.toSet());
 
         return command;
     }
 
     private Command buildClearCommand() throws IllegalValueException {
-        if (!sequentialParser.isInputEmpty()) {
+        if (!commandParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ClearCommand.COMMAND_WORD));
         }
 
@@ -242,7 +242,7 @@ public class CommandFactory {
 
     private Command buildHelpCommand() {
         // Try to find command word
-        Optional<String> word = sequentialParser.extractText();
+        Optional<String> word = commandParser.extractText();
 
         if (word.isPresent()) {
             return new HelpCommand(word.get());
@@ -252,14 +252,14 @@ public class CommandFactory {
     }
 
     private Command buildEditCommand() throws IllegalValueException {
-        int index = sequentialParser.extractInteger().orElseThrow(
+        int index = commandParser.extractInteger().orElseThrow(
             () -> new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX)
         );
 
         EditCommand command = new EditCommand(index);
 
         // Extract tags
-        Set<Tag> tags = sequentialParser.extractTrailingTags();
+        Set<Tag> tags = commandParser.extractTrailingTags();
 
         // Put in tags
         if (!tags.isEmpty()) {
@@ -267,17 +267,17 @@ public class CommandFactory {
         }
 
         // Extract date range, if exists
-        sequentialParser.extractTrailingDateRange().ifPresent(
+        commandParser.extractTrailingDateRange().ifPresent(
             x -> command.dateRange = x
         );
 
         // Extract due date, if exists
-        sequentialParser.extractTrailingDueDate().ifPresent(
+        commandParser.extractTrailingDueDate().ifPresent(
             x -> command.dueDate = x
         );
 
         // Extract title
-        sequentialParser.extractText().ifPresent(title -> {
+        commandParser.extractText().ifPresent(title -> {
             command.title = new Title(title);
         });
 
@@ -285,7 +285,7 @@ public class CommandFactory {
     }
 
     private Command buildUndoCommand() throws IllegalValueException {
-        if (!sequentialParser.isInputEmpty()) {
+        if (!commandParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, UndoCommand.COMMAND_WORD));
 
         }
@@ -294,7 +294,7 @@ public class CommandFactory {
     }
 
     private Command buildRedoCommand() throws IllegalValueException {
-        if (!sequentialParser.isInputEmpty()) {
+        if (!commandParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, RedoCommand.COMMAND_WORD));
         }
 

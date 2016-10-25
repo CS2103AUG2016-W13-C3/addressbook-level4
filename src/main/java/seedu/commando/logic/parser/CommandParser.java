@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * Methods modify the input string by extracting appropriate parts of it
  * Input is always kept trimmed
  */
-public class SequentialParser {
+public class CommandParser {
 
     public static final String KEYWORD_DATERANGE_START = "from";
     public static final String KEYWORD_DATERANGE_END = "to";
