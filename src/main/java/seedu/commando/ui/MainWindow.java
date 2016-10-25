@@ -290,16 +290,23 @@ public class MainWindow extends UiPart {
                     cycleThroughFocusPanes();
                     key.consume();
                     break;
+                case CONTROL:
+                case ALT:
+                case SHIFT:
+                    // Nome of these keys should trigger the focus of commandfield
+                    // because sometimes you need to copy and paste or do other stuff
+                    key.consume();
+                    break;
                 default:
                     // Else, any other sutiable character is considered input to command box
                     // and it will be in focus
                     currentlyFocusedPane = FocusPanes.COMMANDFIELD;
                     commandField.requestFocus();
-            }
+                }
             }
         });
     }
-    
+
     private void cycleThroughFocusPanes() {
         switch (currentlyFocusedPane) {
         case COMMANDFIELD:
