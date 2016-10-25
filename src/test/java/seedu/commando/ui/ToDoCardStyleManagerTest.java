@@ -49,7 +49,7 @@ public class ToDoCardStyleManagerTest {
     public void prettifyDateTime_today() {
         // Should display year
         final LocalDateTime date = LocalDateTime.of(LocalDate.now(), LocalTime.NOON);
-        assertEquals("12:00 Today " + formatMonth.format(LocalDate.now()),
+        assertEquals("12:00 Today",
                 ToDoCardStyleManager.prettifyDateTime(date));
     }
     
@@ -57,7 +57,7 @@ public class ToDoCardStyleManagerTest {
     public void prettifyDateTime_tomorrow() {
         // Should display year
         final LocalDateTime date = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.NOON);
-        assertEquals("12:00 Tomorrow " + formatMonth.format(LocalDate.now().plusDays(1)),
+        assertEquals("12:00 Tomorrow",
                 ToDoCardStyleManager.prettifyDateTime(date));
     }
     
@@ -65,7 +65,7 @@ public class ToDoCardStyleManagerTest {
     public void prettifyDateTime_yesterday() {
         // Should display year
         final LocalDateTime date = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.NOON);
-        assertEquals("12:00 Yesterday " + formatMonth.format(LocalDate.now().minusDays(1)),
+        assertEquals("12:00 Yesterday",
                 ToDoCardStyleManager.prettifyDateTime(date));
     }
     
