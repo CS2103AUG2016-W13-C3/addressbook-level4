@@ -2,25 +2,24 @@ package seedu.commando.logic;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
+import seedu.commando.commons.events.model.ToDoListChangedEvent;
+import seedu.commando.commons.events.storage.DataSavingExceptionEvent;
 import seedu.commando.logic.commands.*;
 import seedu.commando.model.Model;
 import seedu.commando.model.ModelManager;
 import seedu.commando.model.UserPrefs;
-import seedu.commando.storage.StorageManager;
+import seedu.commando.model.todo.ToDoList;
 import seedu.commando.testutil.EventsCollector;
+import seedu.commando.testutil.StorageStub;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -32,17 +31,14 @@ public class LogicManagerTest {
     /**
      * See https://github.com/junit-team/junit4/wiki/rules#temporaryfolder-rule
      */
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
-
-    private Logic logic;
+    private LogicManager logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
 
     @Before
     public void setup() throws IOException {
         eventsCollector = new EventsCollector();
-        logic = initLogic(folder);
+        logic = initLogic();
     }
 
     @After
@@ -50,15 +46,9 @@ public class LogicManagerTest {
         EventsCenter.clearSubscribers();
     }
 
-    public static Logic initLogic(TemporaryFolder folder) throws IOException {
-        File toDoListFile = folder.newFile();
-        File userPrefsFile  = folder.newFile();
+    public static LogicManager initLogic() throws IOException {
         Model model = new ModelManager();
-
-        return new LogicManager(model, new StorageManager(
-            toDoListFile.getAbsolutePath(),
-            userPrefsFile.getAbsolutePath()
-        ), new UserPrefs());
+        return new LogicManager(model, new StorageStub(), new UserPrefs());
     }
 
     @Test
@@ -73,5 +63,11 @@ public class LogicManagerTest {
         CommandResult result = logic.execute("unknownCommand");
         assertTrue(result.hasError());
         assertEquals(Messages.UNKNOWN_COMMAND, result.getFeedback());
+    }
+
+    @Test
+    public void handleToDoListChangedEvent_exceptionThrown_eventRaised() throws IOException {
+        logic.handleToDoListChangedEvent(new ToDoListChangedEvent(new ToDoList()));
+        assertTrue(eventsCollector.hasCollectedEvent(StorageStub.ToDoListSavedEvent.class));
     }
 }

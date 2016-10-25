@@ -82,18 +82,6 @@ public class StorageManager extends ComponentManager implements Storage {
         toDoListStorage.saveToDoList(toDoList, filePath);
     }
 
-    @Override
-    @Subscribe
-    public void handleToDoListChangedEvent(ToDoListChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
-
-        try {
-            saveToDoList(event.toDoList);
-        } catch (IOException e) {
-            raise(new DataSavingExceptionEvent(e));
-        }
-    }
-
 	@Override
 	public void setToDoListFilePath(String path) {
 		logger.info("Change the to-do list file path to " + path);

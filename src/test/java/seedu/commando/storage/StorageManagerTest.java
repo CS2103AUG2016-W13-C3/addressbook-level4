@@ -71,30 +71,6 @@ public class StorageManagerTest {
         assertTrue(storageManager.getToDoListFilePath() != null);
     }
 
-    @Test
-    public void handleToDoListChangedEvent_exceptionThrown_eventRaised() throws IOException {
-        // Create a StorageManager while injecting a stub that throws an exception when the save method is called
-        Storage storage = new StorageManager(new ExceptionThrowingStub("dummy"), new JsonUserPrefsStorage("dummy"));
-        storage.handleToDoListChangedEvent(new ToDoListChangedEvent(new ToDoList()));
-        assertTrue(eventCollector.hasCollectedEvent(DataSavingExceptionEvent.class));
-    }
-
-
-    /**
-     * A Stub class to throw an exception when the save method is called
-     */
-    private static class ExceptionThrowingStub extends XmlToDoListStorage {
-
-        public ExceptionThrowingStub(String filePath) {
-            super(filePath);
-        }
-
-        @Override
-        public void saveToDoList(ReadOnlyToDoList toDoList, String filePath) throws IOException {
-            throw new IOException();
-        }
-    }
-
     private static ToDoList getSample() throws IllegalValueException {
         ToDoList toDoList = new ToDoList();
         toDoList.add(new ToDoBuilder("valid title")
