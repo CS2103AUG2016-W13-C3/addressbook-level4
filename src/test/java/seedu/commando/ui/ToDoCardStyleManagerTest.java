@@ -2,13 +2,10 @@ package seedu.commando.ui;
 
 import static org.junit.Assert.*;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,6 +18,8 @@ public class ToDoCardStyleManagerTest {
     private DateTimeFormatter formatMonth = DateTimeFormatter.ofPattern("MMM");
     private LocalDateTime now = LocalDateTime.now();
     private final int currentYear = now.getYear();
+    private final int currentMonth = now.getMonthValue();
+    private final int currentDay = now.getDayOfMonth();
     
     @Before
     public void setup() {
@@ -136,6 +135,18 @@ public class ToDoCardStyleManagerTest {
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 27, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 2, 27, 13, 30);
         assertEquals("12:30 to 13:30 " + formatDayOfWeek.format(dateTo) + " 27 Feb",
+                ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
+    }
+    
+    @Test
+    public void prettifyDateTimeRange_sameDate_differentTime_butIsToday() {
+        // Should display time and either 'Today'
+        
+        System.out.println(currentMonth);
+        System.out.println(currentDay);
+        final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
+        final LocalDateTime dateTo = LocalDateTime.of(currentYear, currentMonth, currentDay, 13, 30);
+        assertEquals("12:30 to 13:30 Today",
                 ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
     }
 }

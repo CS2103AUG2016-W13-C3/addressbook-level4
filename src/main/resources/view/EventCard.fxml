@@ -28,27 +28,19 @@
 							<children>
                         <VBox>
                            <children>
-                              <HBox>
-                                 <children>
-                                    <Label fx:id="recurrenceLabel" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" styleClass="cell_big_label" text="\$recurr" wrapText="true">
-                                       <padding>
-                                          <Insets left="3.0" right="3.0" />
-                                       </padding>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox>
-                                 <children>
-            								<Label fx:id="tagsLabel" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" styleClass="cell_big_label" text="\$tags" wrapText="true">
-            									<padding>
-            										<Insets left="3.0" right="3.0" />
-            									</padding>
-            								</Label>
-                                 </children>
+                              <Label fx:id="recurrenceLabel" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" styleClass="cell_big_label" text="\$recurr" wrapText="true">
                                  <padding>
-                                    <Insets top="5.0" />
+                                    <Insets left="3.0" right="3.0" />
                                  </padding>
-                              </HBox>
+                              </Label>
+      								<Label fx:id="tagsLabel" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" styleClass="cell_big_label" text="\$tags" wrapText="true">
+      									<padding>
+      										<Insets left="3.0" right="3.0" />
+      									</padding>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+      								</Label>
                            </children>
                            <padding>
                               <Insets bottom="5.0" left="4.0" right="4.0" top="5.0" />

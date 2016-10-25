@@ -56,18 +56,24 @@ public class ToDoCardStyleManager {
         String start = "";
         String end = "";
         
-        boolean sameYear = false;
-        boolean sameMonth = false;
-        boolean sameDay = false;
+        boolean sameYear = startDateTime.getYear() == endDateTime.getYear();
+        boolean sameMonth = startDateTime.getMonthValue() == endDateTime.getMonthValue();
+        boolean sameDay = startDateTime.getDayOfMonth() == endDateTime.getDayOfMonth();
+        boolean sameDayAndIsYtdOrTdyOrTmr = sameYear && sameMonth && 
+                (Math.abs(startDateTime.getDayOfMonth() - todayDate.getDayOfMonth()) <= 1);
         
-        if (startDateTime.getYear() == endDateTime.getYear()) {
+        // Damn corner cases. If its Yesterday or Today or Tomorrow, shouldn't show month and year
+        if (sameDayAndIsYtdOrTdyOrTmr) {
+            return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + " " + getDay(startDateTime);
+        }
+        
+        if (sameYear) {
             // If start year is equals to end year
             if (endDateTime.getYear() != todayDate.getYear()) {
                 // If both start year and end year is not this year
                 end += " " + endDateTime.getYear();
                 // Else, don't display any year
             }
-            sameYear = true;
         } else {
             // Start and end year are not equal
             // Hence display both
@@ -75,22 +81,20 @@ public class ToDoCardStyleManager {
             start += " " + startDateTime.getYear();
         }
         
-        if (sameYear && startDateTime.getMonthValue() == endDateTime.getMonthValue()) {
+        if (sameYear && sameMonth) {
             // If same year and same month
             // Display one month
             end = " " + getMonth(endDateTime) + end;
-            sameMonth = true;
         } else {
             // Display both months
             start = " " + getMonth(startDateTime) + start;
             end = " " + getMonth(endDateTime) + end;
         }
         
-        if (sameYear && sameMonth && startDateTime.getDayOfMonth() == endDateTime.getDayOfMonth()) {
+        if (sameYear && sameMonth && sameDay) {
             // If same year and same month and same day
             // Display one month
             end = " " + getDay(endDateTime) + end;
-            sameDay = true;
         } else {
             // Display both months
             start = " " + getDay(startDateTime) + start;

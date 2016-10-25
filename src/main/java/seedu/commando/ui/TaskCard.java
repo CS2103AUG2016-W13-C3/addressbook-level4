@@ -58,7 +58,7 @@ public class TaskCard extends UiPart {
             }
             tagsLabel.setText(tags);
         } else {
-            tagsLabel.setVisible(false);
+            tagsLabel.setManaged(false);
         }
     }
     

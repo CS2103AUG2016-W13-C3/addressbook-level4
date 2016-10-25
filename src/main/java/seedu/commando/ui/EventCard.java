@@ -64,7 +64,7 @@ public class EventCard extends UiPart{
             }
             tagsLabel.setText(tags);
         } else {
-            tagsLabel.setVisible(false);
+            tagsLabel.setManaged(false);
         }
     }
     
@@ -72,7 +72,7 @@ public class EventCard extends UiPart{
         if (toDo.getDateRange().isPresent() && toDo.getDateRange().get().recurrence != Recurrence.None) {
             recurrenceLabel.setText(toDo.getDateRange().get().recurrence.toString());
         } else {
-            recurrenceLabel.setVisible(false);
+            recurrenceLabel.setManaged(false);
         }
     }
     
