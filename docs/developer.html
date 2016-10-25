@@ -15,6 +15,7 @@
 </head>
 
 <body>
+    <!-- @@author A0139080J -->
     <div id="container">
         <div class="inner">
             <header>
@@ -65,12 +66,13 @@
                     </ul>
                 </p>
 
+                <!-- @@author A0139697H -->
                 <h2 id="introduction">Introduction</h2>
 
                 <p><em>CommanDo</em> is a to-do list manager. It is designed to cater for the needs of people who type fast and has a user interface shown in the picture below. to-dos are displayed on a graphical user interface (GUI), split into 2 panels of <em>Events</em> and <em>Tasks</em>. The user manage his/her to-do list by typing commands on a text input - just like in a Command Line Interface (CLI).</p>
 
                 <figure>
-                    <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
+                    <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.PNG?raw=true" width="600">
                     <figcaption>A typical view of <em>CommanDo</em> in action</figcaption>
                 </figure>
 
@@ -106,6 +108,7 @@
 
                 <p>The full list of features is outlined in our <a href="#appendix-a-user-stories">User Stories</a>. To ensure that the interface is user-friendly and the codebase stays maintainable, we also set ourselves some <a href="#appendix-c-non-functional-requirements">Non-Functional Requirements</a>.</p>
 
+                <!-- @@author A0139080J -->
                 <h2 id="setting-up">Setting Up</h2>
 
                 <h3 id="prerequisties">Prerequisites</h3>
@@ -155,8 +158,10 @@
 
                 <p>This section explains the high level design of the application.</p>
 
+                <!-- @@author A0139697H -->
+
                 <figure>
-                    <img src="images/diagrams/architecture.png" width="600">
+                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/architecture.PNG" width="600">
                     <figcaption>Architecture diagram for <em>CommanDo</em></figcaption>
                 </figure>
 
@@ -219,21 +224,21 @@
                 <p>When the user types a command and presses <kbd class="light">Enter</kbd>, the <em>UI</em> calls the <code>execute(String)</code> method of <em>Logic</em> with the input string. <em>Logic</em> parses the input string amd determines the command type. Then, <em>Logic</em> would call methods of the <em>Model</em> to modify the to-do list, or post events to the <em>Events Center</em> (which would in turn trigger the relevant components to take action). Refer to the following diagram for the execution of command <code>>> add task</code>.</p>
 
                 <figure>
-                    <img src="images/diagrams/command-execution-sd.png" width="600">
+                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/command-execution-sd.PNG" width="600">
                     <figcaption>Sequence diagram for executing command <code>>> add task</code></figcaption>
                 </figure>
 
                 <p>Typically, a command would modify the to-do list in the <em>Model</em> (<code>add</code>, <code>edit</code>, <code>delete</code>, etc). Within <em>Model</em>, as we have used JavaFX's <em>Observable</em> classes, the modification would trigger a call to the <em>UI</em> to update its view of the to-do list. On top of that, <em>Model</em> would post a <code>ToDoListChangedEvent</code> to the <em>Events Center</em>, which would trigger <em>Logic</em> to call the <code>saveToDoList(ReadOnlyToDoList)</code> method of <em>Storage</em>. Subsequently, when the to-do list is successfully saved to the file system, the event <code>ToDoListSavedEvent</code> would be posted to update the status bar in <em>UI</em>. Refer to the following diagram for a graphical walkthrough of this sequence.</p>
 
                 <figure>
-                    <img src="images/diagrams/to-do-list-changed-event-sd.png" width="800">
+                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/to-do-list-changed-event-sd.PNG" width="800">
                     <figcaption>Sequence diagram for <em>to-do list changed event</em></figcaption>
                 </figure>
 
                 <h2 id="ui-component"><em>UI</em> Component</h2>
 
                 <figure>
-                    <img src="images/diagrams/ui-component.png" max-width="600">
+                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/ui-component.PNG" max-width="600">
                     <figcaption>Structure of <em>UI</em> component</figcaption>
                 </figure>
 
@@ -252,7 +257,7 @@
                 <h2 id="logic-component"><em>Logic</em> Component</h2>
 
                 <figure>
-                    <img src="images/diagrams/logic-component.png" max-width="500">
+                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/logic-component.PNG" max-width="500">
                     <figcaption>Structure of <em>Logic</em> component</figcaption>
                 </figure>
 
@@ -292,14 +297,14 @@
                 </p>
 
                 <figure>
-                    <img src="images/diagrams/finish-command-in-logic-sd.png" max-width="500">
+                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/finish-command-in-logic-sd.PNG" max-width="500">
                     <figcaption>Sequence diagram for <em>Logic</em> when command <code>>> finish 2</code> is executed</figcaption>
                 </figure>
 
                 <h2 id="model-component"><em>Model</em> Component</h2>
 
                 <figure>
-                    <img src="images/diagrams/model-component.png" max-width="500">
+                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/model-component.PNG" max-width="500">
                     <figcaption>Structure of <em>Model</em> component</figcaption>
                 </figure>
 
@@ -340,7 +345,7 @@
                 <h2 id="storage-component"><em>Storage</em> Component</h2>
 
                 <figure>
-                    <img src="images/diagrams/storage-component.png" max-width="450">
+                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/storage-component.PNG" max-width="450">
                     <figcaption>Structure of <em>Storage</em> component</figcaption>
                 </figure>
 
@@ -385,7 +390,9 @@
 
                 <h3 id="logscenter"><code>LogsCenter</code> and Logging</h3>
 
+                <!-- @@author A0139080J -->
                 <p> We are using the <code>java.util.logging</code> package for logging. The <code>LogsCenter</code> class is used to manage the logging levels and logging destinations. The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level. </p>
+\
 
                 <p>Currently, log messages are output through the console and to a <code>.log</code> file.</p>
 
@@ -504,6 +511,7 @@
                     <li>Require developers to download those libraries manually (this creates extra work for developers)</li>
                 </ol>
 
+                <!-- @@author A0139697H -->
                 <h2 id="troubleshooting">Troubleshooting</h2>
 
                 <h3>Eclipse reports compile errors after new commits are pulled from Git.</h3>
@@ -579,6 +587,7 @@
                                 <td align="left">mark my <em>Tasks</em> as done</td>
                                 <td align="left">dismiss pending <em>Tasks</em> that I have done</td>
                             </tr>
+                            <!-- @@author A0139080J -->
                             <tr>
                                 <td><code>* * *</code></td>
                                 <td align="left">user with many to-dos</td>
@@ -690,7 +699,7 @@
                 </p>
 
                 <div class="pagebreak"> </div>
-
+                <!-- //@@author A0122001M -->
                 <h3 id="appendix-b-use-cases">Appendix B: Use Cases</h3>
 
                 <p>In all the listed use cases, the <strong>System</strong> is our application and the <strong>Actor</strong> is the user.</p>
@@ -923,6 +932,8 @@
                     </ul>
                 </ul>
 
+                <!-- @@author A0139697H -->
+
                 <h3 id="appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</h3>
 
                 <ol>
@@ -975,21 +986,25 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- @@author A0122001M -->
                             <tr>
                                 <td>Google Keep (Zhiwen)</td>
                                 <td align="left">+ It has high level of simplicity (clear and simple UI) <br> + It can be easily accessed from anywhere <br> + It supports native sync and integration with Google <br> + Mark things done easily <br> + Support photos, audios and lists in content</td>
                                 <td align="left">- It is unable to do text formatting <br> - Its search function only supports titles <br> - It is unable to prioritise activities</td>
                             </tr>
+                            <!-- @@author A0142230B -->
                             <tr>
                                 <td>Trello (Sheng Xuan)</td>
                                 <td align="left">+ It supports multiple platforms (Web, mobile, desktop) <br> + It has due date function, which is suitable for tasks with deadlines <br> + It can search by keyword of a task <br> + It archives completed tasks <br> + It has check list to track the progress of each task <br> + It can attach files to a task (ie. forms to reply in a email)</td>
                                 <td align="left">- It needs at least 2 clicks (taps) to add a new task <br> - It costs money  to use the calendar view functionis. In free version, no timeline is provided. Adding events that happen in specific dates are not supported <br> - It is unable to undo</td>
                             </tr>
+                            <!-- @@author A0139080J -->
                             <tr>
                                 <td>Anydo (Conan)</td>
                                 <td align="left">+ It is able to push tasks to a later date <br> + It can easily reorder tasks <br> + It has user-friendly interface (4 major groups) <br> + It can be used on mobile and on browser <br> + It supports double confirmation of deleting a task when complete <br> + It can add details in later</td>
                                 <td align="left">- It has no clear distinguishing among the 3 types of tasks <br> - It has no sense of timeline, and just tasks to complete by the end of the day <br> - Its deadlines are not shown unless the task is clicked <br> - It does not support search function (however, you can Ctrl+F, though no content search) <br> - Its other 2 groups “Upcoming” and “Someday” are kind of ambiguous</td>
                             </tr>
+                            <!-- @@author A0139697H -->
                             <tr>
                                 <td>Google Calendar (Yun Chuan)</td>
                                 <td align="left">+ It is able to mark as done, and undo “done” <br> + It has clean, simple interface which is not cluttered <br> + It can autocomplete based on crowd-sourced or history (but doesn’t feel very “intelligent”) <br> + It can push notifications for reminders/events <br> + It is able to repeat events <br> + It is automatically synchronised both on mobile and on website <br> + It has “All-day” events <br> + It supports “Schedule” view which lists everything in chronological order, starting from today <br> + It is able to “zoom in” (day view) and “zoom out” (month view) <br> + Its items are split into: “events” and “reminders”. Events have start to end time while reminders only have a reminder time</td>

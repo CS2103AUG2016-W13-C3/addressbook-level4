@@ -21,7 +21,7 @@ import seedu.commando.model.ModelManager;
 import seedu.commando.model.UserPrefs;
 import seedu.commando.storage.StorageManager;
 import seedu.commando.testutil.EventsCollector;
-
+//@@author A0142230B
 public class StoreCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();

@@ -11,11 +11,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
+//@@author A0139080J
+/**
+ * Tests for ToDoCardStyleManager
+ */
 public class ToDoCardStyleManagerTest {
     
     private DateTimeFormatter formatDayOfWeek = DateTimeFormatter.ofPattern("EEE");
-    private DateTimeFormatter formatMonth = DateTimeFormatter.ofPattern("MMM");
     private LocalDateTime now = LocalDateTime.now();
     private final int currentYear = now.getYear();
     private final int currentMonth = now.getMonthValue();

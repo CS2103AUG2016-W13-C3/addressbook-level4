@@ -69,6 +69,7 @@ public class EventListPanel extends UiPart {
         placeHolderPane.getChildren().add(panel);
     }
 
+    //@@author A0139080J
     protected ListView<UiToDo> getEventListView() {
         return eventListView;
     }
@@ -88,4 +89,5 @@ public class EventListPanel extends UiPart {
             scrollbar.setValue(Math.max(scrollbar.getValue() - 0.1, 0));
         }
     }
+    //@@author
 }

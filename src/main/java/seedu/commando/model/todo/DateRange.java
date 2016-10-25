@@ -7,6 +7,7 @@ import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.commons.util.CollectionUtil;
 
+//@@author A0139697H
 /**
  * Represents the Date Range of a to-do
  */
@@ -29,7 +30,6 @@ public class DateRange {
      * - {@param endDate} must not be before {@param startDate}
      * - gap between {@param startDate} and {@param endDate} must not be more than the recurrence interval
      * @throws IllegalValueException if given set of values is invalid
-     * @throws IllegalDateFormatException if given date is invalid
      */
     public DateRange(LocalDateTime startDate, LocalDateTime endDate, Recurrence recurrence) 
             throws IllegalValueException {

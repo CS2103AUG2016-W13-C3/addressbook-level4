@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+//@@author A0139080J
 /**
  * Contains the common functions and variables that EventCard and TaskCard shares
  * and additional styling choices of elements that are doen programmatically

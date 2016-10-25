@@ -22,6 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+//@@author A0139697H
 public class CommandParserTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -222,6 +223,7 @@ public class CommandParserTest {
         );
     }
 
+    //@@author A0142230B
     @Test
     public void extractIndicesList_valid() throws IllegalValueException {
         commandParser.setInput("2to7");

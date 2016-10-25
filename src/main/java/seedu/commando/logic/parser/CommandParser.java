@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+//@@author A0139697H
 /**
  * Parses a given input string, part by part
  * Methods modify the input string by extracting appropriate parts of it
@@ -258,6 +259,7 @@ public class CommandParser {
 
         return Optional.empty();
     }
+ //@@author A0142230B
     /**
      * From start, extracts multiple integers in input, it can be a range of integers or different integers separate by space.
      * @return A List of integers found
@@ -299,6 +301,7 @@ public class CommandParser {
 
 	}
 
+    //@@author A0139697H
     // Returns null if invalid recurrence
     // Returns Recurrence.None if empty string
     private Recurrence parseRecurrence(String recurrence) {

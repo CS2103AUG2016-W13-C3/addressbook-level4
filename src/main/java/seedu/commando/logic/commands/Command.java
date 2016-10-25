@@ -5,10 +5,9 @@ import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.ui.UiModel;
 import seedu.commando.model.Model;
 
+//@@author A0139697H
 /**
  * Represents a command with hidden internal logic and the ability to be executed
- * All commands should only run its validation of fields and logic and throw errors when executed
- * {@link #setContext(Context)} should be called before {@link #execute()}
  */
 public abstract class Command {
 

@@ -1,4 +1,6 @@
-﻿body {
+﻿/** @@author A0139080J */
+
+body {
     margin: 0;
 }
 
@@ -154,6 +156,9 @@ figcaption {
 figure img {
     margin-top: 20px;
 }
+
+
+/** @@author A0139697H */
 
 kbd.light {
     display: inline-block;

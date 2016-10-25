@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+//@@author A0139697H
 /**
  * Deletes to-do(s), or their fields.
  */
@@ -28,7 +29,7 @@ public class DeleteCommand extends Command {
 	public DeleteCommand(List<Integer> toDoIndices) {
 		this.toDoIndices = toDoIndices;
 	}
-
+	//@@author A0142230B
     @Override
     public CommandResult execute() throws NoModelException {
         Model model = getModel();

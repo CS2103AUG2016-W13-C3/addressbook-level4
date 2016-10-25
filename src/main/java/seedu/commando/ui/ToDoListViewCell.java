@@ -4,6 +4,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import seedu.commando.model.ui.UiToDo;
 
+//@@author A0139080J
 class ToDoListViewCell extends ListCell<UiToDo> {
 
     protected enum Card {

@@ -20,6 +20,8 @@ import java.util.concurrent.TimeoutException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+//@@author A0122001M
+
 /**
  * A GUI Test class for CommanDo.
  */
@@ -104,7 +106,7 @@ public abstract class CommanDoGuiTest {
     public void assertMatching(ReadOnlyToDo todo, ToDoCardHandle card) {
         assertTrue(TestUtil.compareCardAndToDo(card, todo));
     }
-
+    
     /**
      * Asserts the size of the person list is equal to the given number.
      */

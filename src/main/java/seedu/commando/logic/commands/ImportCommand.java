@@ -19,12 +19,12 @@ public class ImportCommand extends Command {
 	public static final String COMMAND_WORD = "import";
 
 	private String path;
-
+	//@@author A0142230B
 	public ImportCommand(String inputPath) {
 		assert inputPath != null;
 		this.path = inputPath;
 	}
-
+	//@@author A0142230B
 	/**
 	 * Asserts that {@code model} are non-null
 	 */

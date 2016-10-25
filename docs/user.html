@@ -14,6 +14,7 @@
     <title>CommanDo by CS2103AUG2016-W13-C3</title>
 </head>
 <body>
+    <!-- @@author A0139080J -->
     <div id="container">
         <div class="inner">
             <header>
@@ -53,6 +54,7 @@
                 </p>
                 <h2 id="about">What is CommanDo</h2>
 
+                <!-- @@author A0139697H -->
                 <p><em>You have a ton of things to do. But you are really tired of the amount of mouse-clicking to add to-dos in your to-do list management application...</em></p>
                 <p>
                     Introducing <em>CommanDo</em>: it is THE to-do list manager allows you to swiftly edit your to-do list by typing out commands, mouse-free. Commands in <em>CommanDo</em> are short and intuitive, and it flows just like natural English! <em>CommanDo</em> recognizes and actively categorizes to-dos into 2 groups: <em>Events</em>, which are to-dos with time windows, and <em>Tasks</em>, which are to-dos accompanied optionally by a deadline. Here's <em>CommanDo</em> at work:
@@ -64,7 +66,8 @@
                 </figure>
 
                 <p>Ready to spend less time managing your to-dos and more time actually doing them? <a href="#quick-start">Start using <em>CommanDo</em> today!</a></p>
-
+                
+                <!-- @@author A0122001M -->
                 <h2 id="quick-start">Getting Started</h2>
                 <ol>
                     <li>
@@ -96,7 +99,8 @@
 
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> help [<span>&lt;command_word&gt;</span>]</pre>
-
+                
+                <!-- @@author A0139697H -->
                 <blockquote>
                     <b>Understanding Command Formats:</b> For each command, the first word is the <em>command word</em> that specifies the type of the command. What follows after are fields to fill in for that command. The following legend describes the syntax we used to specify command formats:
                     <ol class="indent">
@@ -115,6 +119,7 @@
                     </ol>
                 </blockquote>
 
+                <!-- @@author A0139080J -->
                 <span><strong>Examples:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> help</pre>
                 <span>What it does:  Opens up this user guide.</span>
@@ -151,6 +156,7 @@
                     The use of keywords <code>daily</code>, <code>weekly</code>, <code>monthly</code> or <code>yearly</code> allows you to have recurring events on the same day of every day, week, month or year.
                 </p>
                  
+                <!-- @@author A0139697H -->
                 <blockquote>
                     <b>Datetime Formats:</b> <em>CommanDo</em> is pretty flexible in parsing your datetime fields, accepting formats like <code>5 Jan 2016 2300</code> and <code>28/12/2016 12pm</code> (where date is in the <code>DD/MM/YYYY</code> format). You can drop the year (if you mean the current year) or even a whole date (if you mean a preceding date or the current date). For the full list of usable datetime formats, refer to the later FAQ section on <a href="#supported-datetime-formats">supported datetime formats</a>.
                 </blockquote>
@@ -173,6 +179,7 @@
                     <b>Finding Past <em>Events</em>:</b> <em>CommanDo</em> automatically hides <em>Events</em> that are before the current day. The <a href="#recall"><code>recall</code> command</a> will allow you to browse through them.
                 </blockquote>
 
+                <!-- @@author A0139080J -->
                 <h4>Adding Tasks</h4>
                 
                 <p>A <em>Task</em>, on the other hand, is an activity that can be done at your own time or by some deadline. Therefore, it has an optional <code>due_datetime</code> field. Similarly, tags can be added to a <em>Task</em>. When you have completed the <em>Task</em>, it can be marked as done with the <a href="#finish"><code>finish</code> command</a>. In <em>CommanDo</em>, every unfinished <em>Task</em> is listed on the right panel, with those with deadlines prioritized at the top in chronological order:</p>
@@ -185,6 +192,7 @@
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>watch Lord of the Rings</span></pre>
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>shop for groceries: banana, pineapple, watermelon </span>#<span>housework</span></pre>
 
+                <!-- @@author A0139697H -->
                 <blockquote>
                     <b>To-Dos Containing Command Keywords:</b> To parse commands properly, <em>CommanDo</em> uses a set of keywords such as <code>by</code>, <code>from</code>, and <code>to</code>. <em>CommanDo</em> tries its best to determine whether a word is supposed to be a keyword or part of a field by checking the validity of datetimes. When there are multiple valid interpretations of a command with multiple command keywords, the trailing command keyword will be prioritised.
                 </blockquote>
@@ -199,6 +207,7 @@
                     <figcaption>Result of adding a <em>Task</em> with command: <code>>> add finish FYP by tomorrow 2359h</code></figcaption>
                 </figure>
 
+                <!-- @@author A0139080J -->
                 <h3 id="delete">
                     Deleting To-Dos and their Fields: <code>delete</code>
                 </h3>
@@ -207,6 +216,7 @@
 
                 <p>If you want to delete a to-do that is no longer relevant, whether it is an <em>Event</em> or a <em>Task</em>, use the <code>delete</code> command.</p>
 
+                <!-- @@author A0142230B -->
                 <span><strong>Command Formats:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>...</pre>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;start index&gt;</span> - <span>&lt;end index&gt;</span></pre>
@@ -242,6 +252,7 @@
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... tag</pre>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;start index&gt;</span> - <span>&lt;end index&gt;</span> tag</pre>
 
+                <!-- @@author A0139080J -->
                 <h3 id="edit">Editing To-Dos: <code>edit</code></h3>
 
                 <p>More often than not, you'll need to edit the fields of a to-do after adding it, such as when you made a mistake, when an <em>Event</em> gets postponed, or when you receive more details for a <em>Task</em>.</p>
@@ -272,6 +283,7 @@
                 <pre><span class="inputstart">&gt;&gt;</span> edit <span>2</span> by <span>6 feb</span></pre>
                 <span>What it does:  Adds or changes the deadline of that task.</span>
 
+                <!-- @@author A0139697H -->
                 <h3 id="finish">Marking Tasks as Done: <code>finish</code></h3>
 
                 <p>When you've completed a <em>Task</em>, mark it as done with the <code>finish</code> command. The to-do will initially be moved to the bottom of its list, and subsequently be hidden and archived on the next day. You'll be able to browse through these finished <em>Tasks</em> with the <a href="#recall"><code>recall</code> command</a>.</p>
@@ -365,6 +377,7 @@
                     <b>File Paths:</b> A file path can be absolute (<code>C:/Users/Jim/Dropbox/work/todolist.xml</code>) or relative to the <code>commando.jar</code> file (<code>../../Dropbox/work/todolist.xml</code>). You can use any file extension you wish, but ending with <code>.xml</code> is recommended because the date file is in <em>XML</em>.
                 </blockquote>
 
+                <!-- @@author A0139080J -->
                 <h3 id="export">Exporting: <code>export</code></h3>
 
                 <p>If you want to copy your to-do list data file in your current save location to another local destination, there's no need to manually do so. Instead, use the <code>export</code> command to save a copy of the current to-do list data to the specified file at given file path.</p>
@@ -417,6 +430,7 @@
 
                 <p>Your to-do list is automatically saved to your file system after any command that changes the data. There is no need to save manually.</p>
 
+                <!-- @@author A0139697H -->
                 <h3>3. Is sharing across devices supported?</h3>
 
                 <p><em>CommanDo</em> doesn't directly support syncing of the to-do list across devices. Instead, use the <code>export</code> command to generate a save data file, transfer the file to another device, and use the <code>import</code> command on the 2nd device to import your to-do list from that save file. Alternatively, use a cloud-syncing service (e.g. <a href="dropbox.com">Dropbox</a>) and the <code>store</code> command to sync the to-do list automatically by setting the save location to the same file on both devices. </p>
@@ -433,6 +447,7 @@
 
                 <p><em>CommanDo</em> supports a wide variety of date and time formats, backed by the awesome date parser library <a href="http://natty.joestelmach.com/" target="_blank">Natty</a>. A valid datetime contains a valid date, a valid time, or a valid date and time. A sample of the accepted date & time formats are shown below:</p>
 
+                <!-- @@author A0139080J -->
                 <h4>Valid Dates</h4>
 
                 <div class="datagrid">
@@ -546,11 +561,13 @@
                         </tbody>
                     </table>
                     
+                    <!-- @@author A0139697H -->
                     <blockquote>
                         <b>Datetime without Date or Time:</b> If your datetime is missing a date or a time, <em>CommanDo</em> will try to infer it. With no date specified, it will be inferred as the current day, or if it is not the first datetime, it will inherit the date of the first datetime. With no time specified, it will be inferred as 1200h. 
                     </blockquote>
                 </div>
 
+                <!-- @@author A0139080J -->
                 <h2 id="cheatsheet">Cheatsheet</h2>             
 
                 <div class="datagrid">
