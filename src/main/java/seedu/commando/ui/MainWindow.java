@@ -1,5 +1,6 @@
 package seedu.commando.ui;
 
+import com.google.common.eventbus.Subscribe;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -21,16 +22,22 @@ import javafx.stage.StageStyle;
 import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.GuiSettings;
+import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.events.logic.ExitAppRequestEvent;
+import seedu.commando.commons.events.storage.ToDoListSavedEvent;
 import seedu.commando.logic.Logic;
 import seedu.commando.model.UserPrefs;
 import seedu.commando.model.ui.UiToDo;
+
+import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 /**
  * The Main Window. Provides the basic application layout containing
  * a menu bar and space where other JavaFX elements can be placed.
  */
 public class MainWindow extends UiPart {
+    private static final Logger logger = LogsCenter.getLogger(MainWindow.class);
     
     // Fixed variables
     private final String FXML = "MainWindow.fxml";
@@ -404,5 +411,10 @@ public class MainWindow extends UiPart {
     private void handleExit() {
         raise(new ExitAppRequestEvent());
     }
-    
+
+    @Subscribe
+    public void handleToDoListSavedEvent(ToDoListSavedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Setting last updated status to " + LocalDateTime.now()));
+        statusBarFooter.setSyncStatus(LocalDateTime.now());
+    }
 }

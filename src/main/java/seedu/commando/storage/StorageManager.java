@@ -6,6 +6,7 @@ import seedu.commando.commons.core.ComponentManager;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.events.model.ToDoListChangedEvent;
 import seedu.commando.commons.events.storage.DataSavingExceptionEvent;
+import seedu.commando.commons.events.storage.ToDoListSavedEvent;
 import seedu.commando.commons.exceptions.DataConversionException;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.UserPrefs;
@@ -80,6 +81,7 @@ public class StorageManager extends ComponentManager implements Storage {
     public void saveToDoList(ReadOnlyToDoList toDoList, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         toDoListStorage.saveToDoList(toDoList, filePath);
+        raise(new ToDoListSavedEvent(filePath)); // post event that to-do list has been saved to the file system
     }
 
 	@Override

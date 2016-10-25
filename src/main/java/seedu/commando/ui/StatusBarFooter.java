@@ -14,6 +14,8 @@ import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.events.model.ToDoListChangedEvent;
 import seedu.commando.commons.util.FxViewUtil;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Observable;
 import java.util.logging.Logger;
@@ -22,10 +24,9 @@ import java.util.logging.Logger;
  * A ui for the status bar that is displayed at the footer of the application.
  */
 public class StatusBarFooter extends UiPart {
-    
     private static final String FXML = "StatusBarFooter.fxml";
-    private static final Logger logger = LogsCenter.getLogger(StatusBarFooter.class);
-    
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     private StatusBar syncStatus;
     private StatusBar saveLocationStatus;
     private GridPane mainPane;
@@ -45,7 +46,7 @@ public class StatusBarFooter extends UiPart {
     public void configure(ObservableValue<String> saveLocation) {
         addMainPane();
         addSyncStatus();
-        setSyncStatus("Not updated yet in this session");
+        syncStatus.setText("Not updated yet in this session");
         addSaveLocation(saveLocation);
         registerAsAnEventHandler(this);
     }
@@ -70,8 +71,8 @@ public class StatusBarFooter extends UiPart {
         saveLocationStatus.setText("./" + saveLocation);
     }
 
-    private void setSyncStatus(String status) {
-        this.syncStatus.setText(status);
+    public void setSyncStatus(LocalDateTime dateTime) {
+        this.syncStatus.setText("Last Updated: " + dateFormatter.format(dateTime));
     }
 
     private void addSyncStatus() {
@@ -93,12 +94,5 @@ public class StatusBarFooter extends UiPart {
     @Override
     public String getFxmlPath() {
         return FXML;
-    }
-
-    @Subscribe
-    public void handleToDoListChangedEvent(ToDoListChangedEvent event) {
-        String lastUpdated = (new Date()).toString();
-        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Setting last updated status to " + lastUpdated));
-        setSyncStatus("Last Updated: " + lastUpdated);
     }
 }
