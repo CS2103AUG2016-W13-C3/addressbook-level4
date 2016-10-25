@@ -45,7 +45,7 @@ public class HelpCommand extends Command {
             if (anchor.isPresent()) {
                 eventsCenter.post(new ShowHelpRequestEvent(anchor.get()));
             } else {
-                return new CommandResult(Messages.UNKNOWN_COMMAND_FOR_HELP, true);
+                return new CommandResult(String.format(Messages.UNKNOWN_COMMAND_FOR_HELP, commandWord), true);
             }
         }
 
