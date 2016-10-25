@@ -14,12 +14,12 @@ public class StoreCommand extends Command {
     public static final String COMMAND_WORD = "store";
 
     private String path;
-
+  //@@author A0142230B
     public StoreCommand(String inputPath) {
         assert inputPath != null;
         this.path = inputPath;
     }
-
+  //@@author A0142230B
     /**
      * Asserts that {@code eventsCenter} and {@code model} are non-null
      */

@@ -221,7 +221,7 @@ public class SequentialParserTest {
             "walk by the beach from today to tomorrow", sequentialParser.extractText().orElse("")
         );
     }
-
+  //@@author A0142230B
     @Test
     public void extractIndicesList_valid() throws IllegalValueException {
         sequentialParser.setInput("2to7");
@@ -240,7 +240,7 @@ public class SequentialParserTest {
         indices = sequentialParser.extractIndicesList();
         assertEquals("[2]", indices.toString());
     }
-
+  //@@author 
     @Test
     public void extractTrailingDateRange_recurrence() throws IllegalValueException {
         sequentialParser.setInput("walk nowhere from 28 Oct 2018 1200h to 29 Nov 2018 1300h yearly");

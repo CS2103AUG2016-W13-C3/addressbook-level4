@@ -20,11 +20,11 @@ public class FinishCommand extends Command {
 	public static final String COMMAND_WORD = "finish";
 
 	public final List<Integer> toDoIndices;
-
+	//@@author A0142230B
 	public FinishCommand(List<Integer> toDoIndices) {
 		this.toDoIndices = toDoIndices;
 	}
-
+	//@@author A0142230B
 	@Override
 	public CommandResult execute() throws NoModelException {
 		Model model = getModel();
