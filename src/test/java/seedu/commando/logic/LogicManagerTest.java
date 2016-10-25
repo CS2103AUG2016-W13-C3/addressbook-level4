@@ -72,6 +72,6 @@ public class LogicManagerTest {
     public void execute_unknownCommand() {
         CommandResult result = logic.execute("unknownCommand");
         assertTrue(result.hasError());
-        assertEquals(Messages.UNKNOWN_COMMAND, result.getFeedback());
+        assertEquals(String.format(Messages.UNKNOWN_COMMAND, "unknowncommand"), result.getFeedback());
     }
 }

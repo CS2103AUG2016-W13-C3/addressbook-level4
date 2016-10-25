@@ -46,7 +46,7 @@ public class AddCommandTest {
     public void execute_add_missingTitle() {
         CommandResult result = logic.execute("add");
         assertTrue(result.hasError());
-        assertEquals(Messages.MISSING_TODO_TITLE, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_TITLE + "\n" + Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
@@ -93,7 +93,8 @@ public class AddCommandTest {
         String command = "add valid title from 10 Dec 2017 11:59 to 11 Apr 2017 23:10";
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
-        assertEquals(Messages.TODO_DATERANGE_END_MUST_AFTER_START, result.getFeedback());
+        assertEquals(Messages.TODO_DATERANGE_END_MUST_AFTER_START + "\n" + Messages.DATE_FORMAT + "\n" + 
+                Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
@@ -102,7 +103,8 @@ public class AddCommandTest {
         String command = "add valid title from not date to 11 Apr 2017 23:10";
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
-        assertEquals(Messages.INVALID_TODO_DATERANGE_START, result.getFeedback());
+        assertEquals(Messages.INVALID_TODO_DATERANGE_START + "\n" + Messages.DATE_FORMAT + "\n" + 
+                Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
@@ -111,7 +113,8 @@ public class AddCommandTest {
         String command = "add valid title from 11 Apr 2017 23:10 to not date";
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
-        assertEquals(Messages.INVALID_TODO_DATERANGE_END, result.getFeedback());
+        assertEquals(Messages.INVALID_TODO_DATERANGE_END + "\n" + Messages.DATE_FORMAT + "\n" + 
+        Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
@@ -243,7 +246,8 @@ public class AddCommandTest {
     public void execute_add_eventWithInvalidRecurrence() throws IllegalValueException {
         CommandResult result = logic.execute("add event from 10 Oct to 12 Oct daily");
         assertTrue(result.hasError());
-        assertEquals(Messages.TODO_DATERANGE_RECURRENCE_INVALID, result.getFeedback());
+        assertEquals(Messages.TODO_DATERANGE_RECURRENCE_INVALID + "\n" + Messages.DATE_FORMAT + "\n" + 
+                Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
@@ -251,14 +255,16 @@ public class AddCommandTest {
     public void execute_add_missingStartEndDates() throws IllegalValueException {
         CommandResult result = logic.execute("add event from to 12 Oct");
         assertTrue(result.hasError());
-        assertEquals(Messages.MISSING_TODO_DATERANGE_START, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_DATERANGE_START + "\n" + Messages.DATE_FORMAT + "\n" + 
+                Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
         eventsCollector.reset();
 
         result = logic.execute("add event from 12 Oct to");
         assertTrue(result.hasError());
-        assertEquals(Messages.MISSING_TODO_DATERANGE_END, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_DATERANGE_END + "\n" + Messages.DATE_FORMAT + "\n" + 
+                Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 }

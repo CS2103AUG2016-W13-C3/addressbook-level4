@@ -75,27 +75,27 @@ public class AddCommandTest extends CommanDoGuiTest {
 
         //add missing startdate ,  empty date
         commandBox.runCommand("add test from to 1pm");
-        assertResultMessage(Messages.MISSING_TODO_DATERANGE_START);
+        assertResultMessage(Messages.MISSING_TODO_DATERANGE_START + "\n" + Messages.DATE_FORMAT);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
        
         //add missing startdate ,  invalid date
         commandBox.runCommand("add test from abcde to 1pm");
-        assertResultMessage(Messages.INVALID_TODO_DATERANGE_START);
+        assertResultMessage(Messages.INVALID_TODO_DATERANGE_START + "\n" + Messages.DATE_FORMAT);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
 
         //add missing enddate , empty date
         commandBox.runCommand("add test from 1pm to");
-        assertResultMessage(Messages.MISSING_TODO_DATERANGE_END);
+        assertResultMessage(Messages.MISSING_TODO_DATERANGE_END + "\n" + Messages.DATE_FORMAT);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
         
         //add missing enddate ,  invalid date
         commandBox.runCommand("add test from 1pm to abcde");
-        assertResultMessage(Messages.INVALID_TODO_DATERANGE_END);
+        assertResultMessage(Messages.INVALID_TODO_DATERANGE_END + "\n" + Messages.DATE_FORMAT);
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
 
         //invalid command
         commandBox.runCommand("adds Johnny");
-        assertResultMessage(Messages.UNKNOWN_COMMAND);
+        assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "adds"));
     }
     
     private void assertAddSuccess(ToDo todoToAdd, int idx, ToDo... currentList ) {

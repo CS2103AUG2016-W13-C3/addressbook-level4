@@ -78,6 +78,7 @@ public class CommandBox extends UiPart {
         if (mostRecentResult.hasError()) {
             setStyleToIndicateIncorrectCommand();
             restoreCommandText();
+            commandTextField.positionCaret(commandTextField.getLength());
         }
         
         resultDisplay.postMessage(mostRecentResult.getFeedback());

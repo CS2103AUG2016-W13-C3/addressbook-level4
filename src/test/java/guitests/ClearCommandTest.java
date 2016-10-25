@@ -30,11 +30,11 @@ public class ClearCommandTest extends CommanDoGuiTest {
     public void clear_invalidCommand() {
         //verify clear command does not take in extra params
         commandBox.runCommand("clear 1");
-        assertResultMessage("Invalid format for 'clear' command!");
+        assertResultMessage(String.format(Messages.INVALID_COMMAND_FORMAT, "clear"));
         
         //verify clear command does not execute on similar bur wrong command name
         commandBox.runCommand("clears");
-        assertResultMessage(Messages.UNKNOWN_COMMAND);
+        assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "clears"));
     }
 
     private void assertClearCommandSuccess() {

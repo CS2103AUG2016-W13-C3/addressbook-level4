@@ -54,10 +54,12 @@ public class StoreCommandTest {
     public void execute_store_emptyPath() {
         CommandResult result = logic.execute("store");
         assertTrue(result.hasError());
-        assertEquals(Messages.MISSING_STORE_PATH, result.getFeedback());
+        assertEquals(Messages.MISSING_STORE_PATH
+                + "\n" + Messages.getInvalidCommandFormatMessage("store").get(), result.getFeedback());
         result = logic.execute("store    ");
         assertTrue(result.hasError());
-        assertEquals(Messages.MISSING_STORE_PATH, result.getFeedback());
+        assertEquals(Messages.MISSING_STORE_PATH
+                + "\n" + Messages.getInvalidCommandFormatMessage("store").get(), result.getFeedback());
     }
 
     @Test

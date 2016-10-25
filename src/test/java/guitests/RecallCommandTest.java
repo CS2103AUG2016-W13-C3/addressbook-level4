@@ -33,7 +33,7 @@ public class RecallCommandTest extends CommanDoGuiTest {
     @Test
     public void recall_invalidCommand() {
         commandBox.runCommand("recalltest");
-        assertResultMessage(Messages.UNKNOWN_COMMAND);
+        assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "recalltest"));
     }
 
     private void assertRecallResult(String command, ToDo... expectedHits ) {
