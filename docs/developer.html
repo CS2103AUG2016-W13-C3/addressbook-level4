@@ -15,6 +15,7 @@
 </head>
 
 <body>
+    <!-- @@author A0139080J -->
     <div id="container">
         <div class="inner">
             <header>
@@ -68,6 +69,7 @@
                     </ul>
                 </p>
 
+                <!-- @@author A0139697H -->
                 <h2 id="introduction">Introduction</h2>
 
                 <p><em>CommanDo</em> is a to-do list manager. It is designed to cater for the needs of people who type fast and has a user interface shown in the picture below. to-dos are displayed on a graphical user interface (GUI), split into 2 panels of <em>Events</em> and <em>Tasks</em>. The user manage his/her to-do list by typing commands on a text input - just like in a Command Line Interface (CLI).</p>
@@ -109,6 +111,7 @@
 
                 <p>The full list of features is outlined in our <a href="#appendix-a-user-stories">User Stories</a>. To ensure that the interface is user-friendly and the codebase stays maintainable, we also set ourselves some <a href="#appendix-c-non-functional-requirements">Non-Functional Requirements</a>.</p>
 
+                <!-- @@author A0139080J -->
                 <h2 id="setting-up">Setting Up</h2>
 
                 <h3 id="prerequisties">Prerequisites</h3>
@@ -158,6 +161,7 @@
 
                 <p>This section explains the high level design of the application.</p>
 
+                <!-- @@author A0139697H -->
                 <h3 id="architecture-diagram">Architecture</h3>
 
                 <figure>
@@ -296,6 +300,7 @@
                     <figcaption>Sequence Diagram of command <code>exit</code></figcaption>
                 </figure>
 
+                <!-- @@author A0139080J -->
                 <h3 id="logging">Logging</h3>
 
                 <p> We are using the <code>java.util.logging</code> package for logging. <code>LogsCenter.java</code> is used to manage the logging levels and logging destinations. The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level. </p>
@@ -417,6 +422,7 @@
                     <li>Require developers to download those libraries manually (this creates extra work for developers)</li>
                 </ol>
 
+                <!-- @@author A0139697H -->
                 <h2 id="troubleshooting">Troubleshooting</h2>
 
                 <h3>Eclipse reports compile errors after new commits are pulled from Git.</h3>
@@ -492,6 +498,7 @@
                                 <td align="left">mark my <em>Tasks</em> as done</td>
                                 <td align="left">dismiss pending <em>Tasks</em> that I have done</td>
                             </tr>
+                            <!-- @@author A0139080J -->
                             <tr>
                                 <td><code>* * *</code></td>
                                 <td align="left">user with many to-dos</td>
@@ -603,7 +610,7 @@
                 </p>
 
                 <div class="pagebreak"> </div>
-<!-- //@@author A0122001M -->
+                <!-- //@@author A0122001M -->
                 <h3 id="appendix-b-use-cases">Appendix B: Use Cases</h3>
 
                 <p>In all the listed use cases, the <strong>System</strong> is our application and the <strong>Actor</strong> is the user.</p>
@@ -836,6 +843,8 @@
                     </ul>
                 </ul>
 
+                <!-- @@author A0139697H -->
+
                 <h3 id="appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</h3>
 
                 <ol>
@@ -884,21 +893,25 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- @@author A0122001M -->
                             <tr>
                                 <td>Google Keep (Zhiwen)</td>
                                 <td align="left">+ It has high level of simplicity (clear and simple UI) <br> + It can be easily accessed from anywhere <br> + It supports native sync and integration with Google <br> + Mark things done easily <br> + Support photos, audios and lists in content</td>
                                 <td align="left">- It is unable to do text formatting <br> - Its search function only supports titles <br> - It is unable to prioritise activities</td>
                             </tr>
+                            <!-- @@author A0142230B -->
                             <tr>
                                 <td>Trello (Sheng Xuan)</td>
                                 <td align="left">+ It supports multiple platforms (Web, mobile, desktop) <br> + It has due date function, which is suitable for tasks with deadlines <br> + It can search by keyword of a task <br> + It archives completed tasks <br> + It has check list to track the progress of each task <br> + It can attach files to a task (ie. forms to reply in a email)</td>
                                 <td align="left">- It needs at least 2 clicks (taps) to add a new task <br> - It costs money  to use the calendar view functionis. In free version, no timeline is provided. Adding events that happen in specific dates are not supported <br> - It is unable to undo</td>
                             </tr>
+                            <!-- @@author A0139080J -->
                             <tr>
                                 <td>Anydo (Conan)</td>
                                 <td align="left">+ It is able to push tasks to a later date <br> + It can easily reorder tasks <br> + It has user-friendly interface (4 major groups) <br> + It can be used on mobile and on browser <br> + It supports double confirmation of deleting a task when complete <br> + It can add details in later</td>
                                 <td align="left">- It has no clear distinguishing among the 3 types of tasks <br> - It has no sense of timeline, and just tasks to complete by the end of the day <br> - Its deadlines are not shown unless the task is clicked <br> - It does not support search function (however, you can Ctrl+F, though no content search) <br> - Its other 2 groups “Upcoming” and “Someday” are kind of ambiguous</td>
                             </tr>
+                            <!-- @@author A0139697H -->
                             <tr>
                                 <td>Google Calendar (Yun Chuan)</td>
                                 <td align="left">+ It is able to mark as done, and undo “done” <br> + It has clean, simple interface which is not cluttered <br> + It can autocomplete based on crowd-sourced or history (but doesn’t feel very “intelligent”) <br> + It can push notifications for reminders/events <br> + It is able to repeat events <br> + It is automatically synchronised both on mobile and on website <br> + It has “All-day” events <br> + It supports “Schedule” view which lists everything in chronological order, starting from today <br> + It is able to “zoom in” (day view) and “zoom out” (month view) <br> + Its items are split into: “events” and “reminders”. Events have start to end time while reminders only have a reminder time</td>

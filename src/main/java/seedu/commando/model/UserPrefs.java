@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableValue;
 import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.GuiSettings;
 
+//@@author A0139697H
 /**
  * Represents the user's preferences.
  */

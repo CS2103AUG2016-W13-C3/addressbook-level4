@@ -16,6 +16,7 @@ import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.logic.Logic;
 import seedu.commando.testutil.EventsCollector;
 
+//@@author A0139697H
 public class HelpCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();

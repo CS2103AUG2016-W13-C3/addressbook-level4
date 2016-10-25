@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+//@@author A0139697H
 /**
  * Contains tests for LogicManager
  * More tests for specific command words might also be in {@link seedu.commando.logic.commands}

@@ -14,7 +14,6 @@ import seedu.commando.commons.exceptions.IllegalValueException;
  * is valid as declared in {@link #isValid(LocalDateTime)}
  */
 public class DueDate {
-
     public final LocalDateTime value;
 
     /**

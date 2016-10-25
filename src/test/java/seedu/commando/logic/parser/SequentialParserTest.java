@@ -22,6 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+//@@author A0139697H
 public class SequentialParserTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -240,7 +241,8 @@ public class SequentialParserTest {
         indices = sequentialParser.extractIndicesList();
         assertEquals("[2]", indices.toString());
     }
-  //@@author 
+
+    //@@author A0139697H
     @Test
     public void extractTrailingDateRange_recurrence() throws IllegalValueException {
         sequentialParser.setInput("walk nowhere from 28 Oct 2018 1200h to 29 Nov 2018 1300h yearly");

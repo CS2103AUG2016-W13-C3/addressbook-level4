@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 import static seedu.commando.logic.LogicManagerTest.initLogic;
 import static seedu.commando.testutil.TestHelper.*;
 
+//@@author A0139697H
 public class FindCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();

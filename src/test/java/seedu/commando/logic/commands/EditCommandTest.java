@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 import static seedu.commando.logic.LogicManagerTest.initLogic;
 import static seedu.commando.testutil.TestHelper.*;
 
+//@@author A0139697H
 public class EditCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();

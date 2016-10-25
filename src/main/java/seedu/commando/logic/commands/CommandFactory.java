@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
+//@@author A0139697H
 /**
  * Maps and builds commands from input strings, using {@link SequentialParser}
  * In charge of splitting up input strings to required parts for commands

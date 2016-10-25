@@ -4,6 +4,7 @@ import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.events.logic.ExitAppRequestEvent;
 
+//@@author A0139697H
 /**
  * Terminates the program
  */

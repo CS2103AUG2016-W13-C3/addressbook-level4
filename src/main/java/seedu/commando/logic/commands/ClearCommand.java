@@ -8,6 +8,7 @@ import seedu.commando.model.todo.ToDoList;
 
 import java.util.Collections;
 
+//@@author A0139697H
 /**
  * Clears the to-do list
  */
