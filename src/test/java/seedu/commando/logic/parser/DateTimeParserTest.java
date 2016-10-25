@@ -87,6 +87,15 @@ public class DateTimeParserTest {
         );
     }
 
+    // Underlying natty doesn't parse this properly
+    @Test
+    public void parseDateTime_DateWithoutYearAndHHmmh()  {
+        assertEquals(
+            LocalDateTime.of(now.getYear(), 10, 31, 19, 19),
+            dateTimeParser.parseDateTime("31 Oct 1919h").orElse(null)
+        );
+    }
+
     @Test
     public void parseDateTime_ordinalFullMonth_HHAm()  {
         assertEquals(
