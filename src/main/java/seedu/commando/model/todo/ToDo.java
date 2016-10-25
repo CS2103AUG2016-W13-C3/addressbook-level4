@@ -7,6 +7,8 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
 import seedu.commando.commons.exceptions.IllegalValueException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,20 +23,21 @@ public class ToDo implements ReadOnlyToDo {
     private DueDate dueDate;
     private DateRange dateRange;
     private Set<Tag> tags;
-    private boolean isFinished;
+    private LocalDateTime dateFinished; // null if to-do is not finished
+    private LocalDateTime dateCreated;
     private StringProperty value;
     {
         value = new ReadOnlyStringWrapper();
-        isFinished = false;
     }
 
     /**
-     * Asserts that value is non-null
+     * Asserts that title is non-null
      */
     public ToDo(Title title) {
         assert title != null;
 
         this.title = title;
+        dateCreated = LocalDateTime.now();
         updateValue();
     }
 
@@ -45,6 +48,7 @@ public class ToDo implements ReadOnlyToDo {
         assert toDo != null;
 
         this.title = new Title(toDo.getTitle());
+        this.dateCreated = toDo.getDateCreated();
 
         if (toDo.getDueDate().isPresent()) {
             this.dueDate = new DueDate(toDo.getDueDate().get());
@@ -58,49 +62,96 @@ public class ToDo implements ReadOnlyToDo {
             this.tags = toDo.getTags().stream().map(Tag::new).collect(Collectors.toSet());
         }
 
-        this.isFinished = toDo.isFinished();
+        if (toDo.getDateFinished().isPresent()) {
+            this.dateFinished = toDo.getDateFinished().get();
+        }
+
         updateValue();
     }
     
-    public void setTitle(Title title) {
+    public ToDo setTitle(Title title) {
         assert title != null;
         
         this.title = title;
         updateValue();
+        
+        return this;
     }
 
-    public void setDueDate(DueDate dueDate) {
+    public ToDo setDueDate(DueDate dueDate) {
         assert dueDate != null;
 
         this.dueDate = dueDate;
         updateValue();
+        
+        return this;
     }
 
-    public void setDateRange(DateRange dateRange) {
+    public ToDo setDateRange(DateRange dateRange) {
         assert dateRange != null;
         
         this.dateRange = dateRange;
         updateValue();
+
+        return this;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public ToDo clearTimeConstraint() {
+        dateRange = null;
+        dueDate = null;
+        updateValue();
+
+        return this;
+    }
+
+    public ToDo setTags(Set<Tag> tags) {
         assert tags != null;
         
         this.tags = tags;
         updateValue();
+        
+        return this;
     }
 
-    public void setIsFinished(boolean isFinished) {
-        this.isFinished = isFinished;
+    public ToDo setDateFinished(LocalDateTime date) {
+        this.dateFinished = date;
 
         updateValue();
+        
+        return this;
     }
-    
+
+    /**
+     * If {@param isFinished} is true, sets to-do's date finished to now
+     * Else, sets remove to-do's date finished
+     */
+    public ToDo setIsFinished(boolean isFinished) {
+        if (isFinished) {
+            dateFinished = LocalDateTime.now();
+        } else {
+            dateFinished = null; // remove date finished if unfinish
+        }
+
+        updateValue();
+
+        return this;
+    }
+
+    public ToDo setDateCreated(LocalDateTime date) {
+        this.dateCreated = date;
+
+        updateValue();
+
+        return this;
+    }
+
     public Optional<DueDate> getDueDate() {
         return Optional.ofNullable(dueDate);
     }
 
     public Optional<DateRange> getDateRange() {
+        updateDateRange();
+
         return Optional.ofNullable(dateRange);
     }
 
@@ -113,10 +164,23 @@ public class ToDo implements ReadOnlyToDo {
     }
 
     @Override
-    public boolean isFinished() {
-        return isFinished;
+    public Optional<LocalDateTime> getDateFinished() {
+        // we need to use the latest date range which considers recurrence
+        updateDateRange();
+
+        // If date range exists and currently it is after its end date
+        // return its end date as date finished automatically
+        if (dateRange != null && LocalDateTime.now().isAfter(dateRange.endDate)) {
+            return Optional.of(dateRange.endDate);
+        } else {
+            return Optional.ofNullable(dateFinished);
+        }
     }
 
+    @Override
+    public LocalDateTime getDateCreated() {
+        return dateCreated;
+    }
 
     @Override
     public ObservableStringValue getObservableValue() {
@@ -151,5 +215,61 @@ public class ToDo implements ReadOnlyToDo {
     private void updateValue() {
         value.getValue(); // Reset "invalidated" state of observable value
         value.setValue(getText());
+    }
+
+    /**
+     * Called when a recurring to-do needs an update in date range
+     */
+    private void updateDateRange() {
+        // if there is no date range or the date range hasn't expired,
+        // nothing to do
+        if (dateRange == null || !LocalDateTime.now().isAfter(dateRange.endDate)) {
+            return;
+        }
+
+        try {
+            // Keep moving date forward based on recurrence interval
+            // until it is not before the current date
+            LocalDateTime startDate = dateRange.startDate;
+            LocalDateTime endDate = dateRange.endDate;
+
+            switch (dateRange.recurrence) {
+                case Daily:
+                    while (startDate.isBefore(LocalDateTime.now())) {
+                        startDate = startDate.plusDays(1);
+                        endDate = endDate.plusDays(1);
+                    }
+                    break;
+                case Weekly:
+                    while (startDate.isBefore(LocalDateTime.now())) {
+                        startDate = startDate.plusWeeks(1);
+                        endDate = endDate.plusWeeks(1);
+                    }
+                    break;
+                case Monthly:
+                    while (startDate.isBefore(LocalDateTime.now())) {
+                        startDate = startDate.plusMonths(1);
+                        endDate = endDate.plusMonths(1);
+                    }
+                    break;
+                case Yearly:
+                    while (startDate.isBefore(LocalDateTime.now())) {
+                        startDate = startDate.plusYears(1);
+                        endDate = endDate.plusYears(1);
+                    }
+                    break;
+                case None:
+                    break;
+                default:
+                    assert false : "all recurrences should be covered";
+            }
+
+            dateRange = new DateRange(
+                startDate, endDate, dateRange.recurrence
+            );
+
+        } catch (IllegalValueException exception) {
+            assert false : "new date range should be valid";
+        }
     }
 }

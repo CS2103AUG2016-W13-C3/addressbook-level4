@@ -113,6 +113,10 @@
     -fx-background-color: derive(#1d1d1d, 20%);
 }
 
+.list-view:focused {
+	-fx-background-color: #27BDD1;
+}
+
 .list-cell {
     -fx-label-padding: 0 0 0 0;
     -fx-graphic-text-gap : 0;
@@ -133,19 +137,32 @@
     -fx-text-fill: #010504;
 }
 
-#startLabel, #endLabel {
-	-fx-text-fill: #053a8e; 
-	-fx-font-family: Microsoft Yahei Light;
+#indexLabel, #dateIntervalLabel, #dueLabel, #tagsLabel, #recurrenceLabel {
+	-fx-font-family: "Segoe UI bold";
 }
 
-#dueLabel {
-	-fx-text-fill: #FF0000; 
-	-fx-font-family: Microsoft Yahei Light;
+#tagsLabel {
+	-fx-border-radius: 10px;
+	-fx-border-width: 2 2 2 2;
+	-fx-border-color: derive(#1d1d1d, 60%); 
+	-fx-background-radius: 10px;
+	-fx-background-color: derive(#DCDCDC, 30%);
+}
+
+#recurrenceLabel {
+	-fx-border-radius: 10px;
+	-fx-border-width: 2 2 2 2;
+	-fx-background-color: derive(#1d1d1d, 60%); 
+	-fx-background-radius: 10px;
+	-fx-border-color: derive(#DCDCDC, -80%);
+	-fx-text-fill: derive(#DCDCDC, 80%);
 }
 
 #indexLabel {
-	-fx-font-family: Microsoft Yahei Light;
-	-fx-font-weight: 600;
+	-fx-background-color: derive(#1d1d1d, 60%);
+	-fx-text-fill: #FFFFFF;
+	-fx-border-width: 0 2px 0 0;
+	-fx-border-color: derive(#1d1d1d, 40%);
 }
 
 .task-pane, .event-pane {
@@ -176,8 +193,9 @@
     -fx-text-fill: black;
 }
 
-.result-display {
-    -fx-background-color: #ffffff;
+.result-display, .result-display .content {
+	-fx-background-radius: 4px;
+    -fx-background-color: derive(#dcdcdc, -10%);
 }
 
 .result-display .label {

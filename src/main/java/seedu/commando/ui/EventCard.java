@@ -1,5 +1,8 @@
 package seedu.commando.ui;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -7,6 +10,7 @@ import javafx.scene.layout.HBox;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.Recurrence;
 
 public class EventCard extends UiPart{
 
@@ -22,11 +26,13 @@ public class EventCard extends UiPart{
     @FXML
     private Label indexLabel;
     @FXML
-    private Label startLabel;
+    private Label dateIntervalLabel;
     @FXML
     private Label endLabel;
     @FXML
     private Label tagsLabel;
+    @FXML
+    private Label recurrenceLabel;
 
     private ReadOnlyToDo toDo;
     private int index;
@@ -43,13 +49,14 @@ public class EventCard extends UiPart{
     @FXML
     public void initialize() {
         titleLabel.setText(toDo.getTitle().value);
-        indexLabel.setText(String.valueOf(index) + ". ");
+        indexLabel.setText(String.valueOf(index));
 
-        setLabelContent();
-        setLabelTags();
+        setDateTimesLabels();
+        setRecurrenceLabel();
+        setTagLabel();
     }
 
-    private void setLabelTags() {
+    private void setTagLabel() {
         if (!toDo.getTags().isEmpty()) {
             String tags = "";
             for (Tag tag : toDo.getTags()) {
@@ -57,22 +64,38 @@ public class EventCard extends UiPart{
             }
             tagsLabel.setText(tags);
         } else {
-            tagsLabel.setText("");
+            tagsLabel.setManaged(false);
         }
     }
     
-    private void setLabelContent() {
+    private void setRecurrenceLabel() {
+        if (toDo.getDateRange().isPresent() && toDo.getDateRange().get().recurrence != Recurrence.None) {
+            recurrenceLabel.setText(toDo.getDateRange().get().recurrence.toString());
+        } else {
+            recurrenceLabel.setManaged(false);
+        }
+    }
+    
+    private void setDateTimesLabels() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
-            startLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.startDate) + " To ");
-            endLabel.setText(ToDoCardStyleManager.prettifyDateTime(dateRange.endDate));
+            final long startDayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.startDate);
+            
+            dateIntervalLabel.setText(
+                    ToDoCardStyleManager.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
+            dateIntervalLabel.setStyle("-fx-text-fill: " + 
+                    ToDoCardStyleManager.getDateProximityBlue((int) startDayDifference));
         } else {
-            startLabel.setText("");
+            dateIntervalLabel.setText("");
             endLabel.setText("");
         }
     }
     
-    public HBox getLayoutState(boolean isNew, boolean isFinished) {
+    
+    /*
+     * Different CSS styles for different states
+     */
+    protected HBox getLayoutState(boolean isNew, boolean isFinished) {
         this.isFinished = isFinished;
         if (isNew) {
             setRecentlyModifiedState();
@@ -95,7 +118,8 @@ public class EventCard extends UiPart{
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        eventPaneInner.setStyle(ToDoCardStyleManager.finishedStateCSS);
+        eventPaneInner.setStyle(ToDoCardStyleManager.finishedStateContentCSS);
+        indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
     }
 
     /**
@@ -104,14 +128,16 @@ public class EventCard extends UiPart{
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            eventPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateCSS);
+            eventPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateContentCSS);
+            indexLabel.setStyle(ToDoCardStyleManager.activateHoverStateIndexCSS);
         }
     }
     
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            eventPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateCSS);
+            eventPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateContentCSS);
+            indexLabel.setStyle(ToDoCardStyleManager.deactivateHoverStateIndexCSS);
         }
     }
     

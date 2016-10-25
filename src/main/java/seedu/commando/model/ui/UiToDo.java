@@ -3,6 +3,7 @@ package seedu.commando.model.ui;
 import javafx.beans.value.ObservableValue;
 import seedu.commando.model.todo.*;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -21,6 +22,21 @@ public class UiToDo implements ReadOnlyToDo {
         this.isNew = isNew;
         this.index = index;
     }
+
+    /**
+     * Returns whether a to-do item is an event
+     */
+    public static boolean isEvent(ReadOnlyToDo todo) {
+        return todo.getDateRange().isPresent();
+    }
+
+    /**
+     * Returns whether a to-do item is a task
+     */
+    public static boolean isTask(ReadOnlyToDo todo) {
+        return !todo.getDateRange().isPresent();
+    }
+
 
     @Override
     public Title getTitle() {
@@ -48,6 +64,16 @@ public class UiToDo implements ReadOnlyToDo {
     }
 
     @Override
+    public Optional<LocalDateTime> getDateFinished() {
+        return toDo.getDateFinished();
+    }
+
+    @Override
+    public LocalDateTime getDateCreated() {
+        return toDo.getDateCreated();
+    }
+
+    @Override
     public ObservableValue getObservableValue() {
         return toDo.getObservableValue();
     }
@@ -57,6 +83,14 @@ public class UiToDo implements ReadOnlyToDo {
     }
 
     public boolean isNew() { return isNew; }
+
+    public boolean isEvent() {
+        return isEvent(this);
+    }
+
+    public boolean isTask() {
+        return isTask(this);
+    }
 
     @Override
     public boolean equals(Object other) {

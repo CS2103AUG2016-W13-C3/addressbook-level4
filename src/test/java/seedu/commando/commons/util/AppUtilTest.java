@@ -4,7 +4,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.commando.commons.core.Config;
 import seedu.commando.commons.util.AppUtil;
+import seedu.commando.ui.MainWindow;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -14,7 +16,7 @@ public class AppUtilTest {
 
     @Test
     public void getImage_exitingImage() {
-        assertNotNull(AppUtil.getImage("/images/address_book_32.png"));
+        assertNotNull(AppUtil.getImage(Config.ApplicationIcon));
     }
 
     @Test

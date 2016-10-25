@@ -1,18 +1,31 @@
 package seedu.commando.logic.parser;
 
+import com.google.common.collect.Sets;
+import edu.emory.mathcs.backport.java.util.Collections;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.model.todo.DateRange;
+import seedu.commando.model.todo.DueDate;
+import seedu.commando.model.todo.Recurrence;
+import seedu.commando.model.todo.Tag;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertFalse;
-import static seedu.commando.testutil.TestHelper.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SequentialParserTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     private SequentialParser sequentialParser = new SequentialParser();
 
     @Before
@@ -44,52 +57,9 @@ public class SequentialParserTest {
     }
 
     @Test
-    public void extractText_1Keyword()  {
-        sequentialParser.setInput("1 keyword only");
-
-        assertEquals("1", sequentialParser.extractText(
-            "keyword"
-        ).orElse(""));
-        assertEquals("keyword only", sequentialParser.getInput().trim());
-    }
-
-    @Test
-    public void extractText_2Keywords()  {
-        sequentialParser.setInput("2 keywords, not just 1");
-
-        assertEquals("2 keywords,", sequentialParser.extractText(
-            "not", "just"
-        ).orElse(""));
-        assertEquals("not just 1", sequentialParser.getInput().trim());
-    }
-
-    @Test
-    public void extractText_caseInsensitiveKeywords()  {
-        sequentialParser.setInput("Case iN Sens itive");
-
-        assertEquals("Case", sequentialParser.extractText(
-            "In", "seNs"
-        ).orElse(""));
-        assertEquals("iN Sens itive", sequentialParser.getInput().trim());
-    }
-
-    @Test
-    public void extractText_noMatchingKeywords()  {
-        sequentialParser.setInput("No matching keywords");
-
-        assertEquals("No matching keywords", sequentialParser.extractText(
-            "random", "words"
-        ).orElse(""));
-        assertEquals("", sequentialParser.getInput());
-    }
-
-    @Test
-    public void extractText_notMatchSubstrings()  {
-        sequentialParser.setInput("Don't match substrings");
-
-        assertEquals("Don't match substrings", sequentialParser.extractText(
-            "mat", "Don"
-        ).orElse(""));
+    public void extractText_withKeywords()  {
+        sequentialParser.setInput("this is a sentence from here to there by the bay");
+        assertEquals("this is a sentence from here to there by the bay", sequentialParser.extractText().orElse(""));
         assertEquals("", sequentialParser.getInput());
     }
 
@@ -114,109 +84,120 @@ public class SequentialParserTest {
     }
 
     @Test
-    public void extractFirstWord_noWord()  {
+    public void extractWord_noWord()  {
         sequentialParser.setInput("");
-        assertTrue(!sequentialParser.extractFirstWord().isPresent());
+        assertTrue(!sequentialParser.extractWord().isPresent());
     }
 
     @Test
-    public void extractFirstWord_firstWord()  {
+    public void extractWord_firstWord()  {
         sequentialParser.setInput("command word");
-        assertEquals("command", sequentialParser.extractFirstWord().orElse(""));
+        assertEquals("command", sequentialParser.extractWord().orElse(""));
         assertEquals("word", sequentialParser.getInput().trim());
     }
 
     @Test
-    public void extractFirstInteger_noInteger()  {
+    public void extractInteger_noInteger()  {
         sequentialParser.setInput("no index");
-        assertTrue(!sequentialParser.extractFirstInteger().isPresent());
+        assertTrue(!sequentialParser.extractInteger().isPresent());
+        assertEquals("no index", sequentialParser.getInput());
     }
 
     @Test
-    public void extractFirstInteger_integer()  {
+    public void extractInteger_integers()  {
         sequentialParser.setInput("1 index");
-        assertTrue(1 == sequentialParser.extractFirstInteger().orElse(-1));
+        assertTrue(1 == sequentialParser.extractInteger().orElse(-1));
+        assertEquals("index", sequentialParser.getInput());
+
+        sequentialParser.setInput("0 index");
+        assertTrue(0 == sequentialParser.extractInteger().orElse(-1));
+        assertEquals("index", sequentialParser.getInput());
+
+        sequentialParser.setInput("-2 index");
+        assertTrue(-2 == sequentialParser.extractInteger().orElse(-1));
+        assertEquals("index", sequentialParser.getInput());
     }
 
     @Test
-    public void extractPrefixedWords_noMatches()  {
+    public void extractTrailingTags_noMatches()  {
         sequentialParser.setInput("no matches");
-        assertTrue(sequentialParser.extractPrefixedWords("#", false).isEmpty());
+        assertTrue(sequentialParser.extractTrailingTags().isEmpty());
         assertEquals("no matches", sequentialParser.getInput());
     }
 
     @Test
-    public void extractPrefixedWords_allTags()  {
+    public void extractTrailingTags_allTags()  {
         sequentialParser.setInput("#tag1 #tag2 #tag3");
-        assertEquals(Arrays.asList("#tag1", "#tag2", "#tag3"), sequentialParser.extractPrefixedWords("#", false));
+        assertEquals(
+            Sets.newHashSet(new Tag("tag1"), new Tag("tag2"), new Tag("tag3")),
+            sequentialParser.extractTrailingTags()
+        );
         assertEquals("", sequentialParser.getInput().trim());
     }
 
     @Test
-    public void extractPrefixedWords_tagsWithOtherWords()  {
+    public void extractTrailingTags_notTrailing()  {
         sequentialParser.setInput("other #tag1 #tag2 words");
-        assertEquals(Arrays.asList("#tag1", "#tag2"), sequentialParser.extractPrefixedWords("#", false));
-        assertEquals(Arrays.asList("other", "words"), sequentialParser.extractWords());
+        assertEquals(Collections.emptySet(), sequentialParser.extractTrailingTags());
+        assertEquals("other #tag1 #tag2 words", sequentialParser.getInput());
+    }
+
+
+    @Test
+    public void extractTrailingTags_nonTrailingTags()  {
+        sequentialParser.setInput("other #tag1 words #tag2");
+        assertEquals(Sets.newHashSet(new Tag("tag2")), sequentialParser.extractTrailingTags());
+        assertEquals("other #tag1 words", sequentialParser.getInput());
     }
 
     @Test
-    public void extractPrefixedWords_removePrefix_tagsWithOtherWords()  {
-        sequentialParser.setInput("other #tag1 #tag2 words");
-        assertEquals(Arrays.asList("tag1", "tag2"), sequentialParser.extractPrefixedWords("#", true));
-        assertEquals(Arrays.asList("other", "words"), sequentialParser.extractWords());
+    public void extractTrailingDueDate_valid() throws IllegalValueException {
+        sequentialParser.setInput("extract text by 10 Nov 2015");
+
+        Optional<DueDate> dueDate = sequentialParser.extractTrailingDueDate();
+
+        assertTrue(dueDate.isPresent());
+        assertEquals(LocalDateTime.of(
+            2015, 11, 10, 12, 0
+        ), dueDate.get().value);
+        assertEquals("extract text", sequentialParser.getInput());
     }
 
     @Test
-    public void extractTextAfterKeyword_keyword()  {
-        sequentialParser.setInput("extract text after keyword");
-        assertEquals("keyword", sequentialParser.extractTextAfterKeyword("after").orElse(""));
-        assertEquals(Arrays.asList("extract","text"), sequentialParser.extractWords());
+    public void extractTrailingDueDate_invalidDate() throws IllegalValueException {
+        sequentialParser.setInput("extract text by invalid date");
+        assertFalse(sequentialParser.extractTrailingDueDate().isPresent());
+        assertEquals("extract text by invalid date", sequentialParser.getInput());
     }
 
     @Test
-    public void extractTextAfterKeyword_keywordNotFound()  {
-        sequentialParser.setInput("keyword not found");
-        assertFalse(sequentialParser.extractTextAfterKeyword("key").isPresent());
-        assertEquals(Arrays.asList("keyword", "not", "found"), sequentialParser.extractWords());
+    public void extractTrailingDueDate_notTrailing() throws IllegalValueException {
+        sequentialParser.setInput("extract text by 10 Nov 2015 #nottrailing");
+        assertFalse(sequentialParser.extractTrailingDueDate().isPresent());
+        assertEquals("extract text by 10 Nov 2015 #nottrailing", sequentialParser.getInput());
     }
 
     @Test
-    public void extractTextAfterKeyword_caseInsensitive()  {
-        sequentialParser.setInput("case InSensitive keyword");
-        assertEquals("keyword", sequentialParser.extractTextAfterKeyword("iNsensitive").orElse(""));
-        assertEquals(Arrays.asList("case"), sequentialParser.extractWords());
-    }
-
-    @Test
-    public void extractTextAfterKeyword_emptyStringAfterKeyword()  {
-        sequentialParser.setInput("keyword   next");
-        assertFalse(sequentialParser.extractTextAfterKeyword("keyword", "next").isPresent());
-    }
-
-    @Test
-    public void extractDateTimeAfterKeyword_dateRange()  {
+    public void extractTrailingDateRange_valid() throws IllegalValueException {
         sequentialParser.setInput("from 10 Apr 2016 9am to 11 Jan 2018 10:28");
+        Optional<DateRange> dateRange = sequentialParser.extractTrailingDateRange();
+        assertTrue(dateRange.isPresent());
         assertEquals(
             LocalDateTime.of(2016, 4, 10, 9, 0),
-            sequentialParser.extractDateTimeAfterKeyword("from", "to").orElse(null)
+            dateRange.get().startDate
         );
         assertEquals(
             LocalDateTime.of(2018, 1, 11, 10, 28),
-            sequentialParser.extractDateTimeAfterKeyword("to").orElse(null)
+            dateRange.get().endDate
         );
+        assertEquals("", sequentialParser.getInput());
     }
 
     @Test
-    public void extractDateTimeAfterKeyword_invalidDates()  {
+    public void extractTrailingDateRange_invalidDates() throws IllegalValueException {
         sequentialParser.setInput("walk by the beach from 1 end to another");
         assertFalse(
-            sequentialParser.extractDateTimeAfterKeyword("by", "to", "from").isPresent()
-        );
-        assertFalse(
-            sequentialParser.extractDateTimeAfterKeyword("from", "by", "to").isPresent()
-        );
-        assertFalse(
-            sequentialParser.extractDateTimeAfterKeyword("to", "by", "from").isPresent()
+            sequentialParser.extractTrailingDueDate().isPresent()
         );
         assertEquals(
             "walk by the beach from 1 end to another", sequentialParser.extractText().orElse("")
@@ -224,20 +205,68 @@ public class SequentialParserTest {
     }
 
     @Test
-    public void extractDateTimeAfterKeyword_validDateAfterMultipleKeywords()  {
-        sequentialParser.setInput("walk by the beach from 1 end to another from 28 Oct 2018 1200h to 29 Nov 2019 1300h");
+    public void extractTrailingDateRange_onlyTrailing() throws IllegalValueException {
+        sequentialParser.setInput("walk by the beach from today to tomorrow from 28 Oct 2018 1200h to 29 Nov 2019 1300h");
+        Optional<DateRange> dateRange = sequentialParser.extractTrailingDateRange();
+        assertTrue(dateRange.isPresent());
         assertEquals(
             LocalDateTime.of(2018, 10, 28, 12, 0),
-            sequentialParser.extractDateTimeAfterKeyword("from", "to", "from").orElse(null)
+            dateRange.get().startDate
         );
-
         assertEquals(
             LocalDateTime.of(2019, 11, 29, 13, 0),
-            sequentialParser.extractDateTimeAfterKeyword("to", "to", "from").orElse(null)
+            dateRange.get().endDate
         );
-
         assertEquals(
-            "walk by the beach from 1 end to another", sequentialParser.extractText().orElse("")
+            "walk by the beach from today to tomorrow", sequentialParser.extractText().orElse("")
         );
+    }
+
+    @Test
+    public void extractIndicesList_valid() throws IllegalValueException {
+        sequentialParser.setInput("2to7");
+        List<Integer> indices = sequentialParser.extractIndicesList();
+        assertEquals("[2, 3, 4, 5, 6, 7]", indices.toString());
+        sequentialParser.setInput("-2-7");
+        indices = sequentialParser.extractIndicesList();
+        assertEquals("[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]", indices.toString());
+        sequentialParser.setInput("-2  -  7");
+        indices = sequentialParser.extractIndicesList();
+        assertEquals("[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]", indices.toString());
+        sequentialParser.setInput("1 2 3 4 5");
+        indices = sequentialParser.extractIndicesList();
+        assertEquals("[1, 2, 3, 4, 5]", indices.toString());
+        sequentialParser.setInput("2to2");
+        indices = sequentialParser.extractIndicesList();
+        assertEquals("[2]", indices.toString());
+    }
+
+    @Test
+    public void extractTrailingDateRange_recurrence() throws IllegalValueException {
+        sequentialParser.setInput("walk nowhere from 28 Oct 2018 1200h to 29 Nov 2018 1300h yearly");
+        Optional<DateRange> dateRange = sequentialParser.extractTrailingDateRange();
+        assertTrue(dateRange.isPresent());
+        assertEquals(
+            LocalDateTime.of(2018, 10, 28, 12, 0),
+            dateRange.get().startDate
+        );
+        assertEquals(
+            LocalDateTime.of(2018, 11, 29, 13, 0),
+            dateRange.get().endDate
+        );
+        assertEquals(
+            Recurrence.Yearly,
+            dateRange.get().recurrence
+        );
+        assertEquals(
+            "walk nowhere", sequentialParser.extractText().orElse("")
+        );
+    }
+
+    @Test
+    public void extractTrailingDateRange_recurrenceInvalid() throws IllegalValueException {
+        sequentialParser.setInput("walk nowhere from 28 Oct 2018 1200h to 29 Nov 2018 1300h daily");
+        thrown.expect(IllegalValueException.class);
+        sequentialParser.extractTrailingDateRange();
     }
 }

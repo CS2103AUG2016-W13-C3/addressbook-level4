@@ -22,7 +22,7 @@ public class DateTimeParser {
 
     private static final String MonthWordRegexString = "January|Feburary|March|April|June|July|August|September|October|November|December|" +
         "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec";
-    private static final String DayWordRegexString = "Monday|Tuesday|Wednesday|Thursday|Friday|Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri";
+    private static final String DayWordRegexString = "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri|Sat|Sun";
     private static final String YearRegexString = "(?<year>\\d{4}|\\d{2})";
     private static final String TwoDigitYearRegexString = "\\d{2}$";
 
@@ -32,24 +32,24 @@ public class DateTimeParser {
     private static final String DateWithMonthWordReversedRegexString = "(" + MonthWordRegexString + ")\\s+" +
         "(\\d{1,2})(th|rd|st|nd)?(\\s+" + YearRegexString + ")?";
     private static final String DateWithDayWordRegexString = "((coming|next)\\s+)?(" + DayWordRegexString + ")";
-    private static final String DateWithLaterRegexString = "((\\d+\\d)|([2-9]))\\s+(days|weeks|months|years)\\s+(later)";
+    private static final String DateWithLaterAgoRegexString = "((\\d+\\d)|([2-9]))\\s+(days|weeks|months|years)\\s+(later|ago)";
     private static final String DateWithNextRegexString = "next (week|month|year)";
     private static final String TimeNightRegexString = "(this\\s+)?(night|tonight)";
+    private static final String TimeHourRegexString = "(?<hours>\\d{1,2})(?<minutes>\\d{2})h";
 
     private static final String[] supportedDateRegexStrings = new String[] {
         DateWithSlashesRegexString,
         DateWithMonthWordRegexString,
         DateWithMonthWordReversedRegexString,
         DateWithDayWordRegexString,
-        DateWithLaterRegexString,
+        DateWithLaterAgoRegexString,
         DateWithNextRegexString,
-        "today",
-        "tomorrow|tmr"
+        "today", "tomorrow|tmr", "yesterday"
     };
 
     private static final String[] supportedTimeRegexStrings = new String[] {
         "(\\d{2})(\\.|:)(\\d{2})",
-        "(\\d{2}):?(\\d{2})h",
+        TimeHourRegexString,
         "(\\d{1,2})(\\.|:)?(\\d{2})?(am|pm)",
         "(this\\s+)?(morning|afternoon|noon|evening|midnight)",
         TimeNightRegexString
@@ -186,11 +186,15 @@ public class DateTimeParser {
             // If matched from the start
             if (matcher.find() && matcher.start() == 0) {
 
+                // Special case: for TimeHourRegexString format,
+                // Change to colon format (natty parses it wrongly when there is no year in the date)
+                if (regexString.equals(TimeHourRegexString)) {
+                    timeString = matcher.group("hours") + ":" + matcher.group("minutes");
+                }
                 // Special case: for TimeNightRegexString format,
                 // Set time to 9pm
-                if (regexString.equals(TimeNightRegexString)) {
+                else if (regexString.equals(TimeNightRegexString)) {
                     timeString = NightLocalTime.toString();
-                    System.out.println(NightLocalTime);
                 } else {
                     timeString = matcher.group().trim();
                 }
@@ -208,7 +212,7 @@ public class DateTimeParser {
 
             // Special case: if DateWithLaterRegexString is used,
             // swap date and time (for parsing in natty)
-            if (dateString.matches(DateWithLaterRegexString)) {
+            if (dateString.matches(DateWithLaterAgoRegexString)) {
                 return Optional.of(timeString + " " + dateString);
             } else {
                 return Optional.of(dateString + " " + timeString);

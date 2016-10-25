@@ -10,20 +10,16 @@ import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.Logic;
-import seedu.commando.logic.LogicManager;
-import seedu.commando.model.Model;
-import seedu.commando.model.ModelManager;
-import seedu.commando.storage.StorageManager;
 import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.ToDoBuilder;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.commando.logic.LogicManagerTest.initLogic;
 import static seedu.commando.testutil.TestHelper.*;
 
 public class DeleteCommandTest {
@@ -33,20 +29,10 @@ public class DeleteCommandTest {
     private Logic logic;
     private EventsCollector eventsCollector;
     private LocalDateTime now = LocalDateTime.now();
-    private File toDoListFile;
-    private File userPrefsFile;
 
     @Before
     public void setup() throws IOException {
-        Model model = new ModelManager();
-
-        toDoListFile = folder.newFile();
-        userPrefsFile  = folder.newFile();
-        logic = new LogicManager(model, new StorageManager(
-            toDoListFile.getAbsolutePath(),
-            userPrefsFile.getAbsolutePath()
-        ));
-
+        logic = initLogic(folder);
         eventsCollector = new EventsCollector();
     }
 
@@ -84,7 +70,8 @@ public class DeleteCommandTest {
         CommandResult result = logic.execute("delete 1 #troll");
         assertTrue(result.hasError());
 
-        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD), result.getFeedback());
+        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD)
+                + "\n" + Messages.getInvalidCommandFormatMessage("delete").get(), result.getFeedback());
     }
 
     @Test
@@ -92,7 +79,8 @@ public class DeleteCommandTest {
         CommandResult result = logic.execute("delete missing index");
         assertTrue(result.hasError());
 
-        assertEquals(Messages.MISSING_TODO_ITEM_INDEX, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_ITEM_INDEX
+                + "\n" + Messages.getInvalidCommandFormatMessage("delete").get(), result.getFeedback());
     }
 
     @Test
@@ -114,6 +102,122 @@ public class DeleteCommandTest {
         assertFalse(ifToDoExists(logic,
             new ToDoBuilder("title2")
                 .build()));
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("title")
+                .build()));
+    }
+
+    @Test
+    public void execute_delete_tags() throws IllegalValueException {
+        logic.execute("add title from 22 Oct 2014 1300h to 23 Oct 2016 1400h #tag1 #tag2");
+        logic.execute("recall");
+        
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("delete 1 tag");
+        assertFalse(result.hasError());
+
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("title")
+                .withDateRange(
+                    LocalDateTime.of(2014, 10, 22, 13, 0),
+                    LocalDateTime.of(2016, 10, 23, 14, 0)
+                )
+                .build()));
+    }
+
+    @Test
+    public void execute_delete_tagsButNoTags() throws IllegalValueException {
+        logic.execute("add title by 10 Nov 2015 1200h");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("delete 1 tag");
+        assertTrue(result.hasError());
+        assertEquals(String.format(Messages.DELETE_COMMAND_NO_TAGS, "1"), result.getFeedback());
+
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("title")
+                .withDueDate(LocalDateTime.of(2015, 11, 10, 12, 0))
+                .build()));
+    }
+
+    @Test
+    public void execute_delete_timeButNoTime() throws IllegalValueException {
+        logic.execute("add title #tag1");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("delete 1 time");
+        assertTrue(result.hasError());
+        assertEquals(String.format(Messages.DELETE_COMMAND_NO_TIME_CONSTRAINTS, "1"), result.getFeedback());
+
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("title")
+                .withTags("tag1")
+                .build()));
+    }
+
+    @Test
+    public void execute_delete_timeDueDate() throws IllegalValueException {
+        logic.execute("add title by 23 Oct 2016");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("delete 1 time");
+        assertFalse(result.hasError());
+
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("title")
+                .build()));
+    }
+
+    @Test
+    public void execute_delete_timeDateRange() throws IllegalValueException {
+        logic.execute("add title from 22 Oct 2014 to 23 Oct 2016 #tag1");
+        logic.execute("recall");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("delete 1 time");
+        assertFalse(result.hasError());
+
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("title")
+                .withTags("tag1")
+                .build()));
+    }
+
+    @Test
+    public void execute_delete_invalidFields() throws IllegalValueException {
+        logic.execute("add title");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("delete 1 invalid field");
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD)
+                + "\n" + Messages.getInvalidCommandFormatMessage("delete").get(), result.getFeedback() );
+    }
+
+
+    @Test
+    public void execute_delete_tagsAndTime() throws IllegalValueException {
+        logic.execute("add title from 22 Oct 2014 to 23 Oct 2016 #tag1");
+        logic.execute("recall");
+        
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("delete 1 time tag");
+        assertFalse(result.hasError());
+
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .build()));

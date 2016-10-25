@@ -10,20 +10,16 @@ import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.Logic;
-import seedu.commando.logic.LogicManager;
-import seedu.commando.model.Model;
-import seedu.commando.model.ModelManager;
-import seedu.commando.storage.StorageManager;
 import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.ToDoBuilder;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.commando.logic.LogicManagerTest.initLogic;
 import static seedu.commando.testutil.TestHelper.*;
 
 public class EditCommandTest {
@@ -33,20 +29,10 @@ public class EditCommandTest {
     private Logic logic;
     private EventsCollector eventsCollector;
     private int nextYear = LocalDateTime.now().getYear() + 1;
-    private File toDoListFile;
-    private File userPrefsFile;
 
     @Before
     public void setup() throws IOException {
-        Model model = new ModelManager();
-
-        toDoListFile = folder.newFile();
-        userPrefsFile  = folder.newFile();
-        logic = new LogicManager(model, new StorageManager(
-            toDoListFile.getAbsolutePath(),
-            userPrefsFile.getAbsolutePath()
-        ));
-
+        logic = initLogic(folder);
         eventsCollector = new EventsCollector();
     }
 
@@ -84,12 +70,15 @@ public class EditCommandTest {
         CommandResult result = logic.execute("edit missing index");
         assertTrue(result.hasError());
 
-        assertEquals(Messages.MISSING_TODO_ITEM_INDEX, result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_ITEM_INDEX
+                + "\n" + Messages.getInvalidCommandFormatMessage("edit").get(), result.getFeedback());
     }
 
     @Test
     public void execute_edit_title() throws IllegalValueException {
         logic.execute("add title #tag");
+
+        eventsCollector.reset();
 
         String command = "edit 1 new title";
         CommandResult result = logic.execute(command);
@@ -119,19 +108,6 @@ public class EditCommandTest {
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withTags("tag2", "tag3", "tag4")
-                .build()));
-    }
-
-    @Test
-    public void execute_edit_titleRemoveTags() throws IllegalValueException {
-        logic.execute("add title #tag1 #tag2");
-
-        CommandResult result = logic.execute("edit 1 new title #");
-        assertFalse(result.hasError());
-
-        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(logic,
-            new ToDoBuilder("new title")
                 .build()));
     }
 
@@ -167,7 +143,7 @@ public class EditCommandTest {
                 )
                 .build()));
 
-        String command = "edit 1 from 10 Sep " + nextYear + " 12:00 to 21 Sep " + nextYear + " 13:00";
+        String command = "edit 1 from 10 Sep " + nextYear + " 12:15 to 21 Sep " + nextYear + " 13:45";
         CommandResult result = logic.execute(command);
         assertFalse(result.hasError());
 
@@ -175,8 +151,8 @@ public class EditCommandTest {
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("title")
                 .withDateRange(
-                    LocalDateTime.of(nextYear, 9, 10, 12, 0),
-                    LocalDateTime.of(nextYear, 9, 21, 13, 0)
+                    LocalDateTime.of(nextYear, 9, 10, 12, 15),
+                    LocalDateTime.of(nextYear, 9, 21, 13, 45)
                 )
                 .build()));
     }
@@ -188,7 +164,8 @@ public class EditCommandTest {
         String command = "edit 1 from 10 Dec " + nextYear + " 11:59 to 11 Apr " + nextYear + " 23:10";
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
-        assertEquals(Messages.TODO_DATERANGE_CONSTRAINTS, result.getFeedback());
+        assertEquals(Messages.TODO_DATERANGE_END_MUST_AFTER_START + "\n" + Messages.DATE_FORMAT + "\n" + 
+                Messages.getInvalidCommandFormatMessage("edit").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
@@ -247,5 +224,79 @@ public class EditCommandTest {
         assertTrue(ifToDoExists(logic,
             new ToDoBuilder("task2")
                 .build()));
+    }
+
+    @Test
+    public void execute_edit_eventWith2DateRanges() throws IllegalValueException {
+        logic.execute("add title from 10 Jan " + nextYear + " 12:00 to 21 Jan " + nextYear + " 13:00");
+
+        logic.execute("edit 1 from today to tomorrow from 10 Nov 2011 1200h to 11 Dec 2012 1300h");
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("from today to tomorrow")
+                .withDateRange(
+                    LocalDateTime.of(2011, 11, 10, 12, 0),
+                    LocalDateTime.of(2012, 12, 11, 13, 0)
+                )
+                .build()));
+    }
+
+
+    @Test
+    public void execute_edit_quotedTitleWithBy() throws IllegalValueException {
+        logic.execute("add title #tag");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("edit 1 `by tomorrow`");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("by tomorrow")
+                .withTags("tag")
+                .build()));
+    }
+
+    @Test
+    public void execute_edit_quotedTitleWithFromTo() throws IllegalValueException {
+        logic.execute("add title from 10 Jan " + nextYear + " 12:00 to 21 Jan " + nextYear + " 13:00");
+
+        eventsCollector.reset();
+
+        String command = "edit 1 `from today to tomorrow`"
+            + "from 10 Feb " + nextYear + " 12:15 to 21 Feb " + nextYear + " 13:45";
+        CommandResult result = logic.execute(command);
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertTrue(ifToDoExists(logic,
+            new ToDoBuilder("from today to tomorrow")
+                .withDateRange(
+                    LocalDateTime.of(nextYear, 2, 10, 12, 15),
+                    LocalDateTime.of(nextYear, 2, 21, 13, 45)
+                )
+                .build()));
+    }
+
+    @Test
+    public void execute_edit_trailingTextAfterQuotedTitle() throws IllegalValueException {
+        logic.execute("add title");
+
+        eventsCollector.reset();
+
+        String command = "edit 1 `from today to tomorrow` 13:45";
+        CommandResult result = logic.execute(command);
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
+
+    @Test
+    public void execute_edit_emptyQuotedTitle() throws IllegalValueException {
+        logic.execute("add title");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("edit 1 ``");
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertEquals(Messages.MISSING_TODO_TITLE + "\n" + Messages.EDIT_COMMAND_FORMAT, result.getFeedback());
     }
 }

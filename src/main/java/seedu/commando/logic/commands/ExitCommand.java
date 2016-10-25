@@ -2,7 +2,7 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.events.ui.ExitAppRequestEvent;
+import seedu.commando.commons.events.logic.ExitAppRequestEvent;
 
 /**
  * Terminates the program

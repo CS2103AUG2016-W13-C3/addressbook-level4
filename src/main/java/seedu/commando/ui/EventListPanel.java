@@ -1,29 +1,27 @@
 package seedu.commando.ui;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.model.ui.UiToDo;
-
-import java.util.logging.Logger;
+import seedu.commando.ui.ToDoListViewCell.Card;
 
 /**
  * Panel containing the list of to-dos
  */
 public class EventListPanel extends UiPart {
-    private final Logger logger = LogsCenter.getLogger(EventListPanel.class);
+
     private static final String FXML = "EventListPanel.fxml";
+
     private VBox panel;
     private AnchorPane placeHolderPane;
+    private ScrollBar scrollbar;
 
     @FXML
     private ListView<UiToDo> eventListView;
@@ -48,21 +46,22 @@ public class EventListPanel extends UiPart {
     }
 
     public static EventListPanel load(Stage primaryStage, AnchorPane eventListPlaceholder,
-                                     ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
+                                     ObservableList<UiToDo> events) {
         EventListPanel eventListPanel =
                 UiPartLoader.loadUiPart(primaryStage, eventListPlaceholder, new EventListPanel());
-        eventListPanel.configure(eventsToday, eventsUpcoming);
+        eventListPanel.configure(events);
         return eventListPanel;
     }
 
-    private void configure(ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
-        setConnections(eventsToday, eventsUpcoming);
+    private void configure(ObservableList<UiToDo> events) {
+        setConnections(events);
         addToPlaceholder();
+        scrollbar = (ScrollBar) eventListView.lookup(".scroll-bar:vertical");
     }
 
-    private void setConnections(ObservableList<UiToDo> eventsToday, ObservableList<UiToDo> eventsUpcoming) {
-        eventListView.setItems(eventsUpcoming);
-        eventListView.setCellFactory(listView -> new ToDoListViewCell());
+    private void setConnections(ObservableList<UiToDo> events) {
+        eventListView.setItems(events);
+        eventListView.setCellFactory(listView -> new ToDoListViewCell(Card.Event));
     }
 
     private void addToPlaceholder() {
@@ -70,28 +69,23 @@ public class EventListPanel extends UiPart {
         placeHolderPane.getChildren().add(panel);
     }
 
-    public void scrollTo(int index) {
-        Platform.runLater(() -> {
-            eventListView.scrollTo(index);
-            eventListView.getSelectionModel().clearAndSelect(index);
-        });
+    protected ListView<UiToDo> getEventListView() {
+        return eventListView;
     }
-
-    class ToDoListViewCell extends ListCell<UiToDo> {
-
-        public ToDoListViewCell() {
+    
+    private boolean isScrollBarPresent() {
+        return scrollbar != null;
+    }
+    
+    protected void scrollDown() {
+        if (isScrollBarPresent()) {
+            scrollbar.setValue(Math.min(scrollbar.getValue() + 0.1, 1));
         }
-
-        @Override
-        protected void updateItem(UiToDo toDo, boolean empty) {
-            super.updateItem(toDo, empty);
-            if (empty || toDo == null) {
-                setGraphic(null);
-                setText(null);
-            } else {
-                HBox layout = EventCard.load(toDo, toDo.getIndex()).getLayoutState(toDo.isNew(), toDo.isFinished());
-                setGraphic(layout);
-            }
+    }
+    
+    protected void scrollUp() {
+        if (isScrollBarPresent()) {
+            scrollbar.setValue(Math.max(scrollbar.getValue() - 0.1, 0));
         }
     }
 }

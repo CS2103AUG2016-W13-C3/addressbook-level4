@@ -1,19 +1,54 @@
 package seedu.commando.logic.parser;
 
+import seedu.commando.commons.core.Messages;
+import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.model.todo.DateRange;
+import seedu.commando.model.todo.DueDate;
+import seedu.commando.model.todo.Recurrence;
+import seedu.commando.model.todo.Tag;
+
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Parses a given input string, part by part
  * Methods modify the input string by extracting appropriate parts of it
+ * Input is always kept trimmed
  */
 public class SequentialParser {
 
-    private static final Pattern FIRST_WORD_PATTERN = Pattern.compile("^(?<word>\\S+)(?<tail>.*)$");
-    private static final Pattern FIRST_INTEGER_PATTERN = Pattern.compile("^(?<index>-?\\d+)(?<tail>.*)$");
-    private static final Pattern WORD_PATTERN = Pattern.compile("(?<word>\\S+)");
+    private static final String KEYWORD_DATERANGE_START = "from";
+    private static final String KEYWORD_DATERANGE_END = "to";
+    private static final String KEYWORD_DUEDATE = "by";
+    private static final String KEYWORD_RECURRENCE = "daily|weekly|monthly|yearly";
+    private static final String TAG_PREFIX = "#";
+    private static final String QUOTE_CHARACTER = "`";
+
+    private static final Pattern FIRST_WORD_PATTERN = Pattern.compile("^(?<word>\\S+)(?<left>.*?)$");
+    private static final Pattern FIRST_QUOTED_TEXT_PATTERN = Pattern.compile("^" + QUOTE_CHARACTER + "(?<text>.*)" + QUOTE_CHARACTER + "(?<left>.*?)$");
+    private static final Pattern FIRST_INTEGER_PATTERN = Pattern.compile("^(?<integer>-?\\d+)(?<left>.*?)$");
+    private static final Pattern DATERANGE_PATTERN = Pattern.compile(
+        "(?<left>.*)" + KEYWORD_DATERANGE_START + "\\s+" + "(?<start>(.+\\s+)?)"
+            + KEYWORD_DATERANGE_END + "(?<end>(\\s+.+?)?)"
+            + "(?<recurrence>(\\s+" + KEYWORD_RECURRENCE + ")?)$",
+        Pattern.CASE_INSENSITIVE
+    );
+    private static final Pattern DUEDATE_PATTERN = Pattern.compile(
+        "(?<left>.*)" + KEYWORD_DUEDATE + "\\s+" + "(?<date>.+?)$",
+        Pattern.CASE_INSENSITIVE
+    );
+    private static final Pattern TAGS_PATTERN = Pattern.compile(
+        "(?<left>.*?)(?<tags>((\\s+|^)" + TAG_PREFIX + "\\S*)+)$",
+        Pattern.CASE_INSENSITIVE
+    );
+    private static final Pattern INDEXRANGE_PATTERN = Pattern.compile(
+        "^(?<firstInt>-?\\d+)" + "\\s*" + "((to)|-)" + "\\s*" + "(?<secondInt>-?\\d+)(?<left>.*?)$",
+        Pattern.CASE_INSENSITIVE
+    );
+
     private String input;
     private DateTimeParser dateTimeParser;
     {
@@ -32,7 +67,7 @@ public class SequentialParser {
      * Gets current input the parser is working on
      */
     public String getInput() {
-        return input;
+        return input.trim();
     }
     
     /**
@@ -42,194 +77,152 @@ public class SequentialParser {
         return input.trim().isEmpty();
     }
 
-
     /**
-     * From start, extracts the text after the first occurrence of {@param keyword} from input
-     * until any keyword in the set of {@param otherKeywords}
-     * {@param keyword} and the subsequent text extracted is removed from input
-     * Keywords are matched as whole words, not substrings, and as case-insensitive ("word" does not match in "keyword")
-     * It can match up to the end of input, if an empty set of keywords is provided or none in
-     * set is encountered
-     * Asserts {@param keyword} is non-null
-     *
-     * @return optional of text extracted from input, empty if not found
+     * Extract a trailing due date from the input.
+     * Date range is defined by: "by (valid_datetime)", and must be at the end of the string to be considered.
+     * If a trailing date range pattern is found but datetime is not valid, also returns empty
+     * @throws IllegalValueException if parsed DueDate is not valid
      */
+    public Optional<DueDate> extractTrailingDueDate() throws IllegalValueException {
+        final Matcher matcher = DUEDATE_PATTERN.matcher(input);
 
-    public Optional<String> extractTextAfterKeyword(String keyword, String... otherKeywords) {
-        assert keyword != null;
+        if (matcher.find()) {
+            String dateString = matcher.group("date");
 
-        int keywordStartIndex = getFirstOccurrenceOf(0, keyword);
+            // Check if datetimes can be parsed
+            Optional<LocalDateTime> date = dateTimeParser.parseDateTime(dateString);
 
-        if (keywordStartIndex == -1) {
-            return Optional.empty();
+            if (date.isPresent()) {
+                // Legit date
+                input = matcher.group("left").trim();
+                return Optional.of(new DueDate(date.get()));
+            }
         }
 
-        int startIndex = keywordStartIndex + keyword.length();
-        int endIndex = getFirstOccurrenceOf(startIndex, otherKeywords);
-
-        endIndex = endIndex == -1 ? input.length() : endIndex;
-
-        String text = input.substring(startIndex, endIndex).trim();
-
-        if (text.isEmpty()) {
-            return Optional.empty();
-        } else {
-            input = input.substring(0, keywordStartIndex) + input.substring(endIndex);
-            return Optional.of(text);
-        }
+        return Optional.empty(); // Didn't find any matches
     }
 
     /**
-     * From start, extracts the first valid datetime after an occurrence of {@param keyword} from input
-     * until any keyword in the set of {@param otherKeywords}
-     * If datetime is invalid, extraction is not done, even if there is a match in keyword
-     * {@param keyword} and the subsequent text extracted is removed from input
-     * Similar to {@link this#extractTextAfterKeyword(String, String...)}}
-     * Asserts {@param keyword} is non-null
-     *
-     * @return optional of datetime extracted from input, empty if not found
+     * Extract a trailing date range from the input.
+     * Date range is defined by: "from (valid_datetime) to (valid_datetime)" + optional "(valid recurrence),
+     * and must be at the end of the string to be considered.
+     * If a trailing date range pattern is found but both datetimes are not valid, also returns empty
+     * @throws IllegalValueException if a trailing date range pattern is found but either one of the datetime is valid, other invalid,
+     * or parsed DateRange is not invalid
      */
-    public Optional<LocalDateTime> extractDateTimeAfterKeyword(String keyword, String... otherKeywords) {
-        assert keyword != null;
+    public Optional<DateRange> extractTrailingDateRange() throws IllegalValueException {
+        final Matcher matcher = DATERANGE_PATTERN.matcher(input);
 
-        int currentIndex = 0;
+        if (matcher.find()) {
+            String startString = matcher.group("start");
+            String endString = matcher.group("end");
+            String recurrenceString = matcher.group("recurrence");
 
-        while (currentIndex < input.length()) {
-            int keywordStartIndex = getFirstOccurrenceOf(currentIndex, keyword);
+            // Check if datetimes can be parsed
+            Optional<LocalDateTime> startDateTime = dateTimeParser.parseDateTime(startString);
+            Optional<LocalDateTime> endDateTime = dateTimeParser.parseDateTime(endString);
 
-            if (keywordStartIndex == -1) {
-                return Optional.empty();
+            if (startDateTime.isPresent() && !endDateTime.isPresent()) {
+                if (endString.isEmpty()) {
+                    throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_END + "\n" + Messages.DATE_FORMAT);
+                } else {
+                    throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_END + "\n" + Messages.DATE_FORMAT);
+                }
+            } else if (endDateTime.isPresent() && !startDateTime.isPresent()) {
+               if (startString.isEmpty()) {
+                   throw new IllegalValueException(Messages.MISSING_TODO_DATERANGE_START + "\n" + Messages.DATE_FORMAT);
+               } else {
+                   throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_START + "\n" + Messages.DATE_FORMAT);
+               }
             }
 
-            int startIndex = keywordStartIndex + keyword.length();
-            int endIndex = getFirstOccurrenceOf(startIndex, otherKeywords);
+            if (startDateTime.isPresent() && endDateTime.isPresent()) {
+                // Legit date range
+                // Extract date range from input
+                input = matcher.group("left").trim();
 
-            endIndex = endIndex == -1 ? input.length() : endIndex;
+                // Parse recurrence
+                Recurrence recurrence = parseRecurrence(recurrenceString);
 
-            String datetimeString = input.substring(startIndex, endIndex);
+                assert recurrence != null : "Regex should ensure that recurrence string is valid";
 
-            // Check if datetime can be parsed
-            Optional<LocalDateTime> dateTime = dateTimeParser.parseDateTime(datetimeString);
-
-            if (dateTime.isPresent()) {
-                // Legit datetime, extract keyword + datetime from input
-                input = input.substring(0, keywordStartIndex) + input.substring(endIndex);
-                return dateTime;
+                return Optional.of(new DateRange(startDateTime.get(), endDateTime.get(), recurrence));
             }
-
-            // Repeat for the next occurrence of the keyword, if datetime not valid
-            currentIndex = endIndex;
         }
 
-        // Couldn't find any valid datetimes
+        return Optional.empty(); // Didn't find any matches
+    }
+
+    /**
+     * Extracts all text in input
+     */
+    public Optional<String> extractText() {
+        String text = input.trim();
+        input = "";
+
+        return text.isEmpty() ? Optional.empty() : Optional.of(text);
+    }
+
+
+    /**
+     * From start, extracts a quoted title in input, if found
+     * e.g. "`quoted` text" returns "quoted" and retains input "text"
+     * @return quoted text with quotes removed and trimmed if found,
+     * empty if no quotes found
+     * @throws IllegalValueException if quoted title found is empty
+     */
+    public Optional<String> extractQuotedTitle() throws IllegalValueException {
+        final Matcher matcher = FIRST_QUOTED_TEXT_PATTERN.matcher(input);
+
+        if (matcher.find()) {
+            String text = matcher.group("text").trim();
+
+            if (text.isEmpty()) {
+                throw new IllegalValueException(Messages.MISSING_TODO_TITLE);
+            }
+
+            input = matcher.group("left").trim();
+            return Optional.of(text);
+        }
+
         return Optional.empty();
     }
 
     /**
-     * Search for earliest occurrence of any keyword, case insensitive
-     * Returns -1 if no keyword found
-      */
-    private int getFirstOccurrenceOf(int startIndex, String... keywords) {
-        String lowerCaseInput = input.substring(startIndex).toLowerCase();
-
-        Matcher matcher = WORD_PATTERN.matcher(lowerCaseInput);
-        while (matcher.find()) {
-            for (String keyword : keywords) {
-                // If any keyword matched current word
-                if (matcher.group("word").equals(keyword.toLowerCase())) {
-                    return matcher.start() + startIndex;
-                }
-            }
-        }
-
-        return -1; // no keywords found
-    }
-
-    /**
-     * Similar to {@link this#extractTextAfterKeyword(String, String...)}, but from start of input
+     * From start, extracts all trailing tags from the current input.
+     * Extraction ends when the next word is not a tag.
+     * Tags which are empty strings are removed.
+     * @return a set of tags, with the tag prefix removed.
      */
-    public Optional<String> extractText(String... keywords) {
-        int endIndex = getFirstOccurrenceOf(0, keywords);
-        endIndex = endIndex == -1 ? input.length() : endIndex;
+    public Set<Tag> extractTrailingTags() {
+        final Matcher matcher = TAGS_PATTERN.matcher(input);
 
-        String text = input.substring(0, endIndex).trim();
+        if (matcher.find()) {
+            input = matcher.group("left").trim();
 
-        if (text.isEmpty()) {
-            return Optional.empty();
-        } else {
-            // Remove extracted text
-            input = input.substring(endIndex);
-
-            return Optional.of(text);
+            // Split to words to get tags
+            return Arrays.stream(matcher.group("tags").trim()
+                .split("\\s+"))
+                .map(word -> {
+                    word = word.trim(); // trim any leading spaces
+                    assert word.indexOf(TAG_PREFIX) == 0; // pattern should have ensured this
+                    return new Tag(word.substring(TAG_PREFIX.length()).trim());
+                }).filter(x -> !x.value.isEmpty())
+                .collect(Collectors.toSet());
         }
+
+        return Collections.emptySet();
     }
 
     /**
-     * Extracts all words prefixed with {@param prefix} as a list,
-     * in the order that appears in the input
-     * Eg, extractPrefixedWords("#", true) on input = "some #tag1 #tag2 thing" returns ["tag1", "tag2"]
-     * and resulting input = "some  thing"
-     * Words which are empty strings are removed
-     * Asserts {@param prefix} is non-null
-     */
-    public List<String> extractPrefixedWords(String prefix, boolean ifRemovePrefix) {
-        assert prefix != null;
-
-        List<String> words = new LinkedList<>();
-
-        // Keep trying to find the next word, until cannot be found
-        for (Matcher matcher = WORD_PATTERN.matcher(input);
-             matcher.find(); ) {
-
-            String rawWord = matcher.group("word");
-
-            // Check prefix of word
-            if (rawWord.indexOf(prefix) == 0) {
-                String word = ifRemovePrefix ? rawWord.substring(prefix.length()) : rawWord;
-
-                // Add word only if it doesn't reduce to empty string
-                if (!word.trim().isEmpty()) {
-                    words.add(word);
-                }
-
-                input = input.substring(0, matcher.start())
-                    + input.substring(matcher.end()); // Remove matched word from input
-
-                matcher = WORD_PATTERN.matcher(input); // Reset matcher to new input string
-            }
-        }
-
-        return words;
-    }
-
-    /**
-     * From start, extracts a list of words in input until its end
-     * @return list of words found, in the order that appears in input
-     */
-    public List<String> extractWords() {
-        final List<String> words = new LinkedList<>();
-
-        final Matcher matcher = WORD_PATTERN.matcher(input.trim());
-
-        while (matcher.find()) {
-            words.add(matcher.group("word"));
-        }
-
-        input = ""; // empty input
-
-        return words;
-    }
-
-    /**
-     * From start, extracts the first word in input, if found
-     *
+     * From start, extracts a single word in input, if found
      * @return optional of word extracted from input, empty if not found
      */
-    public Optional<String> extractFirstWord() {
+    public Optional<String> extractWord() {
         final Matcher matcher = FIRST_WORD_PATTERN.matcher(input.trim());
-
-        if (matcher.matches()) {
-            input = matcher.group("tail"); // Remove extracted command word
+        if (matcher.find()) {
+            // Remove extracted first word
+            input = matcher.group("left").trim();
             return Optional.of(matcher.group("word"));
         }
 
@@ -237,24 +230,90 @@ public class SequentialParser {
     }
 
     /**
-     * From start, extracts first integer in input, if found
-     *
+     * Extracts all words in input
+     * If input is empty, returns empty list
+     */
+    public List<String> extractWords() {
+        return Arrays.stream(extractText().orElse("").split("\\s+"))
+            .filter(x -> !x.trim().isEmpty())
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * From start, extracts an integer in input, if found
      * @return optional of found integer extracted from input, empty if not found
      */
-    public Optional<Integer> extractFirstInteger() {
+    public Optional<Integer> extractInteger() {
         final Matcher matcher = FIRST_INTEGER_PATTERN.matcher(input.trim());
 
-        if (matcher.matches()) {
-            input = matcher.group("tail"); // Remove extracted item index
-            String indexString = matcher.group("index");
+        if (matcher.find()) {
+            // Remove extracted first integer
+            String integerString = matcher.group("integer");
+            input = matcher.group("left").trim();
 
             try {
-                return Optional.of(Integer.parseInt(indexString));
+                return Optional.of(Integer.parseInt(integerString));
             } catch (NumberFormatException exception) {
-                assert false : "Shouldn't be able to fail parsing of item index based on pattern";
+                assert false : "Shouldn't be able to fail parsing of integer based on pattern";
             }
+
         }
 
         return Optional.empty();
+    }
+    /**
+     * From start, extracts multiple integers in input, it can be a range of integers or different integers separate by space.
+     * @return A List of integers found
+     * @throws IllegalValueException
+     */
+	public List<Integer> extractIndicesList() throws IllegalValueException {
+		final Matcher matcher = INDEXRANGE_PATTERN.matcher(input.trim());
+		List<Integer> indices = new ArrayList<Integer>();
+		int firstInt = -1, secondInt = -1;
+		Optional<Integer> aNumber;
+
+		// Add the index range to a list of indices
+		// Case one: command type : [index] [to|-] [index]
+		if (matcher.find()) {
+			try {
+				firstInt = Integer.parseInt(matcher.group("firstInt"));
+				secondInt = Integer.parseInt(matcher.group("secondInt"));
+			} catch (NumberFormatException exception) {
+				assert false : "Shouldn't be able to fail parsing of integer based on pattern";
+			}
+			if (firstInt > secondInt) {
+				throw new IllegalValueException(Messages.INDEXRANGE_CONSTRAINTS);
+			} else {
+				for (int i = firstInt; i <= secondInt; i++) {
+					indices.add(i);
+				}
+			}
+			input = matcher.group("left").trim();
+		}
+		// Case two: command type : {[index]..}
+		else {
+			aNumber = extractInteger();
+			while (aNumber.isPresent()) {
+				indices.add(aNumber.get());
+				aNumber = extractInteger();
+			}
+		}
+		return indices;
+
+	}
+
+    // Returns null if invalid recurrence
+    // Returns Recurrence.None if empty string
+    private Recurrence parseRecurrence(String recurrence) {
+        recurrence = recurrence.trim().toLowerCase();
+
+        switch (recurrence) {
+            case "daily": return Recurrence.Daily;
+            case "weekly": return Recurrence.Weekly;
+            case "monthly": return Recurrence.Monthly;
+            case "yearly": return Recurrence.Yearly;
+            case "": return Recurrence.None;
+            default: return null;
+        }
     }
 }
