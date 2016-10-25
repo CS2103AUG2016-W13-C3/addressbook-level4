@@ -6,6 +6,8 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
+//@@author A0122001M
+
 /**
  * Provides a handle to a person card in the person list panel.
  */
