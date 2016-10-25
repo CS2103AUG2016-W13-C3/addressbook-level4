@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
+//@@author A0122001M
+
 /**
  * A utility class for test cases.
  */
@@ -85,8 +87,8 @@ public class TestUtil {
 
     private static Tag[] getSampleTagData() {
         return new Tag[]{
-            new Tag("relatives"),
-            new Tag("friends")
+            new Tag("tag1"),
+            new Tag("tag2")
         };
     }
 

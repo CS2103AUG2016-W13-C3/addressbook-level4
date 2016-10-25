@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
+//@@author A0122001M
+
 public class HelpWindowTest extends CommanDoGuiTest {
 
     @Test

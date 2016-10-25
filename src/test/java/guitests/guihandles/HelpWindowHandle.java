@@ -6,6 +6,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
+//@@author A0122001M
+
 /**
  * Provides a handle to the help window of the app.
  */

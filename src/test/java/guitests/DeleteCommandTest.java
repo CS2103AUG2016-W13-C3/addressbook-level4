@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+//@@author A0122001M
+
 public class DeleteCommandTest extends CommanDoGuiTest {
 
     @Test

@@ -1,5 +1,7 @@
 package seedu.commando.model.todo;
 
+//@@author A0122001M
+
 /**
  * Represents a tag of a to-do item
  */

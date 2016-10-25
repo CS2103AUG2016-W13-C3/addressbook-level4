@@ -9,9 +9,10 @@ import guitests.utils.TestUtil;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.model.todo.ToDo;
 
+//@@author A0122001M
+
 public class FinishCommandTest extends CommanDoGuiTest {
-    
-    
+        
     @Test
     public void finish_one_index() {
         //finish one item

@@ -8,6 +8,8 @@ import seedu.commando.commons.core.Messages;
 
 import static org.junit.Assert.assertTrue;
 
+//@@author A0122001M
+
 public class ClearCommandTest extends CommanDoGuiTest {
 
     @Test
