@@ -144,14 +144,18 @@ public class ToDoCardStyleManager {
      * I.e. Dates that are tomrorow show up as "Tmr"
      */
     protected static String prettifyDateTime(LocalDateTime dateTime) {
-        String output = getTime(dateTime) + " " + 
-                        getDay(dateTime) + " " + 
-                        getMonth(dateTime);
+        boolean isYtdOrTdyOrTmr = 
+                 dateTime.toLocalDate().isEqual(todayDate) ||
+                 dateTime.toLocalDate().isEqual(tomorrowDate) ||
+                 dateTime.toLocalDate().isEqual(yesterdayDate);
         
-        if (dateTime.getYear() != todayDate.getYear()) {
-            output += " " + dateTime.getYear();
+        if (isYtdOrTdyOrTmr) {
+            return getTime(dateTime) + " " + getDay(dateTime);
+        } else if (dateTime.getYear() == todayDate.getYear()) {
+            return getTime(dateTime) + " " + getDay(dateTime) + " " + getMonth(dateTime);
+        } else {
+            return getTime(dateTime) + " " + getDay(dateTime) + " " + getMonth(dateTime) + " " + dateTime.getYear();
         }
-        return output;
     }
     
     /**

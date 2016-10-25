@@ -115,10 +115,6 @@ public class Messages {
                 return Optional.of(ADD_COMMAND_FORMAT);
             case DeleteCommand.COMMAND_WORD:
                 return Optional.of(DELETE_COMMAND_FORMAT);
-            case FindCommand.COMMAND_WORD:
-                return Optional.of(FIND_COMMAND_FORMAT);
-            case RecallCommand.COMMAND_WORD:
-                return Optional.of(RECALL_COMMAND_FORMAT);
             case EditCommand.COMMAND_WORD:
                 return Optional.of(EDIT_COMMAND_FORMAT);
             case FinishCommand.COMMAND_WORD:
