@@ -83,9 +83,6 @@ public class ToDoCardStyleManager {
             start += " " + startDateTime.getYear();
         }
         
-        System.out.println(startDateTime.toString());
-        System.out.println(endDateTime.toString());
-        
         if (sameYear && sameMonth) {
             // If same year and same month
             // Display one month
