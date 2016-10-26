@@ -18,6 +18,8 @@ import seedu.commando.commons.util.FxViewUtil;
  */
 public class ResultDisplay extends UiPart {
     
+    private static final int RESULT_MINIMUM_HEIGHT = 30;
+    private static final int RESULT_INCREMENT_HEIGHT = 22;
     // Fixed variables
     private final String FXML = "ResultDisplay.fxml";
     private final String RESULT_DISPLAY_ID = "resultDisplay";
@@ -43,16 +45,18 @@ public class ResultDisplay extends UiPart {
         resultDisplayArea.setText("");
         resultDisplayArea.textProperty().bind(displayed);
         
-        SimpleIntegerProperty initHeight = new SimpleIntegerProperty(30);
+        //@@author A0139080J
+        SimpleIntegerProperty initHeight = new SimpleIntegerProperty(RESULT_MINIMUM_HEIGHT);
         resultDisplayArea.prefHeightProperty().bindBidirectional(initHeight);
         resultDisplayArea.minHeightProperty().bindBidirectional(initHeight);
         resultDisplayArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> observable, final String oldValue, final String newValue) {
                 final int count = StringUtils.countMatches(newValue, "\n");
-                initHeight.setValue(30 + count * 22);
+                initHeight.setValue(RESULT_MINIMUM_HEIGHT + count * RESULT_INCREMENT_HEIGHT);
             }
         });
+        //@@author 
         
         FxViewUtil.applyAnchorBoundaryParameters(resultDisplayArea, 0.0, 0.0, 0.0, 0.0);
         mainPane.getChildren().add(resultDisplayArea);
@@ -79,4 +83,7 @@ public class ResultDisplay extends UiPart {
         displayed.setValue(message);
     }
 
+    protected TextArea getResultDisplayArea() {
+        return resultDisplayArea;
+    }
 }

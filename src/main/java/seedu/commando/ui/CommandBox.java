@@ -97,6 +97,7 @@ public class CommandBox extends UiPart {
         resultDisplay.postMessage(message);
     }
 
+    //@@author A0138090J
     /**
      * This and the next method: Switches through a list of commands, invalid or valid.
      * If the boundary of the list is reached, display nothing.
@@ -130,12 +131,14 @@ public class CommandBox extends UiPart {
             }
         });
     }
+    //@@author 
     
     /**
      * Sets the command box style to indicate a correct command.
      */
     private void setStyleToIndicateCorrectCommand() {
-        commandTextField.getStyleClass().remove("error");
+        commandTextField.getStyleClass().remove("error-command");
+        resultDisplay.getResultDisplayArea().getStyleClass().remove("error-result");
         commandTextField.setText("");
     }
 
@@ -150,7 +153,8 @@ public class CommandBox extends UiPart {
      * Sets the command box style to indicate an error
      */
     private void setStyleToIndicateIncorrectCommand() {
-        commandTextField.getStyleClass().add("error");
+        commandTextField.getStyleClass().add("error-command");
+        resultDisplay.getResultDisplayArea().getStyleClass().add("error-result");
     }
 
     protected TextField getCommandField() {

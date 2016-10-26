@@ -197,6 +197,8 @@
 	-fx-font-size: 14px;
 	-fx-background-radius: 4px;
     -fx-background-color: derive(#dcdcdc, -10%);
+	-fx-border-radius: 4px;
+	-fx-border-width: 2px;
 }
 
 .result-display .label {
