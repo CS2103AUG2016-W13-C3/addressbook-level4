@@ -35,11 +35,14 @@ public class CommandBoxTest extends CommanDoGuiTest {
         commandBox.navigateCommandUp();
         assertEquals(commandBox.getCommandInput(), CommandBuilder.buildAddCommand(td.testToDoItem1));
         
-        commandBox.navigateCommandDown();
+        commandBox.navigateCommandUp();
         assertEquals(commandBox.getCommandInput(), CommandBuilder.buildAddCommand(td.testToDoItem1));
         
         commandBox.navigateCommandDown();
         assertEquals(commandBox.getCommandInput(), "edit 4 test");
+        
+        commandBox.navigateCommandDown();
+        assertEquals(commandBox.getCommandInput(), CommandBuilder.buildAddCommand(td.toDoItem1));
         
         commandBox.navigateCommandDown();
         assertEquals(commandBox.getCommandInput(), CommandBuilder.buildAddCommand(td.toDoItem1));
@@ -60,11 +63,14 @@ public class CommandBoxTest extends CommanDoGuiTest {
         commandBox.navigateCommandUp();
         assertEquals(commandBox.getCommandInput(), CommandBuilder.buildAddCommand(td.testToDoItem1));
         
-        commandBox.navigateCommandDown();
+        commandBox.navigateCommandUp();
         assertEquals(commandBox.getCommandInput(), CommandBuilder.buildAddCommand(td.testToDoItem1));
         
         commandBox.navigateCommandDown();
         assertEquals(commandBox.getCommandInput(), "edit 4 test");
+        
+        commandBox.navigateCommandDown();
+        assertEquals(commandBox.getCommandInput(), "delete 3");
         
         commandBox.navigateCommandDown();
         assertEquals(commandBox.getCommandInput(), "delete 3");
