@@ -26,39 +26,6 @@ public class CommandFactory {
     private static final String KEYWORD_DELETE_TAG = "tag";
     
     private CommandParser commandParser = new CommandParser();
-    private static ArrayList<String> commandWords;
-    private static int longestKeywordLength = 0;
-    
-    public CommandFactory() {
-        commandWords = new ArrayList<String>();
-        commandWords.add(AddCommand.COMMAND_WORD);
-        commandWords.add(ClearCommand.COMMAND_WORD);
-        commandWords.add(DeleteCommand.COMMAND_WORD);
-        commandWords.add(EditCommand.COMMAND_WORD);
-        commandWords.add(ExitCommand.COMMAND_WORD);
-        commandWords.add(ExportCommand.COMMAND_WORD);
-        commandWords.add(ImportCommand.COMMAND_WORD);
-        commandWords.add(StoreCommand.COMMAND_WORD);
-        commandWords.add(UnfinishCommand.COMMAND_WORD);
-        commandWords.add(FinishCommand.COMMAND_WORD);
-        commandWords.add(FindCommand.COMMAND_WORD);
-        commandWords.add(HelpCommand.COMMAND_WORD);
-        commandWords.add(RecallCommand.COMMAND_WORD);
-        commandWords.add(RedoCommand.COMMAND_WORD);
-        commandWords.add(UndoCommand.COMMAND_WORD);
-        
-        commandWords.forEach((keyword) -> {
-            longestKeywordLength = Math.max(longestKeywordLength, keyword.length());
-        });
-    }
-    
-    public static ArrayList<String> getCommandKeywords() {
-        return commandWords;
-    }
-    
-    public static int getLongestKeywordLength() {
-        return longestKeywordLength;
-    }
 
     public static class InvalidCommandFormatException extends Exception {
         public final String command;

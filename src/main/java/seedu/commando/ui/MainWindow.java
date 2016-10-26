@@ -2,7 +2,6 @@ package seedu.commando.ui;
 
 import com.google.common.eventbus.Subscribe;
 
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -53,6 +52,7 @@ public class MainWindow extends UiPart {
     private static boolean isMaximized;
     
     private Logic logic;
+    private String appName;
 
     // Independent Ui parts residing in this Ui container
     private EventListPanel eventPanel;
@@ -67,8 +67,6 @@ public class MainWindow extends UiPart {
     private VBox rootLayout;
     private Scene scene;
 
-    private String appName;
-    
     // The three panes that will take turns to be in focus 
     // when the user presses 'Tab' repeatedly
     private TextField commandField;
@@ -98,6 +96,8 @@ public class MainWindow extends UiPart {
     private Menu helpMenu;
     @FXML
     private Menu creditMenu;
+    @FXML
+    private Menu appNameMenu;
     @FXML
     private Button toggleSizeButton;
     @FXML
@@ -143,8 +143,8 @@ public class MainWindow extends UiPart {
     private void configure(String appTitle, String appName, UserPrefs prefs, Logic logic) {
         // Set dependencies
         this.logic = logic;
-        this.appName = appName;
         this.userPrefs = prefs;
+        this.appName = appName;
 
         // Configure the UI
         setTitle(appTitle);
@@ -167,6 +167,7 @@ public class MainWindow extends UiPart {
         helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl);
     }
 
+
     void fillInnerParts() {
         eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getUiEvents());
         taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getUiTasks());
@@ -181,6 +182,7 @@ public class MainWindow extends UiPart {
         taskListView = taskPanel.getTaskListView();
         setFocusTo(commandField);
         disableSplitPaneResize();
+        setAppName(appName);
     }
     
     private void setFocusTo(Node node) {
@@ -215,8 +217,13 @@ public class MainWindow extends UiPart {
         primaryStage.hide();
     }
 
+    private void setAppName(String appName) {
+        appNameMenu.setText(appName);
+    }
+    
     private void setTitle(String appTitle) {
         primaryStage.setTitle(appTitle);
+        
     }
 
     /**
@@ -316,13 +323,6 @@ public class MainWindow extends UiPart {
                     // and it will be in focus
                     currentlyFocusedPane = FocusPanes.COMMANDFIELD;
                     commandField.requestFocus();
-                    
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            commandBox.checkForKeywordsInInput();
-                        }
-                    });
                 }
             }
         });

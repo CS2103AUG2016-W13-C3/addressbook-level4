@@ -3,8 +3,6 @@ package guitests;
 import org.junit.Test;
 
 import guitests.utils.CommandBuilder;
-import seedu.commando.model.todo.ToDo;
-import seedu.commando.testutil.ToDoBuilder;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,9 +1,9 @@
 package seedu.commando.ui;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
@@ -11,10 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import seedu.commando.commons.core.LogsCenter;
-import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.util.FxViewUtil;
 import seedu.commando.logic.Logic;
-import seedu.commando.logic.commands.CommandFactory;
 import seedu.commando.logic.commands.CommandResult;
 
 public class CommandBox extends UiPart {
@@ -83,64 +81,54 @@ public class CommandBox extends UiPart {
          */
         setStyleToIndicateCorrectCommand();
         mostRecentResult = logic.execute(previousCommandTest);
-        
+
         // If invalid input given, keep the text
         if (mostRecentResult.hasError()) {
             setStyleToIndicateIncorrectCommand();
             restoreCommandText();
-            commandTextField.positionCaret(commandTextField.getLength());
+            setCaretAtEndOfText();
         }
-        
+
         changeResultDisplayMessage(mostRecentResult.getFeedback());
         logger.info("Result: " + mostRecentResult.getFeedback());
     }
-    
-    /**
-     * If there is a keyword in the command,
-     * and there must be only once space
-     */
-    protected void checkForKeywordsInInput() {
-        // Early termination condition: 
-        if (commandTextField.getText().length() <= CommandFactory.getLongestKeywordLength() + 1) {
-            final int firstOccurrence = commandTextField.getText().indexOf(' ');
-            // Second termination condition: Occurrence of space. Assumes that everything
-            // before the space is the keyword
-            if (firstOccurrence > -1) {
-                final String keyword = commandTextField.getText().substring(0, firstOccurrence);
-                // Checks if keyword is an actual command keyword
-                if (CommandFactory.getCommandKeywords().contains(keyword)) {
-                    final Optional<String> result = Messages.getCommandFormatMessage(keyword);
-                    if (result.isPresent()) {
-                        changeResultDisplayMessage(result.get());
-                        return;
-                    }
-                }
-            }
-        } 
-    }
-    
+
     protected void changeResultDisplayMessage(String message) {
         resultDisplay.postMessage(message);
     }
-    
+
     /**
      * This and the next method: Switches through a list of commands, invalid or valid.
      * If the boundary of the list is reached, display nothing.
      */
     protected void goUpCommandHistory() {
-        if (commandHistoryPointer <= 0) {
-            commandTextField.setText("");
-        } else {
-            commandTextField.setText(commandHistory.get(--commandHistoryPointer));
+        if (!commandHistory.isEmpty() && commandHistoryPointer > 0) {
+            setTextAndPositionCaret(--commandHistoryPointer);
         }
     }
-    
+
     protected void goDownCommandHistory() {
-        if (commandHistoryPointer >= commandHistory.size()) {
-            commandTextField.setText("");
-        } else {
-            commandTextField.setText(commandHistory.get(commandHistoryPointer++));
+        if (!commandHistory.isEmpty()) {
+            if (commandHistoryPointer < commandHistory.size() - 1) {
+                setTextAndPositionCaret(++commandHistoryPointer);
+            } else if (commandHistoryPointer == commandHistory.size()) {
+                setTextAndPositionCaret(commandHistoryPointer++);
+            } 
         }
+    }
+
+    private void setTextAndPositionCaret(int pointer) {
+        commandTextField.setText(commandHistory.get(pointer));
+        setCaretAtEndOfText();
+    }
+    
+    private void setCaretAtEndOfText() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                commandTextField.positionCaret(commandTextField.getLength());
+            }
+        });
     }
     
     /**
@@ -164,7 +152,7 @@ public class CommandBox extends UiPart {
     private void setStyleToIndicateIncorrectCommand() {
         commandTextField.getStyleClass().add("error");
     }
-    
+
     protected TextField getCommandField() {
         return commandTextField;
     }
