@@ -30,6 +30,16 @@ public class CommandBoxHandle extends GuiHandle {
         pressEnter();
         guiRobot.sleep(200);// Give time for the command to take effect
     }
+    
+    public void navigateCommandUp() {
+        pressUp();
+        guiRobot.sleep(200);
+    }
+    
+    public void navigateCommandDown() {
+        pressDown();
+        guiRobot.sleep(200);
+    }
 
     public HelpWindowHandle runHelpCommand(String... command) {
         String cmd = "help";
