@@ -284,6 +284,8 @@ public class MainWindow extends UiPart {
                         eventPanel.scrollUp();
                     } else if (currentlyFocusedPane == FocusPanes.TASKPANEL) {
                         taskPanel.scrollUp();
+                    } else {
+                        commandBox.goUpCommandHistory();
                     }
                     break;
                 case DOWN:
@@ -291,6 +293,8 @@ public class MainWindow extends UiPart {
                         eventPanel.scrollDown();
                     } else if (currentlyFocusedPane == FocusPanes.TASKPANEL) {
                         taskPanel.scrollDown();
+                    } else {
+                        commandBox.goDownCommandHistory();
                     }
                     break;
                 case TAB:

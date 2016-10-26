@@ -11,6 +11,7 @@ import seedu.commando.commons.util.FxViewUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.logic.commands.*;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class CommandBox extends UiPart {
@@ -23,6 +24,8 @@ public class CommandBox extends UiPart {
     private String previousCommandTest;
 
     private Logic logic;
+    private ArrayList<String> commandHistory;
+    private int commandHistoryPointer;
 
     @FXML
     private TextField commandTextField;
@@ -39,6 +42,7 @@ public class CommandBox extends UiPart {
     protected void configure(ResultDisplay resultDisplay, Logic logic) {
         this.resultDisplay = resultDisplay;
         this.logic = logic;
+        commandHistory = new ArrayList<String>();
         registerAsAnEventHandler(this);
     }
 
@@ -68,6 +72,8 @@ public class CommandBox extends UiPart {
     private void handleCommandInputChanged() {
         //Take a copy of the command text
         previousCommandTest = commandTextField.getText();
+        commandHistory.add(previousCommandTest);
+        commandHistoryPointer = commandHistory.size();
 
         /* We assume the command is correct. If it is incorrect, the command box will be changed accordingly
          * in the event handling code {@link #handleIncorrectCommandAttempted}
@@ -84,7 +90,27 @@ public class CommandBox extends UiPart {
         resultDisplay.postMessage(mostRecentResult.getFeedback());
         logger.info("Result: " + mostRecentResult.getFeedback());
     }
-
+    
+    /**
+     * This and the next method: Switches through a list of commands, invalid or valid.
+     * If the boundary of the list is reached, display nothing.
+     */
+    protected void goUpCommandHistory() {
+        if (commandHistoryPointer <= 0) {
+            commandTextField.setText("");
+        } else {
+            commandTextField.setText(commandHistory.get(--commandHistoryPointer));
+        }
+    }
+    
+    protected void goDownCommandHistory() {
+        if (commandHistoryPointer >= commandHistory.size()) {
+            commandTextField.setText("");
+        } else {
+            commandTextField.setText(commandHistory.get(commandHistoryPointer++));
+        }
+    }
+    
     /**
      * Sets the command box style to indicate a correct command.
      */
