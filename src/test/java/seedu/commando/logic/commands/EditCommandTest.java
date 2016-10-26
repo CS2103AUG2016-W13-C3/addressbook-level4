@@ -72,7 +72,7 @@ public class EditCommandTest {
         assertTrue(result.hasError());
 
         assertEquals(Messages.MISSING_TODO_ITEM_INDEX
-                + "\n" + Messages.getInvalidCommandFormatMessage("edit").get(), result.getFeedback());
+                + "\n" + Messages.getCommandFormatMessage("edit").get(), result.getFeedback());
     }
 
     @Test
@@ -166,7 +166,7 @@ public class EditCommandTest {
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
         assertEquals(Messages.TODO_DATERANGE_END_MUST_AFTER_START + "\n" + Messages.DATE_FORMAT + "\n" + 
-                Messages.getInvalidCommandFormatMessage("edit").get(), result.getFeedback());
+                Messages.getCommandFormatMessage("edit").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 

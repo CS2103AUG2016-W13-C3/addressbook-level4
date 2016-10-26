@@ -1,6 +1,8 @@
 package seedu.commando.ui;
 
 import com.google.common.eventbus.Subscribe;
+
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -314,6 +316,13 @@ public class MainWindow extends UiPart {
                     // and it will be in focus
                     currentlyFocusedPane = FocusPanes.COMMANDFIELD;
                     commandField.requestFocus();
+                    
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            commandBox.checkForKeywordsInInput();
+                        }
+                    });
                 }
             }
         });
@@ -335,6 +344,8 @@ public class MainWindow extends UiPart {
             break;
         }
     }
+    
+
     
     /**
      * Sets the whole app to be draggable

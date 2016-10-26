@@ -1,5 +1,9 @@
 package seedu.commando.ui;
 
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.logging.Logger;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
@@ -7,12 +11,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import seedu.commando.commons.core.LogsCenter;
+import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.util.FxViewUtil;
 import seedu.commando.logic.Logic;
-import seedu.commando.logic.commands.*;
-
-import java.util.ArrayList;
-import java.util.logging.Logger;
+import seedu.commando.logic.commands.CommandFactory;
+import seedu.commando.logic.commands.CommandResult;
 
 public class CommandBox extends UiPart {
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
@@ -81,14 +84,43 @@ public class CommandBox extends UiPart {
         setStyleToIndicateCorrectCommand();
         mostRecentResult = logic.execute(previousCommandTest);
         
+        // If invalid input given, keep the text
         if (mostRecentResult.hasError()) {
             setStyleToIndicateIncorrectCommand();
             restoreCommandText();
             commandTextField.positionCaret(commandTextField.getLength());
         }
         
-        resultDisplay.postMessage(mostRecentResult.getFeedback());
+        changeResultDisplayMessage(mostRecentResult.getFeedback());
         logger.info("Result: " + mostRecentResult.getFeedback());
+    }
+    
+    /**
+     * If there is a keyword in the command,
+     * and there must be only once space
+     */
+    protected void checkForKeywordsInInput() {
+        // Early termination condition: 
+        if (commandTextField.getText().length() <= CommandFactory.getLongestKeywordLength() + 1) {
+            final int firstOccurrence = commandTextField.getText().indexOf(' ');
+            // Second termination condition: Occurrence of space. Assumes that everything
+            // before the space is the keyword
+            if (firstOccurrence > -1) {
+                final String keyword = commandTextField.getText().substring(0, firstOccurrence);
+                // Checks if keyword is an actual command keyword
+                if (CommandFactory.getCommandKeywords().contains(keyword)) {
+                    final Optional<String> result = Messages.getCommandFormatMessage(keyword);
+                    if (result.isPresent()) {
+                        changeResultDisplayMessage(result.get());
+                        return;
+                    }
+                }
+            }
+        } 
+    }
+    
+    protected void changeResultDisplayMessage(String message) {
+        resultDisplay.postMessage(message);
     }
     
     /**

@@ -58,7 +58,7 @@ public class LogicManager extends ComponentManager implements Logic {
 
             // If invalid command format, check if Messages has sample commands for that command
             // Append to exception message if there is
-            Optional<String> commandFormatMessage = Messages.getInvalidCommandFormatMessage(e.command);
+            Optional<String> commandFormatMessage = Messages.getCommandFormatMessage(e.command);
             if (commandFormatMessage.isPresent()) {
                 return new CommandResult(e.getMessage() + "\n" + commandFormatMessage.get(), true);
             } else {
