@@ -19,7 +19,7 @@ We are a team based in the [School of Computing, National University of Singapor
 	- [`help` command](https://cs2103aug2016-w13-c3.github.io/main/user#help)
 	- Deletion of tags or time constraints of to-do with `delete` command 
 	- Flexible parsing of datetime
-- Code written: [functional code] [test code] [docs]
+- Code written: [functional code](../collated/main/A0139697H.md) [test code](../collated/test/A0139697H.md) [docs](../collated/docs/A0139697H.md)
 - Other major contributions:
 	- Team lead
 	- Set up Travis and Coveralls
@@ -38,7 +38,7 @@ We are a team based in the [School of Computing, National University of Singapor
 	- Prettifying of datetime on GUI
 	- Splitting to _Events_ and _Tasks_ panels and layout of GUI [#61](https://github.com/CS2103AUG2016-W13-C3/main/pull/61)
 	- User-friendly feedback messages for invalid input [#115](https://github.com/CS2103AUG2016-W13-C3/main/pull/115)
-- Code written: [functional code] [test code] [docs]
+- Code written: [functional code](../collated/main/A0139080J.md) [test code](../collated/test/A0139080J.md) [docs](../collated/docs/A0139080J.md)
 - Other major contributions:
 	- Set up Github pages for user and developer guide
 	- Added and improved CSS styling for user and developer guide
@@ -55,7 +55,7 @@ We are a team based in the [School of Computing, National University of Singapor
 	- [`export` command](https://cs2103aug2016-w13-c3.github.io/main/user#export)	
 	- [`import` command](https://cs2103aug2016-w13-c3.github.io/main/user#import)
 	- [`store` command](https://cs2103aug2016-w13-c3.github.io/main/user#store)
-- Code written: [functional code] [test code] [docs]
+- Code written: [functional code](../collated/main/A0142230B.md) [test code](../collated/test/A0142230B.md) [docs](../collated/docs/A0142230B.md)
 - Other major contributions:
 	- Did morphing of _Storage_ from _AddressBook_ for _CommanDo_ [#3](https://github.com/CS2103AUG2016-W13-C3/main/pull/3)
 	- Improved developer guide based on feedback
@@ -72,6 +72,7 @@ We are a team based in the [School of Computing, National University of Singapor
 	- [`redo` command](https://cs2103aug2016-w13-c3.github.io/main/user#redo)
 	- [`finish` command](https://cs2103aug2016-w13-c3.github.io/main/user#finish)
  	- GUI testing [#104](https://github.com/CS2103AUG2016-W13-C3/main/pull/104)
+- Code written: [functional code](../collated/main/A0122001M.md) [test code](../collated/test/A0122001M.md) [docs](../collated/docs/A0122001M.md)
  - Other major contributions:
 	- Formatted developer guide appendices 
 	- Added use cases in developer guide
