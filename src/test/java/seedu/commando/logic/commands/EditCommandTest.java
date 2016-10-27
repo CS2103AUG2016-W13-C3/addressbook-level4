@@ -214,7 +214,7 @@ public class EditCommandTest {
         logic.execute("add task2");
         eventsCollector.reset();
 
-        CommandResult result = logic.execute("edit 1 task2");
+        CommandResult result = logic.execute("edit 2 task2");
         assertTrue(result.hasError());
         assertEquals(Messages.TODO_ALREADY_EXISTS, result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));

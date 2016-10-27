@@ -27,8 +27,8 @@ public class AddCommandTest extends CommanDoGuiTest {
         // add floating task
         ToDo[] currentList = td.getTypicalToDos();
         ToDo toDoToAdd = td.testToDoItem1;
-        assertAddSuccess(toDoToAdd, 5, currentList);
-        currentList = TestUtil.addToDosToList(currentList, 5, toDoToAdd);
+        assertAddSuccess(toDoToAdd, 4, currentList);
+        currentList = TestUtil.addToDosToList(currentList, 4, toDoToAdd);
 
         // add event
         toDoToAdd = td.testToDoItem2;

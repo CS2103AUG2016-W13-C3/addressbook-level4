@@ -2,7 +2,6 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.todo.Recurrence;
 import seedu.commando.model.todo.ToDo;
 import seedu.commando.model.todo.ToDoList;
 import seedu.commando.model.ui.UiToDo;
@@ -84,7 +83,7 @@ public class DeleteCommand extends Command {
     			return new CommandResult(exception.getMessage(), true);
     		}
 
-    		return new CommandResult(String.format(Messages.TODO_DELETED, toDoIndices.toString()));
+    		return new CommandResult(String.format(Messages.DELETE_COMMAND, toDoIndices.toString()));
         } else {
         // if any deletion of fields, edit the whole to-do
     		try {
@@ -92,7 +91,7 @@ public class DeleteCommand extends Command {
     		} catch (IllegalValueException exception) {
     			return new CommandResult(exception.getMessage(), true);
     		}
-            return new CommandResult(String.format(Messages.TODO_EDITED, toDoIndices.toString()));
+            return new CommandResult(String.format(Messages.EDIT_COMMAND, toDoIndices.toString()));
         }
     }
 

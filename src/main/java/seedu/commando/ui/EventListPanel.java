@@ -65,7 +65,6 @@ public class EventListPanel extends UiPart {
         events.addListener((Change<? extends UiToDo> c) -> {
             while (c.next()) {
                 if (c.wasAdded()) {
-                    c.getAddedSubList().forEach(System.out::println);
                     c.reset();
                     break;
                 }

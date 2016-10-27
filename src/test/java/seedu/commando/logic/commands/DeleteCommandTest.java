@@ -96,7 +96,7 @@ public class DeleteCommandTest {
             new ToDoBuilder("title2")
                 .build()));
 
-        CommandResult result = logic.execute("delete 2");
+        CommandResult result = logic.execute("delete 1");
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
