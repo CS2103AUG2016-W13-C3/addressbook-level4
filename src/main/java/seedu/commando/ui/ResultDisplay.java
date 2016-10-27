@@ -2,7 +2,6 @@ package seedu.commando.ui;
 
 import org.apache.commons.lang.StringUtils;
 
-import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -19,6 +18,8 @@ import seedu.commando.commons.util.FxViewUtil;
  */
 public class ResultDisplay extends UiPart {
     
+    private static final int RESULT_MINIMUM_HEIGHT = 30;
+    private static final int RESULT_INCREMENT_HEIGHT = 22;
     // Fixed variables
     private final String FXML = "ResultDisplay.fxml";
     private final String RESULT_DISPLAY_ID = "resultDisplay";
@@ -44,24 +45,19 @@ public class ResultDisplay extends UiPart {
         resultDisplayArea.setText("");
         resultDisplayArea.textProperty().bind(displayed);
         
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                resultDisplayArea.lookup(".scroll-bar:vertical").setDisable(true);
-            }
-        });
-        
-        SimpleIntegerProperty initHeight = new SimpleIntegerProperty(30);
+        //@@author A0139080J
+        SimpleIntegerProperty initHeight = new SimpleIntegerProperty(RESULT_MINIMUM_HEIGHT);
         resultDisplayArea.prefHeightProperty().bindBidirectional(initHeight);
         resultDisplayArea.minHeightProperty().bindBidirectional(initHeight);
-        //resultDisplayArea.prefWidthProperty().bind(mainPane.widthProperty());
         resultDisplayArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> observable, final String oldValue, final String newValue) {
                 final int count = StringUtils.countMatches(newValue, "\n");
-                initHeight.setValue(30 + count * 22);
+                initHeight.setValue(RESULT_MINIMUM_HEIGHT + count * RESULT_INCREMENT_HEIGHT);
             }
         });
+        //@@author 
+        
         FxViewUtil.applyAnchorBoundaryParameters(resultDisplayArea, 0.0, 0.0, 0.0, 0.0);
         mainPane.getChildren().add(resultDisplayArea);
         FxViewUtil.applyAnchorBoundaryParameters(mainPane, 0.0, 0.0, 0.0, 0.0);
@@ -87,4 +83,7 @@ public class ResultDisplay extends UiPart {
         displayed.setValue(message);
     }
 
+    protected TextArea getResultDisplayArea() {
+        return resultDisplayArea;
+    }
 }

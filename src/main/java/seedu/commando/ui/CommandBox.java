@@ -1,5 +1,9 @@
 package seedu.commando.ui;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
@@ -9,10 +13,7 @@ import javafx.stage.Stage;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.util.FxViewUtil;
 import seedu.commando.logic.Logic;
-import seedu.commando.logic.commands.*;
-
-import java.util.ArrayList;
-import java.util.logging.Logger;
+import seedu.commando.logic.commands.CommandResult;
 
 public class CommandBox extends UiPart {
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
@@ -80,42 +81,64 @@ public class CommandBox extends UiPart {
          */
         setStyleToIndicateCorrectCommand();
         mostRecentResult = logic.execute(previousCommandTest);
-        
+
+        // If invalid input given, keep the text
         if (mostRecentResult.hasError()) {
             setStyleToIndicateIncorrectCommand();
             restoreCommandText();
-            commandTextField.positionCaret(commandTextField.getLength());
+            setCaretAtEndOfText();
         }
-        
-        resultDisplay.postMessage(mostRecentResult.getFeedback());
+
+        changeResultDisplayMessage(mostRecentResult.getFeedback());
         logger.info("Result: " + mostRecentResult.getFeedback());
     }
-    
+
+    protected void changeResultDisplayMessage(String message) {
+        resultDisplay.postMessage(message);
+    }
+
+    //@@author A0138090J
     /**
      * This and the next method: Switches through a list of commands, invalid or valid.
      * If the boundary of the list is reached, display nothing.
      */
     protected void goUpCommandHistory() {
-        if (commandHistoryPointer <= 0) {
-            commandTextField.setText("");
-        } else {
-            commandTextField.setText(commandHistory.get(--commandHistoryPointer));
+        if (!commandHistory.isEmpty() && commandHistoryPointer > 0) {
+            setTextAndPositionCaret(--commandHistoryPointer);
         }
+    }
+
+    protected void goDownCommandHistory() {
+        if (!commandHistory.isEmpty()) {
+            if (commandHistoryPointer < commandHistory.size() - 1) {
+                setTextAndPositionCaret(++commandHistoryPointer);
+            } else if (commandHistoryPointer == commandHistory.size()) {
+                setTextAndPositionCaret(commandHistoryPointer++);
+            } 
+        }
+    }
+
+    private void setTextAndPositionCaret(int pointer) {
+        commandTextField.setText(commandHistory.get(pointer));
+        setCaretAtEndOfText();
     }
     
-    protected void goDownCommandHistory() {
-        if (commandHistoryPointer >= commandHistory.size()) {
-            commandTextField.setText("");
-        } else {
-            commandTextField.setText(commandHistory.get(commandHistoryPointer++));
-        }
+    private void setCaretAtEndOfText() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                commandTextField.positionCaret(commandTextField.getLength());
+            }
+        });
     }
+    //@@author 
     
     /**
      * Sets the command box style to indicate a correct command.
      */
     private void setStyleToIndicateCorrectCommand() {
-        commandTextField.getStyleClass().remove("error");
+        commandTextField.getStyleClass().remove("error-command");
+        resultDisplay.getResultDisplayArea().getStyleClass().remove("error-result");
         commandTextField.setText("");
     }
 
@@ -130,9 +153,10 @@ public class CommandBox extends UiPart {
      * Sets the command box style to indicate an error
      */
     private void setStyleToIndicateIncorrectCommand() {
-        commandTextField.getStyleClass().add("error");
+        commandTextField.getStyleClass().add("error-command");
+        resultDisplay.getResultDisplayArea().getStyleClass().add("error-result");
     }
-    
+
     protected TextField getCommandField() {
         return commandTextField;
     }

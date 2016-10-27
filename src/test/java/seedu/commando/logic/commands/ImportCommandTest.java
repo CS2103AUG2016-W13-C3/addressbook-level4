@@ -56,11 +56,11 @@ public class ImportCommandTest {
         CommandResult result = logic.execute("import");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_IMPORT_PATH
-                + "\n" + Messages.getInvalidCommandFormatMessage("import").get(), result.getFeedback());
+                + "\n" + Messages.getCommandFormatMessage("import").get(), result.getFeedback());
         result = logic.execute("import    ");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_IMPORT_PATH
-                + "\n" + Messages.getInvalidCommandFormatMessage("import").get(), result.getFeedback());
+                + "\n" + Messages.getCommandFormatMessage("import").get(), result.getFeedback());
     }
 
     @Test
