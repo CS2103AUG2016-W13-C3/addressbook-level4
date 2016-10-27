@@ -67,6 +67,8 @@ public class ModelManager extends ComponentManager implements Model {
         boolean hasChanged = toDoListManager.undoToDoList();
 
         if (hasChanged) {
+            clearUiToDoListFilter(false);
+
             indicateToDoListChanged();
         }
 
@@ -78,6 +80,8 @@ public class ModelManager extends ComponentManager implements Model {
         boolean hasChanged = toDoListManager.redoToDoList();
 
         if (hasChanged) {
+            clearUiToDoListFilter(false);
+
             indicateToDoListChanged();
         }
 
