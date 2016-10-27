@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- @@author A0139080J -->
+
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -30,7 +31,7 @@
 						</MenuBar>
       				<MenuBar opacity="0.5" styleClass="title-button">
       					<menus>
-      						<Menu disable="true" mnemonicParsing="false" text="CommanDo" />
+      						<Menu fx:id="appNameMenu" disable="true" mnemonicParsing="false" text="\$appNameMenu" />
       					</menus>
       				</MenuBar>
 					</children>

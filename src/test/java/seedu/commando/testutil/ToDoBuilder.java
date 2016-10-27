@@ -102,11 +102,14 @@ public class ToDoBuilder {
     }
 
     public ToDoBuilder withDateRange(LocalDateTime startDate, LocalDateTime endDate,
-                                     Recurrence recurrence)
-        throws IllegalValueException {
-        toDo.setDateRange(new DateRange(
-            startDate, endDate, recurrence
-        ));
+                                     Recurrence recurrence) {
+        try {
+            toDo.setDateRange(new DateRange(
+                startDate, endDate, recurrence
+            ));
+        }  catch (IllegalValueException e) {
+            assert false : "Test data should not be invalid";
+        }
 
         return this;
     }

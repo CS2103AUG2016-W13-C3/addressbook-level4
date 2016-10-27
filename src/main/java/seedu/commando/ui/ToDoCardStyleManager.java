@@ -37,6 +37,7 @@ public class ToDoCardStyleManager {
     private static String keywordTomorrow = "Tomorrow";
     private static String keywordYesterday = "Yesterday";
     
+    // Date references
     private static LocalDate todayDate = LocalDate.now();
     private static LocalDate tomorrowDate = todayDate.plusDays(1);
     private static LocalDate yesterdayDate = todayDate.minusDays(1);
@@ -54,7 +55,6 @@ public class ToDoCardStyleManager {
      * I.e. Times will be displayed for both no matter what, even if datetimes are exactly the same
      */
     protected static String prettifyDateTimeRange(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        
         String start = "";
         String end = "";
         
@@ -110,6 +110,8 @@ public class ToDoCardStyleManager {
         start = getTime(startDateTime) + start;
         end = getTime(endDateTime) + end;
         
+        // If its the same day, there is no need to display the date on two lines
+        // because its comparatively short to other intervals that span over days
         if (!sameYear || !sameMonth || !sameDay) {
             return start + " " + keywordTo + "\n" + end;
         } else {
@@ -117,6 +119,10 @@ public class ToDoCardStyleManager {
         }
     }
     
+    /**
+     * @param ldt
+     * @return a date or 'today' or 'yesterday' or 'tomorrow'
+     */
     private static String getDay(LocalDateTime ldt) {
         final LocalDate ld = ldt.toLocalDate();
         if (ld.isEqual(yesterdayDate)) {
@@ -130,10 +136,18 @@ public class ToDoCardStyleManager {
         }
     }
     
+    /**
+     * @param ldt
+     * @return the month of the date
+     */
     private static String getMonth(LocalDateTime ldt) {
         return formatMonth.format(ldt);
     }
     
+    /**
+     * @param ldt
+     * @return the time of the date
+     */
     private static String getTime(LocalDateTime ldt) {
         return formatTime.format(ldt);
     }

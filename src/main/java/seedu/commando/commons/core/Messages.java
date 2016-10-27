@@ -8,6 +8,7 @@ import seedu.commando.logic.commands.EditCommand;
 import seedu.commando.logic.commands.ExportCommand;
 import seedu.commando.logic.commands.FindCommand;
 import seedu.commando.logic.commands.FinishCommand;
+import seedu.commando.logic.commands.HelpCommand;
 import seedu.commando.logic.commands.ImportCommand;
 import seedu.commando.logic.commands.RecallCommand;
 import seedu.commando.logic.commands.RedoCommand;
@@ -21,8 +22,8 @@ public class Messages {
 
     //@@author A0139697H
     public static final String UNKNOWN_COMMAND = "Unknown command: '%1$s'. Input 'help' for instructions on how to use this application.";
-    public static final String UNKNOWN_COMMAND_FOR_HELP = "Unknown topic for help: '%1$s'.\n" + 
-                                                          "Available Topics: add, edit, delete, find, clear, finish, unfinish, recall, undo, redo, faq, search logic, datetime formats, cheatsheet";
+    public static final String UNKNOWN_COMMAND_FOR_HELP = "Unknown topic for help: '%1$s'.";
+                                                          
     public static final String MISSING_COMMAND_WORD = "Missing command word.";
     public static final String INVALID_COMMAND_FORMAT = "Invalid format for '%1$s' command!";
     public static final String MISSING_TODO_TITLE = "Missing title for to-do.";
@@ -84,20 +85,25 @@ public class Messages {
     public static final String DELETE_COMMAND_NO_TIME_CONSTRAINTS = "To-do with index '%1$s' has no time constraints to delete!";
 
     //@@author A0139080J
-    public static final String STORE_COMMAND_FORMAT = ">> store ../../Dropbox/work/todolist.xml.";
-    public static final String IMPORT_COMMAND_FORMAT = ">> import ../../Dropbox/work/todolist.xml.";
-    public static final String EXPORT_COMMAND_FORMAT = ">> export ../../Dropbox/work/todolist.xml.";
+    public static final String STORE_COMMAND_FORMAT = ">> store <path>";
+    public static final String IMPORT_COMMAND_FORMAT = ">> import <path>";
+    public static final String EXPORT_COMMAND_FORMAT = ">> export <path>";
     public static final String ADD_COMMAND_FORMAT = ">> add <task description> #tag1 #tag2...\n" + 
                                                     ">> add <task description> by <deadline>\n" + 
                                                     ">> add <event description> from <start time> to <end time>";
-    public static final String DELETE_COMMAND_FORMAT = ">> delete <index>";
-    public static final String FIND_COMMAND_FORMAT = ">> find\n" + ">> find <keyword(s)> #tag1 #tag2...";
-    public static final String RECALL_COMMAND_FORMAT = ">> recall\n" + ">> recall <keyword(s)> #tag1 #tag2...";
+    public static final String DELETE_COMMAND_FORMAT = ">> delete <index>\n" + 
+                                                       ">> delete <start Index> - <end Index>";
+    public static final String FIND_COMMAND_FORMAT = ">> find\n" + 
+                                                     ">> find <keyword(s)> #tag1 #tag2...";
+    public static final String RECALL_COMMAND_FORMAT = ">> recall\n" + 
+                                                       ">> recall <keyword(s)> #tag1 #tag2...";
     public static final String EDIT_COMMAND_FORMAT = ">> edit <index> <change in description>\n" + 
-                                                     ">> edit <index> `<change in description`\n" + 
-                                                     "(If you want to start your description by keywords such as `by`, `from` and `to`";
-    public static final String FINISH_COMMAND_FORMAT = ">> finish <index>";
-    public static final String UNFINISH_COMMAND_FORMAT = ">> unfinish <index>";
+                                                     ">> edit <index> `<change in description that starts with 'by', 'from' or 'to'>`";
+    public static final String FINISH_COMMAND_FORMAT = ">> finish <index>" + 
+                                                       ">> finish <start Index> - <end Index>";
+    public static final String UNFINISH_COMMAND_FORMAT = ">> unfinish <index>" + 
+                                                         ">> unfinish <start Index> - <end Index>";
+    public static final String HELP_COMMAND_TOPICS = "Available Topics: add, edit, delete, find, clear, finish, unfinish, recall, undo, redo, faq, search logic, datetime formats, cheatsheet";
     
     public static final String DATE_FORMAT = "Date Time Formats: 9 jan 2018 23:59 | Jan 9 2019 1900h | coming friday morning | today 23:59";
 
@@ -105,7 +111,7 @@ public class Messages {
      * Returns an additional invalid command format message to be appended
      * for a {@param commandWord}.
      */
-    public static Optional<String> getInvalidCommandFormatMessage(String commandWord) {
+    public static Optional<String> getCommandFormatMessage(String commandWord) {
         switch (commandWord) {
             case StoreCommand.COMMAND_WORD:
                 return Optional.of(STORE_COMMAND_FORMAT);
@@ -123,6 +129,8 @@ public class Messages {
                 return Optional.of(FINISH_COMMAND_FORMAT);
             case UnfinishCommand.COMMAND_WORD:
                 return Optional.of(UNFINISH_COMMAND_FORMAT);
+            case HelpCommand.COMMAND_WORD:
+                return Optional.of(HELP_COMMAND_TOPICS);
             default: break; 
         }
         return Optional.empty();

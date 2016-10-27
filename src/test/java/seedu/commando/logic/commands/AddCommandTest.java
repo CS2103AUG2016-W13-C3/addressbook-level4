@@ -47,7 +47,7 @@ public class AddCommandTest {
     public void execute_add_missingTitle() {
         CommandResult result = logic.execute("add");
         assertTrue(result.hasError());
-        assertEquals(Messages.MISSING_TODO_TITLE + "\n" + Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
+        assertEquals(Messages.MISSING_TODO_TITLE + "\n" + Messages.getCommandFormatMessage("add").get(), result.getFeedback());
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
@@ -95,7 +95,7 @@ public class AddCommandTest {
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
         assertEquals(Messages.TODO_DATERANGE_END_MUST_AFTER_START + "\n" + Messages.DATE_FORMAT + "\n" + 
-                Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
+                Messages.getCommandFormatMessage("add").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
@@ -105,7 +105,7 @@ public class AddCommandTest {
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
         assertEquals(Messages.INVALID_TODO_DATERANGE_START + "\n" + Messages.DATE_FORMAT + "\n" + 
-                Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
+                Messages.getCommandFormatMessage("add").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
@@ -115,7 +115,7 @@ public class AddCommandTest {
         CommandResult result = logic.execute(command);
         assertTrue(result.hasError());
         assertEquals(Messages.INVALID_TODO_DATERANGE_END + "\n" + Messages.DATE_FORMAT + "\n" + 
-        Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
+        Messages.getCommandFormatMessage("add").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
@@ -250,7 +250,7 @@ public class AddCommandTest {
         CommandResult result = logic.execute("add event from 10 Oct to 12 Oct daily");
         assertTrue(result.hasError());
         assertEquals(Messages.TODO_DATERANGE_RECURRENCE_INVALID + "\n" + Messages.DATE_FORMAT + "\n" + 
-                Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
+                Messages.getCommandFormatMessage("add").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
@@ -259,7 +259,7 @@ public class AddCommandTest {
         CommandResult result = logic.execute("add event from to 12 Oct");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_TODO_DATERANGE_START + "\n" + Messages.DATE_FORMAT + "\n" + 
-                Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
+                Messages.getCommandFormatMessage("add").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
         eventsCollector.reset();
@@ -267,7 +267,7 @@ public class AddCommandTest {
         result = logic.execute("add event from 12 Oct to");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_TODO_DATERANGE_END + "\n" + Messages.DATE_FORMAT + "\n" + 
-                Messages.getInvalidCommandFormatMessage("add").get(), result.getFeedback());
+                Messages.getCommandFormatMessage("add").get(), result.getFeedback());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 
