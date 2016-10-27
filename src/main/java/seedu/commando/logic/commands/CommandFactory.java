@@ -333,7 +333,6 @@ public class CommandFactory {
     private Command buildUndoCommand() throws IllegalValueException {
         if (!commandParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, UndoCommand.COMMAND_WORD));
-
         }
 
         return new UndoCommand();

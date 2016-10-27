@@ -295,4 +295,12 @@ public class AddCommandTest {
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
         assertEquals(Messages.MISSING_TODO_TITLE + "\n" + Messages.ADD_COMMAND_FORMAT, result.getFeedback());
     }
+
+    @Test
+    public void execute_add_dateRangeAndDueDate() throws IllegalValueException {
+        CommandResult result = logic.execute("add eventask by tomorrow from today to tomorrow");
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertEquals(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, result.getFeedback());
+    }
 }

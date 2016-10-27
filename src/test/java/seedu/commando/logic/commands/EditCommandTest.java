@@ -300,4 +300,16 @@ public class EditCommandTest {
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
         assertEquals(Messages.MISSING_TODO_TITLE + "\n" + Messages.EDIT_COMMAND_FORMAT, result.getFeedback());
     }
+
+
+    @Test
+    public void execute_edit_noEdits() throws IllegalValueException {
+        logic.execute("add task");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("edit 1");
+        assertTrue(result.hasError());
+        assertEquals(Messages.EDIT_COMMAND_NO_EDITS, result.getFeedback());
+    }
 }

@@ -1,6 +1,7 @@
 package seedu.commando.logic.commands;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -70,6 +71,13 @@ public class StoreCommandTest {
         result = logic.execute("store awe@#$\\");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_STORE_FILE, result.getFeedback());
+    }
+
+    @Test
+    public void execute_store_valid() {
+        CommandResult result = logic.execute("store test");
+        assertFalse(result.hasError());
+        assertEquals(String.format(Messages.STORE_COMMAND, "test"), result.getFeedback());
     }
 
 }
