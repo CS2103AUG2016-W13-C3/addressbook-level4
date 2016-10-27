@@ -87,6 +87,7 @@ public class CommandBox extends UiPart {
             setStyleToIndicateIncorrectCommand();
             restoreCommandText();
             setCaretAtEndOfText();
+            commandHistoryPointer = commandHistory.size() - 1;
         }
 
         changeResultDisplayMessage(mostRecentResult.getFeedback());
@@ -103,8 +104,12 @@ public class CommandBox extends UiPart {
      * If the boundary of the list is reached, display nothing.
      */
     protected void goUpCommandHistory() {
-        if (!commandHistory.isEmpty() && commandHistoryPointer > 0) {
-            setTextAndPositionCaret(--commandHistoryPointer);
+        if (!commandHistory.isEmpty()) {
+            if (commandHistoryPointer > 0) {
+                setTextAndPositionCaret(--commandHistoryPointer);
+            } else if (commandHistoryPointer == 0) {
+                setTextAndPositionCaret(commandHistoryPointer);
+            }
         }
     }
 
@@ -112,9 +117,10 @@ public class CommandBox extends UiPart {
         if (!commandHistory.isEmpty()) {
             if (commandHistoryPointer < commandHistory.size() - 1) {
                 setTextAndPositionCaret(++commandHistoryPointer);
-            } else if (commandHistoryPointer == commandHistory.size()) {
-                setTextAndPositionCaret(commandHistoryPointer++);
-            } 
+            } else if (commandHistoryPointer == commandHistory.size() - 1) {
+                commandTextField.setText("");
+                commandHistoryPointer++;
+            }
         }
     }
 

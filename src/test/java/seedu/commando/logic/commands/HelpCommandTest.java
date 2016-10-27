@@ -1,5 +1,7 @@
 package seedu.commando.logic.commands;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.commando.logic.LogicManagerTest.initLogic;
 import static seedu.commando.testutil.TestHelper.wasShowHelpRequestEventPosted;
@@ -13,6 +15,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.core.EventsCenter;
+import seedu.commando.commons.core.Messages;
 import seedu.commando.logic.Logic;
 import seedu.commando.testutil.EventsCollector;
 
@@ -40,5 +43,19 @@ public class HelpCommandTest {
     public void execute_help() {
         logic.execute("help");
         assertTrue(wasShowHelpRequestEventPosted(eventsCollector));
+    }
+
+    @Test
+    public void execute_help_withWord() {
+        logic.execute("help add");
+        assertTrue(wasShowHelpRequestEventPosted(eventsCollector));
+    }
+
+    @Test
+    public void execute_help_invalidWord() {
+        CommandResult result = logic.execute("help invalid word");
+        assertTrue(result.hasError());
+        assertEquals(String.format(Messages.UNKNOWN_COMMAND_FOR_HELP, "invalid word"), result.getFeedback());
+        assertFalse(wasShowHelpRequestEventPosted(eventsCollector));
     }
 }

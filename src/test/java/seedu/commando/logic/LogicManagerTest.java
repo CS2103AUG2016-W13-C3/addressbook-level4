@@ -34,7 +34,6 @@ public class LogicManagerTest {
      */
     private LogicManager logic;
     private EventsCollector eventsCollector;
-    private LocalDateTime now = LocalDateTime.now();
 
     @Before
     public void setup() throws IOException {
@@ -67,8 +66,9 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void handleToDoListChangedEvent_exceptionThrown_eventRaised() throws IOException {
+    public void handleToDoListChangedEvent() {
         logic.handleToDoListChangedEvent(new ToDoListChangedEvent(new ToDoList()));
         assertTrue(eventsCollector.hasCollectedEvent(StorageStub.ToDoListSavedEvent.class));
     }
+
 }

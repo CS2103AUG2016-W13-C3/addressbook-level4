@@ -30,12 +30,12 @@ public class ToDoListTest {
         toDoList = new ToDoList();
         toDoListItem1 = new ToDoBuilder("title").build();
         toDoListItem2 = new ToDoBuilder("title 2").withTags("tag1", "tag2")
-                .withDueDate(LocalDateTime.of(2016, 5, 1, 20, 1))
-                .finish(LocalDateTime.of(2016, 6, 3, 20, 20)).build();
+            .withDueDate(LocalDateTime.of(2016, 5, 1, 20, 1))
+            .finish(LocalDateTime.of(2016, 6, 3, 20, 20)).build();
         toDoList.add(toDoListItem1);
         toDoList.add(toDoListItem2);
         toDoList2Item1 = new ToDoBuilder("title 3")
-                .withDateRange(LocalDateTime.of(2016, 3, 1, 20, 1), LocalDateTime.of(2016, 4, 1, 20, 1)).build();
+            .withDateRange(LocalDateTime.of(2016, 3, 1, 20, 1), LocalDateTime.of(2016, 4, 1, 20, 1)).build();
         toDoList2 = new ToDoList();
         toDoList2.add(toDoList2Item1);
     }
@@ -57,6 +57,17 @@ public class ToDoListTest {
     public void reset() {
         toDoList.reset(toDoList2.getToDos());
         assertEquals(toDoList, toDoList2);
+    }
+
+    @Test
+    public void equalsAndHashCode() throws IllegalValueException {
+        ReadOnlyToDo toDo = new ToDoBuilder("title").build();
+
+        ReadOnlyToDoList toDoList1 = new ToDoList().add(toDo);
+        ReadOnlyToDoList toDoList2 = new ToDoList().add(toDo);
+
+        assertEquals(toDoList1, toDoList2);
+        assertEquals(toDoList1.hashCode(), toDoList2.hashCode());
     }
 
     @Test

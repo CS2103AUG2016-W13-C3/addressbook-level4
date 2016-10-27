@@ -9,7 +9,6 @@ import seedu.commando.model.todo.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 //@@author A0139697H
 /**
@@ -61,7 +60,7 @@ public class EditCommand extends Command {
 
         // Check if to-do has changed
         if (newToDo.isSameStateAs(toDoToEdit.get())) {
-            return new CommandResult(Messages.TODO_NO_EDITS, true);
+            return new CommandResult(Messages.EDIT_COMMAND_NO_EDITS, true);
         }
 
         // Ensure to-do doesn't have both duedate and daterange
@@ -78,6 +77,14 @@ public class EditCommand extends Command {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.TODO_EDITED, newToDo.getTitle().toString()));
+        String feedback = String.format(Messages.EDIT_COMMAND, newToDo.getTitle().toString());
+
+        // If event already over, warn user
+        if (newToDo.getDateRange().isPresent()
+            && newToDo.getDateRange().get().endDate.isBefore(LocalDateTime.now())) {
+            feedback += "\n" + Messages.EDIT_COMMAND_EVENT_OVER;
+        }
+
+        return new CommandResult(feedback);
     }
 }

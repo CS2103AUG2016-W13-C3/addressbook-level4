@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
 import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.testutil.ToDoBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -112,6 +113,27 @@ public class ToDoTest {
         LocalDateTime datetime = LocalDateTime.of(2011, 11, 2, 1, 23);
         toDo.setDateCreated(datetime);
         assertEquals(datetime, toDo.getDateCreated());
+    }
+
+    @Test
+    public void equalsAndHashCode() throws IllegalValueException {
+        ReadOnlyToDo toDo1 = new ToDoBuilder("title")
+            .withDateRange(LocalDateTime.MIN, LocalDateTime.MAX)
+            .withDueDate(LocalDateTime.MAX)
+            .withTags("tag1", "tag2")
+            .finish(LocalDateTime.MAX)
+            .build();
+
+        ReadOnlyToDo toDo2 = new ToDoBuilder("title")
+            .withDateRange(LocalDateTime.MIN, LocalDateTime.MAX)
+            .withDueDate(LocalDateTime.MAX)
+            .withTags("tag1", "tag2")
+            .finish(LocalDateTime.MAX)
+            .build();
+
+
+        assertEquals(toDo1, toDo2);
+        assertEquals(toDo1.hashCode(), toDo2.hashCode());
     }
 
     @Test

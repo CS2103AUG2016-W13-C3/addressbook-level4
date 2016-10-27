@@ -87,4 +87,11 @@ public class StoreCommandTest {
         Files.delete(Paths.get("test.xml"));
     }
 
+    @Test
+    public void execute_store_valid() {
+        CommandResult result = logic.execute("store test");
+        assertFalse(result.hasError());
+        assertEquals(String.format(Messages.STORE_COMMAND, "test"), result.getFeedback());
+    }
+
 }
