@@ -1,5 +1,6 @@
 package seedu.commando.ui;
 
+import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -61,6 +62,15 @@ public class EventListPanel extends UiPart {
 
     private void setConnections(ObservableList<UiToDo> events) {
         eventListView.setItems(events);
+        events.addListener((Change<? extends UiToDo> c) -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    c.getAddedSubList().forEach(System.out::println);
+                    c.reset();
+                    break;
+                }
+            }
+        });
         eventListView.setCellFactory(listView -> new ToDoListViewCell(Card.Event));
     }
 
