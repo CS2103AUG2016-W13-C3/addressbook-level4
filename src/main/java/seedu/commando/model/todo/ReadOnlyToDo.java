@@ -64,8 +64,7 @@ public interface ReadOnlyToDo {
             && other.getDateRange().equals(getDateRange())
             && other.getDueDate().equals(getDueDate())
             && other.getTags().equals(getTags())
-            && other.getDateFinished().equals(getDateFinished())
-            && other.getDateCreated().equals(getDateCreated())); // state checks here onwards
+            && other.getDateFinished().equals(getDateFinished())); // state checks here onwards
     }
 
     /**
