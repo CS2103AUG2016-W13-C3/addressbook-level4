@@ -108,4 +108,15 @@ public class UnfinishCommandTest {
             new ToDoBuilder("title")
                 .build()));
     }
+    
+    @Test
+    public void execute_unfinish_event() {
+        logic.execute("add test from yesterday 1am to 2am");
+        logic.execute("recall");
+        CommandResult result = logic.execute("unfinish 1");
+        assertTrue(result.hasError());
+        assertEquals(String.format(Messages.UNFINISH_COMMAND_CANNOT_UNFINISH_EVENT, "test"), 
+                result.getFeedback());
+    }
+    
 }
