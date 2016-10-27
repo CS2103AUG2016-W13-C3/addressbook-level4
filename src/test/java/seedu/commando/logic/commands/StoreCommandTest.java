@@ -80,6 +80,7 @@ public class StoreCommandTest {
     
     @Test
     public void execute_store_validPath() throws IOException {
+        Files.deleteIfExists(Paths.get("test.xml"));
         CommandResult result = logic.execute("store test.xml");
         assertFalse(result.hasError());
         assertTrue(storage.getToDoListFilePath().equals("test.xml"));
