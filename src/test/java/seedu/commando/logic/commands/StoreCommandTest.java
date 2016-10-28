@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,6 +22,7 @@ import seedu.commando.logic.LogicManager;
 import seedu.commando.model.Model;
 import seedu.commando.model.ModelManager;
 import seedu.commando.model.UserPrefs;
+import seedu.commando.storage.Storage;
 import seedu.commando.storage.StorageManager;
 import seedu.commando.testutil.EventsCollector;
 //@@author A0142230B
@@ -29,6 +32,7 @@ public class StoreCommandTest {
 
     private Model model;
     private Logic logic;
+    private Storage storage;
     private EventsCollector eventsCollector;
     private File toDoListFile;
 
@@ -38,10 +42,11 @@ public class StoreCommandTest {
 
         toDoListFile = folder.newFile();
         File userPrefsFile = folder.newFile();
-        logic = new LogicManager(model, new StorageManager(
-            toDoListFile.getAbsolutePath(),
-            userPrefsFile.getAbsolutePath()
-        ), new UserPrefs());
+        storage = new StorageManager(
+                toDoListFile.getAbsolutePath(),
+                userPrefsFile.getAbsolutePath()
+                );
+        logic = new LogicManager(model, storage, new UserPrefs());
 
         eventsCollector = new EventsCollector();
     }
@@ -71,6 +76,15 @@ public class StoreCommandTest {
         result = logic.execute("store awe@#$\\");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_STORE_FILE, result.getFeedback());
+    }
+    
+    @Test
+    public void execute_store_validPath() throws IOException {
+        Files.deleteIfExists(Paths.get("test.xml"));
+        CommandResult result = logic.execute("store test.xml");
+        assertFalse(result.hasError());
+        assertTrue(storage.getToDoListFilePath().equals("test.xml"));
+        Files.delete(Paths.get("test.xml"));
     }
 
     @Test

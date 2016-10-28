@@ -15,6 +15,7 @@ import seedu.commando.model.UserPrefs;
 import seedu.commando.model.todo.ToDoList;
 import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.StorageStub;
+import seedu.commando.testutil.ToDoListStub;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -28,10 +29,11 @@ import static org.junit.Assert.assertTrue;
  * More tests for specific command words might also be in {@link seedu.commando.logic.commands}
  */
 public class LogicManagerTest {
-
+    
     /**
      * See https://github.com/junit-team/junit4/wiki/rules#temporaryfolder-rule
      */
+    
     private LogicManager logic;
     private EventsCollector eventsCollector;
 
@@ -69,6 +71,10 @@ public class LogicManagerTest {
     public void handleToDoListChangedEvent() {
         logic.handleToDoListChangedEvent(new ToDoListChangedEvent(new ToDoList()));
         assertTrue(eventsCollector.hasCollectedEvent(StorageStub.ToDoListSavedEvent.class));
+        
+        logic.handleToDoListChangedEvent(new ToDoListChangedEvent(new ToDoListStub()));
+        assertTrue(eventsCollector.hasCollectedEvent(DataSavingExceptionEvent.class));
+     
     }
 
 }

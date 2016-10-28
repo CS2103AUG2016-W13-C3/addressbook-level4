@@ -5,8 +5,12 @@ import static seedu.commando.testutil.TestHelper.wasToDoListChangedEventPosted;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Before;
@@ -74,6 +78,19 @@ public class ImportCommandTest {
         result = logic.execute("import this cant be there.XMl");
         assertTrue(result.hasError());
         assertEquals(Messages.IMPORT_COMMAND_FILE_NOT_EXIST, result.getFeedback());
+    }
+    
+    @Test
+    public void execute_import_invalidData() throws IOException {
+        File temp = new File("test.xml");
+        ArrayList<String> lines = new ArrayList<String>();
+        lines.add("somewrongdata");
+        Files.write(temp.toPath(), lines, Charset.forName("UTF-8"));
+        
+        CommandResult result = logic.execute("import test.xml");
+        assertTrue(result.hasError());
+        assertEquals(Messages.IMPORT_COMMAND_INVALID_DATA, result.getFeedback());
+        temp.delete();
     }
 
     @Test
