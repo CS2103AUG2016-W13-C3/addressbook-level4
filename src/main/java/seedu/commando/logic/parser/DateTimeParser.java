@@ -55,9 +55,15 @@ public class DateTimeParser {
         "(this\\s+)?(morning|afternoon|noon|evening|midnight)",
         TimeNightRegexString
     };
+    private static final String InitializationDateString = "today";
 
     private Parser parser = new Parser();
     private LocalDate lastLocalDate; // Date of last parsed datetime
+
+    public DateTimeParser() {
+        parseDateTime(InitializationDateString);
+    }
+
 
     /**
      * Resets any contextual info used based on history of parsing
