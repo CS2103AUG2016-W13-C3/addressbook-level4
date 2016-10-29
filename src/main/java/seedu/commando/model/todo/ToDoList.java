@@ -142,8 +142,10 @@ public class ToDoList implements ReadOnlyToDoList {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof ToDoList // instanceof handles nulls
+        // short circuit if same object
+        // instanceof handles nulls
+        return other == this
+                || (other instanceof ToDoList
                 && list.equals(((ToDoList) other).list));
     }
 

@@ -37,8 +37,10 @@ public class ToDoListChange {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-            || (other instanceof ToDoListChange // instanceof handles nulls
+        // short circuit if same object
+        // instanceof handles nulls
+        return other == this
+            || (other instanceof ToDoListChange
             && addedToDos.equals(((ToDoListChange) other).addedToDos)
             && deletedToDos.equals(((ToDoListChange) other).deletedToDos));
     }

@@ -49,9 +49,11 @@ public class DueDate {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof DueDate // instanceof handles nulls
-                && (value.equals(((DueDate) other).value))); // state check
+        // short circuit if same object
+        // instanceof handles nulls
+        return other == this
+                || (other instanceof DueDate
+                && (value.equals(((DueDate) other).value)));
     }
 
     @Override

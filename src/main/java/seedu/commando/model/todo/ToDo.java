@@ -196,8 +196,10 @@ public class ToDo implements ReadOnlyToDo {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof ReadOnlyToDo // instanceof handles nulls
+        // short circuit if same object
+        // instanceof handles nulls
+        return other == this
+                || (other instanceof ReadOnlyToDo
                 && this.isSameStateAs((ReadOnlyToDo) other));
     }
 

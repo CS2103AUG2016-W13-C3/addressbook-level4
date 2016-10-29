@@ -55,16 +55,18 @@ public interface ReadOnlyToDo {
 
     /**
      * Returns true if both have the same state
-     * All fields must be equal
+     * All fields, except date created, must be equal
      */
     default boolean isSameStateAs(ReadOnlyToDo other) {
-        return other == this // short circuit if same object
-            || (other != null // this is first to avoid NPE below
+        // short circuit if same object
+        // other != null to avoid NPE below
+        return other == this
+            || (other != null
             && other.getTitle().equals(getTitle())
             && other.getDateRange().equals(getDateRange())
             && other.getDueDate().equals(getDueDate())
             && other.getTags().equals(getTags())
-            && other.getDateFinished().equals(getDateFinished())); // state checks here onwards
+            && other.getDateFinished().equals(getDateFinished()));
     }
 
     /**
