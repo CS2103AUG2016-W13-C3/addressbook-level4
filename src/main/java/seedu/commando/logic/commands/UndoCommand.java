@@ -23,6 +23,5 @@ public class UndoCommand extends Command {
             return new CommandResult(Messages.UNDO_COMMAND_FAIL, true);
         }
     }
-    
 
 }

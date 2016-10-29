@@ -1,5 +1,6 @@
 package seedu.commando.model.ui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -108,11 +109,24 @@ public class UiModel {
         // Sort and filter observableEvents and observableTasks for UI
         List<ReadOnlyToDo> events = filterAndSortEvents(toDoListManager.getToDoList().getToDos());
         List<ReadOnlyToDo> tasks = filterAndSortTasks(toDoListManager.getToDoList().getToDos());
+        updateUiToDos(events, tasks);
 
-        toDoAtIndices.clear();
 
+        // running index should be incremented by no. of to-dos
+        assert runningIndex == toDoAtIndices.size();
+
+        // log events and tasks shown
+        logger.info("Events: " + this.events.stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
+            .collect(Collectors.joining(",")));
+
+        logger.info("Tasks: " + this.tasks.stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
+            .collect(Collectors.joining(",")));
+    }
+
+    private void updateUiToDos(List<ReadOnlyToDo> events, List<ReadOnlyToDo> tasks) {
         // Add indices to events first and set to observable events
         // Also check if the events are new with respect to last change
+        toDoAtIndices.clear();
         runningIndex = 0;
 
         Optional<ToDoListChange> change = toDoListManager.getLastToDoListChange();
@@ -130,16 +144,6 @@ public class UiModel {
             toDo -> new UiToDo(toDo, ++ runningIndex, newToDos.contains(toDo))
         ).collect(Collectors.toList()));
         toDoAtIndices.addAll(this.tasks);
-
-        // running index should be incremented by no. of to-dos
-        assert runningIndex == toDoAtIndices.size();
-
-        // log events and tasks shown
-        logger.info("Events: " + this.events.stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
-            .collect(Collectors.joining(",")));
-
-        logger.info("Tasks: " + this.tasks.stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
-            .collect(Collectors.joining(",")));
     }
 
     private Predicate<ReadOnlyToDo> toDoFilterPredicate = toDo -> {
@@ -162,7 +166,6 @@ public class UiModel {
         // For tasks, sort by created date first (latest first)
         // Then, by whether they have due date and that date (latest first)
         // Then, by whether they are finished and finished date (latest first)
-
         tasks.sort((task1, task2) -> task2.getDateCreated().compareTo(task1.getDateCreated()));
         tasks.sort((task1, task2) -> {
             LocalDateTime task1Date = task1.getDueDate().isPresent() ?
@@ -194,7 +197,6 @@ public class UiModel {
         // For events, sort by created date first (latest first)
         // Then, by start dates (earlier first)
         // Then, by whether they are finished and finished date (latest first)
-
         events.sort((event1, event2) -> event2.getDateCreated().compareTo(event1.getDateCreated()));
         events.sort((event1, event2) -> {
             LocalDateTime event1Date = event1.getDateRange().isPresent() ?
