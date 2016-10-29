@@ -11,6 +11,7 @@ import org.junit.rules.ExpectedException;
 
 import java.util.*;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 public class UnmodifiableObservableListTest {
@@ -87,5 +88,13 @@ public class UnmodifiableObservableListTest {
         }
         throw new AssertionFailedError(
                 String.format("Expected %s to be thrown, but nothing was thrown.", expected.getName()));
+    }
+
+    @Test
+    public void equalsAndHashCodeAndToString_same_equals() {
+        UnmodifiableObservableList list2 = new UnmodifiableObservableList<>(FXCollections.observableList(backing));
+        assertEquals(list, list2);
+        assertEquals(list.hashCode(), list2.hashCode());
+        assertEquals(list.toString(), list2.toString());
     }
 }

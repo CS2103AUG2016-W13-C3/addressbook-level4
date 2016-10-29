@@ -28,8 +28,6 @@ public class StoreCommand extends Command {
         Model model = getModel();
         EventsCenter eventsCenter = getEventsCenter();
 
-        Config config;
-
         File file = new File(path);
 
         // Check if the path has a file name to save

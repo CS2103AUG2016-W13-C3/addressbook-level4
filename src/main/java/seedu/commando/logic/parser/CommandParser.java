@@ -279,6 +279,7 @@ public class CommandParser {
 			} catch (NumberFormatException exception) {
 				assert false : "Shouldn't be able to fail parsing of integer based on pattern";
 			}
+
 			if (firstInt > secondInt) {
 				throw new IllegalValueException(Messages.INDEXRANGE_CONSTRAINTS);
 			} else {

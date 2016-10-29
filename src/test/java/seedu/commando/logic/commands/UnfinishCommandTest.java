@@ -117,5 +117,5 @@ public class UnfinishCommandTest {
         assertEquals(String.format(Messages.UNFINISH_COMMAND_CANNOT_UNFINISH_EVENT, "test"), 
                 result.getFeedback());
     }
-    
+
 }

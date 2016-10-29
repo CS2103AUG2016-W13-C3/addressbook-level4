@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,6 +18,8 @@ import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
+import seedu.commando.commons.events.logic.ToDoListFilePathChangeRequestEvent;
+import seedu.commando.commons.events.storage.ToDoListSavedEvent;
 import seedu.commando.logic.Logic;
 import seedu.commando.logic.LogicManager;
 import seedu.commando.model.Model;
@@ -43,9 +46,9 @@ public class StoreCommandTest {
         toDoListFile = folder.newFile();
         File userPrefsFile = folder.newFile();
         storage = new StorageManager(
-                toDoListFile.getAbsolutePath(),
-                userPrefsFile.getAbsolutePath()
-                );
+            toDoListFile.getAbsolutePath(),
+            userPrefsFile.getAbsolutePath()
+        );
         logic = new LogicManager(model, storage, new UserPrefs());
 
         eventsCollector = new EventsCollector();
@@ -80,18 +83,22 @@ public class StoreCommandTest {
     
     @Test
     public void execute_storeValidPath_filePathChanged() throws IOException {
-        Files.deleteIfExists(Paths.get("test.xml"));
-        CommandResult result = logic.execute("store test.xml");
+        String storeFilePath = folder.getRoot() + "/test.xml";
+
+        CommandResult result = logic.execute("store " + storeFilePath);
         assertFalse(result.hasError());
-        assertTrue(storage.getToDoListFilePath().equals("test.xml"));
-        Files.delete(Paths.get("test.xml"));
+        assertTrue(storage.getToDoListFilePath().equals(storeFilePath));
     }
 
     @Test
-    public void execute_storeValidPath_fileSaved() {
-        CommandResult result = logic.execute("store test");
+    public void execute_storeValidPath_fileSaved() throws IOException {
+        String storeFilePath = folder.getRoot() + "/test.xml";
+
+        CommandResult result = logic.execute("store " + storeFilePath);
         assertFalse(result.hasError());
-        assertEquals(String.format(Messages.STORE_COMMAND, "test"), result.getFeedback());
+        assertEquals(String.format(Messages.STORE_COMMAND, storeFilePath), result.getFeedback());
+        assertTrue(eventsCollector.hasCollectedEvent(ToDoListFilePathChangeRequestEvent.class));
+        assertTrue(eventsCollector.hasCollectedEvent(ToDoListSavedEvent.class));
     }
 
 }

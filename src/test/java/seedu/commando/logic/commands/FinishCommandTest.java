@@ -104,4 +104,27 @@ public class FinishCommandTest {
             new ToDoBuilder("title")
                 .build());
     }
+
+    @Test
+    public void execute_finishFinishedTask_error() throws IllegalValueException {
+        logic.execute("add title");
+        logic.execute("finish 1");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("finish 1");
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
+
+    @Test
+    public void execute_finishEvent_error() throws IllegalValueException {
+        logic.execute("add event from today to tomorrow");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("finish 1");
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
 }
