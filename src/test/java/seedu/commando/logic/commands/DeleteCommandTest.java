@@ -14,6 +14,7 @@ import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.ToDoBuilder;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
@@ -29,6 +30,7 @@ public class DeleteCommandTest {
 
     private Logic logic;
     private EventsCollector eventsCollector;
+    private int nextYear = LocalDate.now().getYear() + 1;
 
     @Before
     public void setup() throws IOException {
@@ -178,12 +180,12 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_deleteTimeDateRange_deletedDateRange() throws IllegalValueException {
-        logic.execute("add title from 22 Oct 2014 to 23 Oct 2016 #tag1");
-        logic.execute("recall");
+        logic.execute("add title from 22 Oct 2016 to 23 Oct 2016 weekly #tag1");
 
         eventsCollector.reset();
 
         CommandResult result = logic.execute("delete 1 time");
+        System.out.println(result.getFeedback());
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
@@ -206,12 +208,10 @@ public class DeleteCommandTest {
                 + "\n" + Messages.getCommandFormatMessage("delete").get(), result.getFeedback() );
     }
 
-
     @Test
-    public void execute_deleteTagsAndTime_deletedBoth() throws IllegalValueException {
-        logic.execute("add title from 22 Oct 2014 to 23 Oct 2016 #tag1");
-        logic.execute("recall");
-        
+    public void execute_deleteTagsAndTime_deletedAll() throws IllegalValueException {
+        logic.execute("add title from 22 Oct 2016 to 23 Oct 2016 weekly #tag1");
+
         eventsCollector.reset();
 
         CommandResult result = logic.execute("delete 1 time tag");
@@ -221,5 +221,37 @@ public class DeleteCommandTest {
         assertToDoExists(logic,
             new ToDoBuilder("title")
                 .build());
+    }
+
+    @Test
+    public void execute_deleteRecurrence_deletedRecurrence() throws IllegalValueException {
+        logic.execute("add title from 22 Oct " + nextYear + " to 23 Oct " + nextYear +  "weekly");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("delete 1 recurrence");
+        assertFalse(result.hasError());
+
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertToDoExists(logic,
+            new ToDoBuilder("title")
+                .withDateRange(
+                    LocalDateTime.of(nextYear, 10, 22, 12, 0),
+                    LocalDateTime.of(nextYear, 10, 23, 12, 0)
+                )
+                .build()
+        );
+    }
+
+    @Test
+    public void execute_deleteRecurrenceButNone_error() throws IllegalValueException {
+        logic.execute("add title from 22 Oct 2016 to 23 Oct 2016 #tag1");
+        logic.execute("recall");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("delete 1 recurrence");
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
     }
 }

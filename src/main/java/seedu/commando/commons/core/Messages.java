@@ -83,6 +83,7 @@ public class Messages {
     public static final String DELETE_COMMAND = "To-do deleted: %1$s.";
     public static final String DELETE_COMMAND_NO_TAGS = "To-do with index '%1$s' has no tags to delete!";
     public static final String DELETE_COMMAND_NO_TIME_CONSTRAINTS = "To-do with index '%1$s' has no time constraints to delete!";
+    public static final String DELETE_COMMAND_NO_RECURRENCE = "To-do with index '%1$s' has no recurrence to delete!";
 
     //@@author A0139080J
     public static final String STORE_COMMAND_FORMAT = ">> store <file path>";
