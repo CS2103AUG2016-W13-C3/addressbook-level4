@@ -14,7 +14,7 @@ import seedu.commando.testutil.ToDoBuilder;
 public class ToDoListChangeTest {
 
     @Test
-    public void todoListChange_equalsAndHashcode() throws IllegalValueException {
+    public void equalsAndHashcode_sameFields_equals() throws IllegalValueException {
         ReadOnlyToDo toDo1 = new ToDoBuilder("title1")
             .withDateRange(LocalDateTime.MIN, LocalDateTime.MAX)
             .withDueDate(LocalDateTime.MAX)

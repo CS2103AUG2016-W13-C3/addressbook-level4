@@ -35,7 +35,7 @@ public class ExitCommandTest {
     }
     
     @Test
-    public void execute_exit()  {
+    public void execute_exit_eventPosted()  {
         logic.execute("exit");
         assertTrue(eventsCollector.hasCollectedEvent(ExitAppRequestEvent.class));
     }

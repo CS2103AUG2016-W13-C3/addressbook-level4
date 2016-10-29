@@ -41,44 +41,53 @@ public class ToDoListTest {
     }
 
     @Test
-    public void ToDoListCopy() {
+    public void ToDoList_copyConstructor_equals() {
         ToDoList copied = new ToDoList(toDoList);
         assertEquals(copied, toDoList);
     }
 
     @Test
-    public void getToDos() throws IllegalValueException {
+    public void getToDos_setup_sizeAndContains() throws IllegalValueException {
         assertTrue(toDoList.getToDos().size() == 2);
         assertTrue(toDoList.getToDos().contains(toDoListItem1));
         assertTrue(toDoList.getToDos().contains(toDoListItem2));
     }
 
     @Test
-    public void reset() {
+    public void reset_anotherToDoList_equals() {
         toDoList.reset(toDoList2.getToDos());
         assertEquals(toDoList, toDoList2);
     }
 
     @Test
-    public void equalsAndHashCode() throws IllegalValueException {
+    public void equals_withSingleToDo_equals() throws IllegalValueException {
         ReadOnlyToDo toDo = new ToDoBuilder("title").build();
 
         ReadOnlyToDoList toDoList1 = new ToDoList().add(toDo);
         ReadOnlyToDoList toDoList2 = new ToDoList().add(toDo);
 
         assertEquals(toDoList1, toDoList2);
+    }
+
+    @Test
+    public void hashCode_withSingleToDo_equals() throws IllegalValueException {
+        ReadOnlyToDo toDo = new ToDoBuilder("title").build();
+
+        ReadOnlyToDoList toDoList1 = new ToDoList().add(toDo);
+        ReadOnlyToDoList toDoList2 = new ToDoList().add(toDo);
+
         assertEquals(toDoList1.hashCode(), toDoList2.hashCode());
     }
 
     @Test
-    public void add() throws IllegalValueException {
+    public void add_newToDo_contains() throws IllegalValueException {
         assertFalse(toDoList.getToDos().contains(toDoList2Item1));
         toDoList.add(toDoList2Item1);
         assertTrue(toDoList.getToDos().contains(toDoList2Item1));
     }
 
     @Test
-    public void remove_valid() throws IllegalValueException {
+    public void remove_existingToDo_notContains() throws IllegalValueException {
         assertTrue(toDoList.getToDos().contains(toDoListItem1));
         toDoList.remove(toDoListItem1);
         assertFalse(toDoList.getToDos().contains(toDoListItem1));

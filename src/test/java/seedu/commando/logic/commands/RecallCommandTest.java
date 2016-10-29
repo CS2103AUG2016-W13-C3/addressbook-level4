@@ -1,13 +1,10 @@
 package seedu.commando.logic.commands;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static seedu.commando.logic.LogicManagerTest.initLogic;
-import static seedu.commando.testutil.TestHelper.ifToDoExistsFiltered;
-import static seedu.commando.testutil.TestHelper.wasToDoListChangedEventPosted;
+import static seedu.commando.testutil.TestHelper.*;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 import org.junit.After;
 import org.junit.Before;
@@ -28,7 +25,6 @@ public class RecallCommandTest {
 
     private Logic logic;
     private EventsCollector eventsCollector;
-    private LocalDateTime now = LocalDateTime.now();
 
     @Before
     public void setup() throws IOException {
@@ -42,7 +38,7 @@ public class RecallCommandTest {
     }
     
     @Test
-    public void execute_recall_keywords() throws IllegalValueException {
+    public void execute_recallKeywords_filtered() throws IllegalValueException {
         logic.execute("add Title"); // case insensitivity
         logic.execute("add title2"); // superstrings
         logic.execute("add title 3"); // spaces
@@ -61,22 +57,22 @@ public class RecallCommandTest {
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
         
-        assertTrue(ifToDoExistsFiltered(logic,
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("Title")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title2")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title 3")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("somethingelse")
-                .build()));
+                .build());
     }
     
     @Test
-    public void execute_find_tagsWithKeywords() throws IllegalValueException {
+    public void execute_recallTagsWithKeywords_filtered() throws IllegalValueException {
         logic.execute("add title #tag");
         logic.execute("add somethingelse");
         
@@ -91,17 +87,17 @@ public class RecallCommandTest {
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertTrue(ifToDoExistsFiltered(logic,
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title")
                 .withTags("tag")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("somethingelse")
-                .build()));
+                .build());
     }
 
     @Test
-    public void execute_find_tags() throws IllegalValueException {
+    public void execute_recallTags_filtered() throws IllegalValueException {
         logic.execute("add Title #Tag"); // case insensitivity
         logic.execute("add title2 #tag2"); // superstrings
         logic.execute("add title 3 #tag #tag2"); // multiple tags
@@ -122,24 +118,24 @@ public class RecallCommandTest {
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertTrue(ifToDoExistsFiltered(logic,
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("Title")
                 .withTags("Tag")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("Title2")
                 .withTags("tag2")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title 3")
                 .withTags("tag", "tag2")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("tag")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("somethingelse")
-                .build()));
+                .build());
     }
 
 
@@ -161,18 +157,18 @@ public class RecallCommandTest {
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertFalse(ifToDoExistsFiltered(logic,
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("title")
                 .withTags("tag")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title2")
                 .withTags("tag", "tag2")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title3")
                 .withTags("tag", "tag2", "tag3")
-                .build()));
+                .build());
     }
 
     @Test
@@ -193,16 +189,16 @@ public class RecallCommandTest {
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertFalse(ifToDoExistsFiltered(logic,
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("title")
                 .withTags("tag")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title3")
                 .withTags("tag", "tag2")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("title3")
-                .build()));
+                .build());
     }
 }

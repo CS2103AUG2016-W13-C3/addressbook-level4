@@ -86,7 +86,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void getToDoList() {
+    public void getToDoList_setup_containsAllToDos() {
         assertEquals(modelManager.getToDoList(), toDoList);
         assertTrue(modelManager.getToDoList().contains(toDoListItem1));
         assertTrue(modelManager.getToDoList().contains(toDoListItem1));
@@ -94,21 +94,21 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void changeToDoList_add() throws IllegalValueException {
+    public void changeToDoList_changeAdd_containsAddedToDo() throws IllegalValueException {
         modelManager.changeToDoList(toDoListChangeAdd1);
 
         assertTrue(modelManager.getToDoList().contains(toDoListItem1));
     }
 
     @Test
-    public void changeToDoList_delete() throws IllegalValueException {
+    public void changeToDoList_changeDelete_notContainsDeletedToDo() throws IllegalValueException {
         modelManager.changeToDoList(toDoListChangeDelete1);
 
         assertFalse(modelManager.getToDoList().contains(toDoListItem1));
     }
 
     @Test
-    public void changeToDoList_edit() throws IllegalValueException {
+    public void changeToDoList_changeEdit_containsAddedNotContainsDeleted() throws IllegalValueException {
         modelManager.changeToDoList(toDoListChangeEdit1);
 
         assertFalse(modelManager.getToDoList().contains(toDoListItem1));
@@ -116,7 +116,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void changeToDoList_addDelete() throws IllegalValueException {
+    public void changeToDoList_changeAddThenDelete_containsAddedNotContainsDeleted() throws IllegalValueException {
         modelManager.changeToDoList(toDoListChangeAdd1);
         modelManager.changeToDoList(toDoListChangeDelete1);
 
@@ -125,7 +125,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void changeToDoList_clear() throws IllegalValueException {
+    public void changeToDoList_changeClear_noToDos() throws IllegalValueException {
         ToDoListChange clearChange = new ToDoListChange(
             new ToDoList(),
             modelManager.getToDoList()
@@ -135,7 +135,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void undoToDoList_once() throws IllegalValueException {
+    public void undoToDoList_once_undone() throws IllegalValueException {
         modelManager.changeToDoList(toDoListChangeAdd1);
         modelManager.changeToDoList(toDoListChangeDelete1);
 
@@ -146,7 +146,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void undoToDoList_multiple() throws IllegalValueException {
+    public void undoToDoList_multiple_undone() throws IllegalValueException {
         modelManager.changeToDoList(toDoListChangeAdd1);
         modelManager.changeToDoList(toDoListChangeDelete1);
 
@@ -160,7 +160,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void undoToDoList_undoChangeUndo() throws IllegalValueException {
+    public void undoToDoList_undoChangeUndo_undone() throws IllegalValueException {
         modelManager.changeToDoList(toDoListChangeAdd1);
 
         assertTrue(modelManager.undoToDoList());
@@ -174,7 +174,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void redoToDoList_noUndos() throws IllegalValueException {
+    public void redoToDoList_noUndos_noAction() throws IllegalValueException {
         modelManager.changeToDoList(toDoListChangeAdd1);
         modelManager.changeToDoList(toDoListChangeDelete1);
 
@@ -185,7 +185,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void redoToDoList_once() throws IllegalValueException {
+    public void redoToDoList_once_redone() throws IllegalValueException {
         modelManager.changeToDoList(toDoListChangeAdd1);
         modelManager.changeToDoList(toDoListChangeDelete1);
 
@@ -197,7 +197,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void redoToDoList_undoChangeRedo() throws IllegalValueException {
+    public void redoToDoList_undoChangeRedo_noAction() throws IllegalValueException {
         modelManager.changeToDoList(toDoListChangeAdd1);
 
         assertTrue(modelManager.undoToDoList());

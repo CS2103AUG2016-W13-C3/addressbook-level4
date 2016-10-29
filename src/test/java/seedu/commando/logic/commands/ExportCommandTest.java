@@ -56,7 +56,7 @@ public class ExportCommandTest {
     }
 
     @Test
-    public void execute_export_emptyPath() {
+    public void execute_exportEmptyPath_error() {
         CommandResult result = logic.execute("export");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_EXPORT_PATH
@@ -68,14 +68,14 @@ public class ExportCommandTest {
     }
 
     @Test
-    public void execute_export_invalidPath() {
+    public void execute_exportInvalidPath_error() {
         CommandResult result = logic.execute("export test\\");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_EXPORT_FILE, result.getFeedback());
     }
 
     @Test
-    public void execute_export_validPath() throws IOException {
+    public void execute_exportValidPath_exported() throws IOException {
         if (new File("test").exists()) {
             Files.delete(Paths.get("test"));
         }
@@ -89,7 +89,7 @@ public class ExportCommandTest {
     }
 
     @Test
-    public void execute_export_fileExists() throws IOException {
+    public void execute_exportFileExists_error() throws IOException {
         File file = folder.newFile();
         logic.execute("add test 1");
         CommandResult result = logic.execute("export " + file.getPath());

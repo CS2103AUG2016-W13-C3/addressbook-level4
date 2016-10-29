@@ -14,7 +14,6 @@ import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.ToDoBuilder;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 import static org.junit.Assert.*;
 import static seedu.commando.logic.LogicManagerTest.initLogic;
@@ -40,7 +39,7 @@ public class UndoRedoCommandsTest {
     }
 
     @Test
-    public void execute_undoAndRedoInvalidFormat() {
+    public void execute_undoAndRedoInvalidFormat_error() {
         CommandResult result = logic.execute("undo 2");
         assertTrue(result.hasError());
         assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, UndoCommand.COMMAND_WORD), result.getFeedback());
@@ -51,7 +50,7 @@ public class UndoRedoCommandsTest {
     }
 
     @Test
-    public void execute_undo() {
+    public void execute_undoMultiple_undone() {
         logic.execute("add title");
         logic.execute("add test 3");
         logic.execute("delete 2");
@@ -81,7 +80,7 @@ public class UndoRedoCommandsTest {
     }
 
     @Test
-    public void execute_redo() {
+    public void execute_redoMultiple_redone() {
         logic.execute("add title");
         logic.execute("add title2");
         logic.execute("undo");
@@ -99,7 +98,7 @@ public class UndoRedoCommandsTest {
     }
 
     @Test
-    public void execute_undoEditUndoRedo() {
+    public void execute_undoEditUndoRedo_undoneRedone() {
         logic.execute("add title");
         logic.execute("add title2");
         logic.execute("undo");
@@ -137,7 +136,7 @@ public class UndoRedoCommandsTest {
     }
 
     @Test
-    public void execute_undoClearAndEdit() throws IllegalValueException {
+    public void execute_undoClearAndEdit_clearedAndEdited() throws IllegalValueException {
         logic.execute("add title");
         logic.execute("add title2");
         logic.execute("clear");
@@ -159,9 +158,9 @@ public class UndoRedoCommandsTest {
 
         result = logic.execute("undo");
         assertFalse(result.hasError());
-        assertTrue(ifToDoExists(logic,
+        assertToDoExists(logic,
             new ToDoBuilder("title3")
-                .build()));
+                .build());
 
         result = logic.execute("undo");
         assertFalse(result.hasError());

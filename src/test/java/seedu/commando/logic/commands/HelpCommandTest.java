@@ -40,19 +40,19 @@ public class HelpCommandTest {
     
 
     @Test
-    public void execute_help() {
+    public void execute_help_eventPosted() {
         logic.execute("help");
         assertTrue(wasShowHelpRequestEventPosted(eventsCollector));
     }
 
     @Test
-    public void execute_help_withWord() {
+    public void execute_helpWithWord_eventPosted() {
         logic.execute("help add");
         assertTrue(wasShowHelpRequestEventPosted(eventsCollector));
     }
 
     @Test
-    public void execute_help_invalidWord() {
+    public void execute_helpWithInvalidWord_error() {
         CommandResult result = logic.execute("help invalid word");
         assertTrue(result.hasError());
         assertEquals(String.format(Messages.UNKNOWN_COMMAND_FOR_HELP, "invalid word"), result.getFeedback());

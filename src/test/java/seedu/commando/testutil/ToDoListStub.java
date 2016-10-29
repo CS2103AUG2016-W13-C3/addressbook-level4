@@ -10,7 +10,7 @@ public class ToDoListStub implements ReadOnlyToDoList {
 
     @Override
     public UnmodifiableObservableList<ReadOnlyToDo> getToDos() {
-        return new UnmodifiableObservableList<ReadOnlyToDo>(FXCollections.observableArrayList());
+        return new UnmodifiableObservableList<>(FXCollections.observableArrayList());
     }
 
     @Override

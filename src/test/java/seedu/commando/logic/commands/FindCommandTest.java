@@ -26,7 +26,6 @@ public class FindCommandTest {
 
     private Logic logic;
     private EventsCollector eventsCollector;
-    private LocalDateTime now = LocalDateTime.now();
 
     @Before
     public void setup() throws IOException {
@@ -40,7 +39,7 @@ public class FindCommandTest {
     }
 
     @Test
-    public void execute_find_keywords() throws IllegalValueException {
+    public void execute_findKeywords_filtered() throws IllegalValueException {
         logic.execute("add Title"); // case insensitivity
         logic.execute("add title2"); // superstrings
         logic.execute("add title 3");
@@ -54,22 +53,22 @@ public class FindCommandTest {
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertTrue(ifToDoExistsFiltered(logic,
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("Title")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title2")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title 3")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("somethingelse")
-                .build()));
+                .build());
     }
 
     @Test
-    public void execute_find_tagsWithKeywords() throws IllegalValueException {
+    public void execute_findTagsWithKeywords_filtered() throws IllegalValueException {
         logic.execute("add title #tag");
         logic.execute("add somethingelse");
 
@@ -81,17 +80,17 @@ public class FindCommandTest {
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertTrue(ifToDoExistsFiltered(logic,
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title")
                 .withTags("tag")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("somethingelse")
-                .build()));
+                .build());
     }
 
     @Test
-    public void execute_find_tags() throws IllegalValueException {
+    public void execute_findTags_filtered() throws IllegalValueException {
         logic.execute("add Title #Tag"); // case insensitivity
         logic.execute("add title2 #tag2"); // superstrings
         logic.execute("add title 3 #tag #tag2"); // multiple tags
@@ -106,29 +105,29 @@ public class FindCommandTest {
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertTrue(ifToDoExistsFiltered(logic,
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("Title")
                 .withTags("Tag")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("Title2")
                 .withTags("tag2")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title 3")
                 .withTags("tag", "tag2")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("tag")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("somethingelse")
-                .build()));
+                .build());
     }
 
 
     @Test
-    public void execute_find_multipleTags() throws IllegalValueException {
+    public void execute_findMultipleTags_filtered() throws IllegalValueException {
         logic.execute("add title #tag");
         logic.execute("add title2 #tag #tag2");
         logic.execute("add title3 #tag #tag2 #tag3");
@@ -141,22 +140,22 @@ public class FindCommandTest {
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertFalse(ifToDoExistsFiltered(logic,
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("title")
                 .withTags("tag")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title2")
                 .withTags("tag", "tag2")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title3")
                 .withTags("tag", "tag2", "tag3")
-                .build()));
+                .build());
     }
 
     @Test
-    public void execute_find_keywordsWithTags() throws IllegalValueException {
+    public void execute_findKeywordsWithTags_filtered() throws IllegalValueException {
         logic.execute("add title #tag");
         logic.execute("add title3 #tag #tag2");
         logic.execute("add title3");
@@ -169,16 +168,16 @@ public class FindCommandTest {
 
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertFalse(ifToDoExistsFiltered(logic,
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("title")
                 .withTags("tag")
-                .build()));
-        assertTrue(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoExistsFiltered(logic,
             new ToDoBuilder("title3")
                 .withTags("tag", "tag2")
-                .build()));
-        assertFalse(ifToDoExistsFiltered(logic,
+                .build());
+        assertToDoNotExistsFiltered(logic,
             new ToDoBuilder("title3")
-                .build()));
+                .build());
     }
 }

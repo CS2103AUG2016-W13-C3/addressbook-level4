@@ -29,83 +29,62 @@ public class CommandParserTest {
 
     private CommandParser commandParser = new CommandParser();
 
-    @Before
-    public void setup() {
-    }
-
-    @After
-    public void teardown() {
-    }
-
     @Test
-    public void extractText_emptyString()  {
+    public void extractText_emptyString_empty()  {
         commandParser.setInput("");
         assertFalse(commandParser.extractText().isPresent());
     }
 
     @Test
-    public void extractText_noKeywords()  {
-        commandParser.setInput("No keywords");
-        assertEquals("No keywords", commandParser.extractText().orElse(""));
+    public void extractText_valid_extracted()  {
+        commandParser.setInput("valid text");
+        assertEquals("valid text", commandParser.extractText().orElse(""));
         assertEquals("", commandParser.getInput());
     }
 
     @Test
-    public void extractText_trims()  {
+    public void extractText_whitespace_trimmed()  {
         commandParser.setInput(" trims   ");
         assertEquals("trims", commandParser.extractText().orElse(""));
         assertEquals("", commandParser.getInput());
     }
 
     @Test
-    public void extractText_withKeywords()  {
-        commandParser.setInput("this is a sentence from here to there by the bay");
-        assertEquals("this is a sentence from here to there by the bay", commandParser.extractText().orElse(""));
-        assertEquals("", commandParser.getInput());
-    }
-
-    @Test
-    public void extractWords_noWords()  {
+    public void extractWords_noWords_empty()  {
         commandParser.setInput("");
         assertTrue(commandParser.extractWords().isEmpty());
     }
 
     @Test
-    public void extractWords_1Word()  {
+    public void extractWords_1Word_extracted()  {
         commandParser.setInput("1Word");
         assertEquals(Arrays.asList("1Word"), commandParser.extractWords());
         assertEquals("", commandParser.getInput());
     }
 
     @Test
-    public void extractWords_2Words()  {
+    public void extractWords_2Words_extracted()  {
         commandParser.setInput("2 words");
         assertEquals(Arrays.asList("2", "words"), commandParser.extractWords());
         assertEquals("", commandParser.getInput());
     }
 
     @Test
-    public void extractWord_noWord()  {
-        commandParser.setInput("");
-        assertTrue(!commandParser.extractWord().isPresent());
-    }
-
-    @Test
-    public void extractWord_firstWord()  {
+    public void extractWord_2Words_firstWordExtracted()  {
         commandParser.setInput("command word");
         assertEquals("command", commandParser.extractWord().orElse(""));
         assertEquals("word", commandParser.getInput().trim());
     }
 
     @Test
-    public void extractInteger_noInteger()  {
+    public void extractInteger_noInteger_empty()  {
         commandParser.setInput("no index");
         assertTrue(!commandParser.extractInteger().isPresent());
         assertEquals("no index", commandParser.getInput());
     }
 
     @Test
-    public void extractInteger_integers()  {
+    public void extractInteger_anyInteger_extracted()  {
         commandParser.setInput("1 index");
         assertTrue(1 == commandParser.extractInteger().orElse(-1));
         assertEquals("index", commandParser.getInput());
@@ -120,14 +99,14 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingTags_noMatches()  {
+    public void extractTrailingTags_noMatches_empty()  {
         commandParser.setInput("no matches");
         assertTrue(commandParser.extractTrailingTags().isEmpty());
         assertEquals("no matches", commandParser.getInput());
     }
 
     @Test
-    public void extractTrailingTags_allTags()  {
+    public void extractTrailingTags_allTags_extracted()  {
         commandParser.setInput("#tag1 #tag2 #tag3");
         assertEquals(
             Sets.newHashSet(new Tag("tag1"), new Tag("tag2"), new Tag("tag3")),
@@ -137,7 +116,7 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingTags_notTrailing()  {
+    public void extractTrailingTags_notTrailing_empty()  {
         commandParser.setInput("other #tag1 #tag2 words");
         assertEquals(Collections.emptySet(), commandParser.extractTrailingTags());
         assertEquals("other #tag1 #tag2 words", commandParser.getInput());
@@ -145,14 +124,14 @@ public class CommandParserTest {
 
 
     @Test
-    public void extractTrailingTags_nonTrailingTags()  {
+    public void extractTrailingTags_nonTrailingTags_onlyTrailingTagExtracted()  {
         commandParser.setInput("other #tag1 words #tag2");
         assertEquals(Sets.newHashSet(new Tag("tag2")), commandParser.extractTrailingTags());
         assertEquals("other #tag1 words", commandParser.getInput());
     }
 
     @Test
-    public void extractTrailingDueDate_valid() throws IllegalValueException {
+    public void extractTrailingDueDate_valid_extracted() throws IllegalValueException {
         commandParser.setInput("extract text by 10 Nov 2015");
 
         Optional<DueDate> dueDate = commandParser.extractTrailingDueDate();
@@ -165,21 +144,21 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDueDate_invalidDate() throws IllegalValueException {
+    public void extractTrailingDueDate_invalidDate_empty() throws IllegalValueException {
         commandParser.setInput("extract text by invalid date");
         assertFalse(commandParser.extractTrailingDueDate().isPresent());
         assertEquals("extract text by invalid date", commandParser.getInput());
     }
 
     @Test
-    public void extractTrailingDueDate_notTrailing() throws IllegalValueException {
+    public void extractTrailingDueDate_notTrailing_empty() throws IllegalValueException {
         commandParser.setInput("extract text by 10 Nov 2015 #nottrailing");
         assertFalse(commandParser.extractTrailingDueDate().isPresent());
         assertEquals("extract text by 10 Nov 2015 #nottrailing", commandParser.getInput());
     }
 
     @Test
-    public void extractTrailingDateRange_valid() throws IllegalValueException {
+    public void extractTrailingDateRange_valid_extracted() throws IllegalValueException {
         commandParser.setInput("from 10 Apr 2016 9am to 11 Jan 2018 10:28");
         Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
         assertTrue(dateRange.isPresent());
@@ -195,7 +174,7 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_invalidDates() throws IllegalValueException {
+    public void extractTrailingDateRange_invalidDates_empty() throws IllegalValueException {
         commandParser.setInput("walk by the beach from 1 end to another");
         assertFalse(
             commandParser.extractTrailingDueDate().isPresent()
@@ -206,7 +185,7 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_onlyTrailing() throws IllegalValueException {
+    public void extractTrailingDateRange_2DateRanges_onlyTrailingExtracted() throws IllegalValueException {
         commandParser.setInput("walk by the beach from today to tomorrow from 28 Oct 2018 1200h to 29 Nov 2019 1300h");
         Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
         assertTrue(dateRange.isPresent());
@@ -225,26 +204,30 @@ public class CommandParserTest {
 
     //@@author A0142230B
     @Test
-    public void extractIndicesList_valid() throws IllegalValueException {
+    public void extractIndicesList_valid_extracted() throws IllegalValueException {
         commandParser.setInput("2to7");
         List<Integer> indices = commandParser.extractIndicesList();
         assertEquals("[2, 3, 4, 5, 6, 7]", indices.toString());
+
         commandParser.setInput("-2-7");
         indices = commandParser.extractIndicesList();
         assertEquals("[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]", indices.toString());
+
         commandParser.setInput("-2  -  7");
         indices = commandParser.extractIndicesList();
         assertEquals("[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]", indices.toString());
+
         commandParser.setInput("1 2 3 4 5");
         indices = commandParser.extractIndicesList();
         assertEquals("[1, 2, 3, 4, 5]", indices.toString());
+
         commandParser.setInput("2to2");
         indices = commandParser.extractIndicesList();
         assertEquals("[2]", indices.toString());
     }
 
     @Test
-    public void extractTrailingDateRange_recurrence() throws IllegalValueException {
+    public void extractTrailingDateRange_recurrence_extracted() throws IllegalValueException {
         commandParser.setInput("walk nowhere from 28 Oct 2018 1200h to 29 Nov 2018 1300h yearly");
         Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
         assertTrue(dateRange.isPresent());
@@ -266,7 +249,7 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_recurrenceInvalid() throws IllegalValueException {
+    public void extractTrailingDateRange_recurrenceInvalid_exceptionThrown() throws IllegalValueException {
         commandParser.setInput("walk nowhere from 28 Oct 2018 1200h to 29 Nov 2018 1300h daily");
         thrown.expect(IllegalValueException.class);
         commandParser.extractTrailingDateRange();

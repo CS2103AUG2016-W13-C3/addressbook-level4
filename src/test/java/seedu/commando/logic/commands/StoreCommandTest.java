@@ -57,7 +57,7 @@ public class StoreCommandTest {
     }
 
     @Test
-    public void execute_store_emptyPath() {
+    public void execute_storeEmptyPath_error() {
         CommandResult result = logic.execute("store");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_STORE_PATH
@@ -69,7 +69,7 @@ public class StoreCommandTest {
     }
 
     @Test
-    public void execute_store_invalidPath() {
+    public void execute_storeInvalidPath_error() {
         CommandResult result = logic.execute("store 2\\");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_STORE_FILE, result.getFeedback());
@@ -79,7 +79,7 @@ public class StoreCommandTest {
     }
     
     @Test
-    public void execute_store_validPath() throws IOException {
+    public void execute_storeValidPath_filePathChanged() throws IOException {
         Files.deleteIfExists(Paths.get("test.xml"));
         CommandResult result = logic.execute("store test.xml");
         assertFalse(result.hasError());
@@ -88,7 +88,7 @@ public class StoreCommandTest {
     }
 
     @Test
-    public void execute_store_valid() {
+    public void execute_storeValidPath_fileSaved() {
         CommandResult result = logic.execute("store test");
         assertFalse(result.hasError());
         assertEquals(String.format(Messages.STORE_COMMAND, "test"), result.getFeedback());

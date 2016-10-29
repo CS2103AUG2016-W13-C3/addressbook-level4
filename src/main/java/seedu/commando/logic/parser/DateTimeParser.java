@@ -26,17 +26,22 @@ public class DateTimeParser {
     private static final String DayWordRegexString = "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri|Sat|Sun";
     private static final String YearRegexString = "(?<year>\\d{4}|\\d{2})";
     private static final String TwoDigitYearRegexString = "\\d{2}$";
+    private static final String MonthRegexString = "(0?[1-9])|10|11|12";
+    private static final String DayOfMonthRegexString = "([12]\\d)|([3][01])|(0?[1-9])";
+    private static final String Hours24RegexString = "(1\\d)|20|21|22|23|(0?\\d)";
+    private static final String Hours12RegexString = "11|12|(0?[1-9])";
+    private static final String MinutesRegexString = "([1234]\\d)|(5[0-9])|(0?\\d)";
 
-    private static final String DateWithSlashesRegexString = "(?<month>\\d{1,2})\\/(?<day>\\d{1,2})(\\/" + YearRegexString + ")?";
-    private static final String DateWithMonthWordRegexString = "(\\d{1,2})((th|rd|st|nd)?)\\s+" +
+    private static final String DateWithSlashesRegexString = "(?<day>" + DayOfMonthRegexString + ")\\/(?<month>" + MonthRegexString + ")(\\/" + YearRegexString + ")?";
+    private static final String DateWithMonthWordRegexString = "((" + DayOfMonthRegexString + ")(th|rd|st|nd)?)\\s+" +
         "(" + MonthWordRegexString + ")(\\s+" + YearRegexString + ")?";
     private static final String DateWithMonthWordReversedRegexString = "(" + MonthWordRegexString + ")\\s+" +
-        "(\\d{1,2})(th|rd|st|nd)?(\\s+" + YearRegexString + ")?";
+        "(" + DayOfMonthRegexString + ")(th|rd|st|nd)?(\\s+" + YearRegexString + ")?";
     private static final String DateWithDayWordRegexString = "((coming|next)\\s+)?(" + DayWordRegexString + ")";
     private static final String DateWithLaterAgoRegexString = "((\\d+\\d)|([2-9]))\\s+(days|weeks|months|years)\\s+(later|ago)";
     private static final String DateWithNextRegexString = "next (week|month|year)";
     private static final String TimeNightRegexString = "(this\\s+)?(night|tonight)";
-    private static final String TimeHourRegexString = "(?<hours>\\d{1,2})(?<minutes>\\d{2})h";
+    private static final String TimeHourRegexString = "(?<hours>" + Hours24RegexString + ")(?<minutes>" + MinutesRegexString + ")h";
 
     private static final String[] supportedDateRegexStrings = new String[] {
         DateWithSlashesRegexString,
@@ -49,9 +54,9 @@ public class DateTimeParser {
     };
 
     private static final String[] supportedTimeRegexStrings = new String[] {
-        "(\\d{2})(\\.|:)(\\d{2})",
+        "(" + Hours24RegexString + ")(\\.|:)(" + MinutesRegexString + ")",
         TimeHourRegexString,
-        "(\\d{1,2})(\\.|:)?(\\d{2})?(am|pm)",
+        "(" + Hours12RegexString + ")(\\.|:)?(" + MinutesRegexString + ")?(am|pm)",
         "(this\\s+)?(morning|afternoon|noon|evening|midnight)",
         TimeNightRegexString
     };
@@ -153,7 +158,8 @@ public class DateTimeParser {
 
             // If matched from the start
             if (matcher.find() && matcher.start() == 0) {
-                dateString = handleDateWithSlashes(regexString, matcher);
+                dateString = matcher.group().trim();
+                dateString = handleDateWithSlashes(dateString, regexString, matcher);
                 dateString = handleDateTwoDigitYear(dateString, matcher);
 
                 // Extract out date string from text
@@ -171,17 +177,17 @@ public class DateTimeParser {
 
             // If matched from the start
             if (matcher.find() && matcher.start() == 0) {
+                timeString = matcher.group().trim();
                 timeString = handleTimeFormatHour(timeString, regexString, matcher);
                 timeString = handleTimeNight(timeString, regexString);
 
                 input = input.substring(matcher.end()).trim();
-
                 break; // exit loop
             }
         }
 
         // If there is any characters left in text, invalid datetime
-        if (!input.isEmpty()) {
+        if (!input.trim().isEmpty()) {
             return Optional.empty();
         } else {
             String dateTimeString = dateString + " " + timeString;
@@ -198,6 +204,7 @@ public class DateTimeParser {
         if (dateString.matches(DateWithLaterAgoRegexString)) {
             dateTimeString = timeString + " " + dateString;
         }
+
         return dateTimeString;
     }
 
@@ -238,13 +245,13 @@ public class DateTimeParser {
         return dateString;
     }
 
-    private String handleDateWithSlashes(String regexString, Matcher matcher) {
+    private String handleDateWithSlashes(String dateString, String regexString, Matcher matcher) {
         // Special case: for DateWithSlashesRegexString format,
         // Swap month and day
         if (regexString.equals(DateWithSlashesRegexString)) {
-            return matcher.group("day") + "/" + matcher.group("month") + "/" + matcher.group("year");
-        } else {
-            return matcher.group().trim();
+            dateString = matcher.group("month") + "/" + matcher.group("day") + "/" + matcher.group("year");
         }
+
+        return dateString;
     }
 }

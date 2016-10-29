@@ -56,7 +56,7 @@ public class ImportCommandTest {
     }
 
     @Test
-    public void execute_import_emptyPath() {
+    public void execute_importEmptyPath_error() {
         CommandResult result = logic.execute("import");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_IMPORT_PATH
@@ -68,7 +68,7 @@ public class ImportCommandTest {
     }
 
     @Test
-    public void execute_import_invalidPath() {
+    public void execute_importInvalidPath_error() {
         CommandResult result = logic.execute("import 2\\");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_IMPORT_FILE, result.getFeedback());
@@ -81,7 +81,7 @@ public class ImportCommandTest {
     }
     
     @Test
-    public void execute_import_invalidData() throws IOException {
+    public void execute_importInvalidData_error() throws IOException {
         File temp = new File("test.xml");
         ArrayList<String> lines = new ArrayList<String>();
         lines.add("somewrongdata");
@@ -94,7 +94,7 @@ public class ImportCommandTest {
     }
 
     @Test
-    public void execute_import_validPath() throws IOException {
+    public void execute_importValidPath_imported() throws IOException {
         logic.execute("add test1");
         logic.execute("add test2");
         logic.execute("export test.xml");

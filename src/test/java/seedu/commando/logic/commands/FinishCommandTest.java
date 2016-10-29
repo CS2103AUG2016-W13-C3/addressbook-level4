@@ -41,7 +41,7 @@ public class FinishCommandTest {
     }
 
     @Test
-    public void execute_finish_noSuchIndex() {
+    public void execute_finishNoSuchIndex_error() {
         CommandResult result = logic.execute("delete 2");
         assertTrue(result.hasError());
 
@@ -49,7 +49,7 @@ public class FinishCommandTest {
     }
 
     @Test
-    public void execute_finish_invalidIndex() {
+    public void execute_finishInvalidIndex_error() {
         CommandResult result = logic.execute("finish 0");
         assertTrue(result.hasError());
 
@@ -57,7 +57,7 @@ public class FinishCommandTest {
     }
     
     @Test
-    public void execute_finish_invalidIndex2() {
+    public void execute_finishInvalidIndex2_error() {
         CommandResult result = logic.execute("finish -1");
         assertTrue(result.hasError());
 
@@ -65,7 +65,7 @@ public class FinishCommandTest {
     }
 
     @Test
-    public void execute_finish_missingIndex() {
+    public void execute_finishMissingIndex_error() {
         CommandResult result = logic.execute("finish missing index");
         assertTrue(result.hasError());
 
@@ -73,7 +73,7 @@ public class FinishCommandTest {
     }
 
     @Test
-    public void execute_finish_invalidFormat() {
+    public void execute_finishInvalidFormat_error() {
         CommandResult result = logic.execute("finish 1 #troll");
         assertTrue(result.hasError());
 
@@ -82,26 +82,26 @@ public class FinishCommandTest {
     }
 
     @Test
-    public void execute_finish_index() throws IllegalValueException {
+    public void execute_finish_finished() throws IllegalValueException {
         logic.execute("add title");
         logic.execute("add title2");
 
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertTrue(ifToDoExists(logic,
+        assertToDoExists(logic,
             new ToDoBuilder("title2")
-                .build()));
+                .build());
 
         CommandResult result = logic.execute("finish 2");
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(logic,
+        assertToDoExists(logic,
             new ToDoBuilder("title2")
-                .build()));
-        assertTrue(ifToDoExists(logic,
+                .build());
+        assertToDoExists(logic,
             new ToDoBuilder("title")
-                .build()));
+                .build());
     }
 }

@@ -6,6 +6,7 @@ import seedu.commando.logic.Logic;
 import seedu.commando.model.todo.ReadOnlyToDo;
 
 //@@author A0139697H
+
 /**
  * Collection of convenience methods for testing
  */
@@ -22,15 +23,30 @@ public class TestHelper {
     /**
      * Checks if a to-do exists in the model
      */
-    public static boolean ifToDoExists(Logic logic, ReadOnlyToDo readOnlyToDo) {
-        return logic.getToDoList().contains(readOnlyToDo);
+    public static void assertToDoExists(Logic logic, ReadOnlyToDo readOnlyToDo) {
+        assert logic.getToDoList().contains(readOnlyToDo);
+    }
+
+    /**
+     * Checks if a to-do doesn't exist in the model
+     */
+    public static void assertToDoNotExists(Logic logic, ReadOnlyToDo readOnlyToDo) {
+        assert !logic.getToDoList().contains(readOnlyToDo);
     }
 
     /**
      * Checks if a to-do appears on the UI
      */
-    public static boolean ifToDoExistsFiltered(Logic logic, ReadOnlyToDo readOnlyToDo) {
-        return logic.getUiEvents().filtered(uiToDo -> uiToDo.isSimilar(readOnlyToDo)).size() > 0
+    public static void assertToDoExistsFiltered(Logic logic, ReadOnlyToDo readOnlyToDo) {
+        assert logic.getUiEvents().filtered(uiToDo -> uiToDo.isSimilar(readOnlyToDo)).size() > 0
             || logic.getUiTasks().filtered(uiToDo -> uiToDo.isSimilar(readOnlyToDo)).size() > 0;
+    }
+
+    /**
+     * Checks if a to-do doesn't appear on the UI
+     */
+    public static void assertToDoNotExistsFiltered(Logic logic, ReadOnlyToDo readOnlyToDo) {
+        assert logic.getUiEvents().filtered(uiToDo -> uiToDo.isSimilar(readOnlyToDo)).size() == 0
+            && logic.getUiTasks().filtered(uiToDo -> uiToDo.isSimilar(readOnlyToDo)).size() == 0;
     }
 }

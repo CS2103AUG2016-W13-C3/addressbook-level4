@@ -90,14 +90,14 @@ public class CommandTest {
     }
 
     @Test
-    public void setModel_onlyModel() throws Command.NoModelException, Command.NoEventsCenterException {
+    public void setModel_onlyModel_exceptionThrown() throws Command.NoModelException, Command.NoEventsCenterException {
         thrown.expect(Command.NoEventsCenterException.class);
         command.setModel(modelStub);
         command.execute();
     }
 
     @Test
-    public void setEventsCenter_onlyEventsCenter() throws Command.NoModelException, Command.NoEventsCenterException {
+    public void setEventsCenter_onlyEventsCenter_exceptionThrown() throws Command.NoModelException, Command.NoEventsCenterException {
         thrown.expect(Command.NoModelException.class);
         command.setEventsCenter(EventsCenter.getInstance());
         command.execute();
