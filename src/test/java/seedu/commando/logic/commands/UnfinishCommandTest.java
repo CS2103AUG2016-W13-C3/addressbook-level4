@@ -70,7 +70,7 @@ public class UnfinishCommandTest {
         assertTrue(result.hasError());
 
         assertEquals(Messages.MISSING_TODO_ITEM_INDEX
-                + "\n" + Messages.getInvalidCommandFormatMessage("unfinish").get(), result.getFeedback());
+                + "\n" + Messages.getCommandFormatMessage("unfinish").get(), result.getFeedback());
     }
 
     @Test
@@ -78,7 +78,7 @@ public class UnfinishCommandTest {
         CommandResult result = logic.execute("unfinish 1 #troll");
         assertTrue(result.hasError());
         assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD)
-                + "\n" + Messages.getInvalidCommandFormatMessage("unfinish").get(), result.getFeedback());
+                + "\n" + Messages.getCommandFormatMessage("unfinish").get(), result.getFeedback());
     }
 
     @Test
@@ -108,4 +108,15 @@ public class UnfinishCommandTest {
             new ToDoBuilder("title")
                 .build()));
     }
+    
+    @Test
+    public void execute_unfinish_event() {
+        logic.execute("add test from yesterday 1am to 2am");
+        logic.execute("recall");
+        CommandResult result = logic.execute("unfinish 1");
+        assertTrue(result.hasError());
+        assertEquals(String.format(Messages.UNFINISH_COMMAND_CANNOT_UNFINISH_EVENT, "test"), 
+                result.getFeedback());
+    }
+    
 }

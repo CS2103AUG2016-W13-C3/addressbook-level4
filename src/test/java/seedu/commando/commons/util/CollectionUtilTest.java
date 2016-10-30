@@ -2,7 +2,9 @@ package seedu.commando.commons.util;
 
 import static org.junit.Assert.*;
 
+import java.awt.List;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.junit.Test;
 
@@ -42,5 +44,13 @@ public class CollectionUtilTest {
         test.add(new Integer(2));
         test.add("test0");
         assertTrue(CollectionUtil.elementsAreUnique(test));
+    }
+    
+    @Test
+    public void assertNoNullElements_noNull() {
+        Collection<Object> list = new ArrayList<>();
+        list.add(new Object());
+        list.add(new Object());
+        CollectionUtil.assertNoNullElements(list);
     }
 }

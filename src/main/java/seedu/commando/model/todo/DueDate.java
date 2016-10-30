@@ -23,7 +23,7 @@ public class DueDate {
     public DueDate(LocalDateTime value) throws IllegalValueException {
         if (!isValid(value)) {
             throw new IllegalValueException(Messages.TODO_DUEDATE_CONSTRAINTS + 
-                    "\n" + Messages.getInvalidCommandFormatMessage("finish").get());
+                    "\n" + Messages.getCommandFormatMessage("finish").get());
         }
 
         this.value = value;
@@ -49,9 +49,10 @@ public class DueDate {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof DueDate // instanceof handles nulls
-                && (value.equals(((DueDate) other).value))); // state check
+        //check if same object, if not check if values are equal
+        return other == this 
+                || (other instanceof DueDate
+                && (value.equals(((DueDate) other).value))); 
     }
 
     @Override

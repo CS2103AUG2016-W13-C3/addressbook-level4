@@ -12,7 +12,6 @@
 	fx:controller="seedu.commando.ui.EventListPanel">
 	<stylesheets>
 		<URL value="@DarkTheme.css" />
-		<URL value="@Extensions.css" />
 	</stylesheets>
 	<children>
 		<ListView fx:id="eventListView" VBox.vgrow="ALWAYS" />

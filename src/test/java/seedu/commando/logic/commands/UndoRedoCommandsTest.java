@@ -40,6 +40,17 @@ public class UndoRedoCommandsTest {
     }
 
     @Test
+    public void execute_undoAndRedoInvalidFormat() {
+        CommandResult result = logic.execute("undo 2");
+        assertTrue(result.hasError());
+        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, UndoCommand.COMMAND_WORD), result.getFeedback());
+
+        result = logic.execute("redo 2");
+        assertTrue(result.hasError());
+        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, RedoCommand.COMMAND_WORD), result.getFeedback());
+    }
+
+    @Test
     public void execute_undo() {
         logic.execute("add title");
         logic.execute("add test 3");

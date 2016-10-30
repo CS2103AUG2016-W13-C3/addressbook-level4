@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 /**
  * A handle to the Command Box in the GUI.
  */
-public class CommandBoxHandle extends GuiHandle{
+public class CommandBoxHandle extends GuiHandle {
 
     private static final String COMMAND_INPUT_FIELD_ID = "#commandTextField";
 
@@ -29,6 +29,16 @@ public class CommandBoxHandle extends GuiHandle{
         enterCommand(command);
         pressEnter();
         guiRobot.sleep(200);// Give time for the command to take effect
+    }
+    
+    public void navigateCommandUp() {
+        pressUp();
+        guiRobot.sleep(200);
+    }
+    
+    public void navigateCommandDown() {
+        pressDown();
+        guiRobot.sleep(200);
     }
 
     public HelpWindowHandle runHelpCommand(String... command) {

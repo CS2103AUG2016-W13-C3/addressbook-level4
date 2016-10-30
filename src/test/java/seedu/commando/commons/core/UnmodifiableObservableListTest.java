@@ -9,15 +9,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.*;
+import static org.junit.Assert.*;
 
-import static org.junit.Assert.assertSame;
+import java.util.*;
 
 public class UnmodifiableObservableListTest {
 
     List<Integer> backing;
     UnmodifiableObservableList<Integer> list;
-
+    
     @Before
     public void setup() {
         backing = new ArrayList<>();
@@ -29,6 +29,29 @@ public class UnmodifiableObservableListTest {
     public void transformationListGenerators_correctBackingList() {
         assertSame(list.sorted().getSource(), list);
         assertSame(list.filtered(i -> true).getSource(), list);
+    }
+    
+    @Test
+    public void backinglist_operation() {
+        assertFalse(list.isEmpty());
+        assertTrue(list.contains(new Integer(10)));
+        Object[] arr = list.toArray();
+        assertEquals(arr[0], 10);
+        Integer[] intarr = list.toArray(new Integer[0]);
+        assertEquals(intarr[0], new Integer(10));
+        ArrayList<Integer> arrlist = new ArrayList<Integer>();
+        arrlist.add(10);
+        assertTrue(list.containsAll(arrlist));
+        assertTrue(list.equals(arrlist));
+        assertEquals(list.indexOf(new Integer(10)), 0);
+        assertEquals(list.lastIndexOf(new Integer(10)), 0);
+        assertEquals(list.subList(0, 1).get(0), new Integer(10));
+        assertTrue(list.stream().findFirst().isPresent());
+        
+        ListIterator<Integer> itr = list.listIterator();
+        assertTrue(itr.hasNext());
+        assertFalse(itr.hasPrevious());
+        assertEquals(itr.nextIndex(), 0);
     }
 
     @Test

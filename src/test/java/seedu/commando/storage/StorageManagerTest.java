@@ -3,6 +3,7 @@ package seedu.commando.storage;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.events.model.ToDoListChangedEvent;
@@ -24,6 +25,9 @@ import static org.junit.Assert.assertTrue;
 public class StorageManagerTest {
 
     private StorageManager storageManager;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();

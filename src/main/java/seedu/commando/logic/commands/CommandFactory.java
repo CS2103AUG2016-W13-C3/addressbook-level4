@@ -1,14 +1,18 @@
 package seedu.commando.logic.commands;
 
-import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.logic.parser.CommandParser;
-import seedu.commando.model.todo.*;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import seedu.commando.commons.core.Messages;
+import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.logic.parser.CommandParser;
+import seedu.commando.model.todo.DateRange;
+import seedu.commando.model.todo.DueDate;
+import seedu.commando.model.todo.Tag;
+import seedu.commando.model.todo.Title;
 
 
 //@@author A0139697H
@@ -20,7 +24,7 @@ import java.util.stream.Collectors;
 public class CommandFactory {
     private static final String KEYWORD_DELETE_TIME = "time";
     private static final String KEYWORD_DELETE_TAG = "tag";
-
+    
     private CommandParser commandParser = new CommandParser();
 
     public static class InvalidCommandFormatException extends Exception {
@@ -329,7 +333,6 @@ public class CommandFactory {
     private Command buildUndoCommand() throws IllegalValueException {
         if (!commandParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, UndoCommand.COMMAND_WORD));
-
         }
 
         return new UndoCommand();

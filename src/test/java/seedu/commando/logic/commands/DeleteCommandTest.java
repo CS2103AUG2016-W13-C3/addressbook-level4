@@ -72,7 +72,7 @@ public class DeleteCommandTest {
         assertTrue(result.hasError());
 
         assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD)
-                + "\n" + Messages.getInvalidCommandFormatMessage("delete").get(), result.getFeedback());
+                + "\n" + Messages.getCommandFormatMessage("delete").get(), result.getFeedback());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class DeleteCommandTest {
         assertTrue(result.hasError());
 
         assertEquals(Messages.MISSING_TODO_ITEM_INDEX
-                + "\n" + Messages.getInvalidCommandFormatMessage("delete").get(), result.getFeedback());
+                + "\n" + Messages.getCommandFormatMessage("delete").get(), result.getFeedback());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class DeleteCommandTest {
             new ToDoBuilder("title2")
                 .build()));
 
-        CommandResult result = logic.execute("delete 2");
+        CommandResult result = logic.execute("delete 1");
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
@@ -204,7 +204,7 @@ public class DeleteCommandTest {
         assertTrue(result.hasError());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
         assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, DeleteCommand.COMMAND_WORD)
-                + "\n" + Messages.getInvalidCommandFormatMessage("delete").get(), result.getFeedback() );
+                + "\n" + Messages.getCommandFormatMessage("delete").get(), result.getFeedback() );
     }
 
 

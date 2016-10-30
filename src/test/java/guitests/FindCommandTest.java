@@ -13,9 +13,12 @@ import static org.junit.Assert.assertTrue;
 public class FindCommandTest extends CommanDoGuiTest {
 
     @Test
-    public void find_nonEmptyList() {
-        assertFindResult("find titles"); //no results
-        assertFindResult("find title 3", td.toDoItem3); //multiple results
+    public void findCommand_nonEmptyList() {
+        //no results
+        assertFindResult("find titles"); 
+        
+        //multiple results
+        assertFindResult("find title 3", td.toDoItem3); 
         assertFindResult("find title tag2", td.toDoItem2, td.toDoItem5);
         
         //find after deleting one result
@@ -24,13 +27,13 @@ public class FindCommandTest extends CommanDoGuiTest {
     }
 
     @Test
-    public void find_emptyList(){
+    public void findCommand_emptyList(){
         commandBox.runCommand("clear");
         assertFindResult("find Jean"); //no results
     }
 
     @Test
-    public void find_invalidCommand_fail() {
+    public void findCommand_invalidCommand_reportUnknownCommand() {
         commandBox.runCommand("findgeorge");
         assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "findgeorge"));
     }
