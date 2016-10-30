@@ -14,11 +14,25 @@ import seedu.commando.model.todo.ToDo;
 public class FinishCommandTest extends CommanDoGuiTest {
         
     @Test
-    public void finish_one_index() {
+    public void finishCommand_oneIndex() {
         //finish one item
         ToDo[] currentList = td.getTypicalToDos();
         int targetIndex = 4;
         assertFinishSuccess(targetIndex, currentList);
+           
+    }
+    
+    @Test
+    public void finishCommand_multipleIndices() {
+        //finish multiple items
+        ToDo[] currentList = td.getTypicalToDos();
+        assertFinishConsectiveSuccess(3, 4, currentList);
+    }
+    
+    @Test
+    public void finishCommand_invalidIndex_reportError() {
+        ToDo[] currentList = td.getTypicalToDos();
+        int targetIndex = 4;
         
         //finish invalid index
         targetIndex = 7;
@@ -33,14 +47,7 @@ public class FinishCommandTest extends CommanDoGuiTest {
         targetIndex = 1;
         commandBox.runCommand("finish " + targetIndex);
         assertResultMessage(String.format(Messages.FINISH_COMMAND_CANNOT_FINISH_EVENT, currentList[targetIndex-1].getTitle().toString()));
-        
-    }
-    
-    @Test
-    public void finish_multiple_task() {
-        //finish multiple items
-        ToDo[] currentList = td.getTypicalToDos();
-        assertFinishConsectiveSuccess(3, 4, currentList);
+     
     }
     
     private void assertFinishSuccess(int targetIndex, ToDo[] currentList) {
