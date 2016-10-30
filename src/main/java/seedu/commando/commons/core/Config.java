@@ -42,9 +42,6 @@ public class Config {
         put("recall", "recall");
     }};
 
-    public Config() {
-    }
-
     /**
      * Returns anchor name for heading of {@param commandWord}on user guide at {@param UserGuideUrl}
      * If no mapping exists, returns empty
