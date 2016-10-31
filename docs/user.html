@@ -193,9 +193,6 @@
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>shop for groceries: banana, pineapple, watermelon </span>#<span>housework</span></pre>
 
                 <!-- @@author A0139697H -->
-                <blockquote>
-                    <b>To-Dos Containing Command Keywords:</b> To parse commands properly, <em>CommanDo</em> uses a set of keywords such as <code>by</code>, <code>from</code>, and <code>to</code>. <em>CommanDo</em> tries its best to determine whether a word is supposed to be a keyword or part of a field by checking the validity of datetimes. When there are multiple valid interpretations of a command with multiple command keywords, the trailing command keyword will be prioritised.
-                </blockquote>
 
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>walk from here to there</span></pre>
                 <span>What it does:  Adds a <em>Task</em> with description <code>walk from here to there</code>. Although it looks like the format of an <em>Event</em>, <em>CommanDo</em> recognises that <code>here</code> and <code>there</code> are invalid datetimes.</span>
@@ -244,6 +241,14 @@
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... time</pre>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;start index&gt;</span> - <span>&lt;end index&gt;</span> time</pre>
 
+                <h4>Deleting Recurrence of Events </h4>
+
+                <p>If the recurrence of an <em>Event</em> is no longer required, you'll also use the <code>delete</code> command, ending with the keyword <code>recurrence</code>.</p>
+
+                <span><strong>Command Formats:</strong></span>
+                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... recurrence</pre>
+                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;start index&gt;</span> - <span>&lt;end index&gt;</span> recurrrence</pre>
+
                 <h4>Deleting Tags of To-Dos</h4>
 
                 <p>To clear the tags of a to-do, use the <code>delete</code> command as well, but end with the keyword <code>tag</code>.</p>
@@ -266,9 +271,9 @@
 
                 <span><strong>Examples:</strong></span> <span>(given an <em>Event</em> at <em>Index</em> 1)</span>
                 <pre><span class="inputstart">&gt;&gt;</span> edit <span>1 #projectABC</span></pre>
-                <span>What it does:  Adds or replaces the tags of that event with the tag <code>projectABC</code>.</span>
+                <span>What it does:  Adds or replaces the tags of that event with the tag <code>#projectABC</code>.</span>
                 <pre><span class="inputstart">&gt;&gt;</span> edit <span>1</span> from <span>today 1400</span> to <span>today 1600 #important #work</span></pre>
-                <span>What it does:  Changes the time window of that event and replaces its tags by <code>important</code> and <code>work</code>.</span>
+                <span>What it does:  Changes the time window of that event and replaces its tags by <code>#important</code> and <code>#work</code>.</span>
 
                 <h4>Editing Tasks</h4>
 
@@ -278,10 +283,15 @@
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> edit <span>&lt;index&gt;</span> [<span>&lt;description&gt;</span>] [by <span>&lt;due_datetime&gt;</span>] [#<span>&lt;tag&gt;</span>...]</pre>
 
                 <span><strong>Examples:</strong></span> <span>(given a <em>Task</em> at <em>Index</em> 2)</span>
-                <pre><span class="inputstart">&gt;&gt;</span> edit <span>2 shopping trip to IKEA</span></pre>
-                <span>What it does:  Changes the description of that task to <code>shopping trip to IKEA</code>.</span>
+                <pre><span class="inputstart">&gt;&gt;</span> edit <span>2 shopping trip to IKEA</span> #<span>family</span></pre>
+                <span>What it does:  Changes the description of that task to <code>shopping trip to IKEA</code> and replaces any of its tags with <code>#family</code>.</span>
                 <pre><span class="inputstart">&gt;&gt;</span> edit <span>2</span> by <span>6 feb</span></pre>
                 <span>What it does:  Adds or changes the deadline of that task.</span>
+                <blockquote>
+                    <b>Escaping description of to-dos:</b> In the case you want to use something like <code>by today</code> in the description of your <em>Event</em> or <em>Task</em>, you can wrap it with backticks like this: <code>`by today`</code>. 
+                </blockquote>
+                <pre><span class="inputstart">&gt;&gt;</span> edit <span>2</span> `shop by today`</pre>
+                <span>What it does:  Changes the description of that task to <code>shop by today</code>.</span>
 
                 <!-- @@author A0139697H -->
                 <h3 id="finish">Marking Tasks as Done: <code>finish</code></h3>
@@ -574,7 +584,7 @@
                     <table class="black">
                         <thead>
                             <tr>
-                                <th width="150px">Command</th>
+                                <th width="200px">Command</th>
                                 <th>Command Format</th>
                             </tr>
                         </thead>
@@ -600,8 +610,12 @@
                                 <td><pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... time</pre></td>
                             </tr>
                             <tr>
+                                <td>Delete Recurrence of Event</td>
+                                <td><pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... recurrence</pre></td>
+                            </tr>
+                            <tr>
                                 <td>Delete Tags of To-Do</td>
-                                <td><pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... tags</pre></td>
+                                <td><pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... tag</pre></td>
                             </tr>
                             <tr>
                                 <td>Edit Event</td>

@@ -1,15 +1,11 @@
 package seedu.commando.storage;
 
-import com.google.common.eventbus.Subscribe;
-
 import seedu.commando.commons.core.ComponentManager;
 import seedu.commando.commons.core.LogsCenter;
-import seedu.commando.commons.events.model.ToDoListChangedEvent;
-import seedu.commando.commons.events.storage.DataSavingExceptionEvent;
 import seedu.commando.commons.events.storage.ToDoListSavedEvent;
 import seedu.commando.commons.exceptions.DataConversionException;
-import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.UserPrefs;
+import seedu.commando.model.todo.ReadOnlyToDoList;
 
 import java.io.IOException;
 import java.util.Optional;
