@@ -9,6 +9,7 @@ import org.junit.Test;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.ToDoList;
+import seedu.commando.model.todo.ToDoListChange;
 import seedu.commando.testutil.ToDoBuilder;
 
 public class ToDoListChangeTest {

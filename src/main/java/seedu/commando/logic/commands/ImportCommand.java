@@ -2,15 +2,12 @@ package seedu.commando.logic.commands;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 
-import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.DataConversionException;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.Model;
-import seedu.commando.model.ToDoListChange;
-import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.ToDoListChange;
 import seedu.commando.storage.XmlFileStorage;
 import seedu.commando.storage.XmlSerializableToDoList;
 

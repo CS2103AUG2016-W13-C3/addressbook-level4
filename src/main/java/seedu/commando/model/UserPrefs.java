@@ -1,12 +1,12 @@
 package seedu.commando.model;
 
-import java.util.Objects;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.GuiSettings;
+
+import java.util.Objects;
 
 //@@author A0139697H
 /**
@@ -22,16 +22,27 @@ public class UserPrefs {
         return guiSettings;
     }
 
+    /**
+     * @return an observable string for its to-do list file path
+     */
     public ObservableValue<String> getToDoListFilePath() {
         return toDoListFilePath;
     }
 
+    /**
+     * Sets its to-do list file path and triggers change listeners of {@link #getToDoListFilePath()}
+     */
     public void setToDoListFilePath(String filePath) {
         toDoListFilePath.setValue(filePath);
     }
 
+
+    /**
+     * Sets its GUI settings to that given.
+     * Does a deep copy of {@param guiSettings}.
+     */
     public void setGuiSettings(GuiSettings guiSettings) {
-        this.guiSettings = guiSettings;
+        this.guiSettings = new GuiSettings(guiSettings);
     }
 
     public void setGuiSettings(double width, double height, int x, int y, boolean isMaximized) {
@@ -56,11 +67,14 @@ public class UserPrefs {
     @Override
     public String toString() {
         return String.join(",",
-            "GuiSettings: " + guiSettings,
+            "Gui Settings: " + guiSettings,
             "To-do List File Path: " + toDoListFilePath.getValue()
         );
     }
 
+    /**
+     * @return a {@link JsonObject} which fully defines this instance's state
+     */
     public JsonObject getJsonObject() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.guiSettings = guiSettings;
@@ -69,8 +83,8 @@ public class UserPrefs {
     }
 
     /**
-     * Sets fields of user prefs to that of the json object's
-     * If any of the json object's fields are null, the default of user prefs are used
+     * Sets fields of user prefs to that of {@param jsonObject}.
+     * If any of the fields are null, the default of user prefs are used.
      */
     public void setJsonObject(JsonObject jsonObject) {
         if (jsonObject.guiSettings != null) {

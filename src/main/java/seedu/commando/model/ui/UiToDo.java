@@ -10,7 +10,7 @@ import java.util.Set;
 
 //@@author A0139697H
 /**
- * Represents a to-do on the UI
+ * Represents a to-do on the UI.
  */
 public class UiToDo implements ReadOnlyToDo {
 
@@ -37,7 +37,6 @@ public class UiToDo implements ReadOnlyToDo {
     public static boolean isTask(ReadOnlyToDo todo) {
         return !todo.getDateRange().isPresent();
     }
-
 
     @Override
     public Title getTitle() {
@@ -79,10 +78,16 @@ public class UiToDo implements ReadOnlyToDo {
         return toDo.getObservableValue();
     }
 
+    /**
+     * @return index of the to-do on the UI.
+     */
     public int getIndex() {
         return index;
     }
 
+    /**
+     * @return whether the to-do is newly added or edited.
+     */
     public boolean isNew() { return isNew; }
 
     public boolean isEvent() {
@@ -100,16 +105,18 @@ public class UiToDo implements ReadOnlyToDo {
         return other == this
             || (other instanceof UiToDo
             && this.isSameStateAs((UiToDo) other)
-            && index == ((UiToDo) other).index);
+            && index == ((UiToDo) other).index
+            && isNew == ((UiToDo) other).isNew);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(toDo, index);
+        return Objects.hash(toDo, index, isNew);
     }
 
     @Override
     public String toString() {
-        return toDo + " with index of " + index;
+        return toDo + " with index of " + index
+            + (isNew ? "(new)" : "");
     }
 }

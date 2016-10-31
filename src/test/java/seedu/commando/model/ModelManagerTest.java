@@ -7,6 +7,7 @@ import org.junit.rules.ExpectedException;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.ToDo;
 import seedu.commando.model.todo.ToDoList;
+import seedu.commando.model.todo.ToDoListChange;
 import seedu.commando.testutil.ToDoBuilder;
 
 import java.time.LocalDateTime;

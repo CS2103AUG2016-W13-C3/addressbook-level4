@@ -237,16 +237,12 @@ public class ToDo implements ReadOnlyToDo {
         // until it is not before the current date
         LocalDateTime startDate = dateRange.startDate;
         LocalDateTime endDate = dateRange.endDate;
-
         while (startDate.isBefore(LocalDateTime.now())) {
             startDate = dateRange.recurrence.getNextDate(startDate);
             endDate = dateRange.recurrence.getNextDate(endDate);
         }
-
         try {
-            dateRange = new DateRange(
-                startDate, endDate, dateRange.recurrence
-            );
+            dateRange = new DateRange(startDate, endDate, dateRange.recurrence);
         } catch (IllegalValueException exception) {
             assert false : "new date range should be valid";
         }
@@ -272,14 +268,10 @@ public class ToDo implements ReadOnlyToDo {
         // Keep moving date forward based on recurrence interval
         // until it is not before the current date
         LocalDateTime date = dueDate.value;
-
         while (date.isBefore(LocalDateTime.now())) {
             date = dueDate.recurrence.getNextDate(date);
         }
-
-        dueDate = new DueDate(
-            date, dateRange.recurrence
-        );
+        dueDate = new DueDate(date, dateRange.recurrence);
 
         updateValue();
     }

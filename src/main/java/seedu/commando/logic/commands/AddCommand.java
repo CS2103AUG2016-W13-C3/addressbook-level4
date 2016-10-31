@@ -3,7 +3,7 @@ package seedu.commando.logic.commands;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.Model;
-import seedu.commando.model.ToDoListChange;
+import seedu.commando.model.todo.ToDoListChange;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.*;
 
