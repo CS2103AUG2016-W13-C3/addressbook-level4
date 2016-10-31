@@ -169,6 +169,8 @@ public class DateTimeParser {
             }
         }
 
+
+
         // Try to match a time
         String timeString = "";
         for (String regexString : supportedTimeRegexStrings) {
@@ -202,28 +204,30 @@ public class DateTimeParser {
         // Special case: if DateWithLaterRegexString is used,
         // swap date and time (for parsing in natty)
         if (dateString.matches(DateWithLaterAgoRegexString)) {
-            dateTimeString = timeString + " " + dateString;
+            return timeString + " " + dateString;
+        } else {
+            return dateTimeString;
         }
-
-        return dateTimeString;
     }
 
     private String handleTimeNight(String timeString, String regexString) {
         // Special case: for TimeNightRegexString format,
         // Set time to 9pm
         if (regexString.equals(TimeNightRegexString)) {
-            timeString = NightLocalTime.toString();
+            return NightLocalTime.toString();
+        } else {
+            return timeString;
         }
-        return timeString;
     }
 
     private String handleTimeFormatHour(String timeString, String regexString, Matcher matcher) {
         // Special case: for TimeHourRegexString format,
         // Change to colon format (natty parses it wrongly when there is no year in the date)
         if (regexString.equals(TimeHourRegexString)) {
-            timeString = matcher.group("hours") + ":" + matcher.group("minutes");
+            return matcher.group("hours") + ":" + matcher.group("minutes");
+        } else {
+            return timeString;
         }
-        return timeString;
     }
 
     private String handleDateTwoDigitYear(String dateString, Matcher matcher) {
@@ -237,7 +241,7 @@ public class DateTimeParser {
                 if (thisFullYear.length() > 2) {
                     String fullYear = thisFullYear.substring(0, thisFullYear.length() - 2)
                         + matcher.group("year");
-                    dateString = dateString.replaceFirst(TwoDigitYearRegexString, fullYear);
+                    return dateString.replaceFirst(TwoDigitYearRegexString, fullYear);
                 }
             }
         } catch (IllegalArgumentException exception) { } // no group with "year"
@@ -249,9 +253,10 @@ public class DateTimeParser {
         // Special case: for DateWithSlashesRegexString format,
         // Swap month and day
         if (regexString.equals(DateWithSlashesRegexString)) {
-            dateString = matcher.group("month") + "/" + matcher.group("day") + "/" + matcher.group("year");
+            return matcher.group("month") + "/" + matcher.group("day")
+            +  (matcher.group("year") != null ? ("/" + matcher.group("year")) : "");
+        } else {
+            return dateString;
         }
-
-        return dateString;
     }
 }

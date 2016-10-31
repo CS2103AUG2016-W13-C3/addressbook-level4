@@ -109,6 +109,14 @@ public class DateTimeParserTest {
     }
 
     @Test
+    public void parseDateTime_DateWithSlashesNoYearHHmmWithColon_parsed() {
+        assertEquals(
+            LocalDateTime.of(2016, 11, 26, 13, 0),
+            dateTimeParser.parseDateTime("26/11 13:00").orElse(null)
+        );
+    }
+
+    @Test
     public void parseDateTime_presets_parsed() {
         // today
         assertEquals(
