@@ -34,11 +34,10 @@ public class Title {
 
     @Override
     public boolean equals(Object other) {
-        // short circuit if same object
-        // instanceof handles nulls
+        //check if same object, then check if values are equal
         return other == this
-                || (other instanceof Title
-                && value.equals(((Title) other).value));
+                || (other instanceof Title 
+                && value.equals(((Title) other).value)); 
     }
 
     @Override

@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 public class ClearCommandTest extends CommanDoGuiTest {
 
     @Test
-    public void clear_validCommand() {
+    public void clearCommand_validCommand_listCleared() {
         //verify a non-empty list can be cleared
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, td.getTypicalToDos()));
         assertClearCommandSuccess();
@@ -29,7 +29,7 @@ public class ClearCommandTest extends CommanDoGuiTest {
     }
     
     @Test
-    public void clear_invalidCommand() {
+    public void clearCommand_invalidCommand_reportErrorMessage() {
         //verify clear command does not take in extra params
         commandBox.runCommand("clear 1");
         assertResultMessage(String.format(Messages.INVALID_COMMAND_FORMAT, "clear"));

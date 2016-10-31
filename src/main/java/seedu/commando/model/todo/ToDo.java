@@ -144,6 +144,7 @@ public class ToDo implements ReadOnlyToDo {
      * Else, sets remove to-do's date finished, if there is.
      */
     public ToDo setIsFinished(boolean isFinished) {
+        
         if (isFinished) {
             if (dueDate != null && dueDate.recurrence != Recurrence.None) {
                 setDateFinished(dueDate.value);
@@ -228,8 +229,7 @@ public class ToDo implements ReadOnlyToDo {
 
     @Override
     public boolean equals(Object other) {
-        // short circuit if same object
-        // instanceof handles nulls
+        // check if identical object first then check if contains same attributes
         return other == this
                 || (other instanceof ReadOnlyToDo
                 && this.isSameStateAs((ReadOnlyToDo) other));
@@ -249,7 +249,8 @@ public class ToDo implements ReadOnlyToDo {
      * Called when any of its fields are updated
      */
     private void updateValue() {
-        value.getValue(); // Reset "invalidated" state of observable value
+        // Reset "invalidated" state of observable value and update
+        value.getValue(); 
         value.setValue(getText());
     }
 

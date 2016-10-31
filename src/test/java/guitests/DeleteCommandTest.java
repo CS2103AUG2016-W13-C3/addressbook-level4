@@ -19,7 +19,7 @@ import java.util.List;
 public class DeleteCommandTest extends CommanDoGuiTest {
 
     @Test
-    public void delete_one_index() {
+    public void deleteCommand_oneIndex_deleteFromList() {
         // delete the first in the list
         ToDo[] currentList = td.getTypicalToDos();
         int targetIndex = 1;
@@ -37,21 +37,21 @@ public class DeleteCommandTest extends CommanDoGuiTest {
     }
     
     @Test
-    public void delete_consective_index() {
+    public void deleteCommand_consectiveIndex_deleteFromList() {
         // delete consective indices i.e. delete todo with index 2 to 3
         ToDo[] currentList = td.getTypicalToDos();
         assertDeleteConsectiveSuccess(2, 3, currentList);
     }
     
     @Test
-    public void delete_multiple_index() {
+    public void deleteCommand_multipleIndex_deleteFromList() {
         // delete multiple indices
         ToDo[] currentList = td.getTypicalToDos();
         assertDeleteMultipleSuccess(currentList, 2, 4, 5);
     }
     
     @Test
-    public void delete_oneField_time() {
+    public void deleteCommand_deleteTime_removeTimeAndChangeToTask() {
         ToDo[] currentList = td.getTypicalToDos();
         // delete the time window
         commandBox.runCommand("delete 1 time");
@@ -63,7 +63,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
     }
 
     @Test
-    public void delete_oneField_tag() {
+    public void deleteCommand_deleteTag_allTagsRemoved() {
         ToDo[] currentList = td.getTypicalToDos();
         // delete the tag
         commandBox.runCommand("delete 1 tag");
@@ -76,7 +76,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
     
     
     @Test
-    public void delete_oneField_deadline() {
+    public void deleteCommand_deleteDeadline_MoveToBottomOfList() {
         ToDo[] currentList = td.getTypicalToDos();
         // delete the deadline
         commandBox.runCommand("delete 3 time");
@@ -88,12 +88,13 @@ public class DeleteCommandTest extends CommanDoGuiTest {
     }
 
     @Test
-    public void delete_invalidCommand() {
+    public void deleteCommand_invalidIndex_reportErrorMessage() {
         // invalid index
         ToDo[] currentList = td.getTypicalToDos();
         int targetIndex = currentList.length + 1;
         commandBox.runCommand("delete " + targetIndex);
         assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex));
+        
         targetIndex = 0;
         commandBox.runCommand("delete " + targetIndex);
         assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex));
@@ -101,13 +102,24 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         targetIndex = -1;
         commandBox.runCommand("delete " + targetIndex);
         assertResultMessage(String.format(Messages.TODO_ITEM_INDEX_INVALID, targetIndex));
-        // invalid params or empty index
-        commandBox.runCommand("delete abc 1");
-        assertResultMessage(Messages.MISSING_TODO_ITEM_INDEX + "\n" + Messages.DELETE_COMMAND_FORMAT);
-
+        
+        //empty index      
         commandBox.runCommand("delete   ");
         assertResultMessage(Messages.MISSING_TODO_ITEM_INDEX + "\n" + Messages.DELETE_COMMAND_FORMAT);
 
+    }
+    
+    @Test
+    public void deleteCommand_invalidParams_reportErrorMessage() {
+        commandBox.runCommand("delete abc 1");
+        assertResultMessage(Messages.MISSING_TODO_ITEM_INDEX + "\n" + Messages.DELETE_COMMAND_FORMAT);
+        
+        commandBox.runCommand("delete 1 abc");
+        assertResultMessage(String.format(Messages.INVALID_COMMAND_FORMAT, "delete") + "\n" + Messages.DELETE_COMMAND_FORMAT);
+    }
+    
+    @Test
+    public void deleteCommand_invalidCommandName_reportErrorMessage() {
         // invalid command name
         commandBox.runCommand("deleted 1");
         assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "deleted"));
@@ -117,11 +129,8 @@ public class DeleteCommandTest extends CommanDoGuiTest {
      * Runs the delete command to delete the single Todo at specified index and
      * confirms the result is correct.
      * 
-     * @param targetIndexOneIndexed
-     *            e.g. to delete the first Todos in the list, 1 should be given
-     *            as the target index.
-     * @param currentList
-     *            A copy of the current list of Todos (before deletion).
+     * @param targetIndex   The indexes Todos to be deleted in the list.
+     * @param currentList   A copy of the current list of Todos (before deletion).
      */
     private void assertDeleteSuccess(int targetIndexOneIndexed, final ToDo[] currentList) {
 

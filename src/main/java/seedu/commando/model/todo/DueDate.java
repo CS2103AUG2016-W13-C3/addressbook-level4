@@ -51,11 +51,10 @@ public class DueDate {
 
     @Override
     public boolean equals(Object other) {
-        // short circuit if same object
-        // instanceof handles nulls
-        return other == this
+        //check if same object, if not check if values are equal
+        return other == this 
                 || (other instanceof DueDate
-                && value.equals(((DueDate) other).value)
+                && (value.equals(((DueDate) other).value))
                 && recurrence.equals(((DueDate) other).recurrence));
     }
 

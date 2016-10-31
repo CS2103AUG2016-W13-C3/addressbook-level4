@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 public class RecallCommandTest extends CommanDoGuiTest {
 
     @Test
-    public void recall_nonEmptyList() {
+    public void recallCommand_nonEmptyList() {
         //recall when no finished items
         commandBox.runCommand("recall");
         assertListSize(0);
@@ -27,13 +27,13 @@ public class RecallCommandTest extends CommanDoGuiTest {
     }
 
     @Test
-    public void recall_emptyList() {
+    public void recallCommand_emptyList() {
         commandBox.runCommand("clear");
         assertRecallResult("recall title"); //no results
     }
 
     @Test
-    public void recall_invalidCommand() {
+    public void recallCommand_invalidCommand_reportErrorMessage() {
         commandBox.runCommand("recalltest");
         assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "recalltest"));
     }

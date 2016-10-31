@@ -1,7 +1,6 @@
 package seedu.commando.testutil;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.ReadOnlyToDoList;
