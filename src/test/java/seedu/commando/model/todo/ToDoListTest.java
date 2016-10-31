@@ -30,44 +30,64 @@ public class ToDoListTest {
         toDoList = new ToDoList();
         toDoListItem1 = new ToDoBuilder("title").build();
         toDoListItem2 = new ToDoBuilder("title 2").withTags("tag1", "tag2")
-                .withDueDate(LocalDateTime.of(2016, 5, 1, 20, 1))
-                .finish(LocalDateTime.of(2016, 6, 3, 20, 20)).build();
+            .withDueDate(LocalDateTime.of(2016, 5, 1, 20, 1))
+            .finish(LocalDateTime.of(2016, 6, 3, 20, 20)).build();
         toDoList.add(toDoListItem1);
         toDoList.add(toDoListItem2);
         toDoList2Item1 = new ToDoBuilder("title 3")
-                .withDateRange(LocalDateTime.of(2016, 3, 1, 20, 1), LocalDateTime.of(2016, 4, 1, 20, 1)).build();
+            .withDateRange(LocalDateTime.of(2016, 3, 1, 20, 1), LocalDateTime.of(2016, 4, 1, 20, 1)).build();
         toDoList2 = new ToDoList();
         toDoList2.add(toDoList2Item1);
     }
 
     @Test
-    public void ToDoListCopy() {
+    public void ToDoList_copyConstructor_equals() {
         ToDoList copied = new ToDoList(toDoList);
         assertEquals(copied, toDoList);
     }
 
     @Test
-    public void getToDos() throws IllegalValueException {
+    public void getToDos_setup_sizeAndContains() throws IllegalValueException {
         assertTrue(toDoList.getToDos().size() == 2);
         assertTrue(toDoList.getToDos().contains(toDoListItem1));
         assertTrue(toDoList.getToDos().contains(toDoListItem2));
     }
 
     @Test
-    public void reset() {
+    public void reset_anotherToDoList_equals() {
         toDoList.reset(toDoList2.getToDos());
         assertEquals(toDoList, toDoList2);
     }
 
     @Test
-    public void add() throws IllegalValueException {
+    public void equals_withSingleToDo_equals() throws IllegalValueException {
+        ReadOnlyToDo toDo = new ToDoBuilder("title").build();
+
+        ReadOnlyToDoList toDoList1 = new ToDoList().add(toDo);
+        ReadOnlyToDoList toDoList2 = new ToDoList().add(toDo);
+
+        assertEquals(toDoList1, toDoList2);
+    }
+
+    @Test
+    public void hashCode_withSingleToDo_equals() throws IllegalValueException {
+        ReadOnlyToDo toDo = new ToDoBuilder("title").build();
+
+        ReadOnlyToDoList toDoList1 = new ToDoList().add(toDo);
+        ReadOnlyToDoList toDoList2 = new ToDoList().add(toDo);
+
+        assertEquals(toDoList1.hashCode(), toDoList2.hashCode());
+    }
+
+    @Test
+    public void add_newToDo_contains() throws IllegalValueException {
         assertFalse(toDoList.getToDos().contains(toDoList2Item1));
         toDoList.add(toDoList2Item1);
         assertTrue(toDoList.getToDos().contains(toDoList2Item1));
     }
 
     @Test
-    public void remove_valid() throws IllegalValueException {
+    public void remove_existingToDo_notContains() throws IllegalValueException {
         assertTrue(toDoList.getToDos().contains(toDoListItem1));
         toDoList.remove(toDoListItem1);
         assertFalse(toDoList.getToDos().contains(toDoListItem1));

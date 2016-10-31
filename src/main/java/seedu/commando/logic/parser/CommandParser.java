@@ -102,11 +102,10 @@ public class CommandParser {
 
     /**
      * Extract a trailing date range from the input.
-     * Date range is defined by: "from (valid_datetime) to (valid_datetime)" + optional "(valid recurrence),
+     * Date range is defined by: "from (valid_datetime) to (valid_datetime)" + an optional "(valid recurrence)",
      * and must be at the end of the string to be considered.
-     * If a trailing date range pattern is found but both datetimes are not valid, also returns empty
      * @throws IllegalValueException if a trailing date range pattern is found but either one of the datetime is valid, other invalid,
-     * or parsed DateRange is not invalid
+     *          or parsed DateRange is not invalid
      */
     public Optional<DateRange> extractTrailingDateRange() throws IllegalValueException {
         final Matcher matcher = DATERANGE_PATTERN.matcher(input);
@@ -280,6 +279,7 @@ public class CommandParser {
 			} catch (NumberFormatException exception) {
 				assert false : "Shouldn't be able to fail parsing of integer based on pattern";
 			}
+
 			if (firstInt > secondInt) {
 				throw new IllegalValueException(Messages.INDEXRANGE_CONSTRAINTS);
 			} else {

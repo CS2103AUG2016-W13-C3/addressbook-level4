@@ -5,8 +5,12 @@ import static seedu.commando.testutil.TestHelper.wasToDoListChangedEventPosted;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Before;
@@ -52,19 +56,19 @@ public class ImportCommandTest {
     }
 
     @Test
-    public void execute_import_emptyPath() {
+    public void execute_importEmptyPath_error() {
         CommandResult result = logic.execute("import");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_IMPORT_PATH
-                + "\n" + Messages.getInvalidCommandFormatMessage("import").get(), result.getFeedback());
+                + "\n" + Messages.getCommandFormatMessage("import").get(), result.getFeedback());
         result = logic.execute("import    ");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_IMPORT_PATH
-                + "\n" + Messages.getInvalidCommandFormatMessage("import").get(), result.getFeedback());
+                + "\n" + Messages.getCommandFormatMessage("import").get(), result.getFeedback());
     }
 
     @Test
-    public void execute_import_invalidPath() {
+    public void execute_importInvalidPath_error() {
         CommandResult result = logic.execute("import 2\\");
         assertTrue(result.hasError());
         assertEquals(Messages.MISSING_IMPORT_FILE, result.getFeedback());
@@ -75,21 +79,33 @@ public class ImportCommandTest {
         assertTrue(result.hasError());
         assertEquals(Messages.IMPORT_COMMAND_FILE_NOT_EXIST, result.getFeedback());
     }
+    
+    @Test
+    public void execute_importInvalidData_error() throws IOException {
+        File temp = folder.newFile();
+        ArrayList<String> lines = new ArrayList<String>();
+        lines.add("somewrongdata");
+        Files.write(temp.toPath(), lines, Charset.forName("UTF-8"));
+        
+        CommandResult result = logic.execute("import " + temp.getPath());
+        assertTrue(result.hasError());
+        assertEquals(Messages.IMPORT_COMMAND_INVALID_DATA, result.getFeedback());
+    }
 
     @Test
-    public void execute_import_validPath() throws IOException {
+    public void execute_importValidPath_imported() throws IOException {
+        String exportFilePath = folder.getRoot() + "/test.xml";
+
         logic.execute("add test1");
         logic.execute("add test2");
-        logic.execute("export test.xml");
+        logic.execute("export " + exportFilePath);
         logic.execute("clear");
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
         assertTrue(logic.getToDoList().getToDos().size() == 0);
 
-        CommandResult result = logic.execute("import test.xml");
+        CommandResult result = logic.execute("import " + exportFilePath);
         assertFalse(result.hasError());
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
         assertTrue(logic.getToDoList().getToDos().size() == 2);
-
-        Files.delete(Paths.get("test.xml"));
     }
 }

@@ -1,5 +1,9 @@
 package seedu.commando.ui;
 
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -9,8 +13,11 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.model.ui.UiToDo;
 import seedu.commando.ui.ToDoListViewCell.Card;
+
+import java.util.ArrayList;
 
 /**
  * Panel containing the list of to-dos
@@ -60,7 +67,15 @@ public class EventListPanel extends UiPart {
     }
 
     private void setConnections(ObservableList<UiToDo> events) {
-        eventListView.setItems(events);
+        ObservableList<UiToDo> eventsForUi = FXCollections.observableArrayList(events);
+        events.addListener(new ListChangeListener<UiToDo>() {
+            @Override
+            public void onChanged(Change<? extends UiToDo> c) {
+                Platform.runLater(() -> eventsForUi.setAll(events));
+            }
+        });
+
+        eventListView.setItems(eventsForUi);
         eventListView.setCellFactory(listView -> new ToDoListViewCell(Card.Event));
     }
 

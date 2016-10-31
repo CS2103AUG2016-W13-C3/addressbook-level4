@@ -10,7 +10,6 @@
 	AnchorPane.topAnchor="0.0">
 	<stylesheets>
 		<URL value="@DarkTheme.css" />
-		<URL value="@Extensions.css" />
 	</stylesheets>
 	<children>
 		<ListView fx:id="taskListView" VBox.vgrow="ALWAYS" />

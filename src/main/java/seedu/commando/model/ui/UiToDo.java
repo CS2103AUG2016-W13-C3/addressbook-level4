@@ -95,8 +95,10 @@ public class UiToDo implements ReadOnlyToDo {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-            || (other instanceof UiToDo // instanceof handles nulls
+        // short circuit if same object
+        // instanceof handles nulls
+        return other == this
+            || (other instanceof UiToDo
             && this.isSameStateAs((UiToDo) other)
             && index == ((UiToDo) other).index);
     }

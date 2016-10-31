@@ -40,15 +40,12 @@ public class UserPrefs {
 
     @Override
     public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof UserPrefs)) { // this handles null as well.
-            return false;
-        }
-
-        return (guiSettings.equals(((UserPrefs) other).guiSettings)
-            && toDoListFilePath.getValue().equals(((UserPrefs) other).toDoListFilePath.getValue()));
+        // short circuit if same object
+        // instanceof handles nulls
+        return other == this
+            || (other instanceof UserPrefs
+            && (guiSettings.equals(((UserPrefs) other).guiSettings)
+            && toDoListFilePath.getValue().equals(((UserPrefs) other).toDoListFilePath.getValue())));
     }
 
     @Override

@@ -26,17 +26,22 @@ public class DateTimeParser {
     private static final String DayWordRegexString = "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri|Sat|Sun";
     private static final String YearRegexString = "(?<year>\\d{4}|\\d{2})";
     private static final String TwoDigitYearRegexString = "\\d{2}$";
+    private static final String MonthRegexString = "(0?[1-9])|10|11|12";
+    private static final String DayOfMonthRegexString = "([12]\\d)|([3][01])|(0?[1-9])";
+    private static final String Hours24RegexString = "(1\\d)|20|21|22|23|(0?\\d)";
+    private static final String Hours12RegexString = "11|12|(0?[1-9])";
+    private static final String MinutesRegexString = "([1234]\\d)|(5[0-9])|(0?\\d)";
 
-    private static final String DateWithSlashesRegexString = "(?<month>\\d{1,2})\\/(?<day>\\d{1,2})(\\/" + YearRegexString + ")?";
-    private static final String DateWithMonthWordRegexString = "(\\d{1,2})((th|rd|st|nd)?)\\s+" +
+    private static final String DateWithSlashesRegexString = "(?<day>" + DayOfMonthRegexString + ")\\/(?<month>" + MonthRegexString + ")(\\/" + YearRegexString + ")?";
+    private static final String DateWithMonthWordRegexString = "((" + DayOfMonthRegexString + ")(th|rd|st|nd)?)\\s+" +
         "(" + MonthWordRegexString + ")(\\s+" + YearRegexString + ")?";
     private static final String DateWithMonthWordReversedRegexString = "(" + MonthWordRegexString + ")\\s+" +
-        "(\\d{1,2})(th|rd|st|nd)?(\\s+" + YearRegexString + ")?";
+        "(" + DayOfMonthRegexString + ")(th|rd|st|nd)?(\\s+" + YearRegexString + ")?";
     private static final String DateWithDayWordRegexString = "((coming|next)\\s+)?(" + DayWordRegexString + ")";
     private static final String DateWithLaterAgoRegexString = "((\\d+\\d)|([2-9]))\\s+(days|weeks|months|years)\\s+(later|ago)";
     private static final String DateWithNextRegexString = "next (week|month|year)";
     private static final String TimeNightRegexString = "(this\\s+)?(night|tonight)";
-    private static final String TimeHourRegexString = "(?<hours>\\d{1,2})(?<minutes>\\d{2})h";
+    private static final String TimeHourRegexString = "(?<hours>" + Hours24RegexString + ")(?<minutes>" + MinutesRegexString + ")h";
 
     private static final String[] supportedDateRegexStrings = new String[] {
         DateWithSlashesRegexString,
@@ -49,15 +54,21 @@ public class DateTimeParser {
     };
 
     private static final String[] supportedTimeRegexStrings = new String[] {
-        "(\\d{2})(\\.|:)(\\d{2})",
+        "(" + Hours24RegexString + ")(\\.|:)(" + MinutesRegexString + ")",
         TimeHourRegexString,
-        "(\\d{1,2})(\\.|:)?(\\d{2})?(am|pm)",
+        "(" + Hours12RegexString + ")(\\.|:)?(" + MinutesRegexString + ")?(am|pm)",
         "(this\\s+)?(morning|afternoon|noon|evening|midnight)",
         TimeNightRegexString
     };
+    private static final String InitializationDateString = "today";
 
     private Parser parser = new Parser();
     private LocalDate lastLocalDate; // Date of last parsed datetime
+
+    public DateTimeParser() {
+        parseDateTime(InitializationDateString);
+    }
+
 
     /**
      * Resets any contextual info used based on history of parsing
@@ -130,7 +141,7 @@ public class DateTimeParser {
     /**
      * Determines with regex whether this is a supported datetime
      * Preprocesses it to before being parsed in natty
-      * Returns Optional.empty() if not supported
+     * Returns empty if not supported
      */
     private Optional<String> preprocessInput(String input) {
         input = input.trim();
@@ -147,29 +158,9 @@ public class DateTimeParser {
 
             // If matched from the start
             if (matcher.find() && matcher.start() == 0) {
-
-                // Special case: for DateWithSlashesRegexString format,
-                // Swap month and day
-                if (regexString.equals(DateWithSlashesRegexString)) {
-                    dateString = matcher.group("day") + "/" + matcher.group("month") + "/" + matcher.group("year");
-                } else {
-                    dateString = matcher.group().trim();
-                }
-
-                // Tweak for year: if it is a 2 digit year, change it to 4
-                // Check if year string exists in datetime
-                try {
-                    if (matcher.group("year") != null && matcher.group("year").length() == 2) {
-                        // Get string version of today's year
-                        String thisFullYear = String.valueOf(LocalDateTime.now().getYear());
-                        // If today's year is more than 2 digits, append the front (size - 2) digits
-                        if (thisFullYear.length() > 2) {
-                            String fullYear = thisFullYear.substring(0, thisFullYear.length() - 2)
-                                + matcher.group("year");
-                            dateString = dateString.replaceFirst(TwoDigitYearRegexString, fullYear);
-                        }
-                    }
-                } catch (IllegalArgumentException exception) { } // no group with "year"
+                dateString = matcher.group().trim();
+                dateString = handleDateWithSlashes(dateString, regexString, matcher);
+                dateString = handleDateTwoDigitYear(dateString, matcher);
 
                 // Extract out date string from text
                 input = input.substring(matcher.end()).trim();
@@ -186,38 +177,81 @@ public class DateTimeParser {
 
             // If matched from the start
             if (matcher.find() && matcher.start() == 0) {
-
-                // Special case: for TimeHourRegexString format,
-                // Change to colon format (natty parses it wrongly when there is no year in the date)
-                if (regexString.equals(TimeHourRegexString)) {
-                    timeString = matcher.group("hours") + ":" + matcher.group("minutes");
-                }
-                // Special case: for TimeNightRegexString format,
-                // Set time to 9pm
-                else if (regexString.equals(TimeNightRegexString)) {
-                    timeString = NightLocalTime.toString();
-                } else {
-                    timeString = matcher.group().trim();
-                }
+                timeString = matcher.group().trim();
+                timeString = handleTimeFormatHour(timeString, regexString, matcher);
+                timeString = handleTimeNight(timeString, regexString);
 
                 input = input.substring(matcher.end()).trim();
-
                 break; // exit loop
             }
         }
 
         // If there is any characters left in text, invalid datetime
-        if (!input.isEmpty()) {
+        if (!input.trim().isEmpty()) {
             return Optional.empty();
         } else {
+            String dateTimeString = dateString + " " + timeString;
 
-            // Special case: if DateWithLaterRegexString is used,
-            // swap date and time (for parsing in natty)
-            if (dateString.matches(DateWithLaterAgoRegexString)) {
-                return Optional.of(timeString + " " + dateString);
-            } else {
-                return Optional.of(dateString + " " + timeString);
-            }
+            dateTimeString = handleDateTimeWithLaterAgo(dateString, timeString, dateTimeString);
+
+            return Optional.of(dateTimeString);
         }
+    }
+
+    private String handleDateTimeWithLaterAgo(String dateString, String timeString, String dateTimeString) {
+        // Special case: if DateWithLaterRegexString is used,
+        // swap date and time (for parsing in natty)
+        if (dateString.matches(DateWithLaterAgoRegexString)) {
+            dateTimeString = timeString + " " + dateString;
+        }
+
+        return dateTimeString;
+    }
+
+    private String handleTimeNight(String timeString, String regexString) {
+        // Special case: for TimeNightRegexString format,
+        // Set time to 9pm
+        if (regexString.equals(TimeNightRegexString)) {
+            timeString = NightLocalTime.toString();
+        }
+        return timeString;
+    }
+
+    private String handleTimeFormatHour(String timeString, String regexString, Matcher matcher) {
+        // Special case: for TimeHourRegexString format,
+        // Change to colon format (natty parses it wrongly when there is no year in the date)
+        if (regexString.equals(TimeHourRegexString)) {
+            timeString = matcher.group("hours") + ":" + matcher.group("minutes");
+        }
+        return timeString;
+    }
+
+    private String handleDateTwoDigitYear(String dateString, Matcher matcher) {
+        // Tweak for year: if it is a 2 digit year, change it to 4
+        // Check if year string exists in datetime
+        try {
+            if (matcher.group("year") != null && matcher.group("year").length() == 2) {
+                // Get string version of today's year
+                String thisFullYear = String.valueOf(LocalDateTime.now().getYear());
+                // If today's year is more than 2 digits, append the front (size - 2) digits
+                if (thisFullYear.length() > 2) {
+                    String fullYear = thisFullYear.substring(0, thisFullYear.length() - 2)
+                        + matcher.group("year");
+                    dateString = dateString.replaceFirst(TwoDigitYearRegexString, fullYear);
+                }
+            }
+        } catch (IllegalArgumentException exception) { } // no group with "year"
+
+        return dateString;
+    }
+
+    private String handleDateWithSlashes(String dateString, String regexString, Matcher matcher) {
+        // Special case: for DateWithSlashesRegexString format,
+        // Swap month and day
+        if (regexString.equals(DateWithSlashesRegexString)) {
+            dateString = matcher.group("month") + "/" + matcher.group("day") + "/" + matcher.group("year");
+        }
+
+        return dateString;
     }
 }
