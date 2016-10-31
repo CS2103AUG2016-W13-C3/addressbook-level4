@@ -1,35 +1,35 @@
 package seedu.commando.model.todo;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
-
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.commons.util.CollectionUtil;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 //@@author A0139697H
 /**
- * Represents the Date Range of a to-do
+ * Represents a date range of a to-do.
+ * Ignores the seconds and nano-seconds field of its datetimes.
  */
 public class DateRange {
-
     public final LocalDateTime startDate, endDate;
     public final Recurrence recurrence;
 
     /**
-     * @see #DateRange(LocalDateTime, LocalDateTime, Recurrence), but with Recurrence.None
+     * @see #DateRange(LocalDateTime, LocalDateTime, Recurrence), but with no recurrence.
      */
     public DateRange(LocalDateTime startDate, LocalDateTime endDate) throws IllegalValueException {
         this(startDate, endDate, Recurrence.None);
     }
 
     /**
-     * Constructor for a date range
-     * Asserts parameters are non-null
+     * Constructor for a date range.
+     * Asserts parameters are non-null.
      * Conditions for validity:
-     * - {@param endDate} must not be before {@param startDate}
-     * - gap between {@param startDate} and {@param endDate} must not be more than the recurrence interval
-     * @throws IllegalValueException if given set of values is invalid
+     *   - {@param endDate} must not be before {@param startDate}
+     *   - gap between {@param startDate} and {@param endDate} must not be more than the recurrence interval
+     * @throws IllegalValueException if given set of arguments is invalid
      */
     public DateRange(LocalDateTime startDate, LocalDateTime endDate, Recurrence recurrence) 
             throws IllegalValueException {
@@ -37,8 +37,8 @@ public class DateRange {
 
         checkIfValid(startDate, endDate, recurrence);
 
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = startDate.withSecond(0).withNano(0);
+        this.endDate = endDate.withSecond(0).withNano(0);
         this.recurrence = recurrence;
     }
 
@@ -54,22 +54,14 @@ public class DateRange {
     private static void checkIfValid(LocalDateTime startDate, LocalDateTime endDate, Recurrence recurrence)
         throws IllegalValueException {
 
+        // Checks if start date is before end date
         if (endDate.isBefore(startDate)) {
             throw new IllegalValueException(Messages.TODO_DATERANGE_END_MUST_AFTER_START + "\n" + Messages.DATE_FORMAT);
         }
 
-        boolean isRecurrenceValid = true;
-        switch (recurrence) {
-            case None: break;
-            case Daily: isRecurrenceValid = !startDate.plusDays(1).isBefore(endDate); break;
-            case Weekly: isRecurrenceValid = !startDate.plusWeeks(1).isBefore(endDate); break;
-            case Monthly: isRecurrenceValid = !startDate.plusMonths(1).isBefore(endDate); break;
-            case Yearly: isRecurrenceValid = !startDate.plusYears(1).isBefore(endDate); break;
-            default:
-                assert false: "Should cover all recurrences";
-        }
-
-        if (!isRecurrenceValid) {
+        // Checks gap between dates must not be more than the recurrence interval
+        if (recurrence != Recurrence.None
+            && recurrence.getNextDate(startDate).isBefore(endDate)) {
             throw new IllegalValueException(Messages.TODO_DATERANGE_RECURRENCE_INVALID + "\n" + Messages.DATE_FORMAT);
         }
     }
@@ -82,8 +74,10 @@ public class DateRange {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof DateRange // instanceof handles nulls
+        // short circuit if same object
+        // instanceof handles nulls
+        return other == this
+                || (other instanceof DateRange
                 && (startDate.equals(((DateRange) other).startDate) 
                 && endDate.equals(((DateRange) other).endDate)
                 && recurrence.equals(((DateRange) other).recurrence))); // state check

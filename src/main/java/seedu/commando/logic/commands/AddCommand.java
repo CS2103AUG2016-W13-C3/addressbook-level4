@@ -3,10 +3,11 @@ package seedu.commando.logic.commands;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.Model;
-import seedu.commando.model.ToDoListChange;
+import seedu.commando.model.todo.ToDoListChange;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.*;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Set;
 
@@ -64,6 +65,14 @@ public class AddCommand extends Command {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.TODO_ADDED, toDo.getTitle().toString()));
+        String feedback = String.format(Messages.ADD_COMMAND, toDo.getTitle().toString());
+
+        // If event already over, warn user
+        if (toDo.getDateRange().isPresent()
+            && toDo.getDateRange().get().endDate.isBefore(LocalDateTime.now())) {
+            feedback += "\n" + Messages.ADD_COMMAND_EVENT_OVER;
+        }
+
+        return new CommandResult(feedback);
     }
 }

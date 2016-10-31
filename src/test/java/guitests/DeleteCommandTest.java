@@ -59,7 +59,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         currentList = TestUtil.addToDosToList(currentList, currentList.length, td.toDoItem2.clearTimeConstraint());
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
 
-        assertResultMessage(String.format(Messages.TODO_EDITED, "[1]"));
+        assertResultMessage(String.format(Messages.EDIT_COMMAND, "[1]"));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         currentList = TestUtil.addToDosToList(currentList, 0, td.toDoItem2.setTags(Collections.emptySet()));
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
 
-        assertResultMessage(String.format(Messages.TODO_EDITED, "[1]"));
+        assertResultMessage(String.format(Messages.EDIT_COMMAND, "[1]"));
     }
     
     
@@ -84,7 +84,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         currentList = TestUtil.addToDosToList(currentList, currentList.length, td.toDoItem4.clearTimeConstraint());
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
 
-        assertResultMessage(String.format(Messages.TODO_EDITED, "[3]"));
+        assertResultMessage(String.format(Messages.EDIT_COMMAND, "[3]"));
     }
 
     @Test
@@ -134,7 +134,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedRemainder));
 
         // confirm the result message is correct
-        assertResultMessage(String.format(Messages.TODO_DELETED, "[" + targetIndexOneIndexed + "]"));
+        assertResultMessage(String.format(Messages.DELETE_COMMAND, "[" + targetIndexOneIndexed + "]"));
     }
 
     private void assertDeleteConsectiveSuccess(int startIndex, int endIndex, final ToDo[] currentList) {
@@ -155,7 +155,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         deletedIndices = deletedIndices.substring(0, deletedIndices.length() - 2) + "]";
 
         // confirm the result message is correct
-        assertResultMessage(String.format(Messages.TODO_DELETED, deletedIndices));
+        assertResultMessage(String.format(Messages.DELETE_COMMAND, deletedIndices));
     }
     
     private void assertDeleteMultipleSuccess(final ToDo[] currentList, int... indices) {
@@ -177,7 +177,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedRemainder));
 
         // confirm the result message is correct
-        assertResultMessage(String.format(Messages.TODO_DELETED, Arrays.toString(indices)));
+        assertResultMessage(String.format(Messages.DELETE_COMMAND, Arrays.toString(indices)));
     }
 
 }

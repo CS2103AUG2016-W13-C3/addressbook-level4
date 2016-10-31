@@ -1,6 +1,5 @@
 package seedu.commando.logic.parser;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,17 +19,13 @@ public class DateTimeParserTest {
         dateTimeParser = new DateTimeParser();
     }
 
-    @After
-    public void teardown() {
-    }
-
     @Test
-    public void parseDateTime_emptyString()  {
+    public void parseDateTime_emptyString_empty() {
         assertFalse(dateTimeParser.parseDateTime("").isPresent());
     }
 
     @Test
-    public void parseDateTime_ddMMMyyyy_colonHHmm()  {
+    public void parseDateTime_ddMMMyyyy_colonHHmm_parsed() {
         assertEquals(
             LocalDateTime.of(2016, 2, 28, 23, 59),
             dateTimeParser.parseDateTime("28 Feb 2016 23:59").orElse(null)
@@ -38,7 +33,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_ddMMM_HHmmPm()  {
+    public void parseDateTime_ddMMM_HHmmPm_parsed() {
         assertEquals(
             LocalDateTime.of(now.getYear(), 2, 28, 21, 30),
             dateTimeParser.parseDateTime("28 Feb 9.30pm").orElse(null)
@@ -46,7 +41,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_ddMMMyy_h()  {
+    public void parseDateTime_ddMMMyyh_parsed() {
         assertEquals(
             LocalDateTime.of(2016, 2, 28, 23, 59),
             dateTimeParser.parseDateTime("28 Feb 16 2359h").orElse(null)
@@ -54,7 +49,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_ddMMM()  {
+    public void parseDateTime_ddMMM_parsed() {
         assertEquals(
             LocalDateTime.of(now.getYear(), 2, 28,
                 DateTimeParser.DefaultLocalTime.getHour(),
@@ -64,7 +59,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_dateWithSlashes()  {
+    public void parseDateTime_dateWithSlashes_parsed() {
         assertEquals(
             LocalDateTime.of(2016, 12, 11,
                 DateTimeParser.DefaultLocalTime.getHour(),
@@ -81,7 +76,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_HHmmh()  {
+    public void parseDateTime_HHmmh_parsed() {
         assertEquals(
             LocalDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), 19, 19),
             dateTimeParser.parseDateTime("1919h").orElse(null)
@@ -90,7 +85,7 @@ public class DateTimeParserTest {
 
     // Underlying natty doesn't parse this properly
     @Test
-    public void parseDateTime_DateWithoutYearAndHHmmh()  {
+    public void parseDateTime_DateWithoutYearAndHHmmh_parsed() {
         assertEquals(
             LocalDateTime.of(now.getYear(), 10, 31, 19, 19),
             dateTimeParser.parseDateTime("31 Oct 1919h").orElse(null)
@@ -98,7 +93,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_ordinalFullMonth_HHAm()  {
+    public void parseDateTime_ordinalFullMonthHHAm_parsed() {
         assertEquals(
             LocalDateTime.of(now.getYear(), 1, 1, 11, 0),
             dateTimeParser.parseDateTime("1st January 11am").orElse(null)
@@ -106,7 +101,23 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_presets()  {
+    public void parseDateTime_DateWithSlashesHHmmh_parsed() {
+        assertEquals(
+            LocalDateTime.of(2016, 11, 14, 20, 1),
+            dateTimeParser.parseDateTime("14/11/2016 2001h").orElse(null)
+        );
+    }
+
+    @Test
+    public void parseDateTime_DateWithSlashesNoYearHHmmWithColon_parsed() {
+        assertEquals(
+            LocalDateTime.of(2016, 11, 26, 13, 0),
+            dateTimeParser.parseDateTime("26/11 13:00").orElse(null)
+        );
+    }
+
+    @Test
+    public void parseDateTime_presets_parsed() {
         // today
         assertEquals(
             LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(),
@@ -142,7 +153,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_extraSpaces()  {
+    public void parseDateTime_extraSpaces_parsed() {
         assertEquals(
             LocalDateTime.of(2016, 4, 22, 8, 0),
             dateTimeParser.parseDateTime("22     April   2016  0800h ").orElse(null)
@@ -150,7 +161,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_reversedMonthWord()  {
+    public void parseDateTime_reversedMonthWord_parsed() {
         assertEquals(
             LocalDateTime.of(2011, 6, 21, 13, 13),
             dateTimeParser.parseDateTime("June 21 2011 1.13pm").orElse(null)
@@ -158,7 +169,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_inferDateFromPreviousParse()  {
+    public void parseDateTime_inferDateFromPreviousParse_inferred() {
         // In multiple parses, date should be inferred from previous parse
         dateTimeParser.parseDateTime("10 Jan 2016 10am");
 
@@ -174,31 +185,53 @@ public class DateTimeParserTest {
     }
 
     @Test
-        public void parseDateTime_invalidDate()  {
-        // Use of Boundary value analysis
+    public void parseDateTime_invalidDates_empty() {
         assertFalse(dateTimeParser.parseDateTime("No date").isPresent());
+
+        // Use of Boundary value analysis
+        // Close to date with slashes format
         assertFalse(dateTimeParser.parseDateTime("10/2016").isPresent());
         assertFalse(dateTimeParser.parseDateTime("1/2/3/4").isPresent());
+
+        // Close to date with month word formats
         assertFalse(dateTimeParser.parseDateTime("1 May be").isPresent());
         assertFalse(dateTimeParser.parseDateTime("10 Marching").isPresent());
         assertFalse(dateTimeParser.parseDateTime("Feb20").isPresent());
+
+        // Close to relative date formats
         assertFalse(dateTimeParser.parseDateTime("wed thurs").isPresent());
         assertFalse(dateTimeParser.parseDateTime("coming dayum").isPresent());
         assertFalse(dateTimeParser.parseDateTime("next weekday").isPresent());
+
+        // No such dates
+        assertFalse(dateTimeParser.parseDateTime("32 Feb").isPresent());
+        assertFalse(dateTimeParser.parseDateTime("-1/1/2016").isPresent());
     }
 
     @Test
-    public void parseDateTime_invalidTime()  {
-        // Use of Boundary value analysis
-        assertFalse(dateTimeParser.parseDateTime("10cm").isPresent());
-        assertFalse(dateTimeParser.parseDateTime("2359").isPresent());
+    public void parseDateTime_invalidTimes_empty() {
         assertFalse(dateTimeParser.parseDateTime("0").isPresent());
         assertFalse(dateTimeParser.parseDateTime("31").isPresent());
+
+        // Use of Boundary value analysis
+        // Close to "pm" format
+        assertFalse(dateTimeParser.parseDateTime("10cm").isPresent());
+
+        // Close to "hhmm"h format
+        assertFalse(dateTimeParser.parseDateTime("2359").isPresent());
         assertFalse(dateTimeParser.parseDateTime("h").isPresent());
+
+        // Close to colon format
+        assertFalse(dateTimeParser.parseDateTime("23::10").isPresent());
+        assertFalse(dateTimeParser.parseDateTime("23:110").isPresent());
+
+        // No such times
+        assertFalse(dateTimeParser.parseDateTime("10059h").isPresent());
+        assertFalse(dateTimeParser.parseDateTime("44:44").isPresent());
     }
 
     @Test
-    public void resetContext_inferredDate()  {
+    public void resetContext_afterParseDateTime_noInferrence() {
         dateTimeParser.parseDateTime("10 Jan 2016 10am");
 
         dateTimeParser.resetContext();
@@ -208,51 +241,51 @@ public class DateTimeParserTest {
             dateTimeParser.parseDateTime("11pm").orElse(null)
         );
     }
-    
+
     //@@author A0122001M
-    
+
     @Test
-    public void parseDateTime_relativeDayOfWeek()  {
+    public void parseDateTime_relativeDayOfWeek_parsed() {
         LocalDateTime ldt = now.plusDays(1).with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
 
         assertEquals(
-                LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),                 
-                    DateTimeParser.DefaultLocalTime.getHour(),
-                    DateTimeParser.DefaultLocalTime.getMinute()),
-                dateTimeParser.parseDateTime("coming Friday").orElse(null)
+            LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
+                DateTimeParser.DefaultLocalTime.getHour(),
+                DateTimeParser.DefaultLocalTime.getMinute()),
+            dateTimeParser.parseDateTime("coming Friday").orElse(null)
         );
-        
+
         assertEquals(
-                LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),                 
-                    DateTimeParser.DefaultLocalTime.getHour(),
-                    DateTimeParser.DefaultLocalTime.getMinute()),
-                dateTimeParser.parseDateTime("Friday").orElse(null)
+            LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
+                DateTimeParser.DefaultLocalTime.getHour(),
+                DateTimeParser.DefaultLocalTime.getMinute()),
+            dateTimeParser.parseDateTime("Friday").orElse(null)
         );
 
         LocalDateTime nextLdt = now.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
         assertEquals(
-                LocalDateTime.of(nextLdt.getYear(), nextLdt.getMonthValue(), nextLdt.getDayOfMonth(),
-                    DateTimeParser.DefaultLocalTime.getHour(),
-                    DateTimeParser.DefaultLocalTime.getMinute()),
-                dateTimeParser.parseDateTime("next sun").orElse(null)
+            LocalDateTime.of(nextLdt.getYear(), nextLdt.getMonthValue(), nextLdt.getDayOfMonth(),
+                DateTimeParser.DefaultLocalTime.getHour(),
+                DateTimeParser.DefaultLocalTime.getMinute()),
+            dateTimeParser.parseDateTime("next sun").orElse(null)
         );
 
         // With time
         assertEquals(
             LocalDateTime.of(nextLdt.getYear(), nextLdt.getMonthValue(), nextLdt.getDayOfMonth(),
-               13, 13),
+                13, 13),
             dateTimeParser.parseDateTime("next sun 1313h").orElse(null)
         );
     }
-    
+
     @Test
-    public void parseDateTime_relativeDaysLaterAgo()  {
+    public void parseDateTime_relativeDaysLaterAgo_parsed() {
         LocalDateTime plus12Days = now.plusDays(12);
         assertEquals(
-                LocalDateTime.of(plus12Days.getYear(), plus12Days.getMonthValue(), plus12Days.getDayOfMonth(),
-                    DateTimeParser.DefaultLocalTime.getHour(),
-                    DateTimeParser.DefaultLocalTime.getMinute()),
-                dateTimeParser.parseDateTime("12 days later").orElse(null)
+            LocalDateTime.of(plus12Days.getYear(), plus12Days.getMonthValue(), plus12Days.getDayOfMonth(),
+                DateTimeParser.DefaultLocalTime.getHour(),
+                DateTimeParser.DefaultLocalTime.getMinute()),
+            dateTimeParser.parseDateTime("12 days later").orElse(null)
         );
 
         LocalDateTime minus8Days = now.minusDays(8);
@@ -270,7 +303,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_relativeWeeksMonthsYearsLaterAgo()  {
+    public void parseDateTime_relativeWeeksMonthsYearsLaterAgo_parsed() {
         LocalDateTime ldt = now.plusWeeks(2);
         assertEquals(
             LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
@@ -310,7 +343,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_nextWeekMonthYear()  {
+    public void parseDateTime_nextWeekMonthYear_parsed() {
         LocalDateTime ldt = now.plusWeeks(1);
         assertEquals(
             LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
@@ -337,7 +370,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_timePresets()  {
+    public void parseDateTime_timePresets_parsed() {
         assertEquals(
             LocalDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(),
                 DateTimeParser.MorningLocalTime.getHour(),

@@ -45,11 +45,19 @@ public class StorageStub extends ComponentManager implements Storage {
 
     @Override
     public void saveToDoList(ReadOnlyToDoList toDoList) throws IOException {
+        if (toDoList instanceof ToDoListStub) {
+            throw new IOException();
+        }
+            
         raise(new ToDoListSavedEvent());
     }
 
     @Override
     public void saveToDoList(ReadOnlyToDoList toDoList, String filePath) throws IOException {
+        if (toDoList instanceof ToDoListStub) {
+            throw new IOException();
+        }
+        
         raise(new ToDoListSavedEvent());
     }
 

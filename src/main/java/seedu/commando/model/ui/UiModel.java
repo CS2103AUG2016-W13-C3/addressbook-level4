@@ -3,56 +3,55 @@ package seedu.commando.model.ui;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.core.UnmodifiableObservableList;
+import seedu.commando.commons.util.CollectionUtil;
 import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.LogicManager;
-import seedu.commando.model.ToDoListChange;
+import seedu.commando.model.todo.ToDoListChange;
 import seedu.commando.model.ToDoListManager;
-import seedu.commando.model.todo.ReadOnlyToDo;
-import seedu.commando.model.todo.ReadOnlyToDoList;
-import seedu.commando.model.todo.Tag;
-import seedu.commando.model.todo.ToDoList;
+import seedu.commando.model.todo.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalUnit;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 //@@author A0139697H
 /**
- * Handles any logic in displaying on the UI, eg, splitting/filtering the to-do list
+ * In charge of processing and filtering the list of to-dos for the UI.
  */
 public class UiModel {
-    private final Logger logger = LogsCenter.getLogger(LogicManager.class);
-
     private final ToDoListManager toDoListManager;
-    private final FilteredList<ReadOnlyToDo> filteredToDoList;
-    private final ObservableList<UiToDo> events;
-    private final ObservableList<UiToDo> tasks;
-    private final UnmodifiableObservableList<UiToDo> protectedEvents;
-    private final UnmodifiableObservableList<UiToDo> protectedTasks;
-    private final ArrayList<UiToDo> toDoAtIndices;
+    private final ObservableList<UiToDo> events = FXCollections.observableArrayList();
+    private final ObservableList<UiToDo> tasks = FXCollections.observableArrayList();
+    private final UnmodifiableObservableList<UiToDo> protectedEvents = new UnmodifiableObservableList<>(events);
+    private final UnmodifiableObservableList<UiToDo> protectedTasks = new UnmodifiableObservableList<>(tasks);
+    private final ArrayList<UiToDo> toDoAtIndices = new ArrayList<>();
     private int runningIndex;
-    {
-        events = FXCollections.observableArrayList();
-        tasks = FXCollections.observableArrayList();
-        protectedEvents = new UnmodifiableObservableList<>(events);
-        protectedTasks = new UnmodifiableObservableList<>(tasks);
-        toDoAtIndices = new ArrayList<>();
-    }
 
+    // Parameters for filtering
+    private Set<String> keywords = Collections.emptySet();
+    private Set<Tag> tags = Collections.emptySet();
+    private boolean ifHistoryMode = false;
+
+    /**
+     * @param toDoListManager ToDoListManager it tracks and grabs the list of to-dos from
+     */
     public UiModel(ToDoListManager toDoListManager) {
         this.toDoListManager = toDoListManager;
-        filteredToDoList = new FilteredList<>(toDoListManager.getToDoList().getToDos());
 
+        // Initialize the filter on the UI to-dos to empty sets of
+        // keywords and tags, and disable history mode
         setToDoListFilter(Collections.emptySet(), Collections.emptySet(), false);
 
+        // Update UI to-dos
         updateEventsAndTasks();
-        filteredToDoList.addListener(new ListChangeListener<ReadOnlyToDo>() {
+
+        // Start tracking changes to-do list, and update UI to-dos when a change happens
+        toDoListManager.getToDoList().getToDos().addListener(new ListChangeListener<ReadOnlyToDo>() {
             @Override
             public void onChanged(Change<? extends ReadOnlyToDo> change) {
                 updateEventsAndTasks();
@@ -72,62 +71,70 @@ public class UiModel {
     }
 
     /**
-     * Sets a filter on the to-do list
-     * Asserts {@param keywords} and {@param tags} to be non-null
-     * If {@param ifHistoryMode} is true, only filter finished to-dos, and sort in reverse chronological order
-     * Else, only filter, sorted in chronological order, such that it is not finished or
-     * its finished date is after/during the current day
+     * Sets a filter on the UI to-dos.
+     * Asserts parameters to be non-null.
+     * If {@param ifHistoryMode} is true, only filter finished to-dos.
+     * Else, only filter such that it is not finished or its finished date
+     *   is after/during the current day
      */
     public void setToDoListFilter(Set<String> keywords, Set<Tag> tags, boolean ifHistoryMode) {
-        assert keywords != null;
-        assert tags != null;
+        assert !CollectionUtil.isAnyNull(keywords, tags);
 
-        filteredToDoList.setPredicate(toDo -> {
-            if (!ifHistoryMode && toDo.isFinished()
-                && toDo.getDateFinished().get().toLocalDate().isBefore(LocalDate.now())) {
-                return false; // if normal mode but to-do is finished before the current day
-            } else if (ifHistoryMode && !toDo.isFinished()) {
-                return false; // if history mode but to-do is unfinished
-            }
+        this.keywords = keywords;
+        this.tags = tags;
+        this.ifHistoryMode = ifHistoryMode;
 
-            return ifMatchesFilter(toDo, keywords, tags);
-        });
+        updateEventsAndTasks();
     }
 
     /**
-     * Clears the filter on the to-do list
+     * Clears the filter on the to-do list and sets its history mode.
      */
     public void clearToDoListFilter(boolean ifHistoryMode) {
         setToDoListFilter(Collections.emptySet(), Collections.emptySet(), ifHistoryMode);
     }
 
+    /**
+     * @return a list of UI to-dos defined as events, to be shown on the UI
+     */
     public UnmodifiableObservableList<UiToDo> getEvents() {
         return protectedEvents;
     }
 
+    /**
+     * @return a list of UI to-dos defined as tasks, to be shown on the UI
+     */
     public UnmodifiableObservableList<UiToDo> getTasks() {
         return protectedTasks;
     }
 
     /**
-     * Called to update the to-do list when it changes
+     * Update the UI to-dos based on {@link #toDoListManager}'s to-do list and
+     *   the current filter
      */
     private void updateEventsAndTasks() {
-        // Sort and filter observableEvents and observableTasks for UI
-        List<ReadOnlyToDo> events = processEvents(filteredToDoList);
-        List<ReadOnlyToDo> tasks = processTasks(filteredToDoList);
+        // Sort and filter events and tasks for UI
+        List<ReadOnlyToDo> events = filterAndSortEvents(toDoListManager.getToDoList().getToDos());
+        List<ReadOnlyToDo> tasks = filterAndSortTasks(toDoListManager.getToDoList().getToDos());
 
+        // Update its own lists of UI to-dos
+        updateUiToDos(events, tasks);
+    }
+
+    /**
+     * Populate its lists of UI to-dos based on supplied to-dos
+     */
+    private void updateUiToDos(List<ReadOnlyToDo> events, List<ReadOnlyToDo> tasks) {
         toDoAtIndices.clear();
-
-        // Add indices to events first and set to observable events
-        // Also check if the events are new with respect to last change
         runningIndex = 0;
 
-        Optional<ToDoListChange> change = toDoListManager.getLastToDoListChange();
+        Optional<ToDoListChange> lastChange = toDoListManager.getLastToDoListChange();
 
-        ReadOnlyToDoList newToDos = change.isPresent()
-            ? change.get().getAddedToDos() : new ToDoList();
+        ReadOnlyToDoList newToDos = lastChange.isPresent()
+            ? lastChange.get().getAddedToDos() : new ToDoList();
 
+        // Map each event to a UI to-do and add an index to each
+        // Also check if the events are new with respect to last change
         this.events.setAll(events.stream().map(
             toDo -> new UiToDo(toDo, ++ runningIndex, newToDos.contains(toDo))
         ).collect(Collectors.toList()));
@@ -141,109 +148,72 @@ public class UiModel {
 
         // running index should be incremented by no. of to-dos
         assert runningIndex == toDoAtIndices.size();
-
-        // log events and tasks shown
-        logger.info("Events: " + this.events.stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
-            .collect(Collectors.joining(",")));
-
-        logger.info("Tasks: " + this.tasks.stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
-            .collect(Collectors.joining(",")));
     }
 
-    private List<ReadOnlyToDo> processTasks(List<ReadOnlyToDo> toDos) {
-        List<ReadOnlyToDo> tasks = toDos.stream().filter(UiToDo::isTask).collect(Collectors.toList());
+    private List<ReadOnlyToDo> filterAndSortTasks(List<ReadOnlyToDo> toDos) {
+        List<ReadOnlyToDo> tasks = toDos.stream()
+            .filter(toDoFilterPredicate)
+            .filter(UiToDo::isTask)
+            .collect(Collectors.toList());
 
-        // For observableTasks, sort by whether they are done,
-        // then whether have due dates, then chronological order
-        tasks.sort((task1, task2) -> {
-            if (!task1.isFinished() && task2.isFinished()) {
-                return -1; // task1 first
-            }
+        // For tasks, sort by created date first (latest first)
+        tasks.sort((task1, task2) -> task2.getDateCreated().compareTo(task1.getDateCreated()));
 
-            if (task1.isFinished() && !task2.isFinished()) {
-                return 1; // task2 first
-            }
+        // Then, by whether they have due date and that date (latest first)
+        tasks.sort((task1, task2) -> compareDueDates(task1, task2));
 
-            if (task1.isFinished() && task2.isFinished()) {
-
-                // If finished dates are the same, put the task which was finished earlier in front
-                int dateComparison = task1.getDateFinished().get()
-                    .compareTo(task2.getDateFinished().get());
-                if (dateComparison == 0) {
-                    return task1.getDateCreated().compareTo(task2.getDateCreated());
-                } else {
-                    return dateComparison;
-                }
-
-            } else {
-                assert !task1.isFinished();
-                assert !task2.isFinished();
-
-                if (task1.getDueDate().isPresent() && !task2.getDueDate().isPresent()) {
-                    return -1; // taskl first
-                }
-
-                if (task2.getDueDate().isPresent() && !task1.getDueDate().isPresent()) {
-                    return 1; // task2 first
-                }
-
-                // If both don't have dates, put the older created task in front
-                if (!task1.getDueDate().isPresent() && !task2.getDueDate().isPresent()) {
-                    return task1.getDateCreated().compareTo(task2.getDateCreated());
-                } else {
-                    assert task1.getDueDate().isPresent();
-                    assert task2.getDueDate().isPresent();
-
-                    // If even due dates are the same, put the task which was finished earlier in front
-                    int dateComparison = task1.getDueDate().get().value
-                        .compareTo(task2.getDueDate().get().value);
-                    if (dateComparison == 0) {
-                        return task1.getDateCreated().compareTo(task2.getDateCreated());
-                    } else {
-                        return dateComparison;
-                    }
-                }
-            }
-        });
+        // Then, by whether they are finished and finished date (latest first)
+        tasks.sort((task1, task2) -> compareDateFinished(task2, task1));
 
         return tasks;
     }
 
-    private List<ReadOnlyToDo> processEvents(List<ReadOnlyToDo> toDos) {
+    private List<ReadOnlyToDo> filterAndSortEvents(List<ReadOnlyToDo> toDos) {
         List<ReadOnlyToDo> events = toDos.stream()
+            .filter(toDoFilterPredicate)
             .filter(UiToDo::isEvent)
             .collect(Collectors.toList());
 
-        // For observableEvents, sort by chronological order
-        events.sort((event1, event2) -> {
-            if (!event1.isFinished() && event2.isFinished()) {
-                return -1; // event1 first
-            }
+        // For events, sort by created date first (latest first)
+        events.sort((event1, event2) -> event2.getDateCreated().compareTo(event1.getDateCreated()));
 
-            if (event1.isFinished() && !event2.isFinished()) {
-                return 1; // event2 first
-            }
+        // Then, by start dates (earlier first)
+        events.sort((event1, event2) -> compareDateRangeStarts(event1, event2));
 
-            // Must have date ranges because they are events
-            assert event2.getDateRange().isPresent();
-            assert event2.getDateRange().isPresent();
-
-            int rangeComparison = event1.getDateRange().get().startDate.compareTo(event2.getDateRange().get().startDate);
-
-            // If start dates are the same, put the older created event in front
-            if (rangeComparison == 0) {
-                return event1.getDateCreated().compareTo(event2.getDateCreated());
-            } else {
-                return rangeComparison;
-            }
-        });
+        // Then, by whether they are finished and finished date (latest first)
+        events.sort((event1, event2) -> compareDateFinished(event2, event1));
 
         return events;
     }
 
     //================================================================================
-    //  Private methods for filtering
+    //  Utility methods for sorting and filtering
     //================================================================================
+
+    private int compareDateFinished(ReadOnlyToDo toDo1, ReadOnlyToDo toDo2) {
+        LocalDateTime date1 = toDo1.getDateFinished().orElse(LocalDateTime.MAX);
+        LocalDateTime date2 = toDo2.getDateFinished().orElse(LocalDateTime.MAX);
+
+        return date1.compareTo(date2);
+    }
+
+    private int compareDueDates(ReadOnlyToDo toDo1, ReadOnlyToDo toDo2) {
+        LocalDateTime date1 = toDo1.getDueDate().isPresent() ?
+            toDo1.getDueDate().get().value : LocalDateTime.MAX;
+        LocalDateTime date2 = toDo2.getDueDate().isPresent() ?
+            toDo2.getDueDate().get().value : LocalDateTime.MAX;
+
+        return date1.compareTo(date2);
+    }
+
+    private int compareDateRangeStarts(ReadOnlyToDo toDo1, ReadOnlyToDo toDo2) {
+        LocalDateTime date1 = toDo1.getDateRange().isPresent() ?
+            toDo1.getDateRange().get().startDate : LocalDateTime.MAX;
+        LocalDateTime date2 = toDo2.getDateRange().isPresent() ?
+            toDo2.getDateRange().get().startDate : LocalDateTime.MAX;
+
+        return date1.compareTo(date2);
+    }
 
     private boolean ifMatchesFilter(ReadOnlyToDo toDo, Set<String> keywords, Set<Tag> tags) {
         return (keywords.stream()
@@ -260,4 +230,21 @@ public class UiModel {
     private boolean checkForTag(ReadOnlyToDo toDo, Tag tag) {
         return toDo.getTags().stream().anyMatch(toDoTag -> toDoTag.value.equalsIgnoreCase(tag.value));
     }
+
+    /**
+     * Predicate that filters to-dos based on history mode
+     */
+    private Predicate<ReadOnlyToDo> toDoFilterPredicate = toDo -> {
+        if (!ifHistoryMode && toDo.isFinished()
+            && toDo.getDateFinished().get().toLocalDate().isBefore(LocalDate.now())) {
+            // if normal mode but to-do is finished before the current day
+            return false;
+        } else if (ifHistoryMode && !toDo.isFinished()) {
+            // if history mode but to-do is unfinished
+            return false;
+        }
+
+        // Further filter by keywords and tags
+        return ifMatchesFilter(toDo, keywords, tags);
+    };
 }

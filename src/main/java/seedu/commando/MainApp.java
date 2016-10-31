@@ -83,7 +83,7 @@ public class MainApp extends Application {
             logger.warning("Problem while reading from the file. Will be starting with an empty to-do list");
         }
 
-        return new ModelManager(initialToDoList, userPrefs);
+        return new ModelManager(initialToDoList);
     }
 
     protected void initLogging() {

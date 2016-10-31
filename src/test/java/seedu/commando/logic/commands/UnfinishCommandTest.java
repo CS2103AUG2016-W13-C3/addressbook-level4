@@ -27,7 +27,6 @@ public class UnfinishCommandTest {
 
     private Logic logic;
     private EventsCollector eventsCollector;
-    private LocalDateTime now = LocalDateTime.now();
 
     @Before
     public void setup() throws IOException {
@@ -41,15 +40,15 @@ public class UnfinishCommandTest {
     }
 
     @Test
-    public void execute_unfinish_noSuchIndex() {
-        CommandResult result = logic.execute("delete 2");
+    public void execute_unfinishNoSuchIndex_error() {
+        CommandResult result = logic.execute("unfinish 2");
         assertTrue(result.hasError());
 
         assertEquals(String.format(Messages.TODO_ITEM_INDEX_INVALID, 2), result.getFeedback());
     }
 
     @Test
-    public void execute_unfinish_invalidIndex() {
+    public void execute_unfinishInvalidIndex_error() {
         CommandResult result = logic.execute("unfinish 0");
         assertTrue(result.hasError());
 
@@ -57,7 +56,7 @@ public class UnfinishCommandTest {
     }
     
     @Test
-    public void execute_unfinish_invalidIndex2() {
+    public void execute_unfinishInvalidIndex2_error() {
         CommandResult result = logic.execute("unfinish -1");
         assertTrue(result.hasError());
 
@@ -65,24 +64,24 @@ public class UnfinishCommandTest {
     }
 
     @Test
-    public void execute_unfinish_missingIndex() {
+    public void execute_unfinishMissingIndex_error() {
         CommandResult result = logic.execute("unfinish missing index");
         assertTrue(result.hasError());
 
         assertEquals(Messages.MISSING_TODO_ITEM_INDEX
-                + "\n" + Messages.getInvalidCommandFormatMessage("unfinish").get(), result.getFeedback());
+                + "\n" + Messages.getCommandFormatMessage("unfinish").get(), result.getFeedback());
     }
 
     @Test
-    public void execute_unfinish_invalidFormat() {
+    public void execute_unfinishInvalidFormat_error() {
         CommandResult result = logic.execute("unfinish 1 #troll");
         assertTrue(result.hasError());
         assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD)
-                + "\n" + Messages.getInvalidCommandFormatMessage("unfinish").get(), result.getFeedback());
+                + "\n" + Messages.getCommandFormatMessage("unfinish").get(), result.getFeedback());
     }
 
     @Test
-    public void execute_unfinish_index() throws IllegalValueException {
+    public void execute_unfinishIndex_unfinished() throws IllegalValueException {
         logic.execute("add title");
         logic.execute("add title2");
         logic.execute("finish 2");
@@ -91,9 +90,9 @@ public class UnfinishCommandTest {
         eventsCollector.reset();
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
 
-        assertTrue(ifToDoExists(logic,
+        assertToDoExists(logic,
             new ToDoBuilder("title2")
-                .build()));
+                .build());
 
         CommandResult result = logic.execute("unfinish 1");
         assertFalse(result.hasError());
@@ -101,11 +100,22 @@ public class UnfinishCommandTest {
         logic.execute("find");
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));
-        assertTrue(ifToDoExists(logic,
+        assertToDoExists(logic,
             new ToDoBuilder("title2")
-                .build()));
-        assertTrue(ifToDoExists(logic,
+                .build());
+        assertToDoExists(logic,
             new ToDoBuilder("title")
-                .build()));
+                .build());
     }
+    
+    @Test
+    public void execute_unfinishEvent_error() {
+        logic.execute("add test from yesterday 1am to 2am");
+        logic.execute("recall");
+        CommandResult result = logic.execute("unfinish 1");
+        assertTrue(result.hasError());
+        assertEquals(String.format(Messages.UNFINISH_COMMAND_CANNOT_UNFINISH_EVENT, "test"), 
+                result.getFeedback());
+    }
+
 }

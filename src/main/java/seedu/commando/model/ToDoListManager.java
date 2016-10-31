@@ -1,29 +1,34 @@
 package seedu.commando.model;
 
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.todo.*;
+import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.ReadOnlyToDoList;
+import seedu.commando.model.todo.ToDoList;
+import seedu.commando.model.todo.ToDoListChange;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Optional;
 
 //@@author A0139697H
 /**
- * Manages a to-do list internally
- * Supports adding, removing, editing, undoing and redoing
- * based on {@link ToDoListChange}
+ * In charge of supporting the editing, undoing and redoing of the to-do list,
+ *   hinging on the {@link ToDoListChange} class
  */
 public class ToDoListManager {
     private final ToDoList toDoList;
-    private final ArrayList<ToDoListChange> toDoListChanges; // changes that can be undone
-    private final ArrayList<ToDoListChange> toDoListUndoChanges; // changes that can be redone
+
+    // changes that can be undone
+    private final ArrayList<ToDoListChange> toDoListChanges = new ArrayList<>();
+
+    // changes that can be redone
+    private final ArrayList<ToDoListChange> toDoListUndoChanges = new ArrayList<>();
+
     private ToDoListChange lastToDoListChange;
-    {
-        toDoListChanges = new ArrayList<>();
-        toDoListUndoChanges = new ArrayList<>();
-    }
 
     /**
-     * Initializes with the given to-do list
-     * To-do list is copied
+     * Initializes with the given to-do list, which is managed internally.
+     * Asserts parameters are non-null.
+     * To-do list is deep copied.
      */
     public ToDoListManager(ReadOnlyToDoList toDoList) {
         assert toDoList != null;
@@ -31,7 +36,7 @@ public class ToDoListManager {
         this.toDoList = new ToDoList(toDoList);
     }
 
-    public ToDoList getToDoList() {
+    public ReadOnlyToDoList getToDoList() {
         return toDoList;
     }
 
@@ -39,10 +44,61 @@ public class ToDoListManager {
         applyToDoListChange(change);
         toDoListChanges.add(change);
 
-        // Reset undo list
+        // Reset undo list upon a change
         toDoListUndoChanges.clear();
     }
 
+    public boolean undoToDoList() {
+        // Nothing else to undo if the list of changes is empty
+        if (toDoListChanges.isEmpty()) {
+            return false;
+        }
+
+        ToDoListChange change = toDoListChanges.get(toDoListChanges.size() - 1);
+
+        try {
+            applyToDoListChange(change.getReverseChange());
+        } catch (IllegalValueException exception) {
+            // undo should always work
+            assert false;
+            return false;
+        }
+
+        // move changes from change list to to undo change list
+        toDoListUndoChanges.add(change);
+        toDoListChanges.remove(toDoListChanges.size() - 1);
+
+        return true;
+    }
+
+    public boolean redoToDoList() {
+        // Check if there are any undos to redo
+        if (toDoListUndoChanges.isEmpty()) {
+            return false;
+        }
+
+        ToDoListChange change = toDoListUndoChanges.get(toDoListUndoChanges.size() - 1);
+
+        try {
+            applyToDoListChange(change);
+        } catch (IllegalValueException exception) {
+            // Redo should always work
+            assert false;
+            return false;
+        }
+
+        // move changes from undo change list to change list
+        toDoListChanges.add(change);
+        toDoListUndoChanges.remove(toDoListUndoChanges.size() - 1);
+
+        return true;
+    }
+
+    /**
+     * Tries to apply a change to the to-do list
+     * @throws IllegalValueException if there were duplicate to-dos added or
+     *   there were non-existent to-dos deleted
+     */
     private void applyToDoListChange(ToDoListChange change) throws IllegalValueException {
         lastToDoListChange = change;
 
@@ -59,50 +115,8 @@ public class ToDoListManager {
         }
     }
 
-    public boolean undoToDoList() {
-        if (toDoListChanges.isEmpty()) {
-            return false; // Nothing else to undo
-        }
-
-        ToDoListChange change = toDoListChanges.get(toDoListChanges.size() - 1);
-
-        try {
-            applyToDoListChange(change.getReverseChange());
-        } catch (IllegalValueException exception) {
-            assert false; // Undo should always work
-            return false; // Undo failed
-        }
-
-        // move changes to undo list
-        toDoListUndoChanges.add(change);
-        toDoListChanges.remove(toDoListChanges.size() - 1);
-
-        return true;
-    }
-
-    public boolean redoToDoList() {
-        if (toDoListUndoChanges.isEmpty()) {
-            return false; // No undos to redo
-        }
-
-        ToDoListChange change = toDoListUndoChanges.get(toDoListUndoChanges.size() - 1);
-
-        try {
-            applyToDoListChange(change);
-        } catch (IllegalValueException exception) {
-            assert false; // Redo should always work
-            return false; // Redo failed
-        }
-
-        // move changes from undo list
-        toDoListChanges.add(change);
-        toDoListUndoChanges.remove(toDoListUndoChanges.size() - 1);
-
-        return true;
-    }
-
     /**
-     * Latest change on the to-do list, including undo/redo
+     * @return last successful change to the to-do list, considering undos and redos
      */
     public Optional<ToDoListChange> getLastToDoListChange() {
         return Optional.ofNullable(lastToDoListChange);

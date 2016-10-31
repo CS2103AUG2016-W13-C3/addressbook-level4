@@ -2,18 +2,22 @@ package seedu.commando.model.todo;
 
 //@@author A0122001M
 
+import seedu.commando.commons.util.CollectionUtil;
+
 /**
- * Represents a tag of a to-do item
+ * Represents a tag of a to-do.
  */
 public class Tag {
     public final String value;
 
     /**
-     * Validates given tag name.
+     * Constructor for a tag.
+     * Asserts parameters to be non-null.
      */
     public Tag(String value) {
-        value = value.trim();
-        this.value = value;
+        assert !CollectionUtil.isAnyNull(value);
+
+        this.value = value.trim();
     }
 
     /**
@@ -25,9 +29,11 @@ public class Tag {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof Tag // instanceof handles nulls
-                && this.value.equals(((Tag) other).value)); // state check
+        // short circuit if same object
+        // instanceof handles nulls
+        return other == this
+                || (other instanceof Tag
+                && this.value.equals(((Tag) other).value));
     }
 
     @Override

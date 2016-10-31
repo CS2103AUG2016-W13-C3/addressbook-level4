@@ -1,25 +1,29 @@
 package seedu.commando.logic.commands;
 
-import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.logic.parser.CommandParser;
-import seedu.commando.model.todo.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import seedu.commando.commons.core.Messages;
+import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.logic.parser.CommandParser;
+import seedu.commando.model.todo.DateRange;
+import seedu.commando.model.todo.DueDate;
+import seedu.commando.model.todo.Tag;
+import seedu.commando.model.todo.Title;
+
 
 //@@author A0139697H
+
 /**
  * Maps and builds commands from input strings, using {@link CommandParser}
  * In charge of splitting up input strings to required parts for commands
- * Doesn't set context for commands
  */
 public class CommandFactory {
     private static final String KEYWORD_DELETE_TIME = "time";
     private static final String KEYWORD_DELETE_TAG = "tag";
+    private static final String KEYWORD_DELETE_RECURRENCE = "recurrence";
 
     private CommandParser commandParser = new CommandParser();
 
@@ -34,15 +38,18 @@ public class CommandFactory {
 
     public static class UnknownCommandWordException extends Exception {
         public final String commandWord;
+
         UnknownCommandWordException(String commandWord) {
             this.commandWord = commandWord;
         }
     }
-    
-    public static class MissingCommandWordException extends Exception {}
+
+    public static class MissingCommandWordException extends Exception {
+    }
 
     /**
      * Interprets an input string as a command, initializes it, and returns it
+     *
      * @return instance of a command
      */
     public Command build(String inputString) throws InvalidCommandFormatException,
@@ -120,7 +127,8 @@ public class CommandFactory {
 
         return new ExitCommand();
     }
-  //@@author A0142230B
+
+    //@@author A0142230B
     private Command buildImportCommand() throws IllegalValueException {
         // Extract the file path
         String path = commandParser.extractText()
@@ -130,7 +138,8 @@ public class CommandFactory {
 
         return new ImportCommand(path);
     }
-  //@@author A0142230B
+
+    //@@author A0142230B
     private Command buildExportCommand() throws IllegalValueException {
         // Extract the file path
         String path = commandParser.extractText()
@@ -140,7 +149,8 @@ public class CommandFactory {
 
         return new ExportCommand(path);
     }
-  //@@author A0142230B
+
+    //@@author A0142230B
     private Command buildStoreCommand() throws IllegalValueException {
         // Extract the file path
         String path = commandParser.extractText()
@@ -191,10 +201,10 @@ public class CommandFactory {
     }
 
     private Command buildDeleteCommand() throws IllegalValueException {
-    	List<Integer> indices = commandParser.extractIndicesList();
-    	if (indices.isEmpty()){
-    		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
-    	}
+        List<Integer> indices = commandParser.extractIndicesList();
+        if (indices.isEmpty()) {
+            throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
+        }
 
         DeleteCommand deleteCommand = new DeleteCommand(indices);
 
@@ -205,11 +215,16 @@ public class CommandFactory {
 
         if (words.contains(KEYWORD_DELETE_TAG)) {
             deleteCommand.ifDeleteTag = true;
-            fieldsCount ++;
+            fieldsCount++;
         }
 
         if (words.contains(KEYWORD_DELETE_TIME)) {
             deleteCommand.ifDeleteTime = true;
+            fieldsCount++;
+        }
+
+        if (words.contains(KEYWORD_DELETE_RECURRENCE)) {
+            deleteCommand.ifDeleteRecurrence = true;
             fieldsCount++;
         }
 
@@ -222,10 +237,10 @@ public class CommandFactory {
     }
 
     private Command buildFinishCommand() throws IllegalValueException {
-    	List<Integer> indices = commandParser.extractIndicesList();
-    	if (indices.isEmpty()){
-    		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
-    	}
+        List<Integer> indices = commandParser.extractIndicesList();
+        if (indices.isEmpty()) {
+            throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
+        }
         if (!commandParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
 
@@ -235,10 +250,10 @@ public class CommandFactory {
     }
 
     private Command buildUnfinishCommand() throws IllegalValueException {
-    	List<Integer> indices = commandParser.extractIndicesList();
-    	if (indices.isEmpty()){
-    		throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
-    	}
+        List<Integer> indices = commandParser.extractIndicesList();
+        if (indices.isEmpty()) {
+            throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
+        }
         if (!commandParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
         }
@@ -323,13 +338,12 @@ public class CommandFactory {
 
         return command;
     }
-    
-  //@@author A0122001M
+
+    //@@author A0122001M
 
     private Command buildUndoCommand() throws IllegalValueException {
         if (!commandParser.isInputEmpty()) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, UndoCommand.COMMAND_WORD));
-
         }
 
         return new UndoCommand();

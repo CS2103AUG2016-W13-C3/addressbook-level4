@@ -1,23 +1,23 @@
 package seedu.commando.model.todo;
 
-import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.exceptions.IllegalValueException;
-
 //@@author A0122001M
+
+import seedu.commando.commons.util.CollectionUtil;
 
 /**
  * Represents the title of a to-do
  */
 public class Title {
-
     public final String value;
 
     /**
-     * Constructor for a value
+     * Constructor for a title.
+     * Asserts parameters to be non-null.
      */
     public Title(String value) {
-        value = value.trim();
-        this.value = value;
+        assert !CollectionUtil.isAnyNull(value);
+
+        this.value = value.trim();
     }
 
     /**
@@ -34,9 +34,11 @@ public class Title {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof Title // instanceof handles nulls
-                && value.equals(((Title) other).value)); // state check
+        // short circuit if same object
+        // instanceof handles nulls
+        return other == this
+                || (other instanceof Title
+                && value.equals(((Title) other).value));
     }
 
     @Override

@@ -37,7 +37,7 @@ public class ClearCommandTest {
     }
     
     @Test
-    public void execute_clear() {
+    public void execute_clear_cleared() {
         logic.execute("add value from 10 Jan 1994 12:00 to 21 Jan 1994 13:00");
         logic.execute("add title2 #tag1 #tag2");
 
