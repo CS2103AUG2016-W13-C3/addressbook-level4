@@ -19,7 +19,7 @@ public class DueDate {
     /**
      * @see #DueDate(LocalDateTime, Recurrence), but with no recurrence.
      */
-    public DueDate(LocalDateTime value) throws IllegalValueException {
+    public DueDate(LocalDateTime value) {
         this(value, Recurrence.None);
     }
 

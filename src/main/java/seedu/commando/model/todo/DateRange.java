@@ -59,7 +59,8 @@ public class DateRange {
         }
 
         // Checks gap between dates must not be more than the recurrence interval
-        if (recurrence.getNextDate(startDate).isBefore(endDate)) {
+        if (recurrence != Recurrence.None
+            && recurrence.getNextDate(startDate).isBefore(endDate)) {
             throw new IllegalValueException(Messages.TODO_DATERANGE_RECURRENCE_INVALID + "\n" + Messages.DATE_FORMAT);
         }
     }

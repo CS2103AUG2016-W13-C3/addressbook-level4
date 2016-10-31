@@ -66,7 +66,7 @@ public class ModelManagerTest {
             .build();
         toDoList2 = new ToDoList().add(toDoList2Item1);
 
-        modelManager = new ModelManager(toDoList, new UserPrefs());
+        modelManager = new ModelManager(toDoList);
 
         toDoListChangeAdd1 = new ToDoListChange(
             new ToDoList().add(toDoList2Item1),

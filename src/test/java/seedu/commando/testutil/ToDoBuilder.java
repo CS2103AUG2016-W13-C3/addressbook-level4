@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 //@@author A0139697H
+
 /**
  * Helps build a to-do in 1 line
  * Also contains sample to-dos that are relative to the current day
@@ -17,15 +18,15 @@ public class ToDoBuilder {
 
     public static LocalDateTime now = LocalDateTime.now();
 
-    public static LocalDateTime OldestDate = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth() - 4, 12, 0);
-    public static LocalDateTime OlderDate = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth() - 3, 12, 0);
-    public static LocalDateTime OldDate = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth() - 2, 12, 0);
-    public static LocalDateTime RecentDate = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth() - 1, 12, 0);
-    public static LocalDateTime TodayPastDate = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), now.getHour() - 2, 0);
-    public static LocalDateTime TodayPastDate2 = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), now.getHour() - 1, 0);
-    public static LocalDateTime TodayFutureDate = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), now.getHour() + 1, 0);
-    public static LocalDateTime TodayFutureDate2 = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), now.getHour() + 2, 0);
-    public static LocalDateTime FutureDate = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth() + 1, 12, 0);
+    public static LocalDateTime OldestDate = now.minusDays(4);
+    public static LocalDateTime OlderDate = now.minusDays(3);
+    public static LocalDateTime OldDate = now.minusDays(2);
+    public static LocalDateTime RecentDate = now.minusDays(1);
+    public static LocalDateTime TodayPastDate = now.minusHours(2);
+    public static LocalDateTime TodayPastDate2 = now.minusHours(1);
+    public static LocalDateTime TodayFutureDate = now.plusHours(1);
+    public static LocalDateTime TodayFutureDate2 = now.plusHours(2);
+    public static LocalDateTime FutureDate = now.plusDays(2);
 
     public static ReadOnlyToDo TaskOldDueUnfinishedNewCreated =
         new ToDoBuilder("<DD|UF|>C").withDueDate(RecentDate).created(OldDate).build();
@@ -107,7 +108,7 @@ public class ToDoBuilder {
             toDo.setDateRange(new DateRange(
                 startDate, endDate, recurrence
             ));
-        }  catch (IllegalValueException e) {
+        } catch (IllegalValueException e) {
             assert false : "Test data should not be invalid";
         }
 
@@ -127,13 +128,17 @@ public class ToDoBuilder {
     }
 
     public ToDoBuilder withDueDate(LocalDateTime dueDate) {
-        try {
-            toDo.setDueDate(
-                new DueDate(dueDate)
-            );
-        } catch (IllegalValueException e) {
-            assert false : "Test data should not be invalid";
-        }
+        toDo.setDueDate(
+            new DueDate(dueDate)
+        );
+
+        return this;
+    }
+
+    public ToDoBuilder withDueDate(LocalDateTime dueDate, Recurrence recurrence) {
+        toDo.setDueDate(
+            new DueDate(dueDate, recurrence)
+        );
 
         return this;
     }
