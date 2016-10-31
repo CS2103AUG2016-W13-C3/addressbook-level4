@@ -10,7 +10,8 @@ import seedu.commando.commons.util.CollectionUtil;
 //@@author A0122001M
 
 /**
- * Represents the due date of a to-do
+ * Represents the due date of a to-do.
+ * Ignores the seconds and nano-seconds field of its datetimes.
  */
 public class DueDate {
     public final LocalDateTime value;
@@ -30,7 +31,7 @@ public class DueDate {
     public DueDate(LocalDateTime value, Recurrence recurrence){
         assert !CollectionUtil.isAnyNull(value, recurrence);
 
-        this.value = value;
+        this.value = value.withSecond(0).withNano(0);
         this.recurrence = recurrence;
     }
 

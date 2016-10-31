@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlElement;
 //@@author A0142230B
+
 /**
  * JAXB-friendly version of the to-do
  */
@@ -31,7 +32,9 @@ public class XmlAdaptedToDo {
     @XmlElement(required = true)
     private String dateFinished;
     @XmlElement(required = true)
-    private String recurrence;
+    private String dateRangeRecurrence;
+    @XmlElement(required = true)
+    private String dueDateRecurrence;
 
     @XmlElement
     private Set<String> tagged;
@@ -39,7 +42,8 @@ public class XmlAdaptedToDo {
     /**
      * No-arg constructor for JAXB use.
      */
-    public XmlAdaptedToDo() {}
+    public XmlAdaptedToDo() {
+    }
 
     /**
      * Converts a given to-do into this class for JAXB use.
@@ -47,15 +51,18 @@ public class XmlAdaptedToDo {
     public XmlAdaptedToDo(ReadOnlyToDo toDo) {
         title = toDo.getTitle().value;
 
-        if (toDo.getDueDate().isPresent()) {
-            dueDate = dateFormatter.format(toDo.getDueDate().get().value);
-        }
 
         if (toDo.getDateRange().isPresent()) {
             dateRangeStart = dateFormatter.format(toDo.getDateRange().get().startDate);
             dateRangeEnd = dateFormatter.format(toDo.getDateRange().get().endDate);
-            recurrence = toDo.getDateRange().get().recurrence.toString();
+            dateRangeRecurrence = toDo.getDateRange().get().recurrence.toString();
         }
+
+        if (toDo.getDueDate().isPresent()) {
+            dueDate = dateFormatter.format(toDo.getDueDate().get().value);
+            dueDateRecurrence = toDo.getDueDate().get().recurrence.toString();
+        }
+
 
         if (toDo.getDateFinished().isPresent()) {
             dateFinished = dateFormatter.format(toDo.getDateFinished().get());
@@ -67,6 +74,7 @@ public class XmlAdaptedToDo {
 
     /**
      * Converts this jaxb-friendly adapted ToDo object into the model's to-do
+     *
      * @throws IllegalValueException if there were any data constraints violated in the adapted ToDo
      */
     public ToDo toModelType() throws IllegalValueException {
@@ -74,41 +82,31 @@ public class XmlAdaptedToDo {
         ToDo todo = new ToDo(title);
 
         if (this.tagged != null) {
-            final Set<Tag> toDoTags = new HashSet<>();
-
-            for (String tagValue : this.tagged) {
-                toDoTags.add(new Tag(tagValue));
-            }
+            final Set<Tag> toDoTags = this.tagged.stream().map(Tag::new).collect(Collectors.toSet());
 
             todo.setTags(toDoTags);
         }
 
         // Check if the value is empty
-        if (dueDate != null){
-        	try {
-                todo.setDueDate(new DueDate(LocalDateTime.parse(dueDate, dateFormatter)));
+        if (dueDate != null) {
+            try {
+                todo.setDueDate(new DueDate(
+                    LocalDateTime.parse(dueDate, dateFormatter),
+                    getRecurrence(dueDateRecurrence)
+                ));
             } catch (DateTimeParseException exception) {
                 // invalid due date, ignore
             }
         }
 
         // Check if the dateRange is empty
-        if (dateRangeStart != null && dateRangeEnd != null){
-
-            Recurrence validRecurrence = Recurrence.None;
-            if (recurrence != null) {
-                try {
-                    validRecurrence = Recurrence.valueOf(recurrence);
-                } catch(IllegalArgumentException exception) {
-                    // Invalid recurrence, ignore
-                }
-            }
+        if (dateRangeStart != null && dateRangeEnd != null) {
 
             try {
                 todo.setDateRange(new DateRange(
                     LocalDateTime.parse(dateRangeStart, dateFormatter),
                     LocalDateTime.parse(dateRangeEnd, dateFormatter),
-                    validRecurrence
+                    getRecurrence(dateRangeRecurrence)
                 ));
             } catch (DateTimeParseException exception) {
                 // invalid date range, ignore
@@ -116,15 +114,28 @@ public class XmlAdaptedToDo {
         }
 
         // Check if the date finished is empty
-        if (dateFinished != null){
+        if (dateFinished != null) {
             todo.setDateFinished(LocalDateTime.parse(dateFinished, dateFormatter));
         }
 
         // Check if the date created is empty
-        if (dateCreated != null){
+        if (dateCreated != null) {
             todo.setDateCreated(LocalDateTime.parse(dateCreated, dateFormatter));
         }
 
         return todo;
+    }
+
+    private Recurrence getRecurrence(String recurrenceString) {
+        Recurrence validRecurrence = Recurrence.None;
+        if (recurrenceString != null) {
+            try {
+                validRecurrence = Recurrence.valueOf(recurrenceString);
+            } catch (IllegalArgumentException exception) {
+                // Invalid recurrence, ignore
+            }
+        }
+
+        return validRecurrence;
     }
 }

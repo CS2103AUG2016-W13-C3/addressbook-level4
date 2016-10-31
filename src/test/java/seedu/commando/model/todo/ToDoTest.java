@@ -41,7 +41,8 @@ public class ToDoTest {
             Recurrence.Weekly
         ));
         toDo.setDueDate(new DueDate(
-            LocalDateTime.of(2001, 10, 8, 12, 59)
+            LocalDateTime.of(2001, 10, 8, 12, 59),
+            Recurrence.Yearly
         ));
 
         ToDo newToDo = new ToDo(toDo);
@@ -86,6 +87,22 @@ public class ToDoTest {
     }
 
     @Test
+    public void setDateRange_recurringDateRange_getDateRangeConsidersRecurrence() throws IllegalValueException {
+        assertFalse(toDo.getDateRange().isPresent());
+        toDo.setDateRange(new DateRange(
+            LocalDateTime.now().minusDays(2),
+            LocalDateTime.now().minusDays(1),
+            Recurrence.Yearly
+        ));
+        assertTrue(toDo.getDateRange().isPresent());
+        assertEquals(toDo.getDateRange().get(), new DateRange(
+            LocalDateTime.now().minusDays(2).plusYears(1),
+            LocalDateTime.now().minusDays(1).plusYears(1),
+            Recurrence.Yearly
+        ));
+    }
+
+    @Test
     public void setIsFinished_trueThenFalse_getDateFinishedEqualsNowThenEmpty() throws IllegalValueException {
         assertFalse(toDo.isFinished());
         assertFalse(toDo.getDateFinished().isPresent());
@@ -96,6 +113,79 @@ public class ToDoTest {
         assertFalse(toDo.isFinished());
         assertFalse(toDo.getDateFinished().isPresent());
     }
+
+    @Test
+    public void setIsFinished_withRecurringDueDate_advancesDueDate() throws IllegalValueException {
+        toDo.setDueDate(new DueDate(
+            LocalDateTime.now().minusDays(1),
+            Recurrence.Yearly
+        ));
+
+        assertEquals(new DueDate(
+            LocalDateTime.now().minusDays(1),
+            Recurrence.Yearly
+        ), toDo.getDueDate().get());
+
+        toDo.setIsFinished(true);
+        assertFalse(toDo.isFinished());
+
+        assertEquals(new DueDate(
+            LocalDateTime.now().minusDays(1).plusYears(1),
+            Recurrence.Yearly
+        ), toDo.getDueDate().get());
+
+        toDo.setIsFinished(true);
+        assertFalse(toDo.isFinished());
+
+        assertEquals(new DueDate(
+            LocalDateTime.now().minusDays(1).plusYears(2),
+            Recurrence.Yearly
+        ), toDo.getDueDate().get());
+    }
+
+    @Test
+    public void setGetDateFinished_withDateRange_dateFinishedAlwaysEqualsEndDate() throws IllegalValueException {
+        LocalDateTime endDate = LocalDateTime.of(2012, 11, 2, 1, 23);
+        toDo.setDateRange(
+            new DateRange(
+                LocalDateTime.of(2011, 11, 2, 1, 23),
+                endDate
+            )
+        );
+        assertEquals(endDate, toDo.getDateFinished().get());
+        toDo.setDateFinished(LocalDateTime.now());
+        assertEquals(endDate, toDo.getDateFinished().get());
+    }
+
+    @Test
+    public void setGetDateFinished_withRecurringDateRange_dateFinishedAlwaysEmpty() throws IllegalValueException {
+        LocalDateTime endDate = LocalDateTime.of(2011, 11, 2, 2, 23);
+        toDo.setDateRange(
+            new DateRange(
+                LocalDateTime.of(2011, 11, 2, 1, 23),
+                endDate,
+                Recurrence.Weekly
+            )
+        );
+        assertFalse(toDo.getDateFinished().isPresent());
+        toDo.setDateFinished(LocalDateTime.now());
+        assertFalse(toDo.getDateFinished().isPresent());
+    }
+
+    @Test
+    public void setGetDateFinished_withRecurringDueDate_dateFinishedAlwaysEmpty() throws IllegalValueException {
+        LocalDateTime dueDate = LocalDateTime.of(2011, 11, 2, 2, 23);
+        toDo.setDueDate(
+            new DueDate(
+                dueDate,
+                Recurrence.Weekly
+            )
+        );
+        assertFalse(toDo.getDateFinished().isPresent());
+        toDo.setDateFinished(LocalDateTime.now());
+        assertFalse(toDo.getDateFinished().isPresent());
+    }
+
 
     @Test
     public void setDateFinished_validDateTime_getDateFinishedEquals() throws IllegalValueException {
@@ -161,7 +251,8 @@ public class ToDoTest {
         toDo.setDateCreated(LocalDateTime.of(2011, 11, 11, 12, 12));
         assertTrue(changes.size() == 6);
 
-        toDo.clearTimeConstraint(); // with date range, date finished won't change
+        // with date range, date finished won't change
+        toDo.clearTimeConstraint();
         assertTrue(changes.size() == 7);
 
         toDo.setDateFinished(LocalDateTime.now().plusYears(1));

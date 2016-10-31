@@ -2,13 +2,9 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.todo.DateRange;
-import seedu.commando.model.todo.Recurrence;
-import seedu.commando.model.todo.ToDo;
-import seedu.commando.model.todo.ToDoList;
+import seedu.commando.model.todo.*;
 import seedu.commando.model.ui.UiToDo;
 import seedu.commando.model.Model;
-import seedu.commando.model.todo.ToDoListChange;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -77,6 +73,8 @@ public class DeleteCommand extends Command {
             } else if (ifDeleteRecurrence) {
                 // Check if there is a date range and it is recurring
                 Optional<DateRange> dateRangeOptional = toDoToEdit.getDateRange();
+                Optional<DueDate> dueDateOptional = toDoToEdit.getDueDate();
+
                 if (dateRangeOptional.isPresent() && dateRangeOptional.get().recurrence != Recurrence.None) {
                     try {
                         toDoToEdit.setDateRange(
@@ -89,6 +87,13 @@ public class DeleteCommand extends Command {
                     } catch (IllegalValueException e) {
                         assert false : "Deleting recurrence should always be valid";
                     }
+                } else if (dueDateOptional.isPresent() && dueDateOptional.get().recurrence != Recurrence.None) {
+                    toDoToEdit.setDueDate(
+                        new DueDate(
+                            dueDateOptional.get().value,
+                            Recurrence.None
+                        )
+                    );
                 } else {
                     return new CommandResult(String.format(Messages.DELETE_COMMAND_NO_RECURRENCE, index), true);
                 }

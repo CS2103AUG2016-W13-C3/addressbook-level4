@@ -22,9 +22,11 @@ public class ToDo implements ReadOnlyToDo {
     private DueDate dueDate;
     private DateRange dateRange;
     private Set<Tag> tags;
-    private LocalDateTime dateFinished; // null if to-do is not finished
     private LocalDateTime dateCreated;
     private StringProperty value = new ReadOnlyStringWrapper();
+
+    // null if to-do is not finished
+    private LocalDateTime dateFinished;
 
     /**
      * Asserts that title is non-null
@@ -109,23 +111,48 @@ public class ToDo implements ReadOnlyToDo {
         return this;
     }
 
-    public ToDo setDateFinished(LocalDateTime date) {
-        this.dateFinished = date;
+    /**
+     * Sets the date finished for the to-do.
+     * If there is a recurring date range, this won't have any effect,
+     *   since the recurrence will not allow the to-do to finish.
+     * If there is a non-recurring date range, this won't have any effect, since
+     *   the date finished will be automatically the end of the date range.
+     * If there is a recurring due date, this will advance the due date
+     *   by the recurrence interval until it's after {@param dateFinished}
+     */
+    public ToDo setDateFinished(LocalDateTime dateFinished) {
+        if (dateRange != null) {
+            return this;
+        }
+
+        if (dueDate != null && dueDate.recurrence != Recurrence.None) {
+            advanceDueDate(dateFinished);
+        } else {
+            this.dateFinished = dateFinished;
+        }
 
         updateValue();
-        
+
         return this;
     }
 
     /**
-     * If {@param isFinished} is true, sets to-do's date finished to now
-     * Else, sets remove to-do's date finished
+     * If {@param isFinished} is true:
+     *   - If it has a recurring due date, its due date will be advanced by its recurrence once,
+     *   - If it has a date range, it will have no effect.
+     *   - Otherwise, its date finished is set to now.
+     * Else, sets remove to-do's date finished, if there is.
      */
     public ToDo setIsFinished(boolean isFinished) {
         if (isFinished) {
-            dateFinished = LocalDateTime.now();
+            if (dueDate != null && dueDate.recurrence != Recurrence.None) {
+                setDateFinished(dueDate.value);
+            } else {
+                setDateFinished(LocalDateTime.now());
+            }
         } else {
-            dateFinished = null; // remove date finished if unfinish
+            // remove date finished if unfinish
+            dateFinished = null;
         }
 
         updateValue();
@@ -142,13 +169,12 @@ public class ToDo implements ReadOnlyToDo {
     }
 
     public Optional<DueDate> getDueDate() {
-        updateDueDate();
-
         return Optional.ofNullable(dueDate);
     }
 
     public Optional<DateRange> getDateRange() {
-        updateDateRange();
+        // advance based on recurring date range, if applicable
+        advanceDateRange(LocalDateTime.now());
 
         return Optional.ofNullable(dateRange);
     }
@@ -161,18 +187,28 @@ public class ToDo implements ReadOnlyToDo {
         }
     }
 
+    /**
+     * Gets the date finished for the to-do.
+     * If there is a recurring date range or due date, this would always be empty.
+     * If there is a non-recurring date range, this would return the end date
+     *   if the current time is after the end date, empty otherwise (not over).
+     */
     @Override
     public Optional<LocalDateTime> getDateFinished() {
-        // we need to use the latest date range which considers recurrence
-        updateDateRange();
+        if (dateFinished != null) {
+            return Optional.of(dateFinished);
+        } else if (dateRange != null) {
+            // we need to use the latest date range which considers recurrence
+            advanceDateRange(LocalDateTime.now());
 
-        // If date range exists and currently it is after its end date
-        // return its end date as date finished automatically
-        if (dateRange != null && LocalDateTime.now().isAfter(dateRange.endDate)) {
-            return Optional.of(dateRange.endDate);
-        } else {
-            return Optional.ofNullable(dateFinished);
+            // If date range is after its end date
+            // return its end date as date finished automatically
+            if (LocalDateTime.now().isAfter(dateRange.endDate)) {
+                return Optional.of(dateRange.endDate);
+            }
         }
+
+        return Optional.empty();
     }
 
     @Override
@@ -219,13 +255,13 @@ public class ToDo implements ReadOnlyToDo {
 
     //@@author A0139697H
     /**
-     * Called when a to-do should update its date range.
+     * Called when a to-do is to advance its date range to after {@param dateUntil}
+     *   based on its recurrence.
      * Will only have an effect if to-do has a date range with a recurrence,
-     *   and the date range is outdated based on the current time.
      */
-    private void updateDateRange() {
+    private void advanceDateRange(LocalDateTime dateUntil) {
         if (dateRange == null
-            || !LocalDateTime.now().isAfter(dateRange.endDate)
+            || dateUntil.isBefore(dateRange.endDate)
             || dateRange.recurrence == Recurrence.None) {
             return;
         }
@@ -237,7 +273,7 @@ public class ToDo implements ReadOnlyToDo {
         // until it is not before the current date
         LocalDateTime startDate = dateRange.startDate;
         LocalDateTime endDate = dateRange.endDate;
-        while (startDate.isBefore(LocalDateTime.now())) {
+        while (!startDate.isAfter(dateUntil)) {
             startDate = dateRange.recurrence.getNextDate(startDate);
             endDate = dateRange.recurrence.getNextDate(endDate);
         }
@@ -251,13 +287,13 @@ public class ToDo implements ReadOnlyToDo {
     }
 
     /**
-     * Called when a to-do should update its due date
+     * Called when a to-do is to advance its due date to after {@param dateUntil}
+     *   based on its recurrence.
      * Will only have an effect if to-do has a due date with a recurrence,
-     *   and the due date is outdated based on the current time.
      */
-    private void updateDueDate() {
+    private void advanceDueDate(LocalDateTime dateUntil) {
         if (dueDate == null
-            || !LocalDateTime.now().isAfter(dueDate.value)
+            || dateUntil.isBefore(dueDate.value)
             || dueDate.recurrence == Recurrence.None) {
             return;
         }
@@ -268,10 +304,10 @@ public class ToDo implements ReadOnlyToDo {
         // Keep moving date forward based on recurrence interval
         // until it is not before the current date
         LocalDateTime date = dueDate.value;
-        while (date.isBefore(LocalDateTime.now())) {
+        while (!date.isAfter(dateUntil)) {
             date = dueDate.recurrence.getNextDate(date);
         }
-        dueDate = new DueDate(date, dateRange.recurrence);
+        dueDate = new DueDate(date, dueDate.recurrence);
 
         updateValue();
     }

@@ -89,14 +89,15 @@ public class Messages {
     public static final String IMPORT_COMMAND_FORMAT = ">> import <file path>";
     public static final String EXPORT_COMMAND_FORMAT = ">> export <file path>";
     public static final String ADD_COMMAND_FORMAT = ">> add <description of task> #<tag>...\n" +
-                                                    ">> add <description of task> by <deadline> #<tag>...\n" +
-                                                    ">> add <description of event> from <start time> to <end time> daily/weekly/monthly/yearly #<tag>...";
+                                                    ">> add <description of task> by <due datetime> #<tag>...\n" +
+                                                    ">> add <description of event> on <datetime> daily/weekly/monthly/yearly #<tag>...\n" +
+                                                    ">> add <description of event> from <start datetime> to <end datetime> daily/weekly/monthly/yearly #<tag>...";
     public static final String DELETE_COMMAND_FORMAT = ">> delete <index>...\n" +
                                                        ">> delete <index>... time\n" +
                                                         ">> delete <index>... tag";
     public static final String EDIT_COMMAND_FORMAT = ">> edit <index> <new description of event>  #<new tag>...\n" +
-                                                     ">> edit <index> from <new start time> to <new end time>\n" +
-                                                     ">> edit <index> by <new deadline>\n";
+                                                     ">> edit <index> from <new start datetime> to <new end datetime>\n" +
+                                                     ">> edit <index> by <new due datetime>\n";
     public static final String FINISH_COMMAND_FORMAT = ">> finish <index>...";
     public static final String UNFINISH_COMMAND_FORMAT = ">> unfinish <index>...";
     public static final String HELP_COMMAND_TOPICS = "Available Topics: add, edit, delete, find, clear, finish, unfinish, recall, undo, redo, faq, search logic, datetime formats, cheatsheet";

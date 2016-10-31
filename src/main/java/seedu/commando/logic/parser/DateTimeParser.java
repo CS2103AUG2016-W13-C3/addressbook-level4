@@ -15,7 +15,7 @@ import com.joestelmach.natty.Parser;
  * Parses datetimes with help of {@link com.joestelmach.natty.Parser}
  */
 public class DateTimeParser {
-    public static final LocalTime DefaultLocalTime = LocalTime.NOON;
+    public static final LocalTime DefaultLocalTime = LocalTime.MIDNIGHT;
     public static final LocalTime MorningLocalTime = LocalTime.of(8, 0);
     public static final LocalTime AfternoonLocalTime = LocalTime.of(12, 0);
     public static final LocalTime EveningLocalTime = LocalTime.of(19, 0);

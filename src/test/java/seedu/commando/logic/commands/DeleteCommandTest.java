@@ -225,7 +225,7 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_deleteRecurrence_deletedRecurrence() throws IllegalValueException {
-        logic.execute("add title from 22 Oct " + nextYear + " to 23 Oct " + nextYear +  "weekly");
+        logic.execute("add title on 22 Oct " + nextYear +  " weekly");
 
         eventsCollector.reset();
 
@@ -236,8 +236,8 @@ public class DeleteCommandTest {
         assertToDoExists(logic,
             new ToDoBuilder("title")
                 .withDateRange(
-                    LocalDateTime.of(nextYear, 10, 22, 12, 0),
-                    LocalDateTime.of(nextYear, 10, 23, 12, 0)
+                    LocalDateTime.of(nextYear, 10, 22, 0, 0),
+                    LocalDateTime.of(nextYear, 10, 23, 0, 0)
                 )
                 .build()
         );

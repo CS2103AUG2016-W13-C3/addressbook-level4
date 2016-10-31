@@ -10,6 +10,7 @@ import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.Logic;
+import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.Recurrence;
 import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.ToDoBuilder;
@@ -310,5 +311,50 @@ public class AddCommandTest {
         assertTrue(result.hasError());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
         assertEquals(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, result.getFeedback());
+    }
+
+    @Test
+    public void execute_addOnDate_added() throws IllegalValueException {
+        CommandResult result = logic.execute("add event on 23/11/2015");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertToDoExists(logic,
+            new ToDoBuilder("event")
+                .withDateRange(
+                    LocalDateTime.of(2015, 11, 23, 0, 0),
+                    LocalDateTime.of(2015, 11, 24, 0, 0)
+                )
+                .build()
+        );
+    }
+
+    @Test
+    public void execute_addOnDateTime_added() throws IllegalValueException {
+        CommandResult result = logic.execute("add event on today 1.21pm");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertToDoExists(logic,
+            new ToDoBuilder("event")
+                .withDateRange(
+                    LocalDateTime.now().withHour(13).withMinute(21),
+                    LocalDateTime.now().plusDays(1).withHour(0).withMinute(0)
+                )
+                .build()
+        );
+    }
+
+    @Test
+    public void execute_addTaskWithRecurringDeadline_added() throws IllegalValueException {
+        CommandResult result = logic.execute("add task by tomorrow monthly");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertToDoExists(logic,
+            new ToDoBuilder("task")
+                .withDueDate(
+                    LocalDateTime.now().plusDays(1).withHour(0).withMinute(0),
+                    Recurrence.Monthly
+                )
+                .build()
+        );
     }
 }

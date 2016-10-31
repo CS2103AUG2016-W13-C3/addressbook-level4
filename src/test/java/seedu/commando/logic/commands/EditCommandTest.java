@@ -10,6 +10,7 @@ import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.Logic;
+import seedu.commando.model.todo.Recurrence;
 import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.ToDoBuilder;
 
@@ -311,5 +312,44 @@ public class EditCommandTest {
         CommandResult result = logic.execute("edit 1");
         assertTrue(result.hasError());
         assertEquals(Messages.EDIT_COMMAND_NO_EDITS, result.getFeedback());
+    }
+
+    @Test
+    public void execute_editOnDateTime_edited() throws IllegalValueException {
+        logic.execute("add event on 10 Jan " + nextYear);
+
+        eventsCollector.reset();
+
+        String command = "edit 1 on 10 Sep " + nextYear + " 11:33am";
+        CommandResult result = logic.execute(command);
+        assertFalse(result.hasError());
+
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertToDoExists(logic,
+            new ToDoBuilder("event")
+                .withDateRange(
+                    LocalDateTime.of(nextYear, 9, 10, 11, 33),
+                    LocalDateTime.of(nextYear, 9, 11, 0, 0)
+                )
+                .build());
+    }
+
+    @Test
+    public void execute_addTaskWithRecurringDeadline_added() throws IllegalValueException {
+        logic.execute("add task by 10 Jan " + nextYear);
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("add task by 11 April " + nextYear + " weekly");
+        assertFalse(result.hasError());
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertToDoExists(logic,
+            new ToDoBuilder("task")
+                .withDueDate(
+                    LocalDateTime.of(nextYear, 4, 11, 0, 0),
+                    Recurrence.Weekly
+                )
+                .build()
+        );
     }
 }

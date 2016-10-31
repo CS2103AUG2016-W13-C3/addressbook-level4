@@ -10,6 +10,7 @@ import java.util.Objects;
 //@@author A0139697H
 /**
  * Represents a date range of a to-do.
+ * Ignores the seconds and nano-seconds field of its datetimes.
  */
 public class DateRange {
     public final LocalDateTime startDate, endDate;
@@ -36,8 +37,8 @@ public class DateRange {
 
         checkIfValid(startDate, endDate, recurrence);
 
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = startDate.withSecond(0).withNano(0);
+        this.endDate = endDate.withSecond(0).withNano(0);
         this.recurrence = recurrence;
     }
 

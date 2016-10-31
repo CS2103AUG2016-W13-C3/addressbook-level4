@@ -31,24 +31,15 @@ public interface ReadOnlyToDo {
     }
 
     /**
-     * If a date range is set and current datetime is after the end of the range
-     *   returns end of date range regardless of whether date finished was set
-     * Else, returns date finished if it is set, empty otherwise.
+     * Returns the date which the to-do is completed.
      */
     Optional<LocalDateTime> getDateFinished();
 
     /**
-     * If a date range is set and current datetime is after the end of the range
-     *   returns true regardless of whether date finished is set.
-     * Else, returns if date finished is set and date finished is after current datetime.
+     * Returns true if date finished is set and it is before the current time.
      */
     default boolean isFinished() {
-        if (getDateFinished().isPresent()) {
-            return LocalDateTime.now().isAfter(getDateFinished().get());
-        } else {
-            return getDateRange().isPresent() &&
-                LocalDateTime.now().isAfter(getDateRange().get().endDate);
-        }
+        return getDateFinished().isPresent() && LocalDateTime.now().isAfter(getDateFinished().get());
     }
 
     /**
