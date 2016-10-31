@@ -1,50 +1,51 @@
 package seedu.commando.model.todo;
 
-
-
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.commons.util.CollectionUtil;
 
 //@@author A0122001M
 
 /**
- * Represents the Due date of a to-do
- * is valid as declared in {@link #isValid(LocalDateTime)}
+ * Represents the due date of a to-do
  */
 public class DueDate {
     public final LocalDateTime value;
+    public final Recurrence recurrence;
 
     /**
-     * Constructor for a due date
-     * @throws IllegalValueException if given value is invalid
+     * @see #DueDate(LocalDateTime, Recurrence), but with no recurrence.
      */
     public DueDate(LocalDateTime value) throws IllegalValueException {
-        if (!isValid(value)) {
-            throw new IllegalValueException(Messages.TODO_DUEDATE_CONSTRAINTS + 
-                    "\n" + Messages.getCommandFormatMessage("finish").get());
-        }
+        this(value, Recurrence.None);
+    }
+
+    /**
+     * Constructor for a due date.
+     * Asserts parameters are non-null.
+     */
+    public DueDate(LocalDateTime value, Recurrence recurrence){
+        assert !CollectionUtil.isAnyNull(value, recurrence);
 
         this.value = value;
+        this.recurrence = recurrence;
     }
 
     /**
      * Copy constructor
      */
     public DueDate(DueDate dueDate) {
-        assert isValid(dueDate.value); // should already have been checked
-
         this.value = dueDate.value;
-    }
-
-    private static boolean isValid(LocalDateTime value) {
-        return value != null;
+        this.recurrence = dueDate.recurrence;
     }
 
     @Override
     public String toString() {
-        return this.value.toString();
+        return value
+            + ((recurrence == Recurrence.None) ? "" : " " + recurrence.toString().toLowerCase());
     }
 
     @Override
@@ -53,12 +54,13 @@ public class DueDate {
         // instanceof handles nulls
         return other == this
                 || (other instanceof DueDate
-                && (value.equals(((DueDate) other).value)));
+                && value.equals(((DueDate) other).value)
+                && recurrence.equals(((DueDate) other).recurrence));
     }
 
     @Override
     public int hashCode() {
-        return value.hashCode();
+        return Objects.hash(value, recurrence);
     }
 
 }

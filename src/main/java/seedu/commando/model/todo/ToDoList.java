@@ -7,25 +7,29 @@ import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 //@@author A0139697H
 /**
- * Represents a list of to-dos
+ * Represents a list of to-dos.
  */
 public class ToDoList implements ReadOnlyToDoList {
-
     private final ObservableList<ReadOnlyToDo> list;
     private final UnmodifiableObservableList<ReadOnlyToDo> protectedList;
     {
+        // Initializes an observable list to store to-dos, which
+        // calls its listeners when any of its to-dos change
         list = FXCollections.observableArrayList(toDo -> new Observable[] {
-            toDo.getObservableValue() // track value of to-do as well
+            toDo.getObservableValue()
         });
+
+        // Initializes a read-only wrapper around the list of to-dos
         protectedList = new UnmodifiableObservableList<>(list);
     }
 
-    public ToDoList() {
-    }
+    public ToDoList() {}
 
     /**
      * Copy constructor
@@ -33,10 +37,6 @@ public class ToDoList implements ReadOnlyToDoList {
     public ToDoList(ReadOnlyToDoList listToBeCopied) {
         reset(listToBeCopied.getToDos());
     }
-
-    //================================================================================
-    // List operations
-    //================================================================================
 
     /**
      * @see #add(ReadOnlyToDoList)
@@ -64,8 +64,8 @@ public class ToDoList implements ReadOnlyToDoList {
     }
 
     /**
-     * Add all to-dos in {@param toDoList}
-     * @throws IllegalValueException if any to-do in {@param toDoList} was not found for deletion
+     * Add all to-dos in {@param toDoList}.
+     * @throws IllegalValueException if any to-do in {@param toDoList} already exists
      */
     public ToDoList add(ReadOnlyToDoList toDoList) throws IllegalValueException {
         assert toDoList != null;
@@ -82,7 +82,7 @@ public class ToDoList implements ReadOnlyToDoList {
     }
 
     /**
-     * Removes all to-dos in {@param toDoList}
+     * Removes all to-dos in {@param toDoList}.
      * @throws IllegalValueException if any to-do in {@param toDoList} was not found for deletion
      */
     public ToDoList remove(ReadOnlyToDoList toDoList) throws IllegalValueException {
@@ -100,7 +100,7 @@ public class ToDoList implements ReadOnlyToDoList {
     }
 
     /**
-     * Clears the list and sets it to a deep copy of {@param newToDos}
+     * Clears the list and sets it to a deep copy of {@param newToDos}.
      */
     public void reset(List<ReadOnlyToDo> newToDos) {
         List<ToDo> toDos = new LinkedList<>();
@@ -108,22 +108,20 @@ public class ToDoList implements ReadOnlyToDoList {
         list.setAll(toDos);
     }
 
-    //================================================================================
-    // Utility methods
-    //================================================================================
-
     @Override
     public String toString() {
         return getText();
     }
 
+    /**
+     * @return a read-only list of read-only to-dos it contains
+     */
     public UnmodifiableObservableList<ReadOnlyToDo> getToDos() {
         return protectedList;
     }
 
     /**
-     *  Checks if the list contains a to-do that is similar to the given
-     *  @see ReadOnlyToDo#isSimilar(ReadOnlyToDo)
+     *  @see ReadOnlyToDoList#contains(ReadOnlyToDo)
      */
     @Override
     public boolean contains(ReadOnlyToDo toDo) {
@@ -131,8 +129,7 @@ public class ToDoList implements ReadOnlyToDoList {
     }
 
     /**
-     *  Checks if to do list is is similar to the given {@param toDoList}
-     *  @see ReadOnlyToDo#isSimilar(ReadOnlyToDo)
+     *  @see ReadOnlyToDoList#isSimilar(ReadOnlyToDoList)
      */
     @Override
     public boolean isSimilar(ReadOnlyToDoList toDoList) {
@@ -153,5 +150,4 @@ public class ToDoList implements ReadOnlyToDoList {
     public int hashCode() {
         return Objects.hash(list);
     }
-
 }

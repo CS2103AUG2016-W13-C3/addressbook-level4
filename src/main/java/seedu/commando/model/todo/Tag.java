@@ -2,18 +2,22 @@ package seedu.commando.model.todo;
 
 //@@author A0122001M
 
+import seedu.commando.commons.util.CollectionUtil;
+
 /**
- * Represents a tag of a to-do item
+ * Represents a tag of a to-do.
  */
 public class Tag {
     public final String value;
 
     /**
-     * Validates given tag name.
+     * Constructor for a tag.
+     * Asserts parameters to be non-null.
      */
     public Tag(String value) {
-        value = value.trim();
-        this.value = value;
+        assert !CollectionUtil.isAnyNull(value);
+
+        this.value = value.trim();
     }
 
     /**

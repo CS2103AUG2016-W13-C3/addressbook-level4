@@ -8,7 +8,7 @@ import javafx.beans.value.ObservableValue;
 
 //@@author A0139697H
 /**
- * A read-only immutable interface for a to-do
+ * A read-only immutable interface for a to-do.
  */
 public interface ReadOnlyToDo {
 
@@ -22,6 +22,9 @@ public interface ReadOnlyToDo {
 
     LocalDateTime getDateCreated();
 
+    /**
+     * @return if either to-do contains a date range or a due date
+     */
     default boolean hasTimeConstraint() {
         return getDateRange().isPresent()
             || getDueDate().isPresent();
@@ -29,15 +32,15 @@ public interface ReadOnlyToDo {
 
     /**
      * If a date range is set and current datetime is after the end of the range
-     * returns end of date range regardless of whether date finished was set
-     * Else, returns date finished if it is set, empty otherwise
+     *   returns end of date range regardless of whether date finished was set
+     * Else, returns date finished if it is set, empty otherwise.
      */
     Optional<LocalDateTime> getDateFinished();
 
     /**
      * If a date range is set and current datetime is after the end of the range
-     * returns true regardless of whether date finished is set.
-     * Else, returns if date finished is set and date finished is after current datetime
+     *   returns true regardless of whether date finished is set.
+     * Else, returns if date finished is set and date finished is after current datetime.
      */
     default boolean isFinished() {
         if (getDateFinished().isPresent()) {
@@ -49,13 +52,13 @@ public interface ReadOnlyToDo {
     }
 
     /**
-     * An observable value that changes when any of its fields are updated
+     * An observable value that changes when any of its fields are updated.
      */
     ObservableValue getObservableValue();
 
     /**
-     * Returns true if both have the same state
-     * All fields, except date created, must be equal
+     * Returns true if both have the same state.
+     * All fields, except date created, must be equal.
      */
     default boolean isSameStateAs(ReadOnlyToDo other) {
         // short circuit if same object
@@ -70,11 +73,12 @@ public interface ReadOnlyToDo {
     }
 
     /**
-     * Returns true if both are considered "similar", which means these fields must be equal:
-     * - title
-     * - due date
-     * - date range
-     * - tags
+     * Returns true if both are considered "similar",
+     *   which means these fields must be equal:
+     *      - title
+     *      - due date
+     *      - date range
+     *      - tags
      */
     default boolean isSimilar(ReadOnlyToDo other) {
         return other == this // short circuit if same object
@@ -86,7 +90,7 @@ public interface ReadOnlyToDo {
     }
 
     /**
-     * Updates and returns its value, based on the current value of its fields
+     * @return a complete textual representation of the to-do as a string
      */
     default String getText() {
         return String.join(", ",

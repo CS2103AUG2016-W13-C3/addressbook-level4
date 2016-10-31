@@ -37,7 +37,6 @@ public class Messages {
     public static final String TODO_ALREADY_EXISTS = "To-do already exists!";
     public static final String TODO_NOT_FOUND = "To-do not found: %1$s";
     public static final String TODO_ITEM_INDEX_INVALID = "Invalid to-do index: %1$d.";
-    public static final String TODO_DUEDATE_CONSTRAINTS = "Due date can be any date.";
     public static final String TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE = "To-do cannot have both due date and date range!";
 
     public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.";
