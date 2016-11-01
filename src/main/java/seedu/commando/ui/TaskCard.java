@@ -63,10 +63,16 @@ public class TaskCard extends UiPart {
         }
     }
     
+    /**
+     * Sets value for the date time label
+     * and colours it according to the proximity of the date to today
+     * with red being the closest, and green being the furthest
+     */
     private void setDateTimeLabel() {
         if (toDo.getDueDate().isPresent()) {
             final LocalDateTime due = toDo.getDueDate().get().value;
             final long dayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), due);
+            
             dueLabel.setText("by " + ToDoCardStyleManager.prettifyDateTime(due));
             dueLabel.setStyle("-fx-text-fill: " + 
                   ToDoCardStyleManager.getDateProximityGreen((int) dayDifference));
@@ -74,7 +80,6 @@ public class TaskCard extends UiPart {
             dueLabel.setText("");
         }
     }
-    //@@author
     
     /*
      * Different CSS styles for different states
@@ -90,7 +95,6 @@ public class TaskCard extends UiPart {
         return taskPane;
     }
     
-    //@@author A0139080J
     /**
      * Every recently modified event will have a red border
      * This includes modification via undo, edit, add

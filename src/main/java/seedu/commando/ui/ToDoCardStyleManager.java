@@ -47,6 +47,7 @@ public class ToDoCardStyleManager {
      * @param startDateTime start date time
      * @param endDateTime end date time
      * @return format in a way that is intuitive to the user
+     * 
      * I.e. Dates that in the current year will not show the years
      * I.e. Dates that are in the same year will only show the year once
      * I.e. Dates that are tomorrow show up as "tomorrow" (Similarly, yesterday and today)
@@ -66,7 +67,7 @@ public class ToDoCardStyleManager {
                  startDateTime.toLocalDate().isEqual(tomorrowDate) ||
                  startDateTime.toLocalDate().isEqual(yesterdayDate));
         
-        // Damn corner cases. If its Yesterday or Today or Tomorrow, shouldn't show month and year
+        // If its Yesterday or Today or Tomorrow, shouldn't show month and year
         if (sameDayAndIsYtdOrTdyOrTmr) {
             return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + " " + getDay(startDateTime);
         }
@@ -155,6 +156,7 @@ public class ToDoCardStyleManager {
     /**
      * @param the date and time (LocalDateTime)
      * @return format in a way that is intuitive to the user
+     * 
      * I.e. Dates that in the current year will not show the years
      * I.e. Dates that are today show up as "Today"
      * I.e. Dates that are tomrorow show up as "Tmr"

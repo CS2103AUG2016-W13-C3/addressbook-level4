@@ -128,11 +128,11 @@ public class MainWindow extends UiPart {
     }
 
     public static MainWindow load(Stage primaryStage, UserPrefs prefs, Logic logic) {
-        // Try to remove title bar of window
         try {
+            // Try to remove title bar of window
             primaryStage.initStyle(StageStyle.UNDECORATED);
         } catch (IllegalStateException exception) {
-            // Ignore, window has been made visible already
+            logger.info("Warning: " + exception.getMessage());
         }
 
         MainWindow mainWindow = UiPartLoader.loadUiPart(primaryStage, new MainWindow());
@@ -166,7 +166,6 @@ public class MainWindow extends UiPart {
         primaryStage.setScene(scene);
         helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl);
     }
-
 
     void fillInnerParts() {
         eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getUiEvents());
@@ -328,6 +327,9 @@ public class MainWindow extends UiPart {
         });
     }
 
+    /**
+     * Refer to setTabAndArrowKeysNavigations()
+     */
     private void cycleThroughFocusPanes() {
         switch (currentlyFocusedPane) {
         case COMMANDFIELD:
@@ -345,10 +347,8 @@ public class MainWindow extends UiPart {
         }
     }
     
-
-    
     /**
-     * Sets the whole app to be draggable
+     * Sets the whole applicaation to be draggable
      */
     private void setDraggable(Node node) {
         node.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -385,6 +385,9 @@ public class MainWindow extends UiPart {
         toggleSizeButtonSymbol();
     }
     
+    /**
+     * Toggles the minimize / maximize button between two symbols.
+     */
     private void toggleSizeButtonSymbol() {
         if (isMaximized) {
             toggleSizeButton.setText(unMaximizeButtonSymbol);

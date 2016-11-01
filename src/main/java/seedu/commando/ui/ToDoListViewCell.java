@@ -15,6 +15,7 @@ class ToDoListViewCell extends ListCell<UiToDo> {
     private Card chosenCard;
 
     public ToDoListViewCell(Card card) {
+        assert card != null;
         chosenCard = card;
     }
 

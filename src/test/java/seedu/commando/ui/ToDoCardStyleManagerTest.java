@@ -32,7 +32,7 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTime_currentYear() {
+    public void prettifyDateTime_currentYear_dontShowYear() {
         // Should not display year
         final LocalDateTime date = LocalDateTime.of(currentYear, 2, 28, 23, 59);
         assertEquals("23:59 " + formatDayOfWeek.format(date) + " 28 Feb",
@@ -40,7 +40,7 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTime_nonCurrentYear() {
+    public void prettifyDateTime_nonCurrentYear_showYear() {
         // Should display year
         final LocalDateTime date = LocalDateTime.of(currentYear - 1, 2, 28, 23, 59);
         assertEquals("23:59 " + formatDayOfWeek.format(date) + " 28 Feb " + (currentYear - 1),
@@ -48,7 +48,7 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTime_today() {
+    public void prettifyDateTime_today_showToday() {
         // Should display year
         final LocalDateTime date = LocalDateTime.of(LocalDate.now(), LocalTime.NOON);
         assertEquals("12:00 Today",
@@ -56,7 +56,7 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTime_tomorrow() {
+    public void prettifyDateTime_tomorrow_showTomorrow() {
         // Should display year
         final LocalDateTime date = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.NOON);
         assertEquals("12:00 Tomorrow",
@@ -64,7 +64,7 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTime_yesterday() {
+    public void prettifyDateTime_yesterday_showYesterday() {
         // Should display year
         final LocalDateTime date = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.NOON);
         assertEquals("12:00 Yesterday",
@@ -72,7 +72,7 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTimeRange_currentYear_to_currentYear() {
+    public void prettifyDateTimeRange_currentYearToCurrentYear_dontShowYear() {
         // Should not display any year
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 3, 1, 12, 30);
@@ -82,7 +82,7 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTimeRange_sameNonCurrentYear() {
+    public void prettifyDateTimeRange_sameNonCurrentYear_showOneYear() {
         // Should display one year
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear - 1, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear - 1, 3, 1, 12, 30);
@@ -92,7 +92,7 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTimeRange_currentYear_to_nonCurrentYear() {
+    public void prettifyDateTimeRange_currentYearToNonCurrentYear_showBothYears() {
         // Should display both years
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 3, 1, 12, 30);
@@ -102,7 +102,7 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTimeRange_nonCurrentYear_to_diffNonCurrentYear() {
+    public void prettifyDateTimeRange_nonCurrentYearToDiffNonCurrentYear_showBothYears() {
         // Should display both years
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear - 1, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 3, 1, 12, 30);
@@ -112,7 +112,7 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTimeRange_sameYear_differenMonth() {
+    public void prettifyDateTimeRange_sameYearDifferenMonth_showOneYearAndBothMonths() {
         // Should display one year and both months
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 3, 1, 12, 30);
@@ -122,7 +122,7 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTimeRange_sameYear_sameMonth_differentDay() {
+    public void prettifyDateTimeRange_sameYearSameMonthDifferentDay_showOneYearBothMonths() {
         // Should display one year and both month
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 27, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 2, 28, 12, 30);
@@ -132,7 +132,7 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTimeRange_sameYear_sameMonth_sameDay() {
+    public void prettifyDateTimeRange_sameYearSameMonthSameDay_showOneYearOneMonthAndTwoTimes() {
         // Should display one year, one month and two times
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 27, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 2, 27, 13, 30);
@@ -141,11 +141,8 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTimeRange_sameDate_differentTime_butIsToday() {
-        // Should display time and either 'Today'
-        
-        System.out.println(currentMonth);
-        System.out.println(currentDay);
+    public void prettifyDateTimeRange_sameDateDifferentTimeButIsToday_showTimeAndToday() {
+        // Should display time and 'Today'
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, currentMonth, currentDay, 13, 30);
         assertEquals("12:30 to 13:30 Today",
