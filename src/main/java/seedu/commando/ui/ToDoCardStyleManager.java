@@ -75,13 +75,13 @@ public class ToDoCardStyleManager {
             if (sameDay) {
                 return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + " " + getDay(startDateTime);
             } else if (endIsYtdOrTdyOrTmr) {
-                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + " " + 
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n" + 
                         getTime(endDateTime) + " " + getDay(endDateTime);
             } else if (endDateTime.getYear() == todayDate.getYear()) {
-                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + " " + 
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n" + 
                         getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime);
             } else {
-                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + " " + 
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n" + 
                         getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime) + " " + endDateTime.getYear();
             }
         }
