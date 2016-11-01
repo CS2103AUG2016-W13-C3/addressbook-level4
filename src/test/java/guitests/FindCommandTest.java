@@ -29,7 +29,9 @@ public class FindCommandTest extends CommanDoGuiTest {
     @Test
     public void findCommand_emptyList(){
         commandBox.runCommand("clear");
-        assertFindResult("find Jean"); //no results
+        
+        //no results
+        assertFindResult("find Jean"); 
     }
 
     @Test
@@ -37,7 +39,13 @@ public class FindCommandTest extends CommanDoGuiTest {
         commandBox.runCommand("findgeorge");
         assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "findgeorge"));
     }
-
+    
+    /**
+     * Runs the find command to filter ToDoList according to given keywords
+     * 
+     * @param command        The find command to be executed.
+     * @param expectedHits   The expected result list after filtering.
+     */
     private void assertFindResult(String command, ToDo... expectedHits ) {
         commandBox.runCommand(command);
         assertListSize(expectedHits.length); //number of expected todos = number of listed todos in result

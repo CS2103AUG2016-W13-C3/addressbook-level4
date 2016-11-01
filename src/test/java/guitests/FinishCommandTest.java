@@ -50,6 +50,14 @@ public class FinishCommandTest extends CommanDoGuiTest {
      
     }
     
+    /**
+     * Runs the finish command to mark the single Todo at specified index and
+     * confirms the result is correct.
+     * 
+     * @param targetIndex   The indices Todos to be marked as done in the list.
+     * @param currentList   A copy of the current list of Todos (before finish command).
+     */
+    
     private void assertFinishSuccess(int targetIndex, ToDo[] currentList) {
         ToDo TodosToFinish = currentList[targetIndex-1]; //-1 because array uses zero indexing
         TodosToFinish.setIsFinished(true);
@@ -70,6 +78,14 @@ public class FinishCommandTest extends CommanDoGuiTest {
         
     }
     
+    /**
+     * Runs the finish command to mark the consective Todos (e.g. from index 2 to 4) and
+     * confirms the result is correct.
+     * 
+     * @param startIndex    The starting index Todo to be marked as done in the list.
+     * @param endIndex      The ending index Todo to be marked as done in the list.
+     * @param currentList   A copy of the current list of Todos (before finish command).
+     */
     private void assertFinishConsectiveSuccess(int startIndex, int endIndex, ToDo[] currentList) {
         ToDo[] expectedRemainder = currentList;
         String finishedIndices = "[";

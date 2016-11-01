@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.core.EventsCenter;
@@ -27,6 +28,7 @@ import static seedu.commando.testutil.TestHelper.*;
 public class DeleteCommandTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
+    
 
     private Logic logic;
     private EventsCollector eventsCollector;
@@ -127,6 +129,18 @@ public class DeleteCommandTest {
                     LocalDateTime.of(2016, 10, 23, 14, 0)
                 )
                 .build());
+    }
+    
+    @Test
+    public void execute_deleteEndGreaterThanStartIndex_error() {
+        logic.execute("add test 1");
+        logic.execute("add test 2");
+        
+        eventsCollector.reset();
+        
+        CommandResult result = logic.execute("delete 2 to 1");
+        assertTrue(result.hasError());
+        assertEquals(Messages.INDEXRANGE_CONSTRAINTS + "\n" + Messages.DELETE_COMMAND_FORMAT, result.getFeedback());
     }
 
     @Test

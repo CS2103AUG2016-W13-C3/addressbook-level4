@@ -38,7 +38,12 @@ public class ClearCommandTest extends CommanDoGuiTest {
         commandBox.runCommand("clears");
         assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "clears"));
     }
-
+    
+    
+    /**
+     * Runs clear command and asserts that there is no Todo remained
+     * in the list
+     */
     private void assertClearCommandSuccess() {
         commandBox.runCommand("clear");
         assertListSize(0);
