@@ -185,7 +185,6 @@ public class DeleteCommandTest {
         eventsCollector.reset();
 
         CommandResult result = logic.execute("delete 1 time");
-        System.out.println(result.getFeedback());
         assertFalse(result.hasError());
 
         assertTrue(wasToDoListChangedEventPosted(eventsCollector));

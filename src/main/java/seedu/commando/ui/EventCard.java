@@ -82,7 +82,6 @@ public class EventCard extends UiPart{
             final DateRange dateRange = toDo.getDateRange().get();
             final long startDayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.startDate);
             
-            System.out.println("From " + dateRange.startDate.toString() + " to " + dateRange.endDate.toString());
             dateIntervalLabel.setText(
                     ToDoCardStyleManager.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
             dateIntervalLabel.setStyle("-fx-text-fill: " + 

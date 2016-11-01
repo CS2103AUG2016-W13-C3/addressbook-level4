@@ -4,12 +4,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.events.model.ToDoListChangedEvent;
 import seedu.commando.commons.events.storage.DataSavingExceptionEvent;
-import seedu.commando.logic.commands.*;
+import seedu.commando.logic.commands.CommandResult;
 import seedu.commando.model.Model;
 import seedu.commando.model.ModelManager;
 import seedu.commando.model.UserPrefs;
@@ -20,7 +19,6 @@ import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.StorageStub;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -79,8 +77,7 @@ public class LogicManagerTest {
     }
     
     @Test
-    public void handleToDOListChangedEvent_exception() throws IOException {
-        
+    public void handleToDoListChangedEvent_mockStorage_throwsException() throws IOException {
         Storage mockedStorage = Mockito.mock(StorageManager.class);
         logic = new LogicManager(new ModelManager(), mockedStorage, new UserPrefs());
         Mockito.doThrow(new IOException()).when(mockedStorage).saveToDoList(new ToDoList());
