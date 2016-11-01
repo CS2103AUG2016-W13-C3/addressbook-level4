@@ -10,6 +10,7 @@ import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.Model;
 import seedu.commando.model.todo.ToDoListChange;
+import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.ui.UiToDo;
@@ -69,6 +70,11 @@ public class CommandTest {
         public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, boolean ifHistoryMode) {
 
         }
+
+		@Override
+		public void setUiToDoListFilter(DateRange dateRange) {
+			
+		}
     };
 
     @Before

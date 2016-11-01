@@ -8,7 +8,6 @@ import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.util.CollectionUtil;
 import seedu.commando.commons.util.StringUtil;
 import seedu.commando.logic.LogicManager;
-import seedu.commando.model.todo.ToDoListChange;
 import seedu.commando.model.ToDoListManager;
 import seedu.commando.model.todo.*;
 
@@ -36,6 +35,7 @@ public class UiModel {
     private Set<String> keywords = Collections.emptySet();
     private Set<Tag> tags = Collections.emptySet();
     private boolean ifHistoryMode = false;
+    private DateRange dateRange = null;
 
     /**
      * @param toDoListManager ToDoListManager it tracks and grabs the list of to-dos from
@@ -86,7 +86,17 @@ public class UiModel {
 
         updateEventsAndTasks();
     }
-
+    //@@author A0142230B
+    /**
+     * Sets a filter on the UI to-dos with dateRange.
+     * Asserts dateRange to be non-null.
+     */
+    public void setToDoListFilter(DateRange dateRange) {
+        assert dateRange != null;
+        this.dateRange = dateRange;
+        updateEventsAndTasksByTime(dateRange);
+    }
+    //@@author A0139697H
     /**
      * Clears the filter on the to-do list and sets its history mode.
      */
@@ -120,6 +130,18 @@ public class UiModel {
         // Update its own lists of UI to-dos
         updateUiToDos(events, tasks);
     }
+    
+    //@@author A0142230B
+    /**
+     * Update the UI to-dos based on {@link #toDoListManager}'s to-do list and the time filter
+     */
+    private void updateEventsAndTasksByTime(DateRange filterDateRange) {
+    	// Sort and filter events and tasks for UI
+        List<ReadOnlyToDo> events = filterAndSortEventsByTime(toDoListManager.getToDoList().getToDos(),filterDateRange);
+        List<ReadOnlyToDo> tasks = filterAndSortTasksByTime(toDoListManager.getToDoList().getToDos(),filterDateRange);
+        // Update its own lists of UI to-dos
+        updateUiToDos(events, tasks);
+    }
 
     /**
      * Populate its lists of UI to-dos based on supplied to-dos
@@ -149,8 +171,110 @@ public class UiModel {
         // running index should be incremented by no. of to-dos
         assert runningIndex == toDoAtIndices.size();
     }
+    //@@author A0142230B
+    /**
+     * Filter tasks which are within the filterDateRange from the given toDoList.
+     * @return a list of filtered tasks
+     */
+	private List<ReadOnlyToDo> filterAndSortTasksByTime(List<ReadOnlyToDo> toDos, DateRange filterDateRange) {
+		List<ReadOnlyToDo> tasks = new ArrayList<ReadOnlyToDo>();
+		for (ReadOnlyToDo toDo : toDos) {
+			if (isTaskInDateRange(toDo, filterDateRange)) {
+				tasks.add(toDo);
+			}
+		}
+		// For tasks, sort by created date first (latest first)
+		tasks.sort((task1, task2) -> task2.getDateCreated().compareTo(task1.getDateCreated()));
 
-    private List<ReadOnlyToDo> filterAndSortTasks(List<ReadOnlyToDo> toDos) {
+		// Then, by whether they have due date and that date (latest first)
+		tasks.sort((task1, task2) -> compareDueDates(task1, task2));
+
+		// Then, by whether they are finished and finished date (latest first)
+		tasks.sort((task1, task2) -> compareDateFinished(task2, task1));
+
+		return tasks;
+	}
+
+    /**
+     * Check if a toDo is a task and it is in the filterDateRange
+     * @return true if the toDo is a task and it is in the filterDateRange
+     */
+	private boolean isTaskInDateRange(ReadOnlyToDo toDo, DateRange filterDateRange) {
+		if (!toDo.getDueDate().isPresent()) {
+			return false;
+		}
+		LocalDateTime dueDate = toDo.getDueDate().get().value;
+
+		if (isTimeInRange(dueDate, filterDateRange)) {
+			return true;
+		}
+
+		return false;
+	}
+    /**
+     * Filter events which are within the filterDateRange from the given toDoList.
+     * @return a list of filtered events
+     */
+	private List<ReadOnlyToDo> filterAndSortEventsByTime(List<ReadOnlyToDo> toDos, DateRange filterDateRange) {
+    	List<ReadOnlyToDo> events = new ArrayList<ReadOnlyToDo>();
+        for(ReadOnlyToDo toDo : toDos) {
+        	if(isEventInDateRange(toDo,filterDateRange)){
+        		events.add(toDo);
+        	}
+        }
+
+        // For events, sort by created date first (latest first)
+        events.sort((event1, event2) -> event2.getDateCreated().compareTo(event1.getDateCreated()));
+
+        // Then, by start dates (earlier first)
+        events.sort((event1, event2) -> compareDateRangeStarts(event1, event2));
+
+        // Then, by whether they are finished and finished date (latest first)
+        events.sort((event1, event2) -> compareDateFinished(event2, event1));
+
+        return events;
+    }
+    /**
+     * Check if a toDo is a event and it is in the filterDateRange
+     * @return true if the toDo is a event and it is in the filterDateRange
+     */
+	private boolean isEventInDateRange(ReadOnlyToDo toDo, DateRange filterDateRange) {
+		if (!toDo.getDateRange().isPresent()) {
+			return false;
+		}
+		LocalDateTime startTime = toDo.getDateRange().get().startDate;
+		LocalDateTime endTime = toDo.getDateRange().get().endDate;
+
+		// Case 1: start time is in the range
+		if (isTimeInRange(startTime, filterDateRange)) {
+			return true;
+		}
+		// Case 2:end time is in the range
+		if (isTimeInRange(endTime, filterDateRange)) {
+			return true;
+		}
+
+		// Case 3: filterDateRange is in the range between startTime and endTime
+		if (startTime.isBefore(filterDateRange.startDate) && endTime.isAfter(filterDateRange.endDate)) {
+			return true;
+		}
+
+		return false;
+	}
+    /**
+     * Check if a LocalDateTime is within a dateRange
+     * @return true if the time is in the dateRange
+     */
+	private boolean isTimeInRange(LocalDateTime time, DateRange dateRange) {
+		if ((time.isAfter(dateRange.startDate) || time.isEqual(dateRange.startDate))
+				&& (time.isBefore(dateRange.endDate) || time.isEqual(dateRange.endDate))) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	//@@author A0139697H
+	private List<ReadOnlyToDo> filterAndSortTasks(List<ReadOnlyToDo> toDos) {
         List<ReadOnlyToDo> tasks = toDos.stream()
             .filter(toDoFilterPredicate)
             .filter(UiToDo::isTask)

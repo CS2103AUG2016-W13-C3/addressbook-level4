@@ -10,6 +10,7 @@ import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.parser.CommandParser;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.DueDate;
+import seedu.commando.model.todo.Recurrence;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.Title;
 
@@ -96,6 +97,8 @@ public class CommandFactory {
                     return buildImportCommand();
                 case RecallCommand.COMMAND_WORD:
                     return buildRecallCommand();
+                case ListCommand.COMMAND_WORD:
+                    return buildListCommand();
                 default:
                     throw new UnknownCommandWordException(processedCommandWord);
             }
@@ -160,6 +163,24 @@ public class CommandFactory {
 
         return new StoreCommand(path);
     }
+    
+    //@@author A0142230B
+    private Command buildListCommand() throws IllegalValueException {
+        // Extract the date range, if exists
+    	Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+    	// Wrong format
+        if (!commandParser.isInputEmpty()) {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ListCommand.COMMAND_WORD));
+        }
+        //Should not have recurrence info in the input
+        if(dateRange.isPresent() && dateRange.get().recurrence != Recurrence.None){
+        	throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ListCommand.COMMAND_WORD));
+        }
+        else{
+    		return new ListCommand(dateRange);
+        }
+    }
+    
 
     private Command buildAddCommand() throws IllegalValueException {
         // Check if quoted title exists

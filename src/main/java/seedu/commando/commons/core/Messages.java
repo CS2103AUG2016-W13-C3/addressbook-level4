@@ -10,6 +10,7 @@ import seedu.commando.logic.commands.FindCommand;
 import seedu.commando.logic.commands.FinishCommand;
 import seedu.commando.logic.commands.HelpCommand;
 import seedu.commando.logic.commands.ImportCommand;
+import seedu.commando.logic.commands.ListCommand;
 import seedu.commando.logic.commands.RecallCommand;
 import seedu.commando.logic.commands.RedoCommand;
 import seedu.commando.logic.commands.StoreCommand;
@@ -83,6 +84,8 @@ public class Messages {
     public static final String DELETE_COMMAND_NO_TAGS = "To-do with index '%1$s' has no tags to delete!";
     public static final String DELETE_COMMAND_NO_TIME_CONSTRAINTS = "To-do with index '%1$s' has no time constraints to delete!";
     public static final String DELETE_COMMAND_NO_RECURRENCE = "To-do with index '%1$s' has no recurrence to delete!";
+    public static final String LIST_COMMAND_CLEAR = "Listed all to-do items.";
+    public static final String LIST_COMMAND = "Listed %1$d events and %2$d tasks.";
 
     //@@author A0139080J
     public static final String STORE_COMMAND_FORMAT = ">> store <file path>";
@@ -100,6 +103,9 @@ public class Messages {
                                                      ">> edit <index> by <new due datetime>\n";
     public static final String FINISH_COMMAND_FORMAT = ">> finish <index>...";
     public static final String UNFINISH_COMMAND_FORMAT = ">> unfinish <index>...";
+    public static final String LIST_COMMAND_FORMAT = ">> list \n" +
+    		                                         ">> list on <datetime> \n" +
+                                                     ">> list from <start datetime> to <end datetime>";
     public static final String HELP_COMMAND_TOPICS = "Available Topics: add, edit, delete, find, clear, finish, unfinish, recall, undo, redo, faq, search logic, datetime formats, cheatsheet";
     
     public static final String DATE_FORMAT = "Date Time Formats: 9 jan 2018 23:59 | Jan 9 2019 1900h | coming friday morning | today 23:59";
@@ -128,6 +134,8 @@ public class Messages {
                 return Optional.of(UNFINISH_COMMAND_FORMAT);
             case HelpCommand.COMMAND_WORD:
                 return Optional.of(HELP_COMMAND_TOPICS);
+            case ListCommand.COMMAND_WORD:
+            	return Optional.of(LIST_COMMAND_FORMAT);
             default: break; 
         }
         return Optional.empty();
