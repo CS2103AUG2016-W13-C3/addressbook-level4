@@ -18,6 +18,8 @@ public class ToDoCardStyleManager {
     public static String recentlyModifiedStateCSS = "-fx-border-color: red";
     
     public static String finishedStateContentCSS = "-fx-background-color: derive(#1d1d1d, 95%);";
+    public static String finishedStateDateCSS = "-fx-border-color: derive(#1d1d1d, 100%);"
+                                              + "-fx-background-color: derive(#1d1d1d, 100%);";
     public static String finishedStateIndexCSS = "-fx-background-color: derive(#1d1d1d, 30%);";
     
     public static String activateHoverStateContentCSS = "-fx-background-color: derive(#DCDCDC, 50%);";
@@ -113,7 +115,7 @@ public class ToDoCardStyleManager {
         if (sameYear && sameMonth && sameDay) {
             // If same year and same month and same day
             // Display one month
-            end = " " + getDay(endDateTime) + end;
+            end = " \n" + getDay(endDateTime) + end;
         } else {
             // Display both months
             start = " " + getDay(startDateTime) + start;
@@ -147,7 +149,7 @@ public class ToDoCardStyleManager {
         } else if (ld.isEqual(tomorrowDate)) {
             return keywordTomorrow;
         } else {
-            return formatDay.format(ldt);
+            return "on " + formatDay.format(ldt);
         }
     }
     
@@ -200,11 +202,11 @@ public class ToDoCardStyleManager {
         if (dayDifference < 0) {
             return "#FF0000";
         } else if (dayDifference <= 1) {
-            return "#AA1100";
-        } else if (dayDifference <= 3) {
             return "#882200";
-        } else if (dayDifference <= 7) {
+        } else if (dayDifference <= 3) {
             return "#775500";
+        } else if (dayDifference <= 7) {
+            return "#778800";
         } else if (dayDifference <= 14) {
             return "#686033";
         } else {

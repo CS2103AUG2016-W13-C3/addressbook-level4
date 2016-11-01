@@ -157,7 +157,7 @@ public class ToDoCardStyleManagerTest {
         // Should display time and date
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(tomorrowYear, tomorrowMonth, tomorrowDay, 13, 30);
-        assertEquals("12:30 Today to 13:30 Tomorrow",
+        assertEquals("12:30 Today to\n13:30 Tomorrow",
                 ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -166,7 +166,7 @@ public class ToDoCardStyleManagerTest {
         // Should display time and date
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 2, 27, 13, 30);
-        assertEquals("12:30 Today to 13:30 " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear + 1),
+        assertEquals("12:30 Today to\n13:30 " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear + 1),
                 ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
     }
 }

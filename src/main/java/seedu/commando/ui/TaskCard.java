@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.Recurrence;
@@ -21,6 +22,10 @@ public class TaskCard extends UiPart {
     @FXML
     private HBox taskPaneInner;
     @FXML
+    private VBox tagsPane;
+    @FXML
+    private VBox datePane;
+    @FXML
     private Label titleLabel;
     @FXML
     private Label indexLabel;
@@ -33,6 +38,8 @@ public class TaskCard extends UiPart {
 
     private ReadOnlyToDo toDo;
     private int index;
+    private boolean containsTags = true;
+    private boolean containsDate = true;
 
     public TaskCard(){ }
 
@@ -51,6 +58,7 @@ public class TaskCard extends UiPart {
 
         setDateTimeLabel();
         setRecurrenceLabel();
+        checkTagsPane();
         setTagLabel();
     }
     
@@ -64,6 +72,7 @@ public class TaskCard extends UiPart {
             tagsLabel.setText(tags);
         } else {
             tagsLabel.setManaged(false);
+            containsTags = false;
         }
     }
     
@@ -72,6 +81,16 @@ public class TaskCard extends UiPart {
             recurrenceLabel.setText(toDo.getDueDate().get().recurrence.toString());
         } else {
             recurrenceLabel.setManaged(false);
+            containsDate = false;
+        }
+    }
+    
+    /**
+     * If both tags and recurrence are non-existent, hide the pane that contains them
+     */
+    private void checkTagsPane() {
+        if (!containsTags && !containsDate) {
+            tagsPane.setManaged(false);
         }
     }
     
@@ -89,7 +108,8 @@ public class TaskCard extends UiPart {
             dueLabel.setStyle("-fx-text-fill: " + 
                   ToDoCardStyleManager.getDateProximityGreen((int) dayDifference));
         } else {
-            dueLabel.setText("");
+            dueLabel.setManaged(false);
+            datePane.setManaged(false);
         }
     }
     
@@ -120,6 +140,7 @@ public class TaskCard extends UiPart {
      */
     private void setFinishedState() {
         taskPaneInner.setStyle(ToDoCardStyleManager.finishedStateContentCSS);
+        datePane.setStyle(ToDoCardStyleManager.finishedStateDateCSS);
         indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
     }
     
