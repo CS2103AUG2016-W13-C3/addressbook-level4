@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- @@author A0139080J -->
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
@@ -14,15 +15,18 @@
 					<children>
 						<HBox maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
 							<children>
-								<Label fx:id="indexLabel" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="50.0" text="\$i" textOverrun="CLIP">
+								<Label fx:id="indexLabel" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="40.0" prefHeight="40.0" text="\$i" textOverrun="CLIP">
 									<padding>
-										<Insets top="13.0" />
+										<Insets bottom="10.0" top="10.0" />
 									</padding>
 								</Label>
-								<Label fx:id="titleLabel" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" text="\$value" wrapText="true">
+								<Label fx:id="titleLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" text="\$value" wrapText="true">
                            <padding>
                               <Insets left="15.0" right="7.0" />
-                           </padding></Label>
+                           </padding>
+                           <HBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </HBox.margin></Label>
 							</children>
 						</HBox>
 						<HBox fillHeight="false" maxHeight="1.7976931348623157E308">
@@ -39,13 +43,16 @@
       										<Insets left="3.0" right="3.0" />
       									</padding>
                                  <VBox.margin>
-                                    <Insets top="5.0" />
+                                    <Insets />
                                  </VBox.margin>
       								</Label>
                            </children>
                            <padding>
-                              <Insets bottom="5.0" left="4.0" right="4.0" top="5.0" />
+                              <Insets bottom="7.0" left="4.0" right="4.0" top="7.0" />
                            </padding>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
                         </VBox>
 							</children>
 						</HBox>
@@ -56,7 +63,7 @@
 								<Label fx:id="dateIntervalLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="\$interval" />
 							</children>
                <padding>
-                  <Insets left="7.0" right="7.0" />
+                  <Insets bottom="10.0" left="7.0" right="15.0" top="10.0" />
                </padding>
 						</HBox>
 			</children>

@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.Recurrence;
 
 public class TaskCard extends UiPart {
 
@@ -27,6 +28,8 @@ public class TaskCard extends UiPart {
     private Label dueLabel;
     @FXML
     private Label tagsLabel;
+    @FXML
+    private Label recurrenceLabel;
 
     private ReadOnlyToDo toDo;
     private int index;
@@ -47,6 +50,7 @@ public class TaskCard extends UiPart {
         indexLabel.setText(String.valueOf(index));
 
         setDateTimeLabel();
+        setRecurrenceLabel();
         setTagLabel();
     }
     
@@ -63,6 +67,14 @@ public class TaskCard extends UiPart {
         }
     }
     
+    private void setRecurrenceLabel() {
+        if (toDo.getDueDate().isPresent() && toDo.getDueDate().get().recurrence != Recurrence.None) {
+            recurrenceLabel.setText(toDo.getDueDate().get().recurrence.toString());
+        } else {
+            recurrenceLabel.setManaged(false);
+        }
+    }
+    
     /**
      * Sets value for the date time label
      * and colours it according to the proximity of the date to today
@@ -72,7 +84,7 @@ public class TaskCard extends UiPart {
         if (toDo.getDueDate().isPresent()) {
             final LocalDateTime due = toDo.getDueDate().get().value;
             final long dayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), due);
-            
+
             dueLabel.setText("by " + ToDoCardStyleManager.prettifyDateTime(due));
             dueLabel.setStyle("-fx-text-fill: " + 
                   ToDoCardStyleManager.getDateProximityGreen((int) dayDifference));

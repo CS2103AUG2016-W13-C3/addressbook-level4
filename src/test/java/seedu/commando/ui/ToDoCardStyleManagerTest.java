@@ -22,6 +22,9 @@ public class ToDoCardStyleManagerTest {
     private final int currentYear = now.getYear();
     private final int currentMonth = now.getMonthValue();
     private final int currentDay = now.getDayOfMonth();
+    private final int tomorrowYear = now.plusDays(1).getYear();
+    private final int tomorrowMonth = now.plusDays(1).getMonthValue();
+    private final int tomorrowDay = now.plusDays(1).getDayOfMonth();
     
     @Before
     public void setup() {
@@ -141,11 +144,29 @@ public class ToDoCardStyleManagerTest {
     }
     
     @Test
-    public void prettifyDateTimeRange_sameDateDifferentTimeButIsToday_showTimeAndToday() {
-        // Should display time and 'Today'
+    public void prettifyDateTimeRange_todayToToday_showTimeAndToday() {
+        // Should display time and date
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, currentMonth, currentDay, 13, 30);
         assertEquals("12:30 to 13:30 Today",
+                ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
+    }
+    
+    @Test
+    public void prettifyDateTimeRange_todayToTomorrow_showTimeTodayToTimeTomorrow() {
+        // Should display time and date
+        final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
+        final LocalDateTime dateTo = LocalDateTime.of(tomorrowYear, tomorrowMonth, tomorrowDay, 13, 30);
+        assertEquals("12:30 Today to 13:30 Tomorrow",
+                ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
+    }
+    
+    @Test
+    public void prettifyDateTimeRange_todayToSomeDate_showTimeTodayToTimeDate() {
+        // Should display time and date
+        final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
+        final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 2, 27, 13, 30);
+        assertEquals("12:30 Today to 13:30 " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear + 1),
                 ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
     }
 }

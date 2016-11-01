@@ -62,14 +62,28 @@ public class ToDoCardStyleManager {
         boolean sameYear = startDateTime.getYear() == endDateTime.getYear();
         boolean sameMonth = startDateTime.getMonthValue() == endDateTime.getMonthValue();
         boolean sameDay = startDateTime.getDayOfMonth() == endDateTime.getDayOfMonth();
-        boolean sameDayAndIsYtdOrTdyOrTmr = sameYear && sameMonth && 
-                (startDateTime.toLocalDate().isEqual(todayDate) ||
-                 startDateTime.toLocalDate().isEqual(tomorrowDate) ||
-                 startDateTime.toLocalDate().isEqual(yesterdayDate));
+        boolean startIsYtdOrTdyOrTmr = startDateTime.toLocalDate().isEqual(todayDate) ||
+                                         startDateTime.toLocalDate().isEqual(tomorrowDate) ||
+                                         startDateTime.toLocalDate().isEqual(yesterdayDate);
+        boolean endIsYtdOrTdyOrTmr = endDateTime.toLocalDate().isEqual(todayDate) ||
+                                        endDateTime.toLocalDate().isEqual(tomorrowDate) ||
+                                        endDateTime.toLocalDate().isEqual(yesterdayDate);
         
-        // If its Yesterday or Today or Tomorrow, shouldn't show month and year
-        if (sameDayAndIsYtdOrTdyOrTmr) {
-            return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + " " + getDay(startDateTime);
+        // If start date is Yesterday or Today or Tomorrow, shouldn't show month and year
+        if (startIsYtdOrTdyOrTmr) {
+            // If same day, don't display month and year
+            if (sameDay) {
+                return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + " " + getDay(startDateTime);
+            } else if (endIsYtdOrTdyOrTmr) {
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + " " + 
+                        getTime(endDateTime) + " " + getDay(endDateTime);
+            } else if (endDateTime.getYear() == todayDate.getYear()) {
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + " " + 
+                        getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime);
+            } else {
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + " " + 
+                        getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime) + " " + endDateTime.getYear();
+            }
         }
         
         if (sameYear) {
@@ -186,11 +200,11 @@ public class ToDoCardStyleManager {
         if (dayDifference < 0) {
             return "#FF0000";
         } else if (dayDifference <= 1) {
-            return "#DD0000";
+            return "#AA1100";
         } else if (dayDifference <= 3) {
-            return "#AA0000";
-        } else if (dayDifference <= 7) {
             return "#882200";
+        } else if (dayDifference <= 7) {
+            return "#775500";
         } else if (dayDifference <= 14) {
             return "#686033";
         } else {
