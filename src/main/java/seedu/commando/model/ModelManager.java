@@ -5,6 +5,7 @@ import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.events.model.ToDoListChangedEvent;
 import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ToDoList;
@@ -141,4 +142,13 @@ public class ModelManager extends ComponentManager implements Model {
         logger.info("Tasks: " + uiModel.getTasks().stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
             .collect(Collectors.joining(",")));
     }
+  //@@author A0142230B
+	@Override
+	public void setUiToDoListFilter(DateRange dateRange) {
+        logger.info("Filtering UI to-dos from " + dateRange.startDate.toString() + " to " + dateRange.endDate.toString());
+
+            uiModel.setToDoListFilter(dateRange);
+
+            logUiToDoList();
+	}
 }

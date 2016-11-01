@@ -2,6 +2,7 @@ package seedu.commando.model;
 
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ToDoListChange;
@@ -65,4 +66,9 @@ public interface Model {
      * @see seedu.commando.model.ui.UiModel#setToDoListFilter(Set, Set, boolean)
      */
     void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, boolean ifHistoryMode);
+    //@@author A0142230B
+    /**
+     * @see seedu.commando.model.ui.UiModel#setToDoListFilter(DateRange)
+     */
+    void setUiToDoListFilter(DateRange dateRange);
 }
