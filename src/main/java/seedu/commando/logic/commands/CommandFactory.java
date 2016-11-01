@@ -170,11 +170,11 @@ public class CommandFactory {
     	Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
     	// Wrong format
         if (!commandParser.isInputEmpty()) {
-            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ListCommand.COMMAND_WORD)+"1");
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ListCommand.COMMAND_WORD));
         }
         //Should not have recurrence info in the input
         if(dateRange.isPresent() && dateRange.get().recurrence != Recurrence.None){
-        	throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ListCommand.COMMAND_WORD)+"2");
+        	throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ListCommand.COMMAND_WORD));
         }
         else{
     		return new ListCommand(dateRange);
