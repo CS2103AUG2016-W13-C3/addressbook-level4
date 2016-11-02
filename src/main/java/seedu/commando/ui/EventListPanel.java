@@ -53,9 +53,9 @@ public class EventListPanel extends UiPart {
     }
 
     public static EventListPanel load(Stage primaryStage, AnchorPane eventListPlaceholder,
-                                     ObservableList<UiToDo> events) {
-        EventListPanel eventListPanel =
-                UiPartLoader.loadUiPart(primaryStage, eventListPlaceholder, new EventListPanel());
+            ObservableList<UiToDo> events) {
+        EventListPanel eventListPanel = UiPartLoader.loadUiPart(primaryStage, eventListPlaceholder,
+                new EventListPanel());
         eventListPanel.configure(events);
         return eventListPanel;
     }
@@ -84,25 +84,25 @@ public class EventListPanel extends UiPart {
         placeHolderPane.getChildren().add(panel);
     }
 
-    //@@author A0139080J
+    // @@author A0139080J
     protected ListView<UiToDo> getEventListView() {
         return eventListView;
     }
-    
+
     private boolean isScrollBarPresent() {
         return scrollbar != null;
     }
-    
+
     protected void scrollDown() {
         if (isScrollBarPresent()) {
             scrollbar.setValue(Math.min(scrollbar.getValue() + 0.1, 1));
         }
     }
-    
+
     protected void scrollUp() {
         if (isScrollBarPresent()) {
             scrollbar.setValue(Math.max(scrollbar.getValue() - 0.1, 0));
         }
     }
-    //@@author
+    // @@author
 }

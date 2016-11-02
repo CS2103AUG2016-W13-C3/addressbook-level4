@@ -10,7 +10,8 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateTimePrettifier {
 
-    // Formatter for displaying the dates for dueLabel in TaskCard, startLabel and endLabel for EventCard
+    // Formatter for displaying the dates for dueLabel in TaskCard, startLabel
+    // and endLabel for EventCard
     private static DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("HH:mm");
     private static DateTimeFormatter formatDay = DateTimeFormatter.ofPattern("EEE d");
     private static DateTimeFormatter formatMonth = DateTimeFormatter.ofPattern("MMM");
@@ -27,16 +28,19 @@ public class DateTimePrettifier {
     private static LocalDate yesterdayDate = todayDate.minusDays(1);
 
     /**
-     * @param startDateTime start date time
-     * @param endDateTime end date time
+     * @param startDateTime
+     *            start date time
+     * @param endDateTime
+     *            end date time
      * @return format in a way that is intuitive to the user
      *
-     * I.e. Dates that in the current year will not show the years
-     * I.e. Dates that are in the same year will only show the year once
-     * I.e. Dates that are tomorrow show up as "tomorrow" (Similarly, yesterday and today)
-     * I.e. Dates that are in the same month will only show the month once, provided that
-     *      the year is the same
-     * I.e. Times will be displayed for both no matter what, even if datetimes are exactly the same
+     *         I.e. Dates that in the current year will not show the years I.e.
+     *         Dates that are in the same year will only show the year once I.e.
+     *         Dates that are tomorrow show up as "tomorrow" (Similarly,
+     *         yesterday and today) I.e. Dates that are in the same month will
+     *         only show the month once, provided that the year is the same I.e.
+     *         Times will be displayed for both no matter what, even if
+     *         datetimes are exactly the same
      */
     public static String prettifyDateTimeRange(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         String start = "";
@@ -48,20 +52,23 @@ public class DateTimePrettifier {
         boolean startIsYtdOrTdyOrTmr = isYtdOrTdyOrTmr(startDateTime);
         boolean endIsYtdOrTdyOrTmr = isYtdOrTdyOrTmr(endDateTime);
 
-        // If start date is Yesterday or Today or Tomorrow, shouldn't show month and year
+        // If start date is Yesterday or Today or Tomorrow, shouldn't show month
+        // and year
         if (startIsYtdOrTdyOrTmr) {
             // If same day, don't display month and year
             if (sameDay) {
-                return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + " " + getDay(startDateTime);
+                return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + " "
+                        + getDay(startDateTime);
             } else if (endIsYtdOrTdyOrTmr) {
-                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n" +
-                    getTime(endDateTime) + " " + getDay(endDateTime);
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n"
+                        + getTime(endDateTime) + " " + getDay(endDateTime);
             } else if (endDateTime.getYear() == todayDate.getYear()) {
-                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n" +
-                    getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime);
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n"
+                        + getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime);
             } else {
-                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n" +
-                    getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime) + " " + endDateTime.getYear();
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n"
+                        + getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime) + " "
+                        + endDateTime.getYear();
             }
         }
 
@@ -99,13 +106,16 @@ public class DateTimePrettifier {
             end = " " + getDay(endDateTime) + end;
         }
 
-        // If exactly the same date, start will be "", hence there is a need to get rid
+        // If exactly the same date, start will be "", hence there is a need to
+        // get rid
         // of the extra space
         start = getTime(startDateTime) + start;
         end = getTime(endDateTime) + end;
 
-        // If its the same day, there is no need to display the date on two lines
-        // because its comparatively short to other intervals that span over days
+        // If its the same day, there is no need to display the date on two
+        // lines
+        // because its comparatively short to other intervals that span over
+        // days
         if (!sameYear || !sameMonth || !sameDay) {
             return start + " " + keywordTo + "\n" + end;
         } else {
@@ -113,10 +123,9 @@ public class DateTimePrettifier {
         }
     }
 
-    private static boolean isYtdOrTdyOrTmr(LocalDateTime startDateTime) {
-        return startDateTime.toLocalDate().isEqual(todayDate) ||
-            startDateTime.toLocalDate().isEqual(tomorrowDate) ||
-            startDateTime.toLocalDate().isEqual(yesterdayDate);
+    private static boolean isYtdOrTdyOrTmr(LocalDateTime localDateTime) {
+        return localDateTime.toLocalDate().isEqual(todayDate) || localDateTime.toLocalDate().isEqual(tomorrowDate)
+                || localDateTime.toLocalDate().isEqual(yesterdayDate);
     }
 
     /**
@@ -153,16 +162,16 @@ public class DateTimePrettifier {
     }
 
     /**
-     * @param the date and time (LocalDateTime)
+     * @param the
+     *            date and time (LocalDateTime)
      * @return format in a way that is intuitive to the user
      *
-     * I.e. Dates that in the current year will not show the years
-     * I.e. Dates that are today show up as "Today"
-     * I.e. Dates that are tomrorow show up as "Tmr"
+     *         I.e. Dates that in the current year will not show the years I.e.
+     *         Dates that are today show up as "Today" I.e. Dates that are
+     *         tomrorow show up as "Tmr"
      */
     public static String prettifyDateTime(LocalDateTime dateTime) {
-        boolean isYtdOrTdyOrTmr =
-            isYtdOrTdyOrTmr(dateTime);
+        boolean isYtdOrTdyOrTmr = isYtdOrTdyOrTmr(dateTime);
 
         if (isYtdOrTdyOrTmr) {
             return getTime(dateTime) + " " + getDay(dateTime);

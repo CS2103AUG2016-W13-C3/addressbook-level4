@@ -42,9 +42,10 @@ public class TaskCard extends UiPart {
     private boolean containsTags = true;
     private boolean containsDate = true;
 
-    public TaskCard(){ }
+    public TaskCard() {
+    }
 
-    public static TaskCard load(ReadOnlyToDo toDo, int index){
+    public static TaskCard load(ReadOnlyToDo toDo, int index) {
         TaskCard card = new TaskCard();
         card.toDo = toDo;
         card.index = index;
@@ -62,8 +63,8 @@ public class TaskCard extends UiPart {
         checkTagsPane();
         setTagLabel();
     }
-    
-    //@@author A0139080J
+
+    // @@author A0139080J
     private void setTagLabel() {
         if (!toDo.getTags().isEmpty()) {
             String tags = "";
@@ -76,7 +77,7 @@ public class TaskCard extends UiPart {
             containsTags = false;
         }
     }
-    
+
     private void setRecurrenceLabel() {
         if (toDo.getDueDate().isPresent() && toDo.getDueDate().get().recurrence != Recurrence.None) {
             recurrenceLabel.setText(toDo.getDueDate().get().recurrence.toString());
@@ -85,20 +86,21 @@ public class TaskCard extends UiPart {
             containsDate = false;
         }
     }
-    
+
     /**
-     * If both tags and recurrence are non-existent, hide the pane that contains them
+     * If both tags and recurrence are non-existent, hide the pane that contains
+     * them
      */
     private void checkTagsPane() {
         if (!containsTags && !containsDate) {
             tagsPane.setManaged(false);
         }
     }
-    
+
     /**
-     * Sets value for the date time label
-     * and colours it according to the proximity of the date to today
-     * with red being the closest, and green being the furthest
+     * Sets value for the date time label and colours it according to the
+     * proximity of the date to today with red being the closest, and green
+     * being the furthest
      */
     private void setDateTimeLabel() {
         if (toDo.getDueDate().isPresent()) {
@@ -106,14 +108,13 @@ public class TaskCard extends UiPart {
             final long dayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), due);
 
             dueLabel.setText("by " + DateTimePrettifier.prettifyDateTime(due));
-            dueLabel.setStyle("-fx-text-fill: " + 
-                  ToDoCardStyleManager.getDateProximityGreen((int) dayDifference));
+            dueLabel.setStyle("-fx-text-fill: " + ToDoCardStyleManager.getDateProximityGreen((int) dayDifference));
         } else {
             dueLabel.setManaged(false);
             datePane.setManaged(false);
         }
     }
-    
+
     /*
      * Different CSS styles for different states
      */
@@ -127,15 +128,15 @@ public class TaskCard extends UiPart {
         }
         return taskPane;
     }
-    
+
     /**
-     * Every recently modified event will have a red border
-     * This includes modification via undo, edit, add
+     * Every recently modified event will have a red border This includes
+     * modification via undo, edit, add
      */
     private void setRecentlyModifiedState() {
         taskPaneInner.setStyle(ToDoCardStyleManager.recentlyModifiedStateCSS);
     }
-    
+
     /**
      * Tints a finished event gray
      */
@@ -144,7 +145,7 @@ public class TaskCard extends UiPart {
         datePane.setStyle(ToDoCardStyleManager.finishedStateDateCSS);
         indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
     }
-    
+
     /**
      * Tints a hovered event a slight gray
      */
@@ -155,7 +156,7 @@ public class TaskCard extends UiPart {
             indexLabel.setStyle(ToDoCardStyleManager.activateHoverStateIndexCSS);
         }
     }
-    
+
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
@@ -163,11 +164,11 @@ public class TaskCard extends UiPart {
             indexLabel.setStyle(ToDoCardStyleManager.deactivateHoverStateIndexCSS);
         }
     }
-    //@@author
-    
+    // @@author
+
     @Override
     public void setNode(Node node) {
-        taskPane = (HBox)node;
+        taskPane = (HBox) node;
     }
 
     @Override
