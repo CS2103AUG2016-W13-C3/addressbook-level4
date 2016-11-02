@@ -41,7 +41,6 @@ public class LogicManagerTest {
     @Before
     public void setup() throws IOException {
         eventsCollector = new EventsCollector();
-        storage = new StorageStub();
         logic = initLogic();
     }
 
@@ -52,6 +51,7 @@ public class LogicManagerTest {
 
     public static LogicManager initLogic() throws IOException {
         Model model = new ModelManager();
+        storage = new StorageStub();
         return new LogicManager(model, storage, new UserPrefs());
     }
 

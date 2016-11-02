@@ -121,6 +121,14 @@ public class AddCommandTest extends CommanDoGuiTest {
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
     }
     
+    /**
+     * Runs the add command to add the new Todos into the list and
+     * confirms the result is correct.
+     * 
+     * @param todoToAdd     The Todo object to be added into the list.
+     * @param idx           The index in the list where Todo object should be added.
+     * @param currentList   A copy of the current list of Todos (before addition).
+     */
     private void assertAddSuccess(ToDo todoToAdd, int idx, ToDo... currentList ) {
         commandBox.runCommand(CommandBuilder.buildAddCommand(todoToAdd));
 

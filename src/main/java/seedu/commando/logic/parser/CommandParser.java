@@ -343,19 +343,6 @@ public class CommandParser {
         }
     }
 
-    private DateRange getDateRange(Optional<LocalDateTime> startDateTime,
-                                   Optional<LocalDateTime> endDateTime)
-        throws IllegalValueException {
-
-        if (startDateTime.isPresent() && !endDateTime.isPresent()) {
-            throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_END + "\n" + Messages.DATE_FORMAT);
-        } else if (endDateTime.isPresent() && !startDateTime.isPresent()) {
-            throw new IllegalValueException(Messages.INVALID_TODO_DATERANGE_START + "\n" + Messages.DATE_FORMAT);
-        }
-
-        return new DateRange(startDateTime.get(), endDateTime.get());
-    }
-
     private Optional<DateRange> parseDateRange(String startDateString, String endDateString, String recurrenceString)
         throws IllegalValueException {
 

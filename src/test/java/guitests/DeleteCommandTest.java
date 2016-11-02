@@ -106,7 +106,12 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         //empty index      
         commandBox.runCommand("delete   ");
         assertResultMessage(Messages.MISSING_TODO_ITEM_INDEX + "\n" + Messages.DELETE_COMMAND_FORMAT);
-
+    }
+    
+    @Test
+    public void deleteCommand_endIndexGreaterThanStartIndex_reportErrorMessage() {
+        commandBox.runCommand("delete 2 to 1");
+        assertResultMessage(Messages.INDEXRANGE_CONSTRAINTS + "\n" + Messages.DELETE_COMMAND_FORMAT);
     }
     
     @Test
@@ -129,7 +134,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
      * Runs the delete command to delete the single Todo at specified index and
      * confirms the result is correct.
      * 
-     * @param targetIndex   The indexes Todos to be deleted in the list.
+     * @param targetIndex   The indices Todos to be deleted in the list.
      * @param currentList   A copy of the current list of Todos (before deletion).
      */
     private void assertDeleteSuccess(int targetIndexOneIndexed, final ToDo[] currentList) {
@@ -145,7 +150,15 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         // confirm the result message is correct
         assertResultMessage(String.format(Messages.DELETE_COMMAND, "[" + targetIndexOneIndexed + "]"));
     }
-
+    
+    /**
+     * Runs the delete command to delete the consective Todos (e.g. from index 2 to 4) and
+     * confirms the result is correct.
+     * 
+     * @param startIndex    The starting index Todo to be deleted in the list.
+     * @param endIndex      The ending index Todo to be deleted in the list.
+     * @param currentList   A copy of the current list of Todos (before deletion).
+     */
     private void assertDeleteConsectiveSuccess(int startIndex, int endIndex, final ToDo[] currentList) {
         ToDo[] expectedRemainder = currentList;
         String deletedIndices = "[";
@@ -167,6 +180,13 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         assertResultMessage(String.format(Messages.DELETE_COMMAND, deletedIndices));
     }
     
+    /**
+     * Runs the delete command to delete multiple Todos (e.g. 2 4 5) and
+     * confirms the result is correct.
+     * 
+     * @param indices       a sequence of indices to be deleted
+     * @param currentList   A copy of the current list of Todos (before deletion).
+     */
     private void assertDeleteMultipleSuccess(final ToDo[] currentList, int... indices) {
         ToDo[] expectedRemainder = currentList;
         String deletedIndices = "";

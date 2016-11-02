@@ -17,12 +17,18 @@ public class RecallCommandTest extends CommanDoGuiTest {
         //recall when no finished items
         commandBox.runCommand("recall");
         assertListSize(0);
-        commandBox.runCommand("find"); //go back to current list
+        
+        //go back to current list
+        commandBox.runCommand("find"); 
 
         //recall when some items are finished
         commandBox.runCommand("finish 4 5");
-        assertRecallResult("recall titles"); //no results
-        assertRecallResult("recall title", td.toDoItem5.setIsFinished(true), td.toDoItem1.setIsFinished(true)); //multiple results
+        
+        //no results
+        assertRecallResult("recall titles");
+        
+        //multiple results
+        assertRecallResult("recall title", td.toDoItem5.setIsFinished(true), td.toDoItem1.setIsFinished(true)); 
         assertRecallResult("recall #tag2", td.toDoItem5.setIsFinished(true));
     }
 
@@ -37,7 +43,13 @@ public class RecallCommandTest extends CommanDoGuiTest {
         commandBox.runCommand("recalltest");
         assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "recalltest"));
     }
-
+    
+    /**
+     * Runs the recall command to filter ToDoList according to given keywords
+     * 
+     * @param command        The recall command to be executed.
+     * @param expectedHits   The expected result list after filtering.
+     */
     private void assertRecallResult(String command, ToDo... expectedHits ) {
         commandBox.runCommand(command);
         assertListSize(expectedHits.length);  //number of expected todos = number of listed todos
