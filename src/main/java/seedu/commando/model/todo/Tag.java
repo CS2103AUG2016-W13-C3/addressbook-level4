@@ -5,7 +5,7 @@ package seedu.commando.model.todo;
 import seedu.commando.commons.util.CollectionUtil;
 
 /**
- * Represents a tag of a to-do.
+ * Represents a tag of a to-do, immutable.
  */
 public class Tag {
     public final String value;

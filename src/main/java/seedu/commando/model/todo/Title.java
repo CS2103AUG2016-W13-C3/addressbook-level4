@@ -5,7 +5,7 @@ package seedu.commando.model.todo;
 import seedu.commando.commons.util.CollectionUtil;
 
 /**
- * Represents the title of a to-do
+ * Represents the title of a to-do, immutable.
  */
 public class Title {
     public final String value;

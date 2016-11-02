@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 //@@author A0139697H
+
 /**
  * Represents the in-memory model of the application's data
  * All changes to model should be synchronized
@@ -32,6 +33,7 @@ public class ModelManager extends ComponentManager implements Model {
     /**
      * Initializes a ModelManager with the given to-do list.
      * Asserts parameters to be non-null.
+     *
      * @param toDoList is copied during initialization
      */
     public ModelManager(ReadOnlyToDoList toDoList) {
@@ -63,7 +65,7 @@ public class ModelManager extends ComponentManager implements Model {
         toDoListManager.changeToDoList(change);
 
         // if to-do list has changed, reset any find or history filter
-        clearUiToDoListFilter(false);
+        clearUiToDoListFilter(UiModel.FILTER_MODE.UNFINISHED);
         indicateToDoListChanged();
         logUiToDoList();
     }
@@ -73,7 +75,7 @@ public class ModelManager extends ComponentManager implements Model {
         boolean hasChanged = toDoListManager.undoToDoList();
 
         if (hasChanged) {
-            clearUiToDoListFilter(false);
+            clearUiToDoListFilter(UiModel.FILTER_MODE.UNFINISHED);
             indicateToDoListChanged();
             logUiToDoList();
         }
@@ -86,7 +88,7 @@ public class ModelManager extends ComponentManager implements Model {
         boolean hasChanged = toDoListManager.redoToDoList();
 
         if (hasChanged) {
-            clearUiToDoListFilter(false);
+            clearUiToDoListFilter(UiModel.FILTER_MODE.UNFINISHED);
             indicateToDoListChanged();
             logUiToDoList();
         }
@@ -110,19 +112,19 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void clearUiToDoListFilter(boolean ifHistoryMode) {
-        logger.info("Clearing filter on UI to-dos");
+    public void clearUiToDoListFilter(UiModel.FILTER_MODE filterMode) {
+        logger.info("Clearing filter on UI to-dos with filter mode: " + filterMode);
 
-        uiModel.clearToDoListFilter(ifHistoryMode);
+        uiModel.clearToDoListFilter(filterMode);
         logUiToDoList();
     }
 
     @Override
-    public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, boolean ifHistoryMode) {
+    public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, UiModel.FILTER_MODE filterMode) {
         logger.info("Filtering UI to-dos by keywords " + keywords + " and tags " + tags
-            + (ifHistoryMode ? " in history mode" : ""));
+            + " with filter mode: " + filterMode);
 
-        uiModel.setToDoListFilter(keywords, tags, ifHistoryMode);
+        uiModel.setToDoListFilter(keywords, tags, filterMode);
 
         logUiToDoList();
     }
@@ -136,19 +138,20 @@ public class ModelManager extends ComponentManager implements Model {
 
     private void logUiToDoList() {
         // log events and tasks shown
-        logger.info("Events: " +  uiModel.getEvents().stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
+        logger.info("Events: " + uiModel.getEvents().stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
             .collect(Collectors.joining(",")));
 
         logger.info("Tasks: " + uiModel.getTasks().stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
             .collect(Collectors.joining(",")));
     }
-  //@@author A0142230B
-	@Override
-	public void setUiToDoListFilter(DateRange dateRange) {
+
+    //@@author A0142230B
+    @Override
+    public void setUiToDoListFilter(DateRange dateRange) {
         logger.info("Filtering UI to-dos from " + dateRange.startDate.toString() + " to " + dateRange.endDate.toString());
 
-            uiModel.setToDoListFilter(dateRange);
+        uiModel.setToDoListFilter(dateRange);
 
-            logUiToDoList();
-	}
+        logUiToDoList();
+    }
 }

@@ -54,10 +54,6 @@ public class Messages {
     public static final String EXIT_APPLICATION = "Exiting application...";
     public static final String TODO_LIST_CLEARED = "Boom. Cleared to-do list!";
     public static final String HELP_WINDOW_SHOWN = "Opened help window.";
-    public static final String FIND_COMMAND = "Found %1$d events and %2$d tasks.";
-    public static final String RECALL_COMMAND = "Found %1$d past events and %2$d completed tasks.";
-    public static final String FIND_COMMAND_CLEAR = "Listed all to-do items.";
-    public static final String RECALL_COMMAND_CLEAR = "Listed all past to-do items.";
     public static final String FINISH_COMMAND = "Task marked as done: %1$s.";
     public static final String FINISH_COMMAND_ALREADY_FINISHED = "Task already marked done: %1$s";
     public static final String FINISH_COMMAND_CANNOT_FINISH_EVENT = "To-do must be a task to be marked done: %1$s.";
@@ -84,8 +80,12 @@ public class Messages {
     public static final String DELETE_COMMAND_NO_TAGS = "To-do with index '%1$s' has no tags to delete!";
     public static final String DELETE_COMMAND_NO_TIME_CONSTRAINTS = "To-do with index '%1$s' has no time constraints to delete!";
     public static final String DELETE_COMMAND_NO_RECURRENCE = "To-do with index '%1$s' has no recurrence to delete!";
-    public static final String LIST_COMMAND_CLEAR = "Listed all to-do items.";
-    public static final String LIST_COMMAND = "Listed %1$d events and %2$d tasks.";
+    public static final String FIND_COMMAND = "Found unfinished to-dos matching keywords %1$s and tags %2$s.";
+    public static final String FIND_COMMAND_CLEAR = "Listed all unfinished to-dos.";
+    public static final String LIST_COMMAND_CLEAR = "Listed all to-dos.";
+    public static final String LIST_COMMAND = "Listed all to-dos in date range of %1$s";
+    public static final String RECALL_COMMAND = "Found finished to-dos matching keywords %1$s and tags %2$s.";
+    public static final String RECALL_COMMAND_CLEAR = "Listed all finished to-dos.";
 
     //@@author A0139080J
     public static final String STORE_COMMAND_FORMAT = ">> store <file path>";

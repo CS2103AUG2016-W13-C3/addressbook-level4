@@ -5,14 +5,17 @@ import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.commons.util.CollectionUtil;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 //@@author A0139697H
 /**
- * Represents a date range of a to-do.
+ * Represents a date range of a to-do, immutable.
  * Ignores the seconds and nano-seconds field of its datetimes.
  */
 public class DateRange {
+    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     public final LocalDateTime startDate, endDate;
     public final Recurrence recurrence;
 
@@ -68,7 +71,7 @@ public class DateRange {
 
     @Override
     public String toString() {
-        return startDate + " - " + endDate
+        return startDate.format(dateFormatter) + " - " + endDate.format(dateFormatter)
             + ((recurrence == Recurrence.None) ? "" : " " + recurrence.toString().toLowerCase());
     }
 

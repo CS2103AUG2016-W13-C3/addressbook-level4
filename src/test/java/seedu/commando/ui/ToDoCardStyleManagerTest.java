@@ -38,7 +38,7 @@ public class ToDoCardStyleManagerTest {
     public void prettifyDateTime_currentYear_dontShowYear() {
         // Should not display year
         final LocalDateTime date = LocalDateTime.of(currentYear, 2, 28, 23, 59);
-        assertEquals("23:59 " + formatDayOfWeek.format(date) + " 28 Feb",
+        assertEquals("23:59 on " + formatDayOfWeek.format(date) + " 28 Feb",
                 ToDoCardStyleManager.prettifyDateTime(date));
     }
     
@@ -46,7 +46,7 @@ public class ToDoCardStyleManagerTest {
     public void prettifyDateTime_nonCurrentYear_showYear() {
         // Should display year
         final LocalDateTime date = LocalDateTime.of(currentYear - 1, 2, 28, 23, 59);
-        assertEquals("23:59 " + formatDayOfWeek.format(date) + " 28 Feb " + (currentYear - 1),
+        assertEquals("23:59 on " + formatDayOfWeek.format(date) + " 28 Feb " + (currentYear - 1),
                 ToDoCardStyleManager.prettifyDateTime(date));
     }
     
@@ -79,8 +79,8 @@ public class ToDoCardStyleManagerTest {
         // Should not display any year
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 3, 1, 12, 30);
-        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" + 
-                     "12:30 " + formatDayOfWeek.format(dateTo) + " 1 Mar",
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" +
+                     "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar",
                 ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -89,8 +89,8 @@ public class ToDoCardStyleManagerTest {
         // Should display one year
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear - 1, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear - 1, 3, 1, 12, 30);
-        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" + 
-                     "12:30 " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear - 1),
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" +
+                     "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear - 1),
                 ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -99,8 +99,8 @@ public class ToDoCardStyleManagerTest {
         // Should display both years
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 3, 1, 12, 30);
-        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 28 Feb " + (currentYear) + " to\n" + 
-                     "12:30 " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear + 1),
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb " + (currentYear) + " to\n" +
+                     "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear + 1),
                 ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -109,18 +109,18 @@ public class ToDoCardStyleManagerTest {
         // Should display both years
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear - 1, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 3, 1, 12, 30);
-        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 28 Feb " + (currentYear - 1) + " to\n" + 
-                     "12:30 " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear + 1),
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb " + (currentYear - 1) + " to\n" +
+                     "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear + 1),
                 ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
     @Test
-    public void prettifyDateTimeRange_sameYearDifferenMonth_showOneYearAndBothMonths() {
+    public void prettifyDateTimeRange_sameYearDifferentMonth_showOneYearAndBothMonths() {
         // Should display one year and both months
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 3, 1, 12, 30);
-        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" + 
-                     "12:30 " + formatDayOfWeek.format(dateTo) + " 1 Mar",
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" +
+                     "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar",
                 ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -129,8 +129,8 @@ public class ToDoCardStyleManagerTest {
         // Should display one year and both month
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 27, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 2, 28, 12, 30);
-        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 27 to\n" + 
-                     "12:30 " + formatDayOfWeek.format(dateTo) + " 28 Feb",
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 27 to\n" +
+                     "12:30 on " + formatDayOfWeek.format(dateTo) + " 28 Feb",
                 ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -139,7 +139,7 @@ public class ToDoCardStyleManagerTest {
         // Should display one year, one month and two times
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 27, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 2, 27, 13, 30);
-        assertEquals("12:30 to 13:30 " + formatDayOfWeek.format(dateTo) + " 27 Feb",
+        assertEquals("12:30 to 13:30 \non " + formatDayOfWeek.format(dateTo) + " 27 Feb",
                 ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -166,7 +166,7 @@ public class ToDoCardStyleManagerTest {
         // Should display time and date
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 2, 27, 13, 30);
-        assertEquals("12:30 Today to\n13:30 " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear + 1),
+        assertEquals("12:30 Today to\n13:30 on " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear + 1),
                 ToDoCardStyleManager.prettifyDateTimeRange(dateFrom, dateTo));
     }
 }

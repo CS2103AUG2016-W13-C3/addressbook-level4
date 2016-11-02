@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlElement;
  * JAXB-friendly version of the to-do
  */
 public class XmlAdaptedToDo {
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @XmlElement(required = true)
     private String title;

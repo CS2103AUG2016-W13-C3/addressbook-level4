@@ -1,6 +1,7 @@
 package seedu.commando.model.todo;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import seedu.commando.commons.core.Messages;
@@ -10,10 +11,12 @@ import seedu.commando.commons.util.CollectionUtil;
 //@@author A0122001M
 
 /**
- * Represents the due date of a to-do.
+ * Represents the due date of a to-do, immutable.
  * Ignores the seconds and nano-seconds field of its datetimes.
  */
 public class DueDate {
+    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     public final LocalDateTime value;
     public final Recurrence recurrence;
 
@@ -45,7 +48,7 @@ public class DueDate {
 
     @Override
     public String toString() {
-        return value
+        return value.format(dateFormatter)
             + ((recurrence == Recurrence.None) ? "" : " " + recurrence.toString().toLowerCase());
     }
 

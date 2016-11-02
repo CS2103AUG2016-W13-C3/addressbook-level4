@@ -3,11 +3,9 @@ package seedu.commando.model.ui;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.util.CollectionUtil;
 import seedu.commando.commons.util.StringUtil;
-import seedu.commando.logic.LogicManager;
 import seedu.commando.model.ToDoListManager;
 import seedu.commando.model.todo.*;
 
@@ -15,7 +13,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 //@@author A0139697H
@@ -32,10 +29,11 @@ public class UiModel {
     private int runningIndex;
 
     // Parameters for filtering
-    private Set<String> keywords = Collections.emptySet();
-    private Set<Tag> tags = Collections.emptySet();
-    private boolean ifHistoryMode = false;
-    private DateRange dateRange = null;
+    private FILTER_MODE filterMode = FILTER_MODE.ALL;
+
+    public enum FILTER_MODE {
+        FINISHED, UNFINISHED, ALL
+    }
 
     /**
      * @param toDoListManager ToDoListManager it tracks and grabs the list of to-dos from
@@ -43,18 +41,14 @@ public class UiModel {
     public UiModel(ToDoListManager toDoListManager) {
         this.toDoListManager = toDoListManager;
 
-        // Initialize the filter on the UI to-dos to empty sets of
-        // keywords and tags, and disable history mode
-        setToDoListFilter(Collections.emptySet(), Collections.emptySet(), false);
-
-        // Update UI to-dos
-        updateEventsAndTasks();
+        // Initialize the filter to show unfinished to-dos
+        clearToDoListFilter(FILTER_MODE.UNFINISHED);
 
         // Start tracking changes to-do list, and update UI to-dos when a change happens
         toDoListManager.getToDoList().getToDos().addListener(new ListChangeListener<ReadOnlyToDo>() {
             @Override
             public void onChanged(Change<? extends ReadOnlyToDo> change) {
-                updateEventsAndTasks();
+                clearToDoListFilter(filterMode);
             }
         });
     }
@@ -71,39 +65,46 @@ public class UiModel {
     }
 
     /**
-     * Sets a filter on the UI to-dos.
+     * Clears any keywords, tags or daterange filters on the UI to-dos
+     *   and sets the filter mode.
      * Asserts parameters to be non-null.
-     * If {@param ifHistoryMode} is true, only filter finished to-dos.
-     * Else, only filter such that it is not finished or its finished date
-     *   is after/during the current day
      */
-    public void setToDoListFilter(Set<String> keywords, Set<Tag> tags, boolean ifHistoryMode) {
-        assert !CollectionUtil.isAnyNull(keywords, tags);
-
-        this.keywords = keywords;
-        this.tags = tags;
-        this.ifHistoryMode = ifHistoryMode;
-
-        updateEventsAndTasks();
+    public void clearToDoListFilter(FILTER_MODE filterMode) {
+        assert !CollectionUtil.isAnyNull(filterMode);
+        setToDoListFilter(Collections.emptySet(), Collections.emptySet(), filterMode);
     }
+
+    /**
+     * Sets a filter mode, keywords filter, and tags filter on the UI to-dos.
+     * Asserts parameters to be non-null.
+     * If {@param filterMode} ==
+     *   - ALL: all to-dos that match keywords and tags are shown.
+     *   - FINISHED: finished to-dos that match keywords and tags are shown
+     *   - UNFINISHED: unfinished to-dos or finished to-dos that are finished on the
+     *       the current day, that match keywords and tags, are shown
+     */
+    public void setToDoListFilter(Set<String> keywords, Set<Tag> tags, FILTER_MODE filterMode) {
+        assert !CollectionUtil.isAnyNull(keywords, tags, filterMode);
+
+        this.filterMode = filterMode;
+
+        updateEventsAndTasks(keywords, tags);
+    }
+
     //@@author A0142230B
     /**
-     * Sets a filter on the UI to-dos with dateRange.
+     * Sets a date range filter on the UI to-dos and sets filter mode to be ALL.
      * Asserts dateRange to be non-null.
      */
     public void setToDoListFilter(DateRange dateRange) {
         assert dateRange != null;
-        this.dateRange = dateRange;
+
+        this.filterMode = FILTER_MODE.ALL;
+
         updateEventsAndTasksByTime(dateRange);
     }
-    //@@author A0139697H
-    /**
-     * Clears the filter on the to-do list and sets its history mode.
-     */
-    public void clearToDoListFilter(boolean ifHistoryMode) {
-        setToDoListFilter(Collections.emptySet(), Collections.emptySet(), ifHistoryMode);
-    }
 
+    //@@author A0139697H
     /**
      * @return a list of UI to-dos defined as events, to be shown on the UI
      */
@@ -120,20 +121,20 @@ public class UiModel {
 
     /**
      * Update the UI to-dos based on {@link #toDoListManager}'s to-do list and
-     *   the current filter
+     *   the keywords and tags filter.
      */
-    private void updateEventsAndTasks() {
+    private void updateEventsAndTasks(Set<String> keywords, Set<Tag> tags) {
         // Sort and filter events and tasks for UI
-        List<ReadOnlyToDo> events = filterAndSortEvents(toDoListManager.getToDoList().getToDos());
-        List<ReadOnlyToDo> tasks = filterAndSortTasks(toDoListManager.getToDoList().getToDos());
+        List<ReadOnlyToDo> events = filterAndSortEvents(toDoListManager.getToDoList().getToDos(), keywords, tags);
+        List<ReadOnlyToDo> tasks = filterAndSortTasks(toDoListManager.getToDoList().getToDos(), keywords, tags);
 
         // Update its own lists of UI to-dos
         updateUiToDos(events, tasks);
     }
-    
+
     //@@author A0142230B
     /**
-     * Update the UI to-dos based on {@link #toDoListManager}'s to-do list and the time filter
+     * Update the UI to-dos based on {@link #toDoListManager}'s to-do list and the date range filter
      */
     private void updateEventsAndTasksByTime(DateRange filterDateRange) {
     	// Sort and filter events and tasks for UI
@@ -143,6 +144,7 @@ public class UiModel {
         updateUiToDos(events, tasks);
     }
 
+    //@@author A0139697H
     /**
      * Populate its lists of UI to-dos based on supplied to-dos
      */
@@ -274,9 +276,11 @@ public class UiModel {
 		}
 	}
 	//@@author A0139697H
-	private List<ReadOnlyToDo> filterAndSortTasks(List<ReadOnlyToDo> toDos) {
+	private List<ReadOnlyToDo> filterAndSortTasks(List<ReadOnlyToDo> toDos,
+                                                  Set<String> keywords, Set<Tag> tags) {
         List<ReadOnlyToDo> tasks = toDos.stream()
-            .filter(toDoFilterPredicate)
+            .filter(toDoFilterModePredicate)
+            .filter(toDo -> ifMatchesKeywordsAndTags(toDo, keywords, tags))
             .filter(UiToDo::isTask)
             .collect(Collectors.toList());
 
@@ -292,9 +296,11 @@ public class UiModel {
         return tasks;
     }
 
-    private List<ReadOnlyToDo> filterAndSortEvents(List<ReadOnlyToDo> toDos) {
+    private List<ReadOnlyToDo> filterAndSortEvents(List<ReadOnlyToDo> toDos,
+                                                   Set<String> keywords, Set<Tag> tags) {
         List<ReadOnlyToDo> events = toDos.stream()
-            .filter(toDoFilterPredicate)
+            .filter(toDoFilterModePredicate)
+            .filter(toDo -> ifMatchesKeywordsAndTags(toDo, keywords, tags))
             .filter(UiToDo::isEvent)
             .collect(Collectors.toList());
 
@@ -339,13 +345,6 @@ public class UiModel {
         return date1.compareTo(date2);
     }
 
-    private boolean ifMatchesFilter(ReadOnlyToDo toDo, Set<String> keywords, Set<Tag> tags) {
-        return (keywords.stream()
-            .allMatch(keyword -> checkForKeyword(toDo, keyword))) // contains all keywords
-            && (tags.stream()
-            .allMatch(tag -> checkForTag(toDo, tag))); // and has all the tags
-    }
-
     private boolean checkForKeyword(ReadOnlyToDo toDo, String keyword) {
         return StringUtil.substringIgnoreCase(toDo.getTitle().value, keyword) ||
             toDo.getTags().stream().anyMatch(toDoTag -> StringUtil.substringIgnoreCase(toDoTag.value, keyword));
@@ -356,19 +355,31 @@ public class UiModel {
     }
 
     /**
-     * Predicate that filters to-dos based on history mode
+     * Predicate that filters to-dos based on filter mode
      */
-    private Predicate<ReadOnlyToDo> toDoFilterPredicate = toDo -> {
-        if (!ifHistoryMode && toDo.isFinished()
-            && toDo.getDateFinished().get().toLocalDate().isBefore(LocalDate.now())) {
-            // if normal mode but to-do is finished before the current day
-            return false;
-        } else if (ifHistoryMode && !toDo.isFinished()) {
-            // if history mode but to-do is unfinished
-            return false;
+    private Predicate<ReadOnlyToDo> toDoFilterModePredicate = toDo -> {
+        switch (filterMode) {
+            case ALL: return true;
+            case UNFINISHED:
+                // if unfinished mode but to-do is finished before the current day
+                return !toDo.isFinished()
+                    || (toDo.isFinished() && toDo.getDateFinished().get().toLocalDate().isEqual(LocalDate.now()));
+            case FINISHED:
+                // if finished mode but to-do is unfinished
+                return toDo.isFinished();
+            default:
+                assert false : "Should have covered all filter modes";
+                return false;
         }
-
-        // Further filter by keywords and tags
-        return ifMatchesFilter(toDo, keywords, tags);
     };
+
+    /**
+     * Returns whether a to-do matches a set of keywords and tags
+     */
+    private boolean ifMatchesKeywordsAndTags(ReadOnlyToDo toDo, Set<String> keywords, Set<Tag> tags) {
+        return (keywords.stream()
+            .allMatch(keyword -> checkForKeyword(toDo, keyword)))
+            && (tags.stream()
+            .allMatch(tag -> checkForTag(toDo, tag)));
+    }
 }

@@ -6,6 +6,7 @@ import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ToDoListChange;
+import seedu.commando.model.ui.UiModel;
 import seedu.commando.model.ui.UiToDo;
 
 import java.util.Optional;
@@ -58,14 +59,15 @@ public interface Model {
     Optional<UiToDo> getUiToDoAtIndex(int index);
 
     /**
-     * @see seedu.commando.model.ui.UiModel#clearToDoListFilter(boolean)
+     * @see seedu.commando.model.ui.UiModel#clearToDoListFilter(UiModel.FILTER_MODE)
      */
-    void clearUiToDoListFilter(boolean ifHistoryMode);
+    void clearUiToDoListFilter(UiModel.FILTER_MODE filterMode);
 
     /**
-     * @see seedu.commando.model.ui.UiModel#setToDoListFilter(Set, Set, boolean)
+     * @see seedu.commando.model.ui.UiModel#setToDoListFilter(Set, Set, UiModel.FILTER_MODE)
      */
-    void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, boolean ifHistoryMode);
+    void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, UiModel.FILTER_MODE filterMode);
+
     //@@author A0142230B
     /**
      * @see seedu.commando.model.ui.UiModel#setToDoListFilter(DateRange)
