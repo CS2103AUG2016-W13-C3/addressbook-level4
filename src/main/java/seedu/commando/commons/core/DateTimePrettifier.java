@@ -21,6 +21,10 @@ public class DateTimePrettifier {
     private static String keywordToday = "Today";
     private static String keywordTomorrow = "Tomorrow";
     private static String keywordYesterday = "Yesterday";
+    private static String keywordUntil = "Until";
+    private static String keywordFrom = "From";
+    private static String keywordOnwards = "onwards";
+    private static String keywordForever = "Timeless";
 
     // Date references
     private static LocalDate todayDate = LocalDate.now();
@@ -49,11 +53,23 @@ public class DateTimePrettifier {
         boolean sameYear = startDateTime.getYear() == endDateTime.getYear();
         boolean sameMonth = startDateTime.getMonthValue() == endDateTime.getMonthValue();
         boolean sameDay = startDateTime.getDayOfMonth() == endDateTime.getDayOfMonth();
+        
         boolean startIsYtdOrTdyOrTmr = isYtdOrTdyOrTmr(startDateTime);
         boolean endIsYtdOrTdyOrTmr = isYtdOrTdyOrTmr(endDateTime);
+        
+        boolean startDateTimeExists = !startDateTime.equals(LocalDateTime.MIN.withSecond(0).withNano(0));
+        boolean endDateTimeExists = !endDateTime.equals(LocalDateTime.MAX.withSecond(0).withNano(0));
 
         // If start date is Yesterday or Today or Tomorrow, shouldn't show month
         // and year
+        if (!startDateTimeExists) {
+            return keywordUntil + " " + prettifyDateTime(endDateTime);
+        } else if (!endDateTimeExists) {
+            return keywordFrom + " " + prettifyDateTime(startDateTime) + " " + keywordOnwards;
+        } else if (!startDateTimeExists && !endDateTimeExists) {
+            return keywordForever;
+        }
+        
         if (startIsYtdOrTdyOrTmr) {
             // If same day, don't display month and year
             if (sameDay) {
