@@ -1,8 +1,5 @@
 package seedu.commando.ui;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -14,6 +11,9 @@ import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.util.FxViewUtil;
 import seedu.commando.logic.Logic;
 import seedu.commando.logic.commands.CommandResult;
+
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class CommandBox extends UiPart {
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
@@ -98,7 +98,7 @@ public class CommandBox extends UiPart {
         resultDisplay.postMessage(message);
     }
 
-    //@@author A0138090J
+    //@@author A0139080J
     /**
      * This and the next method: Switches through a list of commands, invalid or valid.
      * If the boundary of the list is reached, display nothing.
