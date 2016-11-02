@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/CS2103AUG2016-W13-C3/main.svg?branch=master)](https://travis-ci.org/CS2103AUG2016-W13-C3/main) [![Coverage Status](https://coveralls.io/repos/github/CS2103AUG2016-W13-C3/main/badge.svg?branch=master)](https://coveralls.io/github/CS2103AUG2016-W13-C3/main?branch=master)
+[![Build Status](https://travis-ci.org/CS2103AUG2016-W13-C3/main.svg?branch=master)](https://travis-ci.org/CS2103AUG2016-W13-C3/main)
+[![Coverage Status](https://coveralls.io/repos/github/CS2103AUG2016-W13-C3/main/badge.svg?branch=master)](https://coveralls.io/github/CS2103AUG2016-W13-C3/main?branch=master)
 
 # CommanDo
 
