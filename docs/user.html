@@ -38,6 +38,7 @@
                             <li><a href="#edit">Editing To-Dos</a></li>
                             <li><a href="#finish">Marking Tasks as Done</a></li>
                             <li><a href="#find">Finding To-Dos</a></li>
+                            <li><a href="#list"> Listing To-Dos with time constraint</a></li>
                             <li><a href="#recall">Browsing To-Dos that are Done</a></li>
                             <li><a href="#unfinish">Marking Tasks as Not Done</a></li>
                             <li><a href="#store">Setting Save Location</a></li>
@@ -141,16 +142,19 @@
 
                 <h4>Adding Events</h4>
 
-                <p>An <em>Event</em> is an activity happening within a time window, with <code>start_datetime</code> and <code>end_datetime</code> fields to represent the time window. To associate tags with the <em>Event</em>, prefix each of them with a <code>#</code>. In <em>CommanDo</em>, every <em>Event</em> from the current day onwards is listed in the left panel chronologically:</p>
+                <p>An <em>Event</em> is an activity happening within a time window, with <code>start_datetime</code> and <code>end_datetime</code> or <code>time_duration</code> fields to represent the time window. To associate tags with the <em>Event</em>, prefix each of them with a <code>#</code>. In <em>CommanDo</em>, every <em>Event</em> from the current day onwards is listed in the left panel chronologically:</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> add <span>&lt;description&gt;</span> from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span> [daily/weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...]</pre>
+                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> add <span>&lt;description&gt;</span> on <span>&lt;time_duration&gt;</span> [daily/weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...] </pre>
 
                 <span><strong>Examples:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>wild party in hostel room</span> from <span>31 Dec 2016</span> to <span>1 Jan 2017</span></pre>
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>shopping with wife</span> from <span>5 Sep 1230h</span> to <span>1730h </span>#<span>important </span>#<span>wife</span></pre>
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>meeting with Dr Tan</span> from <span>next Saturday 9am</span> to <span>10am </span>#<span>work </span>#<span>important</span></pre>
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>physics revision</span> from <span>tues 9.30pm</span> to <span>10pm</span> weekly <span></span>#<span>physics</span></pre>
+                <pre><span class="inputstart">&gt;&gt;</span> add <span>tour with Jimmy</span> on <span>next Saturday </span></pre>
+                <pre><span class="inputstart">&gt;&gt;</span> add <span>clean room</span> on <span>tomorrow </span>#<span>important </span></pre>
                
                 <p>
                     The use of keywords <code>daily</code>, <code>weekly</code>, <code>monthly</code> or <code>yearly</code> allows you to have recurring events on the same day of every day, week, month or year.
@@ -163,15 +167,15 @@
 
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/addEvent.png" width="600">
-                    <figcaption>
-                        Result of adding a <em>Event</em> with command:
+                    <figcaption align = center>
+                        Result of adding a <em>Event</em> with command:<br/>
                         <code>>> add wild party in hostel room from 31 Dec 2016 to 1 Jan 2017</code>
                     </figcaption>
                 </figure>
                 
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/addEvent.png" width="600">
-                    <figcaption>Result of adding a recurring <em>Event</em> with command:
+                    <figcaption align = center>Result of adding a recurring <em>Event</em> with command:<br/>
                     <code>>> add physics revision from tues 9.30pm to 10pm weekly #physics</code></figcaption>
                 </figure>
                
@@ -185,10 +189,11 @@
                 <p>A <em>Task</em>, on the other hand, is an activity that can be done at your own time or by some deadline. Therefore, it has an optional <code>due_datetime</code> field. Similarly, tags can be added to a <em>Task</em>. When you have completed the <em>Task</em>, it can be marked as done with the <a href="#finish"><code>finish</code> command</a>. In <em>CommanDo</em>, every unfinished <em>Task</em> is listed on the right panel, with those with deadlines prioritized at the top in chronological order:</p>
 
                 <span><strong>Command Format:</strong></span>
-                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> add <span>&lt;description&gt;</span> [by <span>&lt;due_datetime&gt;</span>] [#<span>&lt;tag&gt;</span>...]</pre>
+                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> add <span>&lt;description&gt;</span> [by <span>&lt;due_datetime&gt;</span>] [daily/weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...]</pre>
 
                 <span><strong>Examples:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>finish FYP</span> by <span>tomorrow 2359h</span></pre>
+                <pre><span class="inputstart">&gt;&gt;</span> add <span>submit math homework</span> by <span>wednesday 2359h </span>weekly</pre>
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>watch Lord of the Rings</span></pre>
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>shop for groceries: banana, pineapple, watermelon </span>#<span>housework</span></pre>
 
@@ -331,7 +336,7 @@
                             For a to-do to be matched, all search keywords must be matched in its description and tags, and all search tags must be matched in its tags. 
                         </li>
                         <li>
-                            Orderings of the search keywords and tags do not matter – keywords <code>Chicken Egg</code> will match <code> Egg Chicken</code>.
+                            Orderings of the search keywords and tags do not matter – keywords <code>Chicken Egg</code> will match <br/><code> Egg Chicken</code>.
                         </li>
                         <li>
                             Search keywords (but not tags) will match parts of words – keyword <code>chicken</code> will match <code>chickens</code>, whereas keyword <code>chickens</code> will not match <code>chicken</code>.
@@ -342,6 +347,27 @@
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/find.png" width="600">
                     <figcaption>Result of <code>>> find read</code></figcaption>
+                </figure>
+
+                 <h3 id="list">Listing To-Dos with time constraint: <code>list</code></h3>
+
+                <p>Sometimes you may want to browse your to-dos in certain period of time. Use the <code>list</code> command to search for <em>Events</em> that happen in a specific period of time, and <em>Tasks</em> that are due in that period. The period of time to search can be
+                    any time. This means that you can list both finished to-dos and upcoming to-dos as long as they are in the time window you give. If you use this command without any keywords, you will see all to-dos(both finished and upcoming).</p>
+
+                <span><strong>Command Format:</strong></span>
+                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> list from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span> </pre>
+                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> list on <span>&lt;time_duration&gt;</span> </pre>
+
+                <span><strong>Examples:</strong></span>
+                <pre><span class="inputstart">&gt;&gt;</span> list from <span>31 Dec 2016</span> to <span>1 Jan 2017</span></pre>
+                <pre><span class="inputstart">&gt;&gt;</span> list from <span>today</span> to <span>tmr</span></pre>
+                <pre><span class="inputstart">&gt;&gt;</span> list on <span>next week</span></pre>
+                <p>
+                </p>
+
+                <figure>
+                    <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/list.png" width="600">
+                    <figcaption>Result of <code>>> list from today to tmr</code></figcaption>
                 </figure>
 
                 <h3 id="recall">Browsing To-Dos that are Done: <code>recall</code></h3>
@@ -603,19 +629,19 @@
                                 <td><pre><span class="inputstart">&gt;&gt;</span> clear</pre></td>
                             </tr>
                             <tr>
-                                <td>Delete To-Do</td>
+                                <td>Delete To-Dos</td>
                                 <td><pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>...</pre></td>
                             </tr>
                             <tr>
-                                <td>Delete Time Constraint of To-Do</td>
+                                <td>Delete Time Constraint of To-Dos</td>
                                 <td><pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... time</pre></td>
                             </tr>
                             <tr>
-                                <td>Delete Recurrence of Event</td>
+                                <td>Delete Recurrence of Events</td>
                                 <td><pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... recurrence</pre></td>
                             </tr>
                             <tr>
-                                <td>Delete Tags of To-Do</td>
+                                <td>Delete Tags of To-Dos</td>
                                 <td><pre><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... tag</pre></td>
                             </tr>
                             <tr>
@@ -639,7 +665,11 @@
                                 <td><pre><span class="inputstart">&gt;&gt;</span> find [<span>&lt;keyword&gt;</span>...]  [#<span>&lt;tag&gt;</span>...]</pre></td>
                             </tr>
                             <tr>
-                                <td>Finish To-Do</td>
+                                <td>List To-Dos</td>
+                                <td><pre><span class="inputstart">&gt;&gt;</span> list from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span></td>
+                            </tr>
+                            <tr>
+                                <td>Finish To-Dos</td>
                                 <td><pre><span class="inputstart">&gt;&gt;</span> finish <span>&lt;index&gt;</span>...</pre></td>
                             </tr>
                             <tr>
