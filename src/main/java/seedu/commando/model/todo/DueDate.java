@@ -1,62 +1,69 @@
 package seedu.commando.model.todo;
 
-
-
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.commons.util.CollectionUtil;
 
 //@@author A0122001M
 
 /**
- * Represents the Due date of a to-do
- * is valid as declared in {@link #isValid(LocalDateTime)}
+ * Represents the due date of a to-do, immutable.
+ * Ignores the seconds and nano-seconds field of its datetimes.
  */
 public class DueDate {
+    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     public final LocalDateTime value;
+    public final Recurrence recurrence;
 
     /**
-     * Constructor for a due date
-     * @throws IllegalValueException if given value is invalid
+     * @see #DueDate(LocalDateTime, Recurrence), but with no recurrence.
      */
-    public DueDate(LocalDateTime value) throws IllegalValueException {
-        if (!isValid(value)) {
-            throw new IllegalValueException(Messages.TODO_DUEDATE_CONSTRAINTS + 
-                    "\n" + Messages.getInvalidCommandFormatMessage("finish").get());
-        }
+    public DueDate(LocalDateTime value) {
+        this(value, Recurrence.None);
+    }
 
-        this.value = value;
+    /**
+     * Constructor for a due date.
+     * Asserts parameters are non-null.
+     */
+    public DueDate(LocalDateTime value, Recurrence recurrence){
+        assert !CollectionUtil.isAnyNull(value, recurrence);
+
+        this.value = value.withSecond(0).withNano(0);
+        this.recurrence = recurrence;
     }
 
     /**
      * Copy constructor
      */
     public DueDate(DueDate dueDate) {
-        assert isValid(dueDate.value); // should already have been checked
-
         this.value = dueDate.value;
-    }
-
-    private static boolean isValid(LocalDateTime value) {
-        return value != null;
+        this.recurrence = dueDate.recurrence;
     }
 
     @Override
     public String toString() {
-        return this.value.toString();
+        return value.format(dateFormatter)
+            + ((recurrence == Recurrence.None) ? "" : " " + recurrence.toString().toLowerCase());
     }
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof DueDate // instanceof handles nulls
-                && (value.equals(((DueDate) other).value))); // state check
+        //check if same object, if not check if values are equal
+        return other == this 
+                || (other instanceof DueDate
+                && (value.equals(((DueDate) other).value))
+                && recurrence.equals(((DueDate) other).recurrence));
     }
 
     @Override
     public int hashCode() {
-        return value.hashCode();
+        return Objects.hash(value, recurrence);
     }
 
 }

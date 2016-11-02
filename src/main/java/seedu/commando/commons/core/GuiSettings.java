@@ -13,12 +13,22 @@ public class GuiSettings implements Serializable {
 
     private Double windowWidth = Config.DefaultWindowWidth;
     private Double windowHeight = Config.DefaultWindowHeight;
-    private boolean isMaximized;
-    private Point windowCoordinates;  // null represent no coordinates
+    private boolean isMaximized = false;
+    private Point windowCoordinates = null;
 
-    public GuiSettings() {
-        this.windowCoordinates = null;
-        this.isMaximized = false;
+    public GuiSettings() { }
+
+    /**
+     * Copy constructor.
+     */
+    public GuiSettings(GuiSettings guiSettings) {
+        this.windowWidth = guiSettings.windowWidth;
+        this.windowHeight = guiSettings.windowHeight;
+        this.isMaximized = guiSettings.isMaximized;
+
+        if (guiSettings.windowCoordinates != null) {
+            this.windowCoordinates = new Point(guiSettings.windowCoordinates);
+        }
     }
 
     public GuiSettings(double windowWidth, double windowHeight, int xPosition, int yPosition, boolean isMaximized) {

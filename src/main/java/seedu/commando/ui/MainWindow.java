@@ -1,6 +1,7 @@
 package seedu.commando.ui;
 
 import com.google.common.eventbus.Subscribe;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -51,6 +52,7 @@ public class MainWindow extends UiPart {
     private static boolean isMaximized;
     
     private Logic logic;
+    private String appName;
 
     // Independent Ui parts residing in this Ui container
     private EventListPanel eventPanel;
@@ -65,8 +67,6 @@ public class MainWindow extends UiPart {
     private VBox rootLayout;
     private Scene scene;
 
-    private String appName;
-    
     // The three panes that will take turns to be in focus 
     // when the user presses 'Tab' repeatedly
     private TextField commandField;
@@ -97,6 +97,8 @@ public class MainWindow extends UiPart {
     @FXML
     private Menu creditMenu;
     @FXML
+    private Menu appNameMenu;
+    @FXML
     private Button toggleSizeButton;
     @FXML
     private Button minimizeButton;
@@ -126,11 +128,11 @@ public class MainWindow extends UiPart {
     }
 
     public static MainWindow load(Stage primaryStage, UserPrefs prefs, Logic logic) {
-        // Try to remove title bar of window
         try {
+            // Try to remove title bar of window
             primaryStage.initStyle(StageStyle.UNDECORATED);
         } catch (IllegalStateException exception) {
-            // Ignore, window has been made visible already
+            logger.info("Warning: " + exception.getMessage());
         }
 
         MainWindow mainWindow = UiPartLoader.loadUiPart(primaryStage, new MainWindow());
@@ -141,8 +143,8 @@ public class MainWindow extends UiPart {
     private void configure(String appTitle, String appName, UserPrefs prefs, Logic logic) {
         // Set dependencies
         this.logic = logic;
-        this.appName = appName;
         this.userPrefs = prefs;
+        this.appName = appName;
 
         // Configure the UI
         setTitle(appTitle);
@@ -179,6 +181,7 @@ public class MainWindow extends UiPart {
         taskListView = taskPanel.getTaskListView();
         setFocusTo(commandField);
         disableSplitPaneResize();
+        setAppName(appName);
     }
     
     private void setFocusTo(Node node) {
@@ -213,8 +216,13 @@ public class MainWindow extends UiPart {
         primaryStage.hide();
     }
 
+    private void setAppName(String appName) {
+        appNameMenu.setText(appName);
+    }
+    
     private void setTitle(String appTitle) {
         primaryStage.setTitle(appTitle);
+        
     }
 
     /**
@@ -284,6 +292,8 @@ public class MainWindow extends UiPart {
                         eventPanel.scrollUp();
                     } else if (currentlyFocusedPane == FocusPanes.TASKPANEL) {
                         taskPanel.scrollUp();
+                    } else {
+                        commandBox.goUpCommandHistory();
                     }
                     break;
                 case DOWN:
@@ -291,6 +301,8 @@ public class MainWindow extends UiPart {
                         eventPanel.scrollDown();
                     } else if (currentlyFocusedPane == FocusPanes.TASKPANEL) {
                         taskPanel.scrollDown();
+                    } else {
+                        commandBox.goDownCommandHistory();
                     }
                     break;
                 case TAB:
@@ -315,6 +327,9 @@ public class MainWindow extends UiPart {
         });
     }
 
+    /**
+     * Refer to setTabAndArrowKeysNavigations()
+     */
     private void cycleThroughFocusPanes() {
         switch (currentlyFocusedPane) {
         case COMMANDFIELD:
@@ -333,7 +348,7 @@ public class MainWindow extends UiPart {
     }
     
     /**
-     * Sets the whole app to be draggable
+     * Sets the whole applicaation to be draggable
      */
     private void setDraggable(Node node) {
         node.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -370,6 +385,9 @@ public class MainWindow extends UiPart {
         toggleSizeButtonSymbol();
     }
     
+    /**
+     * Toggles the minimize / maximize button between two symbols.
+     */
     private void toggleSizeButtonSymbol() {
         if (isMaximized) {
             toggleSizeButton.setText(unMaximizeButtonSymbol);

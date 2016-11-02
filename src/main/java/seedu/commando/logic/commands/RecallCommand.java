@@ -3,9 +3,11 @@ package seedu.commando.logic.commands;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.model.Model;
 import seedu.commando.model.todo.Tag;
+import seedu.commando.model.ui.UiModel;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.TreeSet;
 
 //@@author A0139697H
 /**
@@ -25,13 +27,13 @@ public class RecallCommand extends Command {
     public CommandResult execute() throws NoModelException {
         Model model = getModel();
 
-        // if no keywords or tags are provided, clear filter
         if (keywords.isEmpty() && tags.isEmpty()) {
-            model.clearUiToDoListFilter(true);
+            // if no keywords or tags are provided, show all finished to-dos
+            model.clearUiToDoListFilter(UiModel.FILTER_MODE.FINISHED);
             return new CommandResult(Messages.RECALL_COMMAND_CLEAR);
+        } else {
+            model.setUiToDoListFilter(keywords, tags, UiModel.FILTER_MODE.FINISHED);
+            return new CommandResult(String.format(Messages.RECALL_COMMAND, new TreeSet<>(keywords), new TreeSet<>(tags)));
         }
-
-        model.setUiToDoListFilter(keywords, tags, true);
-        return new CommandResult(String.format(Messages.RECALL_COMMAND, model.getUiEvents().size(), model.getUiTasks().size()));
     }
 }

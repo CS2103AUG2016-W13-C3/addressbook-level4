@@ -2,10 +2,13 @@ package seedu.commando.model;
 
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.todo.*;
+import seedu.commando.model.todo.DateRange;
+import seedu.commando.model.todo.ReadOnlyToDoList;
+import seedu.commando.model.todo.Tag;
+import seedu.commando.model.todo.ToDoListChange;
+import seedu.commando.model.ui.UiModel;
 import seedu.commando.model.ui.UiToDo;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -14,44 +17,60 @@ import java.util.Set;
  * The API of the Model component.
  */
 public interface Model {
-    /** Returns the to-do list */
+    /**
+     * @return its to-do list, read-only
+     */
     ReadOnlyToDoList getToDoList();
 
-    /** Changes the to-do list */
+    /**
+     * Applies a change to its to-do list.
+     * @throws IllegalValueException if the change was invalid
+     */
     void changeToDoList(ToDoListChange change) throws IllegalValueException;
 
-    /** Undos the last change to the to-do list, returns true if successful */
+    /**
+     * Undos the last successful change to the to-do list.
+     * @return true if there was a change that was undone
+     */
     boolean undoToDoList();
 
-    /** Redos the last undo to the to-do list, returns true if successful */
+    /**
+     * Redos the last undo to the to-do list.
+     * @return true if there was an undo that was redone
+     */
     boolean redoToDoList();
 
     /**
-     * Returns observable list of UI events happening from the current day onwards
-     * Events are in chronological order, with those finished at the bottom
-     * */
+     * Returns observable list of UI to-dos considered as events by ({@link UiToDo#isEvent()}
+     *   to be displayed on the UI.
+     * This changes with the filter on the UI to-dos and the to-do list of model.
+     */
     UnmodifiableObservableList<UiToDo> getUiEvents();
 
     /**
-     *  Return observable list of UI tasks
-     *  Tasks are in chronological order, with those finished at the bottom,
-     *  with those with DueDate on top
-     * */
+     * Return observable list of UI to-dos considered as tasks by ({@link UiToDo#isTask()}
+     * This changes with the filter on the UI to-dos and the to-do list of model.
+     */
     UnmodifiableObservableList<UiToDo> getUiTasks();
 
-    /**
-     *  Gets the UI to-do with {@link UiToDo#getIndex()} == {@param toDoIndex}
-     * */
+     /**
+     * @return the UI to-do with {@link UiToDo#getIndex()} == {@param toDoIndex}, if exists
+     */
     Optional<UiToDo> getUiToDoAtIndex(int index);
 
     /**
-     * Clears the filter on the UI to-do list
+     * @see seedu.commando.model.ui.UiModel#clearToDoListFilter(UiModel.FILTER_MODE)
      */
-    void clearUiToDoListFilter(boolean ifHistoryMode);
+    void clearUiToDoListFilter(UiModel.FILTER_MODE filterMode);
 
     /**
-     * Sets a filter on the UI to-do list
-     * @see seedu.commando.model.ui.UiModel#setToDoListFilter(Set, Set, boolean)
+     * @see seedu.commando.model.ui.UiModel#setToDoListFilter(Set, Set, UiModel.FILTER_MODE)
      */
-    void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, boolean ifHistoryMode);
+    void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, UiModel.FILTER_MODE filterMode);
+
+    //@@author A0142230B
+    /**
+     * @see seedu.commando.model.ui.UiModel#setToDoListFilter(DateRange)
+     */
+    void setUiToDoListFilter(DateRange dateRange);
 }

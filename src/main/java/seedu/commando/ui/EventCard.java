@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDo;
@@ -22,6 +23,10 @@ public class EventCard extends UiPart{
     @FXML
     private HBox eventPaneInner;
     @FXML
+    private VBox tagsPane;
+    @FXML
+    private HBox datePane;
+    @FXML
     private Label titleLabel;
     @FXML
     private Label indexLabel;
@@ -36,6 +41,8 @@ public class EventCard extends UiPart{
 
     private ReadOnlyToDo toDo;
     private int index;
+    private boolean containsTags = true;
+    private boolean containsDate = true;
 
     public EventCard(){ }
 
@@ -53,6 +60,7 @@ public class EventCard extends UiPart{
 
         setDateTimesLabels();
         setRecurrenceLabel();
+        checkTagsPane();
         setTagLabel();
     }
 
@@ -65,6 +73,7 @@ public class EventCard extends UiPart{
             tagsLabel.setText(tags);
         } else {
             tagsLabel.setManaged(false);
+            containsTags = false;
         }
     }
     
@@ -74,6 +83,16 @@ public class EventCard extends UiPart{
             recurrenceLabel.setText(toDo.getDateRange().get().recurrence.toString());
         } else {
             recurrenceLabel.setManaged(false);
+            containsDate = false;
+        }
+    }
+    
+    /**
+     * If both tags and recurrence are non-existent, hide the pane that contains them
+     */
+    private void checkTagsPane() {
+        if (!containsTags && !containsDate) {
+            tagsPane.setManaged(false);
         }
     }
     
@@ -87,8 +106,9 @@ public class EventCard extends UiPart{
             dateIntervalLabel.setStyle("-fx-text-fill: " + 
                     ToDoCardStyleManager.getDateProximityBlue((int) startDayDifference));
         } else {
-            dateIntervalLabel.setText("");
-            endLabel.setText("");
+            dateIntervalLabel.setManaged(false);
+            endLabel.setManaged(false);
+            datePane.setManaged(false);
         }
     }
     
@@ -120,6 +140,7 @@ public class EventCard extends UiPart{
      */
     private void setFinishedState() {
         eventPaneInner.setStyle(ToDoCardStyleManager.finishedStateContentCSS);
+        datePane.setStyle(ToDoCardStyleManager.finishedStateDateCSS);
         indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
     }
 

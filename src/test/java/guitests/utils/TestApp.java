@@ -1,17 +1,15 @@
  package guitests.utils;
 
-import java.io.IOException;
-import java.util.function.Supplier;
+ import javafx.stage.Stage;
+ import seedu.commando.MainApp;
+ import seedu.commando.commons.core.Config;
+ import seedu.commando.model.Model;
+ import seedu.commando.model.UserPrefs;
+ import seedu.commando.model.todo.ReadOnlyToDoList;
+ import seedu.commando.storage.Storage;
+ import seedu.commando.storage.XmlSerializableToDoList;
 
-import javafx.stage.Stage;
-import seedu.commando.MainApp;
-import seedu.commando.commons.core.Config;
-import seedu.commando.commons.util.StringUtil;
-import seedu.commando.model.Model;
-import seedu.commando.model.UserPrefs;
-import seedu.commando.model.todo.ReadOnlyToDoList;
-import seedu.commando.storage.Storage;
-import seedu.commando.storage.XmlSerializableToDoList;
+ import java.util.function.Supplier;
 
 /**
  * This class is meant to override some properties of MainApp so that it will be suited for

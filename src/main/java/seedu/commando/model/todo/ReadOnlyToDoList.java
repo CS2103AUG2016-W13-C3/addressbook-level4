@@ -6,24 +6,26 @@ import java.util.stream.Collectors;
 
 //@@author A0139697H
 /**
- * Unmodifiable view of a to-do list
+ * Unmodifiable view of a to-do list.
  */
 public interface ReadOnlyToDoList {
     UnmodifiableObservableList<ReadOnlyToDo> getToDos();
 
     /**
      *  Checks if the list contains a to-do that is considered as similar
-     *  as the given to-do
+     *    as the given to-do. See {@link ReadOnlyToDo#isSimilar(ReadOnlyToDo)}.
      */
     boolean contains(ReadOnlyToDo toDo);
 
     /**
-     *  Checks if the list is considered similar as the given to-do list
+     *  Checks if the list is considered similar as the given to-do list,
+     *    which means both their to-dos must be considered similar.
+     *    See {@link ReadOnlyToDo#isSimilar(ReadOnlyToDo)}.
      */
     boolean isSimilar(ReadOnlyToDoList toDoList);
 
     /**
-     * Updates and returns its value, based on the current value of its fields
+     * @return a complete textual representation of the to-do list as a string
      */
     default String getText() {
         return "[" + getToDos().stream().map(ReadOnlyToDo::toString).collect(Collectors.joining(", ")) + "]";

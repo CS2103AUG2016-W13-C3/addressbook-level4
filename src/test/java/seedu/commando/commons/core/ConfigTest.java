@@ -15,5 +15,6 @@ public class ConfigTest {
     @Test
     public void getUserGuideAnchorForCommandWord_invalidCommandWord() {
         assertFalse(Config.getUserGuideAnchorForCommandWord("adds").isPresent());
+        assertFalse(Config.getUserGuideAnchorForCommandWord("ad").isPresent());
     }
 }

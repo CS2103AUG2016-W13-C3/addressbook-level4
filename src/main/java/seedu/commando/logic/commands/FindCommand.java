@@ -3,9 +3,12 @@ package seedu.commando.logic.commands;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.model.Model;
 import seedu.commando.model.todo.Tag;
+import seedu.commando.model.ui.UiModel;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 //@@author A0139697H
 /**
@@ -25,13 +28,13 @@ public class FindCommand extends Command {
     public CommandResult execute() throws NoModelException {
         Model model = getModel();
 
-        // if no keywords or tags are provided, clear filter
         if (keywords.isEmpty() && tags.isEmpty()) {
-            model.clearUiToDoListFilter(false);
+            // if no keywords or tags are provided, show all unfinished to-dos
+            model.clearUiToDoListFilter(UiModel.FILTER_MODE.UNFINISHED);
             return new CommandResult(Messages.FIND_COMMAND_CLEAR);
+        } else {
+            model.setUiToDoListFilter(keywords, tags, UiModel.FILTER_MODE.UNFINISHED);
+            return new CommandResult(String.format(Messages.FIND_COMMAND, new TreeSet<>(keywords), new TreeSet<>(tags)));
         }
-
-        model.setUiToDoListFilter(keywords, tags, false);
-        return new CommandResult(String.format(Messages.FIND_COMMAND, model.getUiEvents().size(), model.getUiTasks().size()));
     }
 }

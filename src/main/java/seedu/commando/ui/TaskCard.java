@@ -7,8 +7,10 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ReadOnlyToDo;
+import seedu.commando.model.todo.Recurrence;
 
 public class TaskCard extends UiPart {
 
@@ -20,6 +22,10 @@ public class TaskCard extends UiPart {
     @FXML
     private HBox taskPaneInner;
     @FXML
+    private VBox tagsPane;
+    @FXML
+    private VBox datePane;
+    @FXML
     private Label titleLabel;
     @FXML
     private Label indexLabel;
@@ -27,9 +33,13 @@ public class TaskCard extends UiPart {
     private Label dueLabel;
     @FXML
     private Label tagsLabel;
+    @FXML
+    private Label recurrenceLabel;
 
     private ReadOnlyToDo toDo;
     private int index;
+    private boolean containsTags = true;
+    private boolean containsDate = true;
 
     public TaskCard(){ }
 
@@ -47,6 +57,8 @@ public class TaskCard extends UiPart {
         indexLabel.setText(String.valueOf(index));
 
         setDateTimeLabel();
+        setRecurrenceLabel();
+        checkTagsPane();
         setTagLabel();
     }
     
@@ -60,21 +72,46 @@ public class TaskCard extends UiPart {
             tagsLabel.setText(tags);
         } else {
             tagsLabel.setManaged(false);
+            containsTags = false;
         }
     }
     
+    private void setRecurrenceLabel() {
+        if (toDo.getDueDate().isPresent() && toDo.getDueDate().get().recurrence != Recurrence.None) {
+            recurrenceLabel.setText(toDo.getDueDate().get().recurrence.toString());
+        } else {
+            recurrenceLabel.setManaged(false);
+            containsDate = false;
+        }
+    }
+    
+    /**
+     * If both tags and recurrence are non-existent, hide the pane that contains them
+     */
+    private void checkTagsPane() {
+        if (!containsTags && !containsDate) {
+            tagsPane.setManaged(false);
+        }
+    }
+    
+    /**
+     * Sets value for the date time label
+     * and colours it according to the proximity of the date to today
+     * with red being the closest, and green being the furthest
+     */
     private void setDateTimeLabel() {
         if (toDo.getDueDate().isPresent()) {
             final LocalDateTime due = toDo.getDueDate().get().value;
             final long dayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), due);
+
             dueLabel.setText("by " + ToDoCardStyleManager.prettifyDateTime(due));
             dueLabel.setStyle("-fx-text-fill: " + 
                   ToDoCardStyleManager.getDateProximityGreen((int) dayDifference));
         } else {
-            dueLabel.setText("");
+            dueLabel.setManaged(false);
+            datePane.setManaged(false);
         }
     }
-    //@@author
     
     /*
      * Different CSS styles for different states
@@ -90,7 +127,6 @@ public class TaskCard extends UiPart {
         return taskPane;
     }
     
-    //@@author A0139080J
     /**
      * Every recently modified event will have a red border
      * This includes modification via undo, edit, add
@@ -104,6 +140,7 @@ public class TaskCard extends UiPart {
      */
     private void setFinishedState() {
         taskPaneInner.setStyle(ToDoCardStyleManager.finishedStateContentCSS);
+        datePane.setStyle(ToDoCardStyleManager.finishedStateDateCSS);
         indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
     }
     

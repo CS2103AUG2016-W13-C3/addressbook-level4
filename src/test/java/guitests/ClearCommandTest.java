@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 public class ClearCommandTest extends CommanDoGuiTest {
 
     @Test
-    public void clear_validCommand() {
+    public void clearCommand_validCommand_listCleared() {
         //verify a non-empty list can be cleared
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, td.getTypicalToDos()));
         assertClearCommandSuccess();
@@ -29,7 +29,7 @@ public class ClearCommandTest extends CommanDoGuiTest {
     }
     
     @Test
-    public void clear_invalidCommand() {
+    public void clearCommand_invalidCommand_reportErrorMessage() {
         //verify clear command does not take in extra params
         commandBox.runCommand("clear 1");
         assertResultMessage(String.format(Messages.INVALID_COMMAND_FORMAT, "clear"));
@@ -38,7 +38,12 @@ public class ClearCommandTest extends CommanDoGuiTest {
         commandBox.runCommand("clears");
         assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "clears"));
     }
-
+    
+    
+    /**
+     * Runs clear command and asserts that there is no Todo remained
+     * in the list
+     */
     private void assertClearCommandSuccess() {
         commandBox.runCommand("clear");
         assertListSize(0);

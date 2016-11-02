@@ -11,10 +11,11 @@ class ToDoListViewCell extends ListCell<UiToDo> {
         Event,
         Task
     }
-    
+
     private Card chosenCard;
-    
+
     public ToDoListViewCell(Card card) {
+        assert card != null;
         chosenCard = card;
     }
 
