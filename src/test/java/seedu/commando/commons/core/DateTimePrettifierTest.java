@@ -17,9 +17,13 @@ public class DateTimePrettifierTest {
     
     private DateTimeFormatter formatDayOfWeek = DateTimeFormatter.ofPattern("EEE");
     private LocalDateTime now = LocalDateTime.now();
+    private LocalDateTime untilNever = LocalDateTime.MAX.withSecond(0).withNano(0);
+    private LocalDateTime sinceForever = LocalDateTime.MIN.withSecond(0).withNano(0);
+    
     private final int currentYear = now.getYear();
     private final int currentMonth = now.getMonthValue();
     private final int currentDay = now.getDayOfMonth();
+    
     private final int tomorrowYear = now.plusDays(1).getYear();
     private final int tomorrowMonth = now.plusDays(1).getMonthValue();
     private final int tomorrowDay = now.plusDays(1).getDayOfMonth();
@@ -165,6 +169,24 @@ public class DateTimePrettifierTest {
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 2, 27, 13, 30);
         assertEquals("12:30 Today to\n13:30 on " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear + 1),
+                DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
+    }
+    
+    @Test
+    public void prettifyDateTimeRange_untilTomorrow_showUntilTomorrow() {
+        // Should display time and date with words Until and Tomorrow
+        final LocalDateTime dateFrom = sinceForever;
+        final LocalDateTime dateTo = LocalDateTime.of(tomorrowYear, tomorrowMonth, tomorrowDay, 13, 30);
+        assertEquals("Until 13:30 Tomorrow",
+                DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
+    }
+    
+    @Test
+    public void prettifyDateTimeRange_nowUntilForever_showSinceForever() {
+        // Should display time and date and Onwards
+        final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
+        final LocalDateTime dateTo = untilNever;
+        assertEquals("From 12:30 Today onwards",
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
 }
