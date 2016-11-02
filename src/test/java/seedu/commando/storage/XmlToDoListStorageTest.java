@@ -16,6 +16,7 @@ import seedu.commando.testutil.ToDoBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -57,6 +58,20 @@ public class XmlToDoListStorageTest {
          * That means you should not have more than one exception test in one method
          */
     }
+
+    @Test
+    public void read_invalidDateFormats_dataNotRead() throws Exception {
+        Optional<ReadOnlyToDoList> toDoList = readToDoList("InvalidDataFormats.xml");
+        assertTrue(toDoList.isPresent());
+        assertEquals(2, toDoList.get().getToDos().size());
+        assertFalse(toDoList.get().getToDos().get(0).getDateFinished().isPresent());
+        assertFalse(toDoList.get().getToDos().get(1).getDateFinished().isPresent());
+        assertFalse(toDoList.get().getToDos().get(0).getDueDate().isPresent());
+        assertFalse(toDoList.get().getToDos().get(1).getDueDate().isPresent());
+        assertFalse(toDoList.get().getToDos().get(0).getDateRange().isPresent());
+        assertFalse(toDoList.get().getToDos().get(1).getDateRange().isPresent());
+    }
+
 
     @Test
     public void readAndSaveToDoList_noModifications() throws Exception {
@@ -126,17 +141,16 @@ public class XmlToDoListStorageTest {
     }
     
     private static ToDoList getSample() throws IllegalValueException {
-        ToDoList toDoList = new ToDoList();
-        toDoList.add(new ToDoBuilder("valid title")
+        return new ToDoList()
+            .add(new ToDoBuilder("valid title")
                     .withTags("tag1", "tag2" )
                     .withDueDate(LocalDateTime.of(2016, 5, 1, 20, 1))
                     .withDateRange(LocalDateTime.of(2016, 3, 1, 20, 1),
                                    LocalDateTime.of(2016, 4, 1, 20, 1))
-                    .build());
-        toDoList.add(new ToDoBuilder("valid title 2")
+                    .build())
+            .add(new ToDoBuilder("valid title 2")
                     .finish(LocalDateTime.now())
                     .build());
-        return toDoList;
     }
     
 }

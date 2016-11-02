@@ -1,4 +1,4 @@
-package seedu.commando.ui;
+package seedu.commando.commons.core;
 
 import static org.junit.Assert.*;
 
@@ -13,10 +13,7 @@ import org.junit.Test;
 import seedu.commando.commons.core.DateTimePrettifier;
 
 //@@author A0139080J
-/**
- * Tests for ToDoCardStyleManager
- */
-public class ToDoCardStyleManagerTest {
+public class DateTimePrettifierTest {
     
     private DateTimeFormatter formatDayOfWeek = DateTimeFormatter.ofPattern("EEE");
     private LocalDateTime now = LocalDateTime.now();

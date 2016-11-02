@@ -76,17 +76,22 @@ public class StorageManagerTest {
     }
 
     private static ToDoList getSample() throws IllegalValueException {
-        ToDoList toDoList = new ToDoList();
-        toDoList.add(new ToDoBuilder("valid title")
-                    .withTags("tag1", "tag2" )
-                    .withDueDate(LocalDateTime.of(2016, 5, 1, 20, 1))
-                    .withDateRange(LocalDateTime.of(2016, 3, 1, 20, 1),
-                                   LocalDateTime.of(2016, 4, 1, 20, 1))
-                    .build());
-        toDoList.add(new ToDoBuilder("valid title 2")
-                    .finish(LocalDateTime.of(2017, 2, 3, 22, 5))
-                    .build());
-        return toDoList;
+        return new ToDoList()
+            .add(new ToDoBuilder("valid title")
+                .withTags("tag1", "tag2" )
+                .withDueDate(LocalDateTime.of(2016, 5, 1, 20, 1))
+                .withDateRange(LocalDateTime.of(2016, 3, 1, 20, 1),
+                    LocalDateTime.of(2016, 4, 1, 20, 1))
+                .build())
+            .add(new ToDoBuilder("valid title 2")
+                .finish(LocalDateTime.now())
+                .build())
+            .add(new ToDoBuilder("valid title 3")
+                .withDateRange(LocalDateTime.MIN,  LocalDateTime.of(2016, 4, 1, 20, 1))
+                .build())
+            .add(new ToDoBuilder("valid title 4")
+                .withDateRange(LocalDateTime.of(2016, 4, 1, 20, 1), LocalDateTime.MAX)
+                .build());
     }
     
 }
