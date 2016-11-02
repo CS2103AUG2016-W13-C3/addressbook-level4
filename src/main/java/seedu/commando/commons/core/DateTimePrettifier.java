@@ -45,12 +45,8 @@ public class DateTimePrettifier {
         boolean sameYear = startDateTime.getYear() == endDateTime.getYear();
         boolean sameMonth = startDateTime.getMonthValue() == endDateTime.getMonthValue();
         boolean sameDay = startDateTime.getDayOfMonth() == endDateTime.getDayOfMonth();
-        boolean startIsYtdOrTdyOrTmr = startDateTime.toLocalDate().isEqual(todayDate) ||
-            startDateTime.toLocalDate().isEqual(tomorrowDate) ||
-            startDateTime.toLocalDate().isEqual(yesterdayDate);
-        boolean endIsYtdOrTdyOrTmr = endDateTime.toLocalDate().isEqual(todayDate) ||
-            endDateTime.toLocalDate().isEqual(tomorrowDate) ||
-            endDateTime.toLocalDate().isEqual(yesterdayDate);
+        boolean startIsYtdOrTdyOrTmr = isYtdOrTdyOrTmr(startDateTime);
+        boolean endIsYtdOrTdyOrTmr = isYtdOrTdyOrTmr(endDateTime);
 
         // If start date is Yesterday or Today or Tomorrow, shouldn't show month and year
         if (startIsYtdOrTdyOrTmr) {
@@ -117,6 +113,12 @@ public class DateTimePrettifier {
         }
     }
 
+    private static boolean isYtdOrTdyOrTmr(LocalDateTime startDateTime) {
+        return startDateTime.toLocalDate().isEqual(todayDate) ||
+            startDateTime.toLocalDate().isEqual(tomorrowDate) ||
+            startDateTime.toLocalDate().isEqual(yesterdayDate);
+    }
+
     /**
      * @param ldt
      * @return a date or 'today' or 'yesterday' or 'tomorrow'
@@ -160,9 +162,7 @@ public class DateTimePrettifier {
      */
     public static String prettifyDateTime(LocalDateTime dateTime) {
         boolean isYtdOrTdyOrTmr =
-            dateTime.toLocalDate().isEqual(todayDate) ||
-                dateTime.toLocalDate().isEqual(tomorrowDate) ||
-                dateTime.toLocalDate().isEqual(yesterdayDate);
+            isYtdOrTdyOrTmr(dateTime);
 
         if (isYtdOrTdyOrTmr) {
             return getTime(dateTime) + " " + getDay(dateTime);
