@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import seedu.commando.commons.core.DateTimePrettifier;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.Recurrence;
@@ -104,7 +105,7 @@ public class TaskCard extends UiPart {
             final LocalDateTime due = toDo.getDueDate().get().value;
             final long dayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), due);
 
-            dueLabel.setText("by " + ToDoCardStyleManager.prettifyDateTime(due));
+            dueLabel.setText("by " + DateTimePrettifier.prettifyDateTime(due));
             dueLabel.setStyle("-fx-text-fill: " + 
                   ToDoCardStyleManager.getDateProximityGreen((int) dayDifference));
         } else {

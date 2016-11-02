@@ -71,7 +71,17 @@ public class DateRange {
 
     @Override
     public String toString() {
-        return startDate.format(dateFormatter) + " - " + endDate.format(dateFormatter)
+        String dateString;
+        if (startDate.equals(LocalDateTime.MIN) && endDate.equals(LocalDateTime.MAX)) {
+            dateString = "forever";
+        } else if (startDate.equals(LocalDateTime.MIN)) {
+            dateString = "until " + endDate.format(dateFormatter);
+        } else if (endDate.equals(LocalDateTime.MAX)) {
+            dateString = "from " + startDate.format(dateFormatter) + " onwards";
+        } else {
+            dateString = "from " + startDate.format(dateFormatter) + " to " + endDate.format(dateFormatter);
+        }
+        return dateString
             + ((recurrence == Recurrence.None) ? "" : " " + recurrence.toString().toLowerCase());
     }
 

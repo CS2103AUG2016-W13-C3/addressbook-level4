@@ -2,6 +2,7 @@ package seedu.commando.logic.commands;
 
 import java.util.Optional;
 
+import seedu.commando.commons.core.DateTimePrettifier;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.logic.commands.Command.NoModelException;
 import seedu.commando.model.Model;
@@ -31,7 +32,11 @@ public class ListCommand extends Command {
 		else {
 			model.setUiToDoListFilter(dateRange.get());
 			return new CommandResult(
-                String.format(Messages.LIST_COMMAND, dateRange.get())
+                String.format(Messages.LIST_COMMAND,
+                    DateTimePrettifier.prettifyDateTimeRange(
+                        dateRange.get().startDate, dateRange.get().endDate
+                    )
+                )
 			);
 		}
 	}

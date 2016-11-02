@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import seedu.commando.commons.core.DateTimePrettifier;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDo;
@@ -102,7 +103,7 @@ public class EventCard extends UiPart{
             final long startDayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.startDate);
             
             dateIntervalLabel.setText(
-                    ToDoCardStyleManager.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
+                    DateTimePrettifier.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
             dateIntervalLabel.setStyle("-fx-text-fill: " + 
                     ToDoCardStyleManager.getDateProximityBlue((int) startDayDifference));
         } else {
