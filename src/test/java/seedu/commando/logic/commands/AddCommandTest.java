@@ -322,7 +322,7 @@ public class AddCommandTest {
             new ToDoBuilder("event")
                 .withDateRange(
                     LocalDateTime.of(2015, 11, 23, 0, 0),
-                    LocalDateTime.of(2015, 11, 24, 0, 0)
+                    LocalDateTime.of(2015, 11, 23, 23, 59)
                 )
                 .build()
         );
@@ -337,7 +337,7 @@ public class AddCommandTest {
             new ToDoBuilder("event")
                 .withDateRange(
                     LocalDateTime.now().withHour(13).withMinute(21),
-                    LocalDateTime.now().plusDays(1).withHour(0).withMinute(0)
+                    LocalDateTime.now().withHour(23).withMinute(59)
                 )
                 .build()
         );

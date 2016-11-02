@@ -42,7 +42,7 @@ public class ListCommandTest {
 	}
 
 	@Test
-	public void execute_listOnly_ListCommandClaerMessage() {
+	public void execute_listOnly_ListCommandClearMessage() {
 		CommandResult result = logic.execute("list");
 		assertFalse(result.hasError());
 		assertEquals(Messages.LIST_COMMAND_CLEAR, result.getFeedback());
@@ -51,7 +51,6 @@ public class ListCommandTest {
 
 	@Test
 	public void execute_listWithInValidDate_invalidCommandFormatMessage() {
-
 		// with an invalid date
 		CommandResult result = logic.execute("list a");
 		assertTrue(result.hasError());
@@ -90,9 +89,9 @@ public class ListCommandTest {
 		
 		//Events
 		assertToDoExistsFiltered(logic, new ToDoBuilder("title")
-				.withDateRange(LocalDateTime.of(2016, 11, 12, 0, 0), LocalDateTime.of(2016, 11, 13, 0, 0)).build());
+				.withDateRange(LocalDateTime.of(2016, 11, 12, 0, 0), LocalDateTime.of(2016, 11, 13, 23, 59)).build());
 		assertToDoNotExistsFiltered(logic, new ToDoBuilder("title2")
-				.withDateRange(LocalDateTime.of(2016, 11, 14, 0, 0), LocalDateTime.of(2016, 11, 16, 0, 0)).build());
+				.withDateRange(LocalDateTime.of(2016, 11, 14, 0, 0), LocalDateTime.of(2016, 11, 16, 23, 59)).build());
 		
 		//Tasks
 		assertToDoExistsFiltered(logic, new ToDoBuilder("title3")
@@ -119,11 +118,11 @@ public class ListCommandTest {
 		
 		//Events
 		assertToDoExistsFiltered(logic, new ToDoBuilder("title")
-				.withDateRange(LocalDateTime.of(2016, 11, 12, 0, 0), LocalDateTime.of(2016, 11, 15, 0, 0)).build());
+				.withDateRange(LocalDateTime.of(2016, 11, 12, 0, 0), LocalDateTime.of(2016, 11, 15, 23, 59)).build());
 		assertToDoExistsFiltered(logic, new ToDoBuilder("title2")
-				.withDateRange(LocalDateTime.of(2016, 11, 14, 0, 0), LocalDateTime.of(2016, 11, 16, 0, 0)).build());
+				.withDateRange(LocalDateTime.of(2016, 11, 14, 0, 0), LocalDateTime.of(2016, 11, 16, 23, 59)).build());
 		assertToDoNotExistsFiltered(logic, new ToDoBuilder("title5")
-				.withDateRange(LocalDateTime.of(2016, 11, 16, 0, 0), LocalDateTime.of(2016, 11, 17, 0, 0)).build());
+				.withDateRange(LocalDateTime.of(2016, 11, 16, 0, 0), LocalDateTime.of(2016, 11, 17, 23, 59)).build());
 		
 		//Tasks
 		assertToDoExistsFiltered(logic, new ToDoBuilder("title3")
@@ -147,9 +146,9 @@ public class ListCommandTest {
 		assertFalse(result.hasError());
 		
 		assertToDoExistsFiltered(logic, new ToDoBuilder("title")
-				.withDateRange(LocalDateTime.of(2016, 11, 12, 0, 0), LocalDateTime.of(2016, 11, 13, 0, 0)).build());
+				.withDateRange(LocalDateTime.of(2016, 11, 12, 0, 0), LocalDateTime.of(2016, 11, 13, 23, 59)).build());
 		assertToDoNotExistsFiltered(logic, new ToDoBuilder("title2")
-				.withDateRange(LocalDateTime.of(2016, 11, 19, 0, 0), LocalDateTime.of(2016, 11, 20, 0, 0)).build());
+				.withDateRange(LocalDateTime.of(2016, 11, 19, 0, 0), LocalDateTime.of(2016, 11, 20, 23, 59)).build());
 
 	}
 	
@@ -165,7 +164,7 @@ public class ListCommandTest {
 		assertFalse(result.hasError());
 
 		assertToDoExistsFiltered(logic, new ToDoBuilder("title")
-				.withDateRange(LocalDateTime.of(2016, 11, 10, 0, 0), LocalDateTime.of(2016, 11, 14, 0, 0)).build());
+				.withDateRange(LocalDateTime.of(2016, 11, 10, 0, 0), LocalDateTime.of(2016, 11, 14, 23, 59)).build());
 
 	}
 }

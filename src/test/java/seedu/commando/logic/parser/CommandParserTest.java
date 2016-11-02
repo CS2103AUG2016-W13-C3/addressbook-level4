@@ -214,7 +214,7 @@ public class CommandParserTest {
         assertEquals(
             new DateRange(
                 LocalDateTime.of(2011, 2, 1, 0, 0),
-                LocalDateTime.of(2011, 2, 2, 0, 0)
+                LocalDateTime.of(2011, 2, 1, 23, 59)
             ),
             dateRange.get()
         );
@@ -231,7 +231,7 @@ public class CommandParserTest {
         assertEquals(
             new DateRange(
                 LocalDateTime.of(2011, 2, 1, 21, 0),
-                LocalDateTime.of(2011, 2, 2, 0, 0)
+                LocalDateTime.of(2011, 2, 1, 23, 59)
             ),
             dateRange.get()
         );
@@ -258,12 +258,29 @@ public class CommandParserTest {
         assertEquals(
             new DateRange(
                 LocalDateTime.of(2011, 2, 1, 23, 59),
-                LocalDateTime.of(2011, 2, 2, 0, 0)
+                LocalDateTime.of(2011, 2, 1, 23, 59)
             ),
             dateRange.get()
         );
         assertEquals(
             "event from today to tomorrow", commandParser.extractText().orElse("")
+        );
+    }
+
+    @Test
+    public void extractTrailingDateRange_withFromTodayToTomorrow_extractedTrailing() throws IllegalValueException {
+        commandParser.setInput("event from today to tomorrow");
+        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        assertTrue(dateRange.isPresent());
+        assertEquals(
+            new DateRange(
+                LocalDateTime.now().withHour(0).withMinute(0),
+                LocalDateTime.now().plusDays(1).withHour(23).withMinute(59)
+            ),
+            dateRange.get()
+        );
+        assertEquals(
+            "event", commandParser.extractText().orElse("")
         );
     }
 
@@ -275,7 +292,7 @@ public class CommandParserTest {
         assertEquals(
             new DateRange(
                 LocalDateTime.of(nextYear, 11, 1, 0, 0),
-                LocalDateTime.of(nextYear, 11, 2, 0, 0),
+                LocalDateTime.of(nextYear, 11, 1, 23, 59),
                 Recurrence.Weekly
             ),
             dateRange.get()

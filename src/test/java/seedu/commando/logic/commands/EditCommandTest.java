@@ -329,7 +329,7 @@ public class EditCommandTest {
             new ToDoBuilder("event")
                 .withDateRange(
                     LocalDateTime.of(nextYear, 9, 10, 11, 33),
-                    LocalDateTime.of(nextYear, 9, 11, 0, 0)
+                    LocalDateTime.of(nextYear, 9, 10, 23, 59)
                 )
                 .build());
     }

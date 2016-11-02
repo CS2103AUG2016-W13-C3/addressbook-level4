@@ -9,13 +9,13 @@ import java.util.regex.Pattern;
 
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
+import javafx.util.Pair;
 
 //@@author A0139697H
 /**
  * Parses datetimes with help of {@link com.joestelmach.natty.Parser}
  */
 public class DateTimeParser {
-    public static final LocalTime DefaultLocalTime = LocalTime.MIDNIGHT;
     public static final LocalTime MorningLocalTime = LocalTime.of(8, 0);
     public static final LocalTime AfternoonLocalTime = LocalTime.of(12, 0);
     public static final LocalTime EveningLocalTime = LocalTime.of(19, 0);
@@ -39,7 +39,7 @@ public class DateTimeParser {
         "(" + DayOfMonthRegexString + ")(th|rd|st|nd)?(\\s+" + YearRegexString + ")?";
     private static final String DateWithDayWordRegexString = "((coming|next)\\s+)?(" + DayWordRegexString + ")";
     private static final String DateWithLaterAgoRegexString = "((\\d+\\d)|([2-9]))\\s+(days|weeks|months|years)\\s+(later|ago)";
-    private static final String DateWithNextRegexString = "next (week|month|year)";
+    private static final String DateWithLastNextRegexString = "(last|this|next)\\s+(week|month|year)";
     private static final String TimeNightRegexString = "(this\\s+)?(night|tonight)";
     private static final String TimeHourRegexString = "(?<hours>" + Hours24RegexString + ")(?<minutes>" + MinutesRegexString + ")h";
 
@@ -49,7 +49,7 @@ public class DateTimeParser {
         DateWithMonthWordReversedRegexString,
         DateWithDayWordRegexString,
         DateWithLaterAgoRegexString,
-        DateWithNextRegexString,
+        DateWithLastNextRegexString,
         "today", "tomorrow|tmr", "yesterday"
     };
 
@@ -66,9 +66,8 @@ public class DateTimeParser {
     private LocalDate lastLocalDate; // Date of last parsed datetime
 
     public DateTimeParser() {
-        parseDateTime(InitializationDateString);
+        parseDateTime(InitializationDateString, LocalTime.MIDNIGHT);
     }
-
 
     /**
      * Resets any contextual info used based on history of parsing
@@ -78,15 +77,73 @@ public class DateTimeParser {
     }
 
     /**
+     * @see #parseDateTime(String, LocalTime), but additional processing to
+     *   interpret the datetime as a period.
+     * @return pair of (start datetime, end datetime)
+     */
+    public Optional<Pair<LocalDateTime, LocalDateTime>> parseDateTimePeriod(String input) {
+        Optional<LocalDateTime> localDateTime = parseDateTime(input);
+
+        if (!localDateTime.isPresent()) {
+            return Optional.empty();
+        }
+
+        String trimmedInput = input.trim();
+
+        // Check if the input is trying to represent a period of > 1 day
+        if (trimmedInput.matches(DateWithLaterAgoRegexString)
+            || trimmedInput.matches(DateWithLastNextRegexString)) {
+            if (trimmedInput.contains("week")) {
+                // Return from monday to sunday of that week 2359h
+                return Optional.of(
+                    new Pair<>(
+                        localDateTime.get().with(DayOfWeek.MONDAY),
+                        localDateTime.get().with(DayOfWeek.SUNDAY).withHour(23).withMinute(59)
+                    )
+                );
+            } else if (trimmedInput.contains("month")) {
+                // Return from 1st to last day of month 2359h
+                return Optional.of(
+                    new Pair<>(
+                        localDateTime.get().withDayOfMonth(1),
+                        localDateTime.get().plusMonths(1).withDayOfMonth(1).minusDays(1)
+                            .withHour(23).withMinute(59)
+                    )
+                );
+            } else if (trimmedInput.contains("year")) {
+                // Return from 1st to last day of year 2359h
+                return Optional.of(
+                    new Pair<>(
+                        localDateTime.get().withDayOfYear(1),
+                        localDateTime.get().plusYears(1).withDayOfYear(1).minusDays(1)
+                            .withHour(23).withMinute(59)
+                    )
+                );
+            }
+        }
+
+        // If not, treat it as on a single day until 2359h
+        return Optional.of(new Pair<>(localDateTime.get(), localDateTime.get().withHour(23).withMinute(59)));
+    }
+
+    /**
+     * @see #parseDateTime(String, LocalTime), but with a default time of
+     *   midnight
+     */
+    public Optional<LocalDateTime> parseDateTime(String input) {
+        return parseDateTime(input, LocalTime.MIDNIGHT);
+    }
+
+    /**
      * Gets the first datetime encountered in text
      * Works based on {@link com.joestelmach.natty.Parser}, but:
      * - Converted to `LocalDateTime`
-     * - If time is deemed as "inferred" (in natty), time = {@link #DefaultLocalTime}
+     * - If time is deemed as "inferred" (in natty), time = {@param defaultTime}
      * - If date is "inferred" and there were previous parses, date = {@link #lastLocalDate}
-     * - Seconds field is always set to 0 (ignored)
+     * - Seconds and nano-seconds field is always set to 0 (ignored)
      */
-    public Optional<LocalDateTime> parseDateTime(String input) {
-        Optional<String> preprocessedInput = preprocessInput(input);
+    public Optional<LocalDateTime> parseDateTime(String input, LocalTime defaultTime) {
+        Optional<String> preprocessedInput = preprocessInput(input.trim());
 
         // If preprocessing fails, return empty
         if (!preprocessedInput.isPresent()) {
@@ -100,14 +157,14 @@ public class DateTimeParser {
             DateGroup dateGroup = dateGroups.get(0);
             List<Date> dates = dateGroup.getDates();
             if (!dates.isEmpty()) {
-                return Optional.of(toLocalDateTime(dateGroup, dates.get(0)));
+                return Optional.of(toLocalDateTime(dateGroup, dates.get(0), defaultTime));
             }
         }
 
         return Optional.empty();
     }
 
-    private LocalDateTime toLocalDateTime(DateGroup dateGroup, Date date) {
+    private LocalDateTime toLocalDateTime(DateGroup dateGroup, Date date, LocalTime defaultTime) {
         Instant instant = Instant.ofEpochMilli(date.getTime());
         ZoneId zoneId = ZoneOffset.systemDefault();
 
@@ -125,7 +182,7 @@ public class DateTimeParser {
         if (dateGroup.isTimeInferred()) {
             localDateTime = LocalDateTime.of(
                 localDateTime.toLocalDate(),
-                DefaultLocalTime
+                defaultTime
             );
         }
 
@@ -141,11 +198,10 @@ public class DateTimeParser {
     /**
      * Determines with regex whether this is a supported datetime
      * Preprocesses it to before being parsed in natty
+     * Assumes input is trimmed.
      * Returns empty if not supported
      */
     private Optional<String> preprocessInput(String input) {
-        input = input.trim();
-
         if (input.isEmpty()) {
             return Optional.empty();
         }
@@ -165,11 +221,9 @@ public class DateTimeParser {
                 // Extract out date string from text
                 input = input.substring(matcher.end()).trim();
 
-                break; // exit loop
+                break;
             }
         }
-
-
 
         // Try to match a time
         String timeString = "";
@@ -184,7 +238,7 @@ public class DateTimeParser {
                 timeString = handleTimeNight(timeString, regexString);
 
                 input = input.substring(matcher.end()).trim();
-                break; // exit loop
+                break;
             }
         }
 

@@ -7,6 +7,7 @@ import seedu.commando.model.ui.UiModel;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.TreeSet;
 
 //@@author A0139697H
 /**
@@ -32,7 +33,7 @@ public class RecallCommand extends Command {
             return new CommandResult(Messages.RECALL_COMMAND_CLEAR);
         } else {
             model.setUiToDoListFilter(keywords, tags, UiModel.FILTER_MODE.FINISHED);
-            return new CommandResult(String.format(Messages.RECALL_COMMAND, keywords, tags));
+            return new CommandResult(String.format(Messages.RECALL_COMMAND, new TreeSet<>(keywords), new TreeSet<>(tags)));
         }
     }
 }

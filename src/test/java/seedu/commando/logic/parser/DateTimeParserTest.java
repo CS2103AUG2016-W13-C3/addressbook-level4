@@ -1,5 +1,6 @@
 package seedu.commando.logic.parser;
 
+import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,29 +50,30 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parseDateTime_ddMMM_parsed() {
+    public void parseDateTime_dateWithSlashes_parsed() {
         assertEquals(
-            LocalDateTime.of(now.getYear(), 2, 28,
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
-            dateTimeParser.parseDateTime("28 Feb").orElse(null)
+            LocalDateTime.of(2001, 1, 1,
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
+            dateTimeParser.parseDateTime("1/1/01").orElse(null)
+        );
+
+        LocalTime localTime = LocalTime.of(23, 59);
+        assertEquals(
+            LocalDateTime.of(2016, 12, 11,
+                localTime.getHour(),
+                localTime.getMinute()),
+            dateTimeParser.parseDateTime("11/12/16", localTime).orElse(null)
         );
     }
 
     @Test
-    public void parseDateTime_dateWithSlashes_parsed() {
+    public void parseDateTime_ddMMMWithNoonDefaultTime_parsed() {
         assertEquals(
-            LocalDateTime.of(2016, 12, 11,
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
-            dateTimeParser.parseDateTime("11/12/16").orElse(null)
-        );
-
-        assertEquals(
-            LocalDateTime.of(2001, 1, 1,
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
-            dateTimeParser.parseDateTime("1/1/01").orElse(null)
+            LocalDateTime.of(now.getYear(), 2, 28,
+                LocalTime.NOON.getHour(),
+                LocalTime.NOON.getMinute()),
+            dateTimeParser.parseDateTime("28 Feb", LocalTime.NOON).orElse(null)
         );
     }
 
@@ -121,8 +123,8 @@ public class DateTimeParserTest {
         // today
         assertEquals(
             LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("today").orElse(null)
         );
 
@@ -130,15 +132,15 @@ public class DateTimeParserTest {
         LocalDateTime tomorrow = now.plusDays(1);
         assertEquals(
             LocalDateTime.of(tomorrow.getYear(), tomorrow.getMonth(), tomorrow.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("tomorrow").orElse(null)
         );
 
         assertEquals(
             LocalDateTime.of(tomorrow.getYear(), tomorrow.getMonth(), tomorrow.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("tmr").orElse(null)
         );
 
@@ -146,8 +148,8 @@ public class DateTimeParserTest {
         LocalDateTime yesterday = now.minusDays(1);
         assertEquals(
             LocalDateTime.of(yesterday.getYear(), yesterday.getMonth(), yesterday.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("yesterday").orElse(null)
         );
     }
@@ -250,23 +252,23 @@ public class DateTimeParserTest {
 
         assertEquals(
             LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("coming Friday").orElse(null)
         );
 
         assertEquals(
             LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("Friday").orElse(null)
         );
 
         LocalDateTime nextLdt = now.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
         assertEquals(
             LocalDateTime.of(nextLdt.getYear(), nextLdt.getMonthValue(), nextLdt.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("next sun").orElse(null)
         );
 
@@ -283,16 +285,16 @@ public class DateTimeParserTest {
         LocalDateTime plus12Days = now.plusDays(12);
         assertEquals(
             LocalDateTime.of(plus12Days.getYear(), plus12Days.getMonthValue(), plus12Days.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("12 days later").orElse(null)
         );
 
         LocalDateTime minus8Days = now.minusDays(8);
         assertEquals(
             LocalDateTime.of(minus8Days.getYear(), minus8Days.getMonthValue(), minus8Days.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("8 days ago").orElse(null)
         );
 
@@ -307,24 +309,24 @@ public class DateTimeParserTest {
         LocalDateTime ldt = now.plusWeeks(2);
         assertEquals(
             LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("2 weeks later").orElse(null)
         );
 
         ldt = now.plusMonths(2);
         assertEquals(
             LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("2 months later").orElse(null)
         );
 
         ldt = now.minusYears(2);
         assertEquals(
             LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("2 years ago").orElse(null)
         );
 
@@ -347,24 +349,24 @@ public class DateTimeParserTest {
         LocalDateTime ldt = now.plusWeeks(1);
         assertEquals(
             LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("next week").orElse(null)
         );
 
         ldt = now.plusMonths(1);
         assertEquals(
             LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("next month").orElse(null)
         );
 
         ldt = now.plusYears(1);
         assertEquals(
             LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
-                DateTimeParser.DefaultLocalTime.getHour(),
-                DateTimeParser.DefaultLocalTime.getMinute()),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
             dateTimeParser.parseDateTime("next year").orElse(null)
         );
     }
@@ -405,6 +407,33 @@ public class DateTimeParserTest {
             LocalDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(),
                 0, 0),
             dateTimeParser.parseDateTime("midnight").orElse(null)
+        );
+    }
+
+    @Test
+    public void parseDateTimePeriod_weeksMonthsYears_wholePeriodParsed() {
+        assertEquals(
+            new Pair<>(
+                LocalDateTime.now().plusWeeks(1).with(DayOfWeek.MONDAY).with(LocalTime.of(0, 0)),
+                LocalDateTime.now().plusWeeks(1).with(DayOfWeek.SUNDAY).with(LocalTime.of(23, 59))
+            ),
+            dateTimeParser.parseDateTimePeriod("next week").orElse(null)
+        );
+
+        assertEquals(
+            new Pair<>(
+                LocalDateTime.now().minusMonths(1).withDayOfMonth(1).with(LocalTime.of(0, 0)),
+                LocalDateTime.now().withDayOfMonth(1).minusDays(1).with(LocalTime.of(23, 59))
+            ),
+            dateTimeParser.parseDateTimePeriod("last month").orElse(null)
+        );
+
+        assertEquals(
+            new Pair<>(
+                LocalDateTime.now().withDayOfYear(1).with(LocalTime.of(0, 0)),
+                LocalDateTime.now().plusYears(1).withDayOfYear(1).minusDays(1).with(LocalTime.of(23, 59))
+            ),
+            dateTimeParser.parseDateTimePeriod("this year").orElse(null)
         );
     }
 }

@@ -13,6 +13,7 @@ import seedu.commando.model.todo.ToDoListChange;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.Tag;
+import seedu.commando.model.ui.UiModel;
 import seedu.commando.model.ui.UiToDo;
 
 import java.util.Optional;
@@ -62,12 +63,12 @@ public class CommandTest {
         }
 
         @Override
-        public void clearUiToDoListFilter(boolean ifHistoryMode) {
+        public void clearUiToDoListFilter(UiModel.FILTER_MODE filterMode) {
 
         }
 
         @Override
-        public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, boolean ifHistoryMode) {
+        public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, UiModel.FILTER_MODE filterMode) {
 
         }
 

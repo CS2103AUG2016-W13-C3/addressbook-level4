@@ -6,7 +6,9 @@ import seedu.commando.model.todo.Tag;
 import seedu.commando.model.ui.UiModel;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 //@@author A0139697H
 /**
@@ -32,7 +34,7 @@ public class FindCommand extends Command {
             return new CommandResult(Messages.FIND_COMMAND_CLEAR);
         } else {
             model.setUiToDoListFilter(keywords, tags, UiModel.FILTER_MODE.UNFINISHED);
-            return new CommandResult(String.format(Messages.FIND_COMMAND, keywords, tags));
+            return new CommandResult(String.format(Messages.FIND_COMMAND, new TreeSet<>(keywords), new TreeSet<>(tags)));
         }
     }
 }

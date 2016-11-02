@@ -7,7 +7,7 @@ import seedu.commando.commons.util.CollectionUtil;
 /**
  * Represents a tag of a to-do, immutable.
  */
-public class Tag {
+public class Tag implements Comparable<Tag>{
     public final String value;
 
     /**
@@ -48,4 +48,8 @@ public class Tag {
         return '[' + value + ']';
     }
 
+    @Override
+    public int compareTo(Tag o) {
+        return value.compareTo(o.value);
+    }
 }

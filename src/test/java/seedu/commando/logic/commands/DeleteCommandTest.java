@@ -250,7 +250,7 @@ public class DeleteCommandTest {
             new ToDoBuilder("title")
                 .withDateRange(
                     LocalDateTime.of(nextYear, 10, 22, 0, 0),
-                    LocalDateTime.of(nextYear, 10, 23, 0, 0)
+                    LocalDateTime.of(nextYear, 10, 22, 23, 59)
                 )
                 .build()
         );

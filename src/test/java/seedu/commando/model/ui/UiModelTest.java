@@ -70,8 +70,8 @@ public class UiModelTest {
 
     // Check if the order of events for ui is correct for history mode
     @Test
-    public void getUiEvents_setupHistoryMode_orderCorrect() {
-        uiModel.setToDoListFilter(Collections.emptySet(), Collections.emptySet(), true);
+    public void getUiEvents_setupFinishedMode_orderCorrect() {
+        uiModel.setToDoListFilter(Collections.emptySet(), Collections.emptySet(), UiModel.FILTER_MODE.FINISHED);
         List<UiToDo> events = uiModel.getEvents();
 
         assertEquals(4, events.size());
@@ -101,8 +101,8 @@ public class UiModelTest {
 
     // Check if the order of tasks for ui is correct for history
     @Test
-    public void getUiTasks_setupHistoryMode_orderCorrect() {
-        uiModel.setToDoListFilter(Collections.emptySet(), Collections.emptySet(), true);
+    public void getUiTasks_setupFinishedMode_orderCorrect() {
+        uiModel.setToDoListFilter(Collections.emptySet(), Collections.emptySet(), UiModel.FILTER_MODE.FINISHED);
 
         List<UiToDo> tasks = uiModel.getTasks();
 

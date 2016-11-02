@@ -1,5 +1,6 @@
 package seedu.commando.logic.parser;
 
+import javafx.util.Pair;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.DateRange;
@@ -8,6 +9,7 @@ import seedu.commando.model.todo.Recurrence;
 import seedu.commando.model.todo.Tag;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -346,12 +348,13 @@ public class CommandParser {
     private Optional<DateRange> parseDateRange(String startDateString, String endDateString, String recurrenceString)
         throws IllegalValueException {
 
-        // check both "from" and "to" fields are not empty
+        // Check both "from" and "to" fields are not empty
         throwIfEmptyString(startDateString, Messages.MISSING_TODO_DATERANGE_START + "\n" + Messages.DATE_FORMAT);
         throwIfEmptyString(endDateString, Messages.MISSING_TODO_DATERANGE_END + "\n" + Messages.DATE_FORMAT);
 
-        Optional<LocalDateTime> startDateTime = dateTimeParser.parseDateTime(startDateString);
-        Optional<LocalDateTime> endDateTime = dateTimeParser.parseDateTime(endDateString);
+        // Parse start datetime with default time of midnight, end datetime with default time of 2359h
+        Optional<LocalDateTime> startDateTime = dateTimeParser.parseDateTime(startDateString, LocalTime.MIDNIGHT);
+        Optional<LocalDateTime> endDateTime = dateTimeParser.parseDateTime(endDateString, LocalTime.of(23, 59));
 
         if (!startDateTime.isPresent() && !endDateTime.isPresent()) {
             // Both start and end dates invalid, maybe its not a date range
@@ -375,16 +378,17 @@ public class CommandParser {
             return Optional.empty();
         }
 
-        Optional<LocalDateTime> dateTime = dateTimeParser.parseDateTime(dateString);
+        Optional<Pair<LocalDateTime, LocalDateTime>> period = dateTimeParser.parseDateTimePeriod(dateString);
 
         // Invalid datetime
-        if (!dateTime.isPresent()) {
+        if (!period.isPresent()) {
             return Optional.empty();
         }
 
         Recurrence recurrence = parseRecurrence(recurrenceString);
+
         return Optional.of(
-            new DateRange(dateTime.get(), dateTime.get().plusDays(1).withHour(0).withMinute(0), recurrence)
+            new DateRange(period.get().getKey(), period.get().getValue(), recurrence)
         );
     }
 
