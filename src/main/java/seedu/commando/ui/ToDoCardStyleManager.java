@@ -1,7 +1,4 @@
 package seedu.commando.ui;
-
-import java.time.LocalDate;
-
 //@@author A0139080J
 /**
  * Contains the common functions and variables that EventCard and TaskCard shares
@@ -25,11 +22,6 @@ public class ToDoCardStyleManager {
     
     public static String deactivateHoverStateContentCSS = "-fx-background-color: #DCDCDC;";
     public static String deactivateHoverStateIndexCSS = "-fx-background-color: derive(#1d1d1d, 60%);";
-
-    // Date references
-    private static LocalDate todayDate = LocalDate.now();
-    private static LocalDate tomorrowDate = todayDate.plusDays(1);
-    private static LocalDate yesterdayDate = todayDate.minusDays(1);
 
     /**
      * @param dayDifference
