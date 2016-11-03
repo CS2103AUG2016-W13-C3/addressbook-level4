@@ -74,7 +74,7 @@ public class EventCard extends UiPart {
             }
             tagsLabel.setText(tags);
         } else {
-            tagsLabel.setManaged(false);
+            setNotManaged(tagsLabel);
             containsTags = false;
         }
     }
@@ -84,7 +84,7 @@ public class EventCard extends UiPart {
         if (toDo.getDateRange().isPresent() && toDo.getDateRange().get().recurrence != Recurrence.None) {
             recurrenceLabel.setText(toDo.getDateRange().get().recurrence.toString());
         } else {
-            recurrenceLabel.setManaged(false);
+            setNotManaged(recurrenceLabel);
             containsDate = false;
         }
     }
@@ -95,7 +95,7 @@ public class EventCard extends UiPart {
      */
     private void checkTagsPane() {
         if (!containsTags && !containsDate) {
-            tagsPane.setManaged(false);
+            setNotManaged(tagsPane);
         }
     }
 
@@ -108,9 +108,7 @@ public class EventCard extends UiPart {
             dateIntervalLabel
                     .setStyle("-fx-text-fill: " + ToDoCardStyleManager.getDateProximityBlue((int) startDayDifference));
         } else {
-            dateIntervalLabel.setManaged(false);
-            endLabel.setManaged(false);
-            datePane.setManaged(false);
+            setNotManaged(dateIntervalLabel, endLabel, datePane);
         }
     }
 
@@ -143,6 +141,15 @@ public class EventCard extends UiPart {
         eventPaneInner.setStyle(ToDoCardStyleManager.finishedStateContentCSS);
         datePane.setStyle(ToDoCardStyleManager.finishedStateDateCSS);
         indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
+    }
+    
+    /**
+     * Hides all nodes given
+     */
+    private void setNotManaged(Node... nodes) {
+        for (Node node : nodes) {
+            node.setManaged(false);
+        }
     }
 
     /**

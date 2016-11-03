@@ -2,6 +2,7 @@ package seedu.commando.ui;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -10,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import seedu.commando.commons.core.DateTimePrettifier;
 import seedu.commando.model.todo.Tag;
+import seedu.commando.model.todo.DueDate;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.Recurrence;
 
@@ -73,16 +75,17 @@ public class TaskCard extends UiPart {
             }
             tagsLabel.setText(tags);
         } else {
-            tagsLabel.setManaged(false);
+            setNotManaged(tagsLabel);
             containsTags = false;
         }
     }
 
     private void setRecurrenceLabel() {
-        if (toDo.getDueDate().isPresent() && toDo.getDueDate().get().recurrence != Recurrence.None) {
-            recurrenceLabel.setText(toDo.getDueDate().get().recurrence.toString());
+        Optional<DueDate> dueDate = toDo.getDueDate();
+        if (dueDate.isPresent() && dueDate.get().recurrence != Recurrence.None) {
+            recurrenceLabel.setText(dueDate.get().recurrence.toString());
         } else {
-            recurrenceLabel.setManaged(false);
+            setNotManaged(recurrenceLabel);
             containsDate = false;
         }
     }
@@ -93,7 +96,7 @@ public class TaskCard extends UiPart {
      */
     private void checkTagsPane() {
         if (!containsTags && !containsDate) {
-            tagsPane.setManaged(false);
+            setNotManaged(tagsPane);
         }
     }
 
@@ -110,8 +113,7 @@ public class TaskCard extends UiPart {
             dueLabel.setText("by " + DateTimePrettifier.prettifyDateTime(due));
             dueLabel.setStyle("-fx-text-fill: " + ToDoCardStyleManager.getDateProximityGreen((int) dayDifference));
         } else {
-            dueLabel.setManaged(false);
-            datePane.setManaged(false);
+            setNotManaged(dueLabel, datePane);
         }
     }
 
@@ -146,6 +148,15 @@ public class TaskCard extends UiPart {
         indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
     }
 
+    /**
+     * Hides all nodes given
+     */
+    private void setNotManaged(Node... nodes) {
+        for (Node node : nodes) {
+            node.setManaged(false);
+        }
+    }
+    
     /**
      * Tints a hovered event a slight gray
      */
