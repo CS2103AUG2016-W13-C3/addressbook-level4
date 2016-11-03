@@ -284,19 +284,12 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_withFromOnly_extractedTrailing() throws IllegalValueException {
+    public void extractTrailingDateRange_withFromOnly_notExtracted() throws IllegalValueException {
         commandParser.setInput("event from today");
         Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
-        assertTrue(dateRange.isPresent());
+        assertFalse(dateRange.isPresent());
         assertEquals(
-            new DateRange(
-                LocalDateTime.now().withHour(0).withMinute(0),
-                LocalDateTime.MAX
-            ),
-            dateRange.get()
-        );
-        assertEquals(
-            "event", commandParser.extractText().orElse("")
+            "event from today", commandParser.extractText().orElse("")
         );
     }
 
@@ -307,7 +300,7 @@ public class CommandParserTest {
         assertTrue(dateRange.isPresent());
         assertEquals(
             new DateRange(
-                LocalDateTime.MIN,
+                LocalDateTime.now(),
                 LocalDateTime.of(2017, 1, 21, 0, 0)
             ),
             dateRange.get()
