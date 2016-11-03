@@ -58,7 +58,7 @@
                 <!-- @@author A0139697H -->
                 <p><em>You have a ton of things to do. But you are really tired of the amount of mouse-clicking to add to-dos in your to-do list management application...</em></p>
                 <p>
-                    Introducing <em>CommanDo</em>: it is THE to-do list manager allows you to swiftly edit your to-do list by typing out commands, mouse-free. Commands in <em>CommanDo</em> are short and intuitive, and it flows just like natural English! <em>CommanDo</em> recognizes and actively categorizes to-dos into 2 groups: <em>Events</em>, which are to-dos with time windows, and <em>Tasks</em>, which are to-dos accompanied optionally by a deadline. Here's <em>CommanDo</em> at work:
+                    Introducing <em>CommanDo</em>: the to-do list manager for you. It allows you to swiftly edit your to-do list by typing out commands, mouse-free. Commands in <em>CommanDo</em> are short, intuitive, flows like natural English! <em>CommanDo</em> recognizes and actively categorizes to-dos into 2 groups: <em>Events</em>, which are to-dos with time windows, and <em>Tasks</em>, which are to-dos accompanied optionally by a deadline. Here's <em>CommanDo</em> at work:
                 </p>
 
                 <figure>
@@ -142,11 +142,13 @@
 
                 <h4>Adding Events</h4>
 
-                <p>An <em>Event</em> is an activity happening within a time window, with <code>start_datetime</code> and <code>end_datetime</code> or <code>time_duration</code> fields to represent the time window. To associate tags with the <em>Event</em>, prefix each of them with a <code>#</code>. In <em>CommanDo</em>, every <em>Event</em> from the current day onwards is listed in the left panel chronologically:</p>
+                <p>An <em>Event</em> is an activity happening within a time window, with <code>start_datetime</code> and <code>end_datetime</code> fields to represent the time window. If no time is given, a default time of 00:00AM is assigned to the start date and 23:59PM to the end date. If a date is given instead, it is considered a full day event. To associate tags with the <em>Event</em>, prefix each of them with a <code>#</code>. In <em>CommanDo</em>, every <em>Event</em> from the current day onwards is listed in the left panel chronologically:</p>
+
+                <p>The use of keywords <code>daily</code>, <code>weekly</code>, <code>monthly</code> or <code>yearly</code> allows you to have recurring events on the same day of every day, week, month or year.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> add <span>&lt;description&gt;</span> from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span> [daily/weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...]</pre>
-                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> add <span>&lt;description&gt;</span> on <span>&lt;time_duration&gt;</span> [daily/weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...] </pre>
+                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> add <span>&lt;description&gt;</span> on <span>&lt;date&gt;</span> [daily/weekly/monthly/yearly] [#<span>&lt;tag&gt;</span>...] </pre>
 
                 <span><strong>Examples:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>wild party in hostel room</span> from <span>31 Dec 2016</span> to <span>1 Jan 2017</span></pre>
@@ -155,10 +157,6 @@
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>physics revision</span> from <span>tues 9.30pm</span> to <span>10pm</span> weekly <span></span>#<span>physics</span></pre>
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>tour with Jimmy</span> on <span>next Saturday </span></pre>
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>clean room</span> on <span>tomorrow </span>#<span>important </span></pre>
-               
-                <p>
-                    The use of keywords <code>daily</code>, <code>weekly</code>, <code>monthly</code> or <code>yearly</code> allows you to have recurring events on the same day of every day, week, month or year.
-                </p>
                  
                 <!-- @@author A0139697H -->
                 <blockquote>
@@ -240,7 +238,7 @@
 
                 <h4>Deleting Time Constraints of To-Dos </h4>
 
-                <p>There are situations where the time window of an Event or the due date of a <em>Task</em> become no longer relevant. Similarly, use the <code>delete</code> command, ending with the keyword <code>time</code>. Note that this means that a target <em>Event</em> will become a <em>Task</em> after such a command.</p>
+                <p>There are situations where the time window of an Event or the due date of a <em>Task</em> become no longer relevant, including the recurrence (If there is one). Similarly, use the <code>delete</code> command, ending with the keyword <code>time</code>. Note that this means that a target <em>Event</em> will become a <em>Task</em> after such a command.</p>
 
                 <span><strong>Command Formats:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... time</pre>
@@ -261,6 +259,8 @@
                 <span><strong>Command Formats:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... tag</pre>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;start index&gt;</span> - <span>&lt;end index&gt;</span> tag</pre>
+
+                <p>*You can delete multiple fields by chaining keywords.</p>
 
                 <!-- @@author A0139080J -->
                 <h3 id="edit">Editing To-Dos: <code>edit</code></h3>
@@ -289,7 +289,7 @@
 
                 <span><strong>Examples:</strong></span> <span>(given a <em>Task</em> at <em>Index</em> 2)</span>
                 <pre><span class="inputstart">&gt;&gt;</span> edit <span>2 shopping trip to IKEA</span> #<span>family</span></pre>
-                <span>What it does:  Changes the description of that task to <code>shopping trip to IKEA</code> and replaces any of its tags with <code>#family</code>.</span>
+                <span>What it does:  Changes the description of that task to <code>shopping trip to IKEA</code> and replaces all of its tags with <code>#family</code>.</span>
                 <pre><span class="inputstart">&gt;&gt;</span> edit <span>2</span> by <span>6 feb</span></pre>
                 <span>What it does:  Adds or changes the deadline of that task.</span>
                 <blockquote>
@@ -301,7 +301,9 @@
                 <!-- @@author A0139697H -->
                 <h3 id="finish">Marking Tasks as Done: <code>finish</code></h3>
 
-                <p>When you've completed a <em>Task</em>, mark it as done with the <code>finish</code> command. The to-do will initially be moved to the bottom of its list, and subsequently be hidden and archived on the next day. You'll be able to browse through these finished <em>Tasks</em> with the <a href="#recall"><code>recall</code> command</a>.</p>
+                <p>When you've completed a <em>Task</em>, mark it as done with the <code>finish</code> command. The to-do will initially be moved to the bottom of its list, greyed out, and subsequently be hidden and archived on the next day. You'll be able to browse through these finished/archived <em>Tasks</em> with the <a href="#recall"><code>recall</code> command</a>.</p>
+
+                <p>*Note that events cannot be marked as done. They will automatically mark themselves as finish when their end datetimes are over.</p>
 
                 <span><strong>Command Formats:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> finish <span>&lt;index&gt;</span>... </pre>
@@ -349,7 +351,7 @@
                     <figcaption>Result of <code>>> find read</code></figcaption>
                 </figure>
 
-                 <h3 id="list">Listing To-Dos with time constraint: <code>list</code></h3>
+                 <h3 id="list">Listing To-Dos with a Time Constraint: <code>list</code></h3>
 
                 <p>Sometimes you may want to browse your to-dos in certain period of time. Use the <code>list</code> command to search for <em>Events</em> that happen in a specific period of time, and <em>Tasks</em> that are due in that period. The period of time to search can be
                     any time. This means that you can list both finished to-dos and upcoming to-dos as long as they are in the time window you give. If you use this command without any keywords, you will see all to-dos(both finished and upcoming).</p>
@@ -484,6 +486,8 @@
 
                 <p><em>CommanDo</em> supports a wide variety of date and time formats, backed by the awesome date parser library <a href="http://natty.joestelmach.com/" target="_blank">Natty</a>. A valid datetime contains a valid date, a valid time, or a valid date and time. A sample of the accepted date & time formats are shown below:</p>
 
+                <p>*If no times are specified in an event, it is assumed to be a whole day event - the event starts at 00:00AM and ends at 23:59PM.</p>
+
                 <!-- @@author A0139080J -->
                 <h4>Valid Dates</h4>
 
@@ -525,13 +529,12 @@
                             <tr>
                                 <td></td>
                                 <td><code>3rd Apr</code></td>
-                                <td></td>
-                                <td><code><em>x</em> days/weeks later</code></td>
+                                <td><code>coming friday</code></td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td><code>Sept 29</code></td>
-                                <td></td>
+                                <td><code>next saturday</code></td>
                                 <td></td>
                             </tr>
                         </tbody>
