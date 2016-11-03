@@ -17,8 +17,8 @@ public class DateTimePrettifierTest {
     
     private DateTimeFormatter formatDayOfWeek = DateTimeFormatter.ofPattern("EEE");
     private LocalDateTime now = LocalDateTime.now();
-    private LocalDateTime untilNever = LocalDateTime.MAX.withSecond(0).withNano(0);
-    private LocalDateTime sinceForever = LocalDateTime.MIN.withSecond(0).withNano(0);
+    private LocalDateTime untilNever = LocalDateTime.MAX;
+    private LocalDateTime sinceForever = LocalDateTime.MIN;
     
     private final int currentYear = now.getYear();
     private final int currentMonth = now.getMonthValue();
