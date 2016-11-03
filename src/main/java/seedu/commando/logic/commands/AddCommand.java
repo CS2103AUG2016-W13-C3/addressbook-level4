@@ -12,8 +12,9 @@ import java.util.Collections;
 import java.util.Set;
 
 //@@author A0139697H
+
 /**
- * Adds a to-do to the to-do list
+ * Adds a to-do to the to-do list.
  */
 public class AddCommand extends Command {
     public static final String COMMAND_WORD = "add";

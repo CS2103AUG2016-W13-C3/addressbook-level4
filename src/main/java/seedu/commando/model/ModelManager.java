@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 //@@author A0139697H
 
 /**
- * Represents the in-memory model of the application's data.
- * All changes to model should be synchronized.
+ * Concrete implementation of {@link Model} for the Model component.
+ * Defines how data is represented and holds the data of the application in-memory.
  */
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);

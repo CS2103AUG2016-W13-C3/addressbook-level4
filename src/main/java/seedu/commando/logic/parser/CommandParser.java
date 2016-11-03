@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 /**
  * In charge of parsing an input command string, piece-wise, with the help of
  * {@link DateTimeParser}.
+ *
  * Methods modify the input string by extracting appropriate parts of it,
  * and input is always kept trimmed.
  */
@@ -76,6 +77,8 @@ public class CommandParser {
     /**
      * Set the current input the parser is working on, and resets
      * any contextual info from the last input.
+     *
+     * @param input input to set
      */
     public void setInput(String input) {
         this.input = input;
@@ -84,13 +87,17 @@ public class CommandParser {
 
     /**
      * Gets current input the parser is working on.
+     *
+     * @return current input
      */
     public String getInput() {
         return input.trim();
     }
 
     /**
-     * Checks whether current input is empty.
+     * Checks whether current input trimmed is an empty string.
+     *
+     * @return return whether the input is empty
      */
     public boolean isInputEmpty() {
         return input.trim().isEmpty();
@@ -98,10 +105,11 @@ public class CommandParser {
 
     /**
      * Extract a trailing due date from the input.
+     *
      * Date range is defined by: "by (valid_datetime)" + optional " (valid_recurrence)",
      * and must be at the end of the string to be considered.
      *
-     * @return a due date if found, empty otherwise
+     * @return optional of a due date if found, empty otherwise
      */
     public Optional<DueDate> extractTrailingDueDate() {
         final Matcher matcher = DUEDATE_PATTERN.matcher(input);
@@ -126,6 +134,7 @@ public class CommandParser {
 
     /**
      * Extract a trailing date range from the input.
+     *
      * Date range is defined by:
      * - "from (valid_datetime) to (valid_datetime)" + an optional "(valid_recurrence)"
      * - "on (valid_datetime)" + an optional "(valid_recurrence)"
@@ -156,7 +165,6 @@ public class CommandParser {
 
                 dateRange = parseDateRangeWithSingleDate(dateString, recurrenceString);
             }
-
 
             // If legit date range, extract from input and return it
             if (dateRange.isPresent()) {

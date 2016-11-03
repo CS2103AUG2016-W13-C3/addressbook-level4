@@ -20,7 +20,7 @@ import java.util.Set;
 public interface Model {
     /**
      * Gets the internal to-do list, read-only. Call {@link #changeToDoList(ToDoListChange)}
-     *  to modify the list.
+     * to modify the list.
      *
      * @return its to-do list, read-only
      */
@@ -48,17 +48,18 @@ public interface Model {
     boolean redoToDoList();
 
     /**
-     * Returns observable list of UI to-dos considered as events by {@link UiToDo#isEvent()}
-     * to be displayed on the UI.
+     * Returns observable list of UI to-dos considered as events by {@link UiToDo#isEvent()}.
      * This changes with the filter on the UI to-dos and the to-do list of model.
+     * The ordering of the list is to be respected.
      *
      * @return an observable read-only list of {@link UiToDo} that are events
      */
     UnmodifiableObservableList<UiToDo> getUiEvents();
 
     /**
-     * Return observable list of UI to-dos considered as tasks by {@link UiToDo#isTask()}
+     * Return observable list of UI to-dos considered as tasks by {@link UiToDo#isTask()}.
      * This changes with the filter on the UI to-dos and the to-do list of model.
+     * The ordering of the list is to be respected.
      *
      * @return an observable read-only list of {@link UiToDo} that are tasks
      */
@@ -66,7 +67,7 @@ public interface Model {
 
     /**
      * Returns the {@link UiToDo} in {@link #getUiEvents()} and {@link #getUiTasks()}
-     *   that have the {@link UiToDo#getIndex()} of {@param toDoIndex}, in constant time.
+     * that have the {@link UiToDo#getIndex()} of {@param toDoIndex}, in constant time.
      *
      * @return the UI to-do with the given index, if exists
      */
@@ -83,10 +84,10 @@ public interface Model {
      * Sets a filter mode, keywords filter, and tags filter on the UI to-dos.
      * Asserts parameters to be non-null.
      * If {@param filterMode} ==
-     *   - ALL: all to-dos that match keywords and tags are shown.
-     *   - FINISHED: finished to-dos that match keywords and tags are shown
-     *   - UNFINISHED: unfinished to-dos or finished to-dos that are finished on the
-     *       the current day, that match keywords and tags, are shown.
+     * - ALL: all to-dos that match keywords and tags are shown.
+     * - FINISHED: finished to-dos that match keywords and tags are shown
+     * - UNFINISHED: unfinished to-dos or finished to-dos that are finished on the
+     * the current day, that match keywords and tags, are shown.
      */
     void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, UiModel.FILTER_MODE filterMode);
 
