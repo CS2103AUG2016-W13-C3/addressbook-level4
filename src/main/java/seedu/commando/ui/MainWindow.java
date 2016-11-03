@@ -317,6 +317,12 @@ public class MainWindow extends UiPart {
                     // because sometimes you need to copy and paste or do other stuff
                     key.consume();
                     break;
+                case F11:
+                    commandBox.goDownSampleCommands();
+                    break;
+                case F12:
+                    commandBox.goUpSampleCommands();
+                    break;
                 default:
                     // Else, any other sutiable character is considered input to command box
                     // and it will be in focus

@@ -15,6 +15,8 @@ import seedu.commando.logic.commands.CommandResult;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
+
 public class CommandBox extends UiPart {
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
     private static final String FXML = "CommandBox.fxml";
@@ -27,6 +29,9 @@ public class CommandBox extends UiPart {
     private Logic logic;
     private ArrayList<String> commandHistory;
     private int commandHistoryPointer;
+    
+    private String[] commandExamples = new String[] { "1", "2", "3", "4", "5" };
+    private int commandExamplesPointer = 0;
 
     @FXML
     private TextField commandTextField;
@@ -130,7 +135,7 @@ public class CommandBox extends UiPart {
         commandTextField.setText(commandHistory.get(pointer));
         setCaretAtEndOfText();
     }
-
+    
     private void setCaretAtEndOfText() {
         Platform.runLater(new Runnable() {
             @Override
@@ -167,6 +172,21 @@ public class CommandBox extends UiPart {
 
     protected TextField getCommandField() {
         return commandTextField;
+    }
+
+    /**
+     * Go down (PREVIOUS) command
+     */
+    public void goDownSampleCommands() {
+        commandTextField.setText(commandExamples[commandExamplesPointer = Math.max(commandExamplesPointer - 1, 0)]);
+    }
+
+    /**
+     * Go up (NEXT) command
+     */
+    public void goUpSampleCommands() {
+        commandTextField.setText(commandExamples[commandExamplesPointer = Math.min(commandExamplesPointer + 1, 
+                commandExamples.length - 1)]);
     }
 
 }
