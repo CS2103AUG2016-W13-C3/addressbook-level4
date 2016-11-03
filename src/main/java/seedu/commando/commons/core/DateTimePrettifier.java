@@ -58,7 +58,7 @@ public class DateTimePrettifier {
         boolean endIsYtdOrTdyOrTmr = isYtdOrTdyOrTmr(endDateTime);
         
         boolean startDateTimeExists = !startDateTime.equals(LocalDateTime.MIN.withSecond(0).withNano(0));
-        boolean endDateTimeExists = !endDateTime.equals(LocalDateTime.MAX.withSecond(0).withNano(0));
+        boolean endDateTimeExists = !endDateTime.equals(LocalDateTime.MAX);
 
         // If start date is Yesterday or Today or Tomorrow, shouldn't show month
         // and year
