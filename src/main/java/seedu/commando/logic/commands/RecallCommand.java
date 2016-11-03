@@ -11,18 +11,19 @@ import java.util.TreeSet;
 
 //@@author A0139697H
 /**
- * Changes to history mode, and updates the filter for to-do list
- * to show only to-do items containing all of the keywords and tags (case insensitive)
+ * Shows all finished to-dos, optionally filtering by keywords and tags.
  */
 public class RecallCommand extends Command {
     public static final String COMMAND_WORD = "recall";
 
-    public Set<String> keywords = Collections.emptySet();
-    public Set<Tag> tags = Collections.emptySet();
+    private Set<String> keywords = Collections.emptySet();
+    private Set<Tag> tags = Collections.emptySet();
 
     /**
-     * Asserts that {@code uiLogic} is non-null
+     * Initializes a recall command.
      */
+    public RecallCommand() {}
+
     @Override
     public CommandResult execute() throws NoModelException {
         Model model = getModel();
@@ -35,5 +36,27 @@ public class RecallCommand extends Command {
             model.setUiToDoListFilter(keywords, tags, UiModel.FILTER_MODE.FINISHED);
             return new CommandResult(String.format(Messages.RECALL_COMMAND, new TreeSet<>(keywords), new TreeSet<>(tags)));
         }
+    }
+
+    /**
+     * Sets the keywords for the command, must be non-null.
+     *
+     * @param keywords set of keywords to set
+     */
+    public void setKeywords(Set<String> keywords) {
+        assert keywords != null;
+
+        this.keywords = keywords;
+    }
+
+    /**
+     * Sets the tags for the command, must be non-null.
+     *
+     * @param tags set of tags to set
+     */
+    public void setTags(Set<Tag> tags) {
+        assert tags != null;
+
+        this.tags = tags;
     }
 }

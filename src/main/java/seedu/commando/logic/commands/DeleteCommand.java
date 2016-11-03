@@ -2,9 +2,9 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.model.Model;
 import seedu.commando.model.todo.*;
 import seedu.commando.model.ui.UiToDo;
-import seedu.commando.model.Model;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -20,12 +20,19 @@ public class DeleteCommand extends Command {
 
     public static final String COMMAND_WORD = "delete";
 
-    public final List<Integer> toDoIndices;
-    public boolean ifDeleteTime = false;
-    public boolean ifDeleteTag = false;
-    public boolean ifDeleteRecurrence = false;
+    private final List<Integer> toDoIndices;
+    private boolean ifDeleteTime = false;
+    private boolean ifDeleteTags = false;
+    private boolean ifDeleteRecurrence = false;
 
+    /**
+     * Initializes a delete command.
+     *
+     * @param toDoIndices list of indices of UI to-dos to target, non-null
+     */
     public DeleteCommand(List<Integer> toDoIndices) {
+        assert toDoIndices != null;
+
         this.toDoIndices = toDoIndices;
     }
 
@@ -56,7 +63,7 @@ public class DeleteCommand extends Command {
                 return new CommandResult(exception.getMessage(), true);
             }
 
-            if (ifDeleteTag) {
+            if (ifDeleteTags) {
                 if (toDoToEdit.getTags().size() > 0) {
                     toDoToEdit.setTags(Collections.emptySet());
                 } else {
@@ -107,7 +114,7 @@ public class DeleteCommand extends Command {
         }
 
         // if no deletion of fields, delete the whole to-do
-        if (!ifDeleteTag && !ifDeleteTime && !ifDeleteRecurrence) {
+        if (!ifDeleteTags && !ifDeleteTime && !ifDeleteRecurrence) {
             try {
                 model.changeToDoList(new ToDoListChange(new ToDoList(), listToDelete));
             } catch (IllegalValueException exception) {
@@ -126,4 +133,24 @@ public class DeleteCommand extends Command {
         }
     }
 
+    /**
+     * Sets the delete command to delete the time constraints of the to-dos at indices.
+     */
+    public void deletesTime() {
+        this.ifDeleteTime = true;
+    }
+
+    /**
+     * Sets the delete command to delete the tags of the to-dos at indices.
+     */
+    public void deletesTags() {
+        this.ifDeleteTags = true;
+    }
+
+    /**
+     * Sets the delete command to delete the recurrences of the to-dos at indices.
+     */
+    public void deletesRecurrence() {
+        this.ifDeleteRecurrence = true;
+    }
 }

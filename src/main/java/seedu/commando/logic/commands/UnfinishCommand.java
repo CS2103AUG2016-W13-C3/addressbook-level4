@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 //@@author A0142230B
 /**
- * Marks a to-do item as not done
+ * Marks a to-do item as not done.
  */
 public class UnfinishCommand extends Command {
 

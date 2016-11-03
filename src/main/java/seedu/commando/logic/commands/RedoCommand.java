@@ -4,9 +4,8 @@ import seedu.commando.commons.core.Messages;
 import seedu.commando.model.Model;
 
 //@@author A0122001M
-
 /**
- *  Redo the last undo action
+ *  Redo the last undo action.
  */
 public class RedoCommand extends Command {
     

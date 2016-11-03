@@ -127,15 +127,15 @@ public class ToDo implements ReadOnlyToDo {
     }
 
     /**
-     * Replaces the set of tags of the to-do, non-null
+     * Replaces the set of tags of the to-do, non-null.
      *
-     * @param tags the set of tags to replace the current
+     * @param tags the set of tags to replace the current, which will be copied
      * @return current to-do, for method chaining
      */
     public ToDo setTags(Set<Tag> tags) {
         assert tags != null;
 
-        this.tags = tags;
+        this.tags = tags.stream().collect(Collectors.toSet());
         updateValue();
 
         return this;

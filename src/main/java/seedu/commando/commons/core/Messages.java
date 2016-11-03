@@ -72,7 +72,7 @@ public class Messages {
     public static final String IMPORT_COMMAND_FILE_NOT_EXIST = "Invalid import file: the file does not exist.";
     public static final String IMPORT_COMMAND_INVALID_DATA = "Invalid import file: the file is of an invalid format.";
     public static final String ADD_COMMAND = "To-do added: %1$s.";
-    public static final String ADD_COMMAND_EVENT_OVER = "Warning: event added is already over!";
+    public static final String ADD_COMMAND_EVENT_OVER_WARNING = "Warning: event added is already over!";
     public static final String EDIT_COMMAND = "To-do edited: %1$s.";
     public static final String EDIT_COMMAND_NO_EDITS = "But nothing happened.";
     public static final String EDIT_COMMAND_EVENT_OVER = "Warning: event edited is already over!";

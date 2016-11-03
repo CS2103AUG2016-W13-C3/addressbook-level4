@@ -1,31 +1,31 @@
 package seedu.commando.logic.commands;
 
-import java.io.File;
-
-import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.events.logic.ToDoListFilePathChangeRequestEvent;
 import seedu.commando.model.Model;
 
+import java.io.File;
 
+//@@author A0142230B
+/**
+ *  Change the to-do list file path.
+ */
 public class StoreCommand extends Command {
 
     public static final String COMMAND_WORD = "store";
 
     private String path;
-  //@@author A0142230B
     public StoreCommand(String inputPath) {
         assert inputPath != null;
         this.path = inputPath;
     }
-  //@@author A0142230B
+
     /**
      * Asserts that {@code eventsCenter} and {@code model} are non-null
      */
     @Override
     public CommandResult execute() throws NoEventsCenterException, NoModelException {
-        Model model = getModel();
         EventsCenter eventsCenter = getEventsCenter();
 
         File file = new File(path);

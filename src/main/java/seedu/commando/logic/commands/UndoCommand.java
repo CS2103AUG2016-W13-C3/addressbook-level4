@@ -4,12 +4,10 @@ import seedu.commando.commons.core.Messages;
 import seedu.commando.model.Model;
 
 //@@author A0122001M
-
 /**
- * Undo the last command
+ * Undo the last `add`, `delete`, `edit`, `finish`, `unfinish`, `import` command.
  */
 public class UndoCommand extends Command {
-
     public static final String COMMAND_WORD = "undo";
 
     @Override
@@ -23,5 +21,4 @@ public class UndoCommand extends Command {
             return new CommandResult(Messages.UNDO_COMMAND_FAIL, true);
         }
     }
-
 }

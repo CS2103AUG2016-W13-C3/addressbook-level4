@@ -1,15 +1,17 @@
 package seedu.commando.logic.commands;
 
-import java.util.Optional;
-
 import seedu.commando.commons.core.DateTimePrettifier;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.logic.commands.Command.NoModelException;
 import seedu.commando.model.Model;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.ui.UiModel;
 
+import java.util.Optional;
+
 //@@author A0142230B
+/**
+ * Lists all to-dos within a specified date range.
+ */
 public class ListCommand extends Command {
 	public static final String COMMAND_WORD = "list";
 	private Optional<DateRange> dateRange;

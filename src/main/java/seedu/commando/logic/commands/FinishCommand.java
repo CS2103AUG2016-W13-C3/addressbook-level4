@@ -12,44 +12,45 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+//@@author A0142230B
 /**
- * Marks a to-do item as done
+ * Marks a to-do item as done.
  */
 public class FinishCommand extends Command {
 
-	public static final String COMMAND_WORD = "finish";
+    public static final String COMMAND_WORD = "finish";
 
-	public final List<Integer> toDoIndices;
-	//@@author A0142230B
-	public FinishCommand(List<Integer> toDoIndices) {
-		this.toDoIndices = toDoIndices;
-	}
-	//@@author A0142230B
-	@Override
-	public CommandResult execute() throws NoModelException {
-		Model model = getModel();
-		int index;
-		ToDoList listToFinish = new ToDoList();
-		ToDoList finishedToDos = new ToDoList();
-		Iterator<Integer> iterator = toDoIndices.iterator();
+    public final List<Integer> toDoIndices;
 
-		// If to-do with the index is valid and not finished, mark it as finished, else throw error message and return
-		while (iterator.hasNext()) {
-			index = iterator.next();
-			Optional<UiToDo> toDoToFinish = model.getUiToDoAtIndex(index);
+    public FinishCommand(List<Integer> toDoIndices) {
+        this.toDoIndices = toDoIndices;
+    }
 
-			if (!toDoToFinish.isPresent()) {
-				return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, index), true);
-			}
+    @Override
+    public CommandResult execute() throws NoModelException {
+        Model model = getModel();
+        int index;
+        ToDoList listToFinish = new ToDoList();
+        ToDoList finishedToDos = new ToDoList();
+        Iterator<Integer> iterator = toDoIndices.iterator();
 
-			if (toDoToFinish.get().isEvent()) {
-				return new CommandResult(String.format(Messages.FINISH_COMMAND_CANNOT_FINISH_EVENT, toDoToFinish.get().getTitle().toString()), true);
-			}
+        // If to-do with the index is valid and not finished, mark it as finished, else throw error message and return
+        while (iterator.hasNext()) {
+            index = iterator.next();
+            Optional<UiToDo> toDoToFinish = model.getUiToDoAtIndex(index);
 
-			if (toDoToFinish.get().isFinished()) {
-				return new CommandResult(
-						String.format(Messages.FINISH_COMMAND_ALREADY_FINISHED, toDoToFinish.get().getTitle().toString()), true);
-			}
+            if (!toDoToFinish.isPresent()) {
+                return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, index), true);
+            }
+
+            if (toDoToFinish.get().isEvent()) {
+                return new CommandResult(String.format(Messages.FINISH_COMMAND_CANNOT_FINISH_EVENT, toDoToFinish.get().getTitle().toString()), true);
+            }
+
+            if (toDoToFinish.get().isFinished()) {
+                return new CommandResult(
+                    String.format(Messages.FINISH_COMMAND_ALREADY_FINISHED, toDoToFinish.get().getTitle().toString()), true);
+            }
 
             try {
                 listToFinish.add(toDoToFinish.get());
@@ -59,14 +60,14 @@ public class FinishCommand extends Command {
             } catch (IllegalValueException exception) {
                 return new CommandResult(exception.getMessage(), true);
             }
-		}
+        }
 
-		try {
-			model.changeToDoList(new ToDoListChange(finishedToDos, listToFinish));
-		} catch (IllegalValueException exception) {
-			return new CommandResult(exception.getMessage(), true);
-		}
+        try {
+            model.changeToDoList(new ToDoListChange(finishedToDos, listToFinish));
+        } catch (IllegalValueException exception) {
+            return new CommandResult(exception.getMessage(), true);
+        }
 
-		return new CommandResult(String.format(Messages.FINISH_COMMAND, toDoIndices.toString()));
-	}
+        return new CommandResult(String.format(Messages.FINISH_COMMAND, toDoIndices.toString()));
+    }
 }

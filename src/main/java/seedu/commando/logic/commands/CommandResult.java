@@ -1,16 +1,17 @@
 package seedu.commando.logic.commands;
 
 //@@author A0139697H
+
 /**
  * Represents the result of a command execution.
  */
 public class CommandResult {
-
     private final String feedback;
     private boolean hasError;
 
     /**
-     * Result of a command
+     * Initializes the result of a command.
+     *
      * @param feedback feedback to be shown to user
      * @param hasError if there was an error and command failed
      */
@@ -22,10 +23,10 @@ public class CommandResult {
     }
 
     /**
-     * Result of successful command
+     * Initializes the result of successful command.
      */
     public CommandResult(String feedback) {
-       this(feedback, false);
+        this(feedback, false);
     }
 
     public String getFeedback() {

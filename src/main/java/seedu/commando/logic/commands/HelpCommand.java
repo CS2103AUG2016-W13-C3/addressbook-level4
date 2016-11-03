@@ -10,24 +10,25 @@ import seedu.commando.commons.exceptions.IllegalValueException;
 import java.util.Optional;
 
 //@@author A0139697H
+
 /**
- * Format full help instructions for every command for display.
+ * Show the user guide in a new window, jumping to the appropriate
+ * section of the user guide if necessary.
  */
 public class HelpCommand extends Command {
-
     public static final String COMMAND_WORD = "help";
 
     private final String commandWord;
 
     /**
-     * Shows general help
+     * Shows general help.
      */
     public HelpCommand() {
         commandWord = "";
     }
 
     /**
-     * Shows help for specific command word {@param commandWord}
+     * Shows help for specific command word {@param commandWord}.
      */
     public HelpCommand(String commandWord) {
         this.commandWord = commandWord;
@@ -42,12 +43,12 @@ public class HelpCommand extends Command {
         } else {
             Optional<String> anchor = Config.getUserGuideAnchorForCommandWord(commandWord);
 
-            // If the command word is recognized
-            if (anchor.isPresent()) {
-                eventsCenter.post(new ShowHelpRequestEvent(anchor.get()));
-            } else {
+            // Check if the command word is recognized
+            if (!anchor.isPresent()) {
                 return new CommandResult(String.format(Messages.UNKNOWN_COMMAND_FOR_HELP, commandWord), true);
             }
+
+            eventsCenter.post(new ShowHelpRequestEvent(anchor.get()));
         }
 
         return new CommandResult(Messages.HELP_WINDOW_SHOWN);

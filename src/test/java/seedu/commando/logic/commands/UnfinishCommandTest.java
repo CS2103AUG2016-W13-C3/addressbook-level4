@@ -76,7 +76,7 @@ public class UnfinishCommandTest {
     public void execute_unfinishInvalidFormat_error() {
         CommandResult result = logic.execute("unfinish 1 #troll");
         assertTrue(result.hasError());
-        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD)
+        assertEquals(String.format(Messages.INVALID_COMMAND_FORMAT, UnfinishCommand.COMMAND_WORD)
                 + "\n" + Messages.getCommandFormatMessage("unfinish").get(), result.getFeedback());
     }
 
