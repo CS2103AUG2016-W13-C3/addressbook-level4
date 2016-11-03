@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * In charge of parsing an input command string, piece-wise, with the help of
  * {@link DateTimeParser}.
- *
+ * <p>
  * Methods modify the input string by extracting appropriate parts of it,
  * and input is always kept trimmed.
  */
@@ -34,7 +34,7 @@ public class CommandParser {
     public static final String QUOTE_CHARACTER = "`";
 
     // Pattern for "from ... to ... (recurrence)?"
-    private static final Pattern DATERANGE_TWOSIDED_PATTERN = Pattern.compile(
+    private static final Pattern DATERANGE_TWO_SIDED_PATTERN = Pattern.compile(
         "(?<left>.*)"
             + "(" + KEYWORD_DATERANGE_START + "\\s+" + "(?<start>(.+\\s+)?)" + KEYWORD_DATERANGE_END + "(?<end>(\\s+.+?)?))"
             + "(?<recurrence>(\\s+" + RECURRENCE_REGEX + ")?)$",
@@ -49,8 +49,15 @@ public class CommandParser {
         Pattern.CASE_INSENSITIVE
     );
 
+    // Pattern for "from ... (recurrence)?"
+    private static final Pattern DATERANGE_START_DATE_PATTERN = Pattern.compile(
+        "(?<left>.*)(" + KEYWORD_DATERANGE_START + "\\s+(?<start>(.+?)))"
+            + "(?<recurrence>(\\s+" + RECURRENCE_REGEX + ")?)$",
+        Pattern.CASE_INSENSITIVE
+    );
+
     // Pattern for "to ... (recurrence)?"
-    private static final Pattern DATERANGE_ONESIDED_PATTERN = Pattern.compile(
+    private static final Pattern DATERANGE_END_DATE_PATTERN = Pattern.compile(
         "(?<left>.*)(" + KEYWORD_DATERANGE_END + "\\s+(?<end>(.+?)))"
             + "(?<recurrence>(\\s+" + RECURRENCE_REGEX + ")?)$",
         Pattern.CASE_INSENSITIVE
@@ -109,7 +116,7 @@ public class CommandParser {
 
     /**
      * Extract a trailing due date from the input.
-     *
+     * <p>
      * Date range is defined by: "by (valid_datetime)" + optional " (valid_recurrence)",
      * and must be at the end of the string to be considered.
      *
@@ -137,40 +144,16 @@ public class CommandParser {
     }
 
     /**
-     * Extract a trailing date range from the input.
-     *
-     * Date range is defined by:
+     * Extract a trailing date range from the input of the form:
      * - "from (valid_datetime) to (valid_datetime)" + an optional "(valid_recurrence)"
-     * - "on (valid_datetime)" + an optional "(valid_recurrence)"
-     * - "from (valid_datetime)" + an optional "(valid_recurrence)"
-     * - "to (valid_datetime)" + an optional "(valid_recurrence)"
      * and must be at the end of the string to be considered.
      *
+     * @return optional of date range, empty if not found
      * @throws IllegalValueException if a trailing date range pattern is found but either one of the datetime is valid,
      *                               other invalid, or parsed DateRange is not invalid
      */
-    public Optional<DateRange> extractTrailingDateRange() throws IllegalValueException {
-        Optional<DateRange> periodDateRange = extractPeriodDateRange();
-        if (periodDateRange.isPresent()) {
-            return periodDateRange;
-        }
-
-        Optional<DateRange> twoSidedDateRange = extractTwoSidedDateRange();
-        if (twoSidedDateRange.isPresent()) {
-            return twoSidedDateRange;
-        }
-
-        Optional<DateRange> oneSidedDateRange = extractTrailingOneSidedDateRange();
-        if (oneSidedDateRange.isPresent()) {
-            return oneSidedDateRange;
-        }
-
-        // Didn't find any matches
-        return Optional.empty();
-    }
-
-    private Optional<DateRange> extractTwoSidedDateRange() throws IllegalValueException {
-        final Matcher matcher = DATERANGE_TWOSIDED_PATTERN.matcher(input);
+    public Optional<DateRange> extractTrailingTwoSidedDateRange() throws IllegalValueException {
+        final Matcher matcher = DATERANGE_TWO_SIDED_PATTERN.matcher(input);
 
         // Find "from ... to ..."
         if (matcher.find()) {
@@ -190,7 +173,14 @@ public class CommandParser {
         return Optional.empty();
     }
 
-    private Optional<DateRange> extractPeriodDateRange() throws IllegalValueException {
+    /**
+     * Extract a trailing date range from the input of the form:
+     * - "on (valid_datetime)" + an optional "(valid_recurrence)"
+     * and must be at the end of the string to be considered.
+     *
+     * @return optional of date range, empty if not found
+     */
+    public Optional<DateRange> extractTrailingSingleDateDateRange() {
         final Matcher matcher = DATERANGE_SINGLE_DATE_PATTERN.matcher(input);
 
         // Find "on ..."
@@ -210,15 +200,22 @@ public class CommandParser {
         return Optional.empty();
     }
 
-    private Optional<DateRange> extractTrailingOneSidedDateRange() throws IllegalValueException {
-        final Matcher matcher = DATERANGE_ONESIDED_PATTERN.matcher(input);
+    /**
+     * Extract a trailing date range from the input of the form:
+     * - "to (valid_datetime)" + an optional "(valid_recurrence)"
+     * and must be at the end of the string to be considered.
+     *
+     * @return optional of date range, empty if not found
+     */
+    public Optional<DateRange> extractTrailingEndDateDateRange() {
+        final Matcher matcher = DATERANGE_END_DATE_PATTERN.matcher(input);
 
         // Find "to ..."
         if (matcher.find()) {
             String recurrenceString = matcher.group("recurrence");
-            String endString = matcher.group("end");
+            String dateString = matcher.group("end");
 
-            Optional<DateRange> dateRange = parseDateRangeWithEnd(endString, recurrenceString);
+            Optional<DateRange> dateRange = parseDateRangeWithEnd(dateString, recurrenceString);
 
             // If legit date range, extract from input and return it
             if (dateRange.isPresent()) {
@@ -231,7 +228,36 @@ public class CommandParser {
     }
 
     /**
-     * Extracts all text in input
+     * Extract a trailing date range from the input of the form:
+     * - "from (valid_datetime)" + an optional "(valid_recurrence)"
+     * and must be at the end of the string to be considered.
+     *
+     * @return optional of date range, empty if not found
+     */
+    public Optional<DateRange> extractTrailingStartDateDateRange() {
+        final Matcher matcher = DATERANGE_START_DATE_PATTERN.matcher(input);
+
+        // Find "from ..."
+        if (matcher.find()) {
+            String recurrenceString = matcher.group("recurrence");
+            String dateString = matcher.group("start");
+
+            Optional<DateRange> dateRange = parseDateRangeWithStart(dateString, recurrenceString);
+
+            // If legit date range, extract from input and return it
+            if (dateRange.isPresent()) {
+                input = matcher.group("left").trim();
+                return dateRange;
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    /**
+     * Extracts all text in input. Input of parser will be empty after this call.
+     *
+     * @return text extracted
      */
     public Optional<String> extractText() {
         String text = input.trim();
@@ -271,7 +297,7 @@ public class CommandParser {
      * Extraction ends when the next word is not a tag.
      * Tags which are empty strings are removed.
      *
-     * @return a set of tags, with the tag prefix removed.
+     * @return a set of tags, with the tag prefix removed
      */
     public Set<Tag> extractTrailingTags() {
         final Matcher matcher = TAGS_PATTERN.matcher(input);
@@ -447,8 +473,7 @@ public class CommandParser {
         }
     }
 
-    private Optional<DateRange> parseDateRangeWithEnd(String endDateString, String recurrenceString)
-        throws IllegalValueException {
+    private Optional<DateRange> parseDateRangeWithEnd(String endDateString, String recurrenceString) {
         if (endDateString.isEmpty()) {
             return Optional.empty();
         }
@@ -472,8 +497,31 @@ public class CommandParser {
         }
     }
 
-    private Optional<DateRange> parseDateRangeWithSingleDate(String dateString, String recurrenceString)
-        throws IllegalValueException {
+    private Optional<DateRange> parseDateRangeWithStart(String startDateString, String recurrenceString) {
+        if (startDateString.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Optional<LocalDateTime> date = dateTimeParser.parseDateTime(startDateString);
+
+        // Invalid datetime
+        if (!date.isPresent()) {
+            return Optional.empty();
+        }
+
+        Recurrence recurrence = parseRecurrence(recurrenceString);
+
+        try {
+            // Return from date start onwards
+            DateRange dateRange = new DateRange(date.get(), LocalDateTime.MAX, recurrence);
+            return Optional.of(dateRange);
+        } catch (IllegalValueException e) {
+            // Date range was invalid - should not treat it as date range then
+            return Optional.empty();
+        }
+    }
+
+    private Optional<DateRange> parseDateRangeWithSingleDate(String dateString, String recurrenceString) {
 
         if (dateString.isEmpty()) {
             return Optional.empty();

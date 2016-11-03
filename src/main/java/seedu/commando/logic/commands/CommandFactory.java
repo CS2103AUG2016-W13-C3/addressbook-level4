@@ -146,7 +146,7 @@ public class CommandFactory {
     //@@author A0142230B
     private Command buildListCommand() throws IllegalValueException {
         // Extract the date range, if exists
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = extractAnyDateRange();
 
         // Wrong format
         ensureInputIsEmpty(ListCommand.COMMAND_WORD);
@@ -168,7 +168,7 @@ public class CommandFactory {
         Set<Tag> tags = commandParser.extractTrailingTags();
 
         // Extract date range, if exists
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = extractToDoDateRange();
 
         // Extract due date, if exists
         Optional<DueDate> dueDate = commandParser.extractTrailingDueDate();
@@ -293,7 +293,7 @@ public class CommandFactory {
         if (!tags.isEmpty()) {
             command.setTags(tags);
         }
-        commandParser.extractTrailingDateRange().ifPresent(command::setDateRange);
+        extractToDoDateRange().ifPresent(command::setDateRange);
         commandParser.extractTrailingDueDate().ifPresent(command::setDueDate);
 
         // Try to extract title, if there was no quoted title
@@ -337,5 +337,64 @@ public class CommandFactory {
             throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
         }
         return indices;
+    }
+
+    private Optional<DateRange> extractToDoDateRange() throws IllegalValueException {
+        // Try to extract "on..."
+        Optional<DateRange> singleDateDateRange = commandParser.extractTrailingSingleDateDateRange();
+
+        if (singleDateDateRange.isPresent()) {
+            return singleDateDateRange;
+        }
+
+        // If not, try to extract "from... to..."
+        Optional<DateRange> twoSidedDateRange = commandParser.extractTrailingTwoSidedDateRange();
+
+        if (twoSidedDateRange.isPresent()) {
+            return twoSidedDateRange;
+        }
+
+        // If not, try to extract "to..."
+        Optional<DateRange> endDateDateRange = commandParser.extractTrailingEndDateDateRange();
+
+        if (endDateDateRange.isPresent()) {
+            return endDateDateRange;
+        }
+
+        // No more date formats
+        return Optional.empty();
+    }
+
+    private Optional<DateRange> extractAnyDateRange() throws IllegalValueException {
+        // Try to extract "on..."
+        Optional<DateRange> singleDateDateRange = commandParser.extractTrailingSingleDateDateRange();
+
+        if (singleDateDateRange.isPresent()) {
+            return singleDateDateRange;
+        }
+
+        // If not, try to extract "from... to..."
+        Optional<DateRange> twoSidedDateRange = commandParser.extractTrailingTwoSidedDateRange();
+
+        if (twoSidedDateRange.isPresent()) {
+            return twoSidedDateRange;
+        }
+
+        // If not, try to extract "to..."
+        Optional<DateRange> endDateDateRange = commandParser.extractTrailingEndDateDateRange();
+
+        if (endDateDateRange.isPresent()) {
+            return endDateDateRange;
+        }
+
+        // If not, try to extract "from..."
+        Optional<DateRange> startDateDateRange = commandParser.extractTrailingStartDateDateRange();
+
+        if (startDateDateRange.isPresent()) {
+            return startDateDateRange;
+        }
+
+        // No more date formats
+        return Optional.empty();
     }
 }
