@@ -22,7 +22,7 @@
 
 .event-pane-title, .task-pane-title {
 	-fx-font-family: "Helvetica Light";
-	-fx-font-size: 30pt;
+	-fx-font-size: 32pt;
 }
 
 .label {
