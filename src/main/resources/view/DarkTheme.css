@@ -199,7 +199,6 @@
 }
 
 .result-display, .result-display .content {
-	-fx-font-size: 14px;
 	-fx-background-radius: 4px;
     -fx-background-color: derive(#dcdcdc, -10%);
 	-fx-border-radius: 4px;
