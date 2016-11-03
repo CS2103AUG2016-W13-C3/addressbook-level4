@@ -65,6 +65,6 @@ public class ToDoListChange {
 
     @Override
     public String toString() {
-        return "Added " + addedToDos + " & deleted " + deletedToDos;
+        return "To add " + addedToDos + ",a to delete " + deletedToDos;
     }
 }

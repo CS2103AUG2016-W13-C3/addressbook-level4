@@ -62,6 +62,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public synchronized void changeToDoList(ToDoListChange change) throws IllegalValueException {
+        logger.info("Applying change to to-do list: " + change);
         toDoListManager.changeToDoList(change);
 
         // if to-do list has changed, reset any find or history filter
@@ -72,6 +73,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public boolean undoToDoList() {
+        logger.info("Undoing to-do list...");
         boolean hasChanged = toDoListManager.undoToDoList();
 
         if (hasChanged) {
@@ -85,6 +87,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public boolean redoToDoList() {
+        logger.info("Redoing to-do list...");
         boolean hasChanged = toDoListManager.redoToDoList();
 
         if (hasChanged) {
@@ -139,10 +142,10 @@ public class ModelManager extends ComponentManager implements Model {
     private void logUiToDoList() {
         // log events and tasks shown
         logger.info("Events: " + uiModel.getEvents().stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
-            .collect(Collectors.joining(",")));
+            .collect(Collectors.joining(", ")));
 
         logger.info("Tasks: " + uiModel.getTasks().stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
-            .collect(Collectors.joining(",")));
+            .collect(Collectors.joining(", ")));
     }
 
     //@@author A0142230B
