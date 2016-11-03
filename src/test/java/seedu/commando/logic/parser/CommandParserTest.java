@@ -194,12 +194,11 @@ public class CommandParserTest {
         Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
         assertTrue(dateRange.isPresent());
         assertEquals(
-            LocalDateTime.of(2018, 10, 28, 12, 0),
-            dateRange.get().startDate
-        );
-        assertEquals(
-            LocalDateTime.of(2019, 11, 29, 13, 0),
-            dateRange.get().endDate
+            new DateRange(
+                LocalDateTime.of(2018, 10, 28, 12, 0),
+                LocalDateTime.of(2019, 11, 29, 13, 0)
+            ),
+            dateRange.get()
         );
         assertEquals(
             "walk by the beach from today to tomorrow", commandParser.extractText().orElse("")
@@ -283,6 +282,41 @@ public class CommandParserTest {
             "event", commandParser.extractText().orElse("")
         );
     }
+
+    @Test
+    public void extractTrailingDateRange_withFromOnly_extractedTrailing() throws IllegalValueException {
+        commandParser.setInput("event from today");
+        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        assertTrue(dateRange.isPresent());
+        assertEquals(
+            new DateRange(
+                LocalDateTime.now().withHour(0).withMinute(0),
+                LocalDateTime.MAX
+            ),
+            dateRange.get()
+        );
+        assertEquals(
+            "event", commandParser.extractText().orElse("")
+        );
+    }
+
+    @Test
+    public void extractTrailingDateRange_withToOnly_extractedTrailing() throws IllegalValueException {
+        commandParser.setInput("event to 21 Jan 2017");
+        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        assertTrue(dateRange.isPresent());
+        assertEquals(
+            new DateRange(
+                LocalDateTime.MIN,
+                LocalDateTime.of(2017, 1, 21, 0, 0)
+            ),
+            dateRange.get()
+        );
+        assertEquals(
+            "event", commandParser.extractText().orElse("")
+        );
+    }
+
 
     @Test
     public void extractTrailingDateRange_withOnAndRecurrence_extracted() throws IllegalValueException {

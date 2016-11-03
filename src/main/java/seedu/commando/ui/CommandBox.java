@@ -32,8 +32,8 @@ public class CommandBox extends UiPart {
     private TextField commandTextField;
     private CommandResult mostRecentResult;
 
-    protected static CommandBox load(Stage primaryStage, AnchorPane commandBoxPlaceholder,
-            ResultDisplay resultDisplay, Logic logic) {
+    protected static CommandBox load(Stage primaryStage, AnchorPane commandBoxPlaceholder, ResultDisplay resultDisplay,
+            Logic logic) {
         CommandBox commandBox = UiPartLoader.loadUiPart(primaryStage, commandBoxPlaceholder, new CommandBox());
         commandBox.configure(resultDisplay, logic);
         commandBox.addToPlaceholder();
@@ -71,13 +71,15 @@ public class CommandBox extends UiPart {
 
     @FXML
     private void handleCommandInputChanged() {
-        //Take a copy of the command text
+        // Take a copy of the command text
         previousCommandTest = commandTextField.getText();
         commandHistory.add(previousCommandTest);
         commandHistoryPointer = commandHistory.size();
 
-        /* We assume the command is correct. If it is incorrect, the command box will be changed accordingly
-         * in the event handling code {@link #handleIncorrectCommandAttempted}
+        /*
+         * We assume the command is correct. If it is incorrect, the command box
+         * will be changed accordingly in the event handling code {@link
+         * #handleIncorrectCommandAttempted}
          */
         setStyleToIndicateCorrectCommand();
         mostRecentResult = logic.execute(previousCommandTest);
@@ -98,10 +100,10 @@ public class CommandBox extends UiPart {
         resultDisplay.postMessage(message);
     }
 
-    //@@author A0139080J
+    // @@author A0139080J
     /**
-     * This and the next method: Switches through a list of commands, invalid or valid.
-     * If the boundary of the list is reached, display nothing.
+     * This and the next method: Switches through a list of commands, invalid or
+     * valid. If the boundary of the list is reached, display nothing.
      */
     protected void goUpCommandHistory() {
         if (!commandHistory.isEmpty()) {
@@ -128,7 +130,7 @@ public class CommandBox extends UiPart {
         commandTextField.setText(commandHistory.get(pointer));
         setCaretAtEndOfText();
     }
-    
+
     private void setCaretAtEndOfText() {
         Platform.runLater(new Runnable() {
             @Override
@@ -137,8 +139,8 @@ public class CommandBox extends UiPart {
             }
         });
     }
-    //@@author 
-    
+    // @@author
+
     /**
      * Sets the command box style to indicate a correct command.
      */

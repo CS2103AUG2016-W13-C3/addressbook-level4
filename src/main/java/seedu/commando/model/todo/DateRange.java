@@ -11,7 +11,7 @@ import java.util.Objects;
 //@@author A0139697H
 /**
  * Represents a date range of a to-do, immutable.
- * Ignores the seconds and nano-seconds field of its datetimes.
+ * Ignores the seconds and nano-seconds field of its datetimes, unless it is MIN or MAX.
  */
 public class DateRange {
     private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -40,8 +40,8 @@ public class DateRange {
 
         checkIfValid(startDate, endDate, recurrence);
 
-        this.startDate = startDate.withSecond(0).withNano(0);
-        this.endDate = endDate.withSecond(0).withNano(0);
+        this.startDate = processDateTime(startDate);
+        this.endDate = processDateTime(endDate);
         this.recurrence = recurrence;
     }
 
@@ -71,7 +71,17 @@ public class DateRange {
 
     @Override
     public String toString() {
-        return startDate.format(dateFormatter) + " - " + endDate.format(dateFormatter)
+        String dateString;
+        if (startDate.equals(LocalDateTime.MIN) && endDate.equals(LocalDateTime.MAX)) {
+            dateString = "forever";
+        } else if (startDate.equals(LocalDateTime.MIN)) {
+            dateString = "until " + endDate.format(dateFormatter);
+        } else if (endDate.equals(LocalDateTime.MAX)) {
+            dateString = "from " + startDate.format(dateFormatter) + " onwards";
+        } else {
+            dateString = "from " + startDate.format(dateFormatter) + " to " + endDate.format(dateFormatter);
+        }
+        return dateString
             + ((recurrence == Recurrence.None) ? "" : " " + recurrence.toString().toLowerCase());
     }
 
@@ -91,4 +101,11 @@ public class DateRange {
         return Objects.hash(startDate, endDate, recurrence);
     }
 
+    private LocalDateTime processDateTime(LocalDateTime localDateTime) {
+        if (localDateTime.equals(LocalDateTime.MAX) || localDateTime.equals(LocalDateTime.MIN)) {
+            return localDateTime;
+        } else {
+            return localDateTime.withSecond(0).withNano(0);
+        }
+    }
 }

@@ -34,7 +34,7 @@ public class DueDate {
     public DueDate(LocalDateTime value, Recurrence recurrence){
         assert !CollectionUtil.isAnyNull(value, recurrence);
 
-        this.value = value.withSecond(0).withNano(0);
+        this.value = processDateTime(value);
         this.recurrence = recurrence;
     }
 
@@ -66,4 +66,11 @@ public class DueDate {
         return Objects.hash(value, recurrence);
     }
 
+    private LocalDateTime processDateTime(LocalDateTime localDateTime) {
+        if (localDateTime.equals(LocalDateTime.MAX) || localDateTime.equals(LocalDateTime.MIN)) {
+            return localDateTime;
+        } else {
+            return localDateTime.withSecond(0).withNano(0);
+        }
+    }
 }

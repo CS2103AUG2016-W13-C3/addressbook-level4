@@ -12,7 +12,6 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.model.ui.UiToDo;
 import seedu.commando.ui.ToDoListViewCell.Card;
 
@@ -51,8 +50,7 @@ public class TaskListPanel extends UiPart {
 
     protected static TaskListPanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
             ObservableList<UiToDo> list) {
-        TaskListPanel taskListPanel =
-                UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new TaskListPanel());
+        TaskListPanel taskListPanel = UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new TaskListPanel());
         taskListPanel.configure(list);
         return taskListPanel;
     }
@@ -60,11 +58,11 @@ public class TaskListPanel extends UiPart {
     private void configure(ObservableList<UiToDo> toDos) {
         setConnections(toDos);
         addToPlaceholder();
-        //@@author A0139080J
+        // @@author A0139080J
         Platform.runLater(() -> {
             scrollbar = (ScrollBar) taskListView.lookup(".scroll-bar:vertical");
         });
-        //@@author
+        // @@author
     }
 
     private void setConnections(ObservableList<UiToDo> tasks) {
@@ -85,25 +83,25 @@ public class TaskListPanel extends UiPart {
         placeHolderPane.getChildren().add(panel);
     }
 
-    //@@author A0139080J
+    // @@author A0139080J
     protected ListView<UiToDo> getTaskListView() {
         return taskListView;
     }
-    
+
     private boolean isScrollBarPresent() {
         return scrollbar != null;
     }
-    
+
     protected void scrollDown() {
         if (isScrollBarPresent()) {
             scrollbar.setValue(Math.min(scrollbar.getValue() + 0.1, 1));
         }
     }
-    
+
     protected void scrollUp() {
         if (isScrollBarPresent()) {
             scrollbar.setValue(Math.max(scrollbar.getValue() - 0.1, 0));
         }
     }
-    //@@author
+    // @@author
 }

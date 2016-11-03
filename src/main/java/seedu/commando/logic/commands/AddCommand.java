@@ -11,13 +11,11 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Set;
 
+//@@author A0139697H
 /**
  * Adds a to-do to the to-do list
- * Public fields are initially null and are optional parameters for the command
  */
-//@@author A0139697H
 public class AddCommand extends Command {
-
     public static final String COMMAND_WORD = "add";
 
     private final Title title;

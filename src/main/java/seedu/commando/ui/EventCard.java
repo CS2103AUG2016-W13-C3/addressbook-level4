@@ -8,16 +8,17 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import seedu.commando.commons.core.DateTimePrettifier;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.Recurrence;
 
-public class EventCard extends UiPart{
+public class EventCard extends UiPart {
 
     private static final String FXML = "EventCard.fxml";
     private boolean isFinished;
-    
+
     @FXML
     private HBox eventPane;
     @FXML
@@ -44,9 +45,10 @@ public class EventCard extends UiPart{
     private boolean containsTags = true;
     private boolean containsDate = true;
 
-    public EventCard(){ }
+    public EventCard() {
+    }
 
-    public static EventCard load(ReadOnlyToDo toDo, int index){
+    public static EventCard load(ReadOnlyToDo toDo, int index) {
         EventCard card = new EventCard();
         card.toDo = toDo;
         card.index = index;
@@ -76,8 +78,8 @@ public class EventCard extends UiPart{
             containsTags = false;
         }
     }
-    
-    //@@author A0139080J
+
+    // @@author A0139080J
     private void setRecurrenceLabel() {
         if (toDo.getDateRange().isPresent() && toDo.getDateRange().get().recurrence != Recurrence.None) {
             recurrenceLabel.setText(toDo.getDateRange().get().recurrence.toString());
@@ -86,33 +88,32 @@ public class EventCard extends UiPart{
             containsDate = false;
         }
     }
-    
+
     /**
-     * If both tags and recurrence are non-existent, hide the pane that contains them
+     * If both tags and recurrence are non-existent, hide the pane that contains
+     * them
      */
     private void checkTagsPane() {
         if (!containsTags && !containsDate) {
             tagsPane.setManaged(false);
         }
     }
-    
+
     private void setDateTimesLabels() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
             final long startDayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.startDate);
-            
-            dateIntervalLabel.setText(
-                    ToDoCardStyleManager.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
-            dateIntervalLabel.setStyle("-fx-text-fill: " + 
-                    ToDoCardStyleManager.getDateProximityBlue((int) startDayDifference));
+
+            dateIntervalLabel.setText(DateTimePrettifier.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
+            dateIntervalLabel
+                    .setStyle("-fx-text-fill: " + ToDoCardStyleManager.getDateProximityBlue((int) startDayDifference));
         } else {
             dateIntervalLabel.setManaged(false);
             endLabel.setManaged(false);
             datePane.setManaged(false);
         }
     }
-    
-    
+
     /*
      * Different CSS styles for different states
      */
@@ -128,13 +129,13 @@ public class EventCard extends UiPart{
     }
 
     /**
-     * Every recently modified event will have a red border
-     * This includes modification via undo, edit, add
+     * Every recently modified event will have a red border This includes
+     * modification via undo, edit, add
      */
     private void setRecentlyModifiedState() {
         eventPaneInner.setStyle(ToDoCardStyleManager.recentlyModifiedStateCSS);
     }
-    
+
     /**
      * Tints a finished event gray
      */
@@ -154,7 +155,7 @@ public class EventCard extends UiPart{
             indexLabel.setStyle(ToDoCardStyleManager.activateHoverStateIndexCSS);
         }
     }
-    
+
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
@@ -162,11 +163,11 @@ public class EventCard extends UiPart{
             indexLabel.setStyle(ToDoCardStyleManager.deactivateHoverStateIndexCSS);
         }
     }
-    //@@author
-    
+    // @@author
+
     @Override
     public void setNode(Node node) {
-        eventPane = (HBox)node;
+        eventPane = (HBox) node;
     }
 
     @Override

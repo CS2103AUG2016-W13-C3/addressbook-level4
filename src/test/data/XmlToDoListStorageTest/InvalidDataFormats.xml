@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<todolist>
+     <toDos>
+        <title>task</title>
+		<dateFinished>INVALID</dateFinished>
+        <dueDate>INVALID</dueDate>
+        <dateCreated>INVALID</dateCreated>
+        <dueDateRecurrence>INVALID</dueDateRecurrence>
+    </toDos>
+    <toDos>
+        <title>event</title>
+        <dateRangeStart>INVALID</dateRangeStart>
+        <dateRangeEnd>INVALID</dateRangeEnd>
+        <dateCreated>INVALID</dateCreated>
+        <dateRangeRecurrence>INVALID</dateRangeRecurrence>
+    </toDos>
+</todolist>
