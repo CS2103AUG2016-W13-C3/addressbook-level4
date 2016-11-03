@@ -83,7 +83,7 @@ public class Messages {
     public static final String FIND_COMMAND = "Found unfinished to-dos matching keywords %1$s and tags %2$s.";
     public static final String FIND_COMMAND_CLEAR = "Listed all unfinished to-dos.";
     public static final String LIST_COMMAND_CLEAR = "Listed all to-dos.";
-    public static final String LIST_COMMAND = "Listed all to-dos in date range of %1$s";
+    public static final String LIST_COMMAND = "Listed all to-dos in date range: %1$s";
     public static final String RECALL_COMMAND = "Found finished to-dos matching keywords %1$s and tags %2$s.";
     public static final String RECALL_COMMAND_CLEAR = "Listed all finished to-dos.";
 
