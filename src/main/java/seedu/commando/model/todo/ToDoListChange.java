@@ -4,15 +4,16 @@ import java.util.Objects;
 
 //@@author A0139697H
 /**
- * An immutable representation of a change in a to-do list.
+ * An immutable representation of a change in {@link ReadOnlyToDoList}
  */
 public class ToDoListChange {
-    private final ToDoList addedToDos;
-    private final ToDoList deletedToDos;
+    private final ReadOnlyToDoList addedToDos;
+    private final ReadOnlyToDoList deletedToDos;
 
     /**
      * Constructor for a to-do list change.
-     * @param addedToDos list of to-dos to be added, which is deep copied
+     *
+     * @param addedToDos   list of to-dos to be added, which is deep copied
      * @param deletedToDos list of to-dos to be deleted, which is deep copied
      */
     public ToDoListChange(ReadOnlyToDoList addedToDos, ReadOnlyToDoList deletedToDos) {
@@ -20,15 +21,27 @@ public class ToDoListChange {
         this.deletedToDos = new ToDoList(deletedToDos);
     }
 
+    /**
+     * Gets a read-only list of read-only to-dos to be added in this change
+     *
+     * @return list of to-dos to add
+     */
     public ReadOnlyToDoList getAddedToDos() {
         return addedToDos;
     }
 
+    /**
+     * Gets a read-only list of read-only to-dos to be deleted in this change
+     *
+     * @return list of to-dos to delete
+     */
     public ReadOnlyToDoList getDeletedToDos() {
         return deletedToDos;
     }
 
     /**
+     * Gets the reverse of the current change.
+     *
      * @return reverse of this change
      */
     public ToDoListChange getReverseChange() {
@@ -51,7 +64,7 @@ public class ToDoListChange {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Added " + addedToDos + " & deleted " + deletedToDos;
     }
 }

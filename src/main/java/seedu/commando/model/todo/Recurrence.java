@@ -3,6 +3,7 @@ package seedu.commando.model.todo;
 import java.time.LocalDateTime;
 
 //@@author A0139697H
+
 /**
  * Represents a recurrence in a to-do.
  */
@@ -14,7 +15,9 @@ public enum Recurrence {
     None;
 
     /**
-     * @param date starting datetime
+     * Gets the next datetime for this recurrence, based on a starting datetime.
+     *
+     * @param date starting datetime for the recurrence
      * @return the next datetime based on this recurrence
      */
     public LocalDateTime getNextDate(LocalDateTime date) {

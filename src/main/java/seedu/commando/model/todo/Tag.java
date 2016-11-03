@@ -7,7 +7,7 @@ import seedu.commando.commons.util.CollectionUtil;
 /**
  * Represents a tag of a to-do, immutable.
  */
-public class Tag implements Comparable<Tag>{
+public class Tag implements Comparable<Tag> {
     public final String value;
 
     /**
@@ -32,8 +32,8 @@ public class Tag implements Comparable<Tag>{
         // short circuit if same object
         // instanceof handles nulls
         return other == this
-                || (other instanceof Tag
-                && this.value.equals(((Tag) other).value));
+            || (other instanceof Tag
+            && this.value.equals(((Tag) other).value));
     }
 
     @Override

@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 //@@author A0139697H
 
 /**
- * Represents the in-memory model of the application's data
- * All changes to model should be synchronized
+ * Represents the in-memory model of the application's data.
+ * All changes to model should be synchronized.
  */
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
@@ -34,7 +34,7 @@ public class ModelManager extends ComponentManager implements Model {
      * Initializes a ModelManager with the given to-do list.
      * Asserts parameters to be non-null.
      *
-     * @param toDoList is copied during initialization
+     * @param toDoList the internal to-do list will be a deep copy of this
      */
     public ModelManager(ReadOnlyToDoList toDoList) {
         super();
