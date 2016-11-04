@@ -8,7 +8,6 @@ import seedu.commando.model.Model;
 import seedu.commando.model.todo.ToDoListChange;
 import seedu.commando.model.todo.ToDo;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

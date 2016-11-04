@@ -2,13 +2,9 @@ package seedu.commando.logic.commands;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
-import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.Model;
-import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.storage.XmlToDoListStorage;
 
 //@@author A0142230B

@@ -3,7 +3,6 @@ package seedu.commando.logic.commands;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.events.logic.ToDoListFilePathChangeRequestEvent;
-import seedu.commando.model.Model;
 
 import java.io.File;
 

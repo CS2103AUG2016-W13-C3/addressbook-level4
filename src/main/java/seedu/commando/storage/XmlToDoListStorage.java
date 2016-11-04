@@ -4,14 +4,12 @@ import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.exceptions.DataConversionException;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.commons.util.FileUtil;
-import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.ToDoList;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 //@@author A0142230B

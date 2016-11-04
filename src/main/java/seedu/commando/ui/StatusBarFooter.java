@@ -1,7 +1,6 @@
 package seedu.commando.ui;
 
-import com.google.common.eventbus.Subscribe;
-import javafx.beans.value.ChangeListener;
+
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -10,15 +9,11 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.controlsfx.control.StatusBar;
 
-import seedu.commando.commons.core.LogsCenter;
-import seedu.commando.commons.events.model.ToDoListChangedEvent;
+
 import seedu.commando.commons.util.FxViewUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Observable;
-import java.util.logging.Logger;
 
 /**
  * A ui for the status bar that is displayed at the footer of the application.

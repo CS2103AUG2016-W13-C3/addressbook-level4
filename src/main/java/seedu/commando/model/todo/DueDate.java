@@ -3,9 +3,6 @@ package seedu.commando.model.todo;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-
-import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.commons.util.CollectionUtil;
 
 //@@author A0122001M

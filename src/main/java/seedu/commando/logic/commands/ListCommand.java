@@ -4,7 +4,6 @@ import seedu.commando.commons.core.DateTimePrettifier;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.model.Model;
 import seedu.commando.model.todo.DateRange;
-import seedu.commando.model.ui.UiModel;
 
 import java.util.Optional;
 

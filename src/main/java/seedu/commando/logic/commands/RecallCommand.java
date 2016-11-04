@@ -3,7 +3,6 @@ package seedu.commando.logic.commands;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.model.Model;
 import seedu.commando.model.todo.Tag;
-import seedu.commando.model.ui.UiModel;
 
 import java.util.Collections;
 import java.util.Set;

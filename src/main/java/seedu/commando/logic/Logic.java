@@ -2,7 +2,6 @@ package seedu.commando.logic;
 
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.logic.commands.CommandResult;
-import seedu.commando.model.Model;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.ui.UiToDo;
 

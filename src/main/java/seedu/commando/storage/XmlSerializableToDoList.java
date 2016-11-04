@@ -2,7 +2,6 @@ package seedu.commando.storage;
 
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.ReadOnlyToDoList;
-import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.ToDoList;
 
 import javax.xml.bind.annotation.XmlElement;
