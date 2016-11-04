@@ -176,12 +176,19 @@ public class MainWindow extends UiPart {
     }
     
     protected void moreConfigurations() {
+        extractMainNodes();
+        
+        // Set focus to commandField when the application starts
+        setFocusTo(commandField);
+        
+        disableSplitPaneResize();
+        setAppName(appName);
+    }
+
+    private void extractMainNodes() {
         commandField = commandBox.getCommandField();
         eventListView = eventPanel.getEventListView();
         taskListView = taskPanel.getTaskListView();
-        setFocusTo(commandField);
-        disableSplitPaneResize();
-        setAppName(appName);
     }
     
     private void setFocusTo(Node node) {

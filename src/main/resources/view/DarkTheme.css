@@ -21,34 +21,34 @@
 }
 
 .event-pane-title, .task-pane-title {
-	-fx-font-family: "Segoe UI Light";
-	-fx-font-size: 30pt;
+	-fx-font-family: "Helvetica Light";
+	-fx-font-size: 32pt;
 }
 
 .label {
     -fx-font-size: 12pt;
-    -fx-font-family: "Segoe UI Light";
+    -fx-font-family: "Helvetica Light";
     -fx-text-fill: #555555;
     -fx-opacity: 0.9;
 }
 
 .label-bright {
     -fx-font-size: 12pt;
-    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-family: "Helvetica Semibold";
     -fx-text-fill: white;
     -fx-opacity: 1;
 }
 
 .label-header {
     -fx-font-size: 32pt;
-    -fx-font-family: "Segoe UI Light";
+    -fx-font-family: "Helvetica Light";
     -fx-text-fill: white;
     -fx-opacity: 1;
 }
 
 .text-field {
     -fx-font-size: 12pt;
-    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-family: "Helvetica Semibold";
 }
 
 .tab-pane {
@@ -88,7 +88,7 @@
 
 .table-view .column-header .label {
     -fx-font-size: 20pt;
-    -fx-font-family: "Segoe UI Light";
+    -fx-font-family: "Helvetica Light";
     -fx-text-fill: white;
     -fx-alignment: center-left;
     -fx-opacity: 1;
@@ -138,7 +138,7 @@
 }
 
 #indexLabel, #dateIntervalLabel, #dueLabel, #tagsLabel, #recurrenceLabel {
-	-fx-font-family: "Segoe UI bold";
+	-fx-font-family: "Helvetica bold";
 }
 
 #tagsLabel {
@@ -247,7 +247,7 @@
 
 .menu-bar .label {
     -fx-font-size: 14pt;
-    -fx-font-family: "Segoe UI Light";
+    -fx-font-family: "Helvetica Light";
     -fx-text-fill: white;
     -fx-opacity: 0.9;
 }
@@ -267,7 +267,7 @@
     -fx-border-width: 2;
     -fx-background-radius: 0;
     -fx-background-color: #1d1d1d;
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-family: "Helvetica", Helvetica, Arial, sans-serif;
     -fx-font-size: 11pt;
     -fx-text-fill: #d8d8d8;
     -fx-background-insets: 0 0 0 0, 0, 1, 2;

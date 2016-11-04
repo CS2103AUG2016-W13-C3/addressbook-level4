@@ -199,4 +199,14 @@ public class DateTimePrettifierTest {
         assertEquals("From 12:30 Today onwards",
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
+
+    @Test
+    public void prettifyDateTimeRange_todayToNextYearToday_showTodayToNextYearToday() {
+        final LocalDateTime dateFrom = LocalDateTime.now().withHour(1).withMinute(0);
+        final LocalDateTime dateTo = LocalDateTime.now().withHour(1).withMinute(0).plusYears(1);
+        assertEquals(
+            "01:00 Today to\n01:00 on " + DateTimeFormatter.ofPattern("EEE d MMM YYYY").format(dateTo),
+            DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo)
+        );
+    }
 }

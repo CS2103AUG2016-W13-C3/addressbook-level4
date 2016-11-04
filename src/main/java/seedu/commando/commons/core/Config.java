@@ -40,6 +40,7 @@ public class Config {
         put("search logic", "search-logic");
         put("unfinish", "unfinish");
         put("recall", "recall");
+        put("list", "list");
     }};
 
     /**

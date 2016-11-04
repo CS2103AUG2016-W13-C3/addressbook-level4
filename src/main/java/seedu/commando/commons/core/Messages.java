@@ -106,7 +106,7 @@ public class Messages {
     public static final String LIST_COMMAND_FORMAT = ">> list \n" +
     		                                         ">> list on <datetime> \n" +
                                                      ">> list from <start datetime> to <end datetime>";
-    public static final String HELP_COMMAND_TOPICS = "Available Topics: add, edit, delete, find, clear, finish, unfinish, recall, undo, redo, faq, search logic, datetime formats, cheatsheet";
+    public static final String HELP_COMMAND_TOPICS = "Available Topics: add, edit, delete, find, list, clear, finish, unfinish, recall, undo, redo, faq, search logic, datetime formats, cheatsheet";
     
     public static final String DATE_FORMAT = "Date Time Formats: 9 jan 2018 23:59 | Jan 9 2019 1900h | coming friday morning | today 23:59";
 
