@@ -55,7 +55,7 @@ public class HelpCommandTest {
     public void execute_helpWithInvalidWord_error() {
         CommandResult result = logic.execute("help invalid word");
         assertTrue(result.hasError());
-        assertEquals(String.format(Messages.UNKNOWN_COMMAND_FOR_HELP, "invalid word"), result.getFeedback());
+        assertEquals(String.format(Messages.HELP_COMMAND_INVALID_TOPIC, "invalid word"), result.getFeedback());
         assertFalse(wasShowHelpRequestEventPosted(eventsCollector));
     }
 }

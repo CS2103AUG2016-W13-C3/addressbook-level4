@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 //@@author A0139697H
 
@@ -121,7 +123,13 @@ public class DeleteCommand extends Command {
                 return new CommandResult(exception.getMessage(), true);
             }
 
-            return new CommandResult(String.format(Messages.DELETE_COMMAND, toDoIndices.toString()));
+            // Form comma-separated list of to-dos deleted
+            String toDoTitles = toDoIndices.stream().map(
+                toDoIndex -> model.getUiToDoAtIndex(toDoIndex).get().getTitle().toString()
+            ).collect(Collectors.joining(", "));
+
+            return new CommandResult(String.format(Messages.DELETE_COMMAND, toDoTitles));
+
         } else {
             // if any deletion of fields, edit the to-do
             try {

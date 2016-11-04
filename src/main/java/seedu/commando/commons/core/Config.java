@@ -33,11 +33,8 @@ public class Config {
         put("redo", "redo");
         put("exit", "exit");
         put("faq", "faq");
-        put("about", "about");
-        put("commands", "commands");
-        put("datetime formats", "supported-date-time-formats");
+        put("datetime", "supported-date-time-formats");
         put("find", "find");
-        put("search logic", "search-logic");
         put("unfinish", "unfinish");
         put("recall", "recall");
         put("list", "list");

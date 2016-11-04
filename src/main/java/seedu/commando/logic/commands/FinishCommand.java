@@ -11,6 +11,7 @@ import seedu.commando.model.todo.ToDo;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 //@@author A0142230B
 /**
@@ -68,6 +69,12 @@ public class FinishCommand extends Command {
             return new CommandResult(exception.getMessage(), true);
         }
 
-        return new CommandResult(String.format(Messages.FINISH_COMMAND, toDoIndices.toString()));
+
+        // Form comma-separated list of to-dos deleted
+        String toDoTitles = toDoIndices.stream().map(
+            toDoIndex -> model.getUiToDoAtIndex(toDoIndex).get().getTitle().toString()
+        ).collect(Collectors.joining(", "));
+
+        return new CommandResult(String.format(Messages.FINISH_COMMAND, toDoTitles.toString()));
     }
 }
