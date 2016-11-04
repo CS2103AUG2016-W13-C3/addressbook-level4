@@ -72,7 +72,7 @@ public class DateTimePrettifier {
         
         if (startIsYtdOrTdyOrTmr) {
             // If same day, don't display month and year
-            if (sameDay) {
+            if (sameDay && sameMonth && sameYear) {
                 return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + " "
                         + getDay(startDateTime);
             } else if (endIsYtdOrTdyOrTmr) {

@@ -146,6 +146,16 @@ public class DateTimePrettifierTest {
     }
     
     @Test
+    public void prettifyDateTimeRange_diffYearSameMonthSameDay_showTwoYearTwoMonthAndTwoTimes() {
+        // Should display one year, one month and two times
+        final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 27, 12, 30);
+        final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 2, 27, 13, 30);
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 27 Feb " + currentYear + " to\n" +
+                     "13:30 on " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear + 1),
+                DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
+    }
+    
+    @Test
     public void prettifyDateTimeRange_todayToToday_showTimeAndToday() {
         // Should display time and date
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
