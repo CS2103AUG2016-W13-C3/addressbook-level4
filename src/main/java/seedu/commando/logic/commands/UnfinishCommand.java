@@ -63,17 +63,18 @@ public class UnfinishCommand extends Command {
 		}
 
 		try {
-			model.changeToDoList(
-					new ToDoListChange(unfinishedToDos, listToUnfinish));
+            // Form comma-separated list of to-dos to be unfinished
+            String toDoTitles = getToDoTitlesString(model);
+			model.changeToDoList(new ToDoListChange(unfinishedToDos, listToUnfinish));
+            return new CommandResult(String.format(Messages.UNFINISHED_COMMAND, toDoTitles));
 		} catch (IllegalValueException exception) {
 			return new CommandResult(exception.getMessage(), true);
 		}
-
-		// Form comma-separated list of to-dos deleted
-		String toDoTitles = toDoIndices.stream().map(
-			toDoIndex -> model.getUiToDoAtIndex(toDoIndex).get().getTitle().toString()
-		).collect(Collectors.joining(", "));
-
-		return new CommandResult(String.format(Messages.UNFINISHED_COMMAND, toDoTitles));
 	}
+
+    private String getToDoTitlesString(Model model) {
+        return toDoIndices.stream().map(
+            toDoIndex -> model.getUiToDoAtIndex(toDoIndex).get().getTitle().toString()
+        ).collect(Collectors.joining(", "));
+    }
 }

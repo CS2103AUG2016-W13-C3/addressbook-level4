@@ -45,7 +45,7 @@ public class Tag implements Comparable<Tag> {
      * Format state as text for viewing.
      */
     public String toString() {
-        return '[' + value + ']';
+        return "#" + value;
     }
 
     @Override

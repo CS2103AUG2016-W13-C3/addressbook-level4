@@ -63,12 +63,12 @@ public class CommandTest {
         }
 
         @Override
-        public void clearUiToDoListFilter(UiModel.FILTER_MODE filterMode) {
+        public void clearUiToDoListFilter(Model.FILTER_MODE filterMode) {
 
         }
 
         @Override
-        public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, UiModel.FILTER_MODE filterMode) {
+        public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, Model.FILTER_MODE filterMode) {
 
         }
 

@@ -118,27 +118,36 @@ public class DeleteCommand extends Command {
         // if no deletion of fields, delete the whole to-do
         if (!ifDeleteTags && !ifDeleteTime && !ifDeleteRecurrence) {
             try {
+                // Form comma-separated list of to-dos to be deleted
+                String toDoTitles = getToDoTitlesString(model);
+
                 model.changeToDoList(new ToDoListChange(new ToDoList(), listToDelete));
+
+                return new CommandResult(String.format(Messages.DELETE_COMMAND, toDoTitles));
             } catch (IllegalValueException exception) {
                 return new CommandResult(exception.getMessage(), true);
             }
-
-            // Form comma-separated list of to-dos deleted
-            String toDoTitles = toDoIndices.stream().map(
-                toDoIndex -> model.getUiToDoAtIndex(toDoIndex).get().getTitle().toString()
-            ).collect(Collectors.joining(", "));
-
-            return new CommandResult(String.format(Messages.DELETE_COMMAND, toDoTitles));
-
         } else {
             // if any deletion of fields, edit the to-do
             try {
+                // Form comma-separated list of to-dos to be deleted
+                String toDoTitles = getToDoTitlesString(model);
+
                 model.changeToDoList(new ToDoListChange(listToEdit, listToDelete));
+
+                return new CommandResult(String.format(Messages.EDIT_COMMAND, toDoTitles));
+
             } catch (IllegalValueException exception) {
                 return new CommandResult(exception.getMessage(), true);
             }
-            return new CommandResult(String.format(Messages.EDIT_COMMAND, toDoIndices.toString()));
+
         }
+    }
+
+    private String getToDoTitlesString(Model model) {
+        return toDoIndices.stream().map(
+            toDoIndex -> model.getUiToDoAtIndex(toDoIndex).get().getTitle().toString()
+        ).collect(Collectors.joining(", "));
     }
 
     /**

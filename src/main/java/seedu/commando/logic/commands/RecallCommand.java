@@ -8,6 +8,8 @@ import seedu.commando.model.ui.UiModel;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 //@@author A0139697H
 /**
@@ -32,11 +34,25 @@ public class RecallCommand extends Command {
             // if no keywords or tags are provided, show all finished to-dos
             model.clearUiToDoListFilter(Model.FILTER_MODE.FINISHED);
             return new CommandResult(Messages.RECALL_COMMAND_CLEAR);
-        } else {
-            model.setUiToDoListFilter(keywords, tags, Model.FILTER_MODE.FINISHED);
-            return new CommandResult(String.format(Messages.RECALL_COMMAND, new TreeSet<>(keywords), new TreeSet<>(tags)));
         }
+
+        model.setUiToDoListFilter(keywords, tags, Model.FILTER_MODE.FINISHED);
+
+        // If no to-dos found in search
+        if (model.getUiEvents().isEmpty() && model.getUiTasks().isEmpty()) {
+            return new CommandResult(String.format(Messages.RECALL_COMMAND_NO_TODOS, getSearchString()));
+        }
+
+        return new CommandResult(String.format(Messages.RECALL_COMMAND, getSearchString()));
     }
+
+    private String getSearchString() {
+        Stream<String> keywordsStream = new TreeSet<>(keywords).stream();
+        Stream<String> tagsStream = new TreeSet<>(tags).stream().map(Tag::toString);
+
+        return "[" + Stream.concat(keywordsStream, tagsStream).collect(Collectors.joining(", ")) + "]";
+    }
+
 
     /**
      * Sets the keywords for the command, must be non-null.

@@ -64,17 +64,20 @@ public class FinishCommand extends Command {
         }
 
         try {
+            // Form comma-separated list of to-dos to be finished
+            String toDoTitles = getToDoTitlesString(model);
+
             model.changeToDoList(new ToDoListChange(finishedToDos, listToFinish));
+
+            return new CommandResult(String.format(Messages.FINISH_COMMAND, toDoTitles.toString()));
         } catch (IllegalValueException exception) {
             return new CommandResult(exception.getMessage(), true);
         }
+    }
 
-
-        // Form comma-separated list of to-dos deleted
-        String toDoTitles = toDoIndices.stream().map(
+    private String getToDoTitlesString(Model model) {
+        return toDoIndices.stream().map(
             toDoIndex -> model.getUiToDoAtIndex(toDoIndex).get().getTitle().toString()
         ).collect(Collectors.joining(", "));
-
-        return new CommandResult(String.format(Messages.FINISH_COMMAND, toDoTitles.toString()));
     }
 }

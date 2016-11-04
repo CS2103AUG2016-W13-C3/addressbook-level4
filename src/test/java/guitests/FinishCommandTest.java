@@ -9,6 +9,10 @@ import guitests.utils.TestUtil;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.model.todo.ToDo;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 //@@author A0122001M
 
 public class FinishCommandTest extends CommanDoGuiTest {
@@ -69,7 +73,7 @@ public class FinishCommandTest extends CommanDoGuiTest {
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedRemainder));
 
         //confirm the result message is correct
-        assertResultMessage(String.format(Messages.FINISH_COMMAND, "[" + targetIndex + "]"));
+        assertResultMessage(String.format(Messages.FINISH_COMMAND, TodosToFinish.getTitle().toString()));
         
         //finish finished task
         targetIndex = 5;
@@ -88,25 +92,26 @@ public class FinishCommandTest extends CommanDoGuiTest {
      */
     private void assertFinishConsectiveSuccess(int startIndex, int endIndex, ToDo[] currentList) {
         ToDo[] expectedRemainder = currentList;
-        String finishedIndices = "[";
-        
+
         //setfinish for all target todos and reinsert them into the list
+        List<ToDo> expectedList = new ArrayList<ToDo>();
         for (int i = startIndex; i<= endIndex; i++){
             ToDo TodosToFinish = expectedRemainder[startIndex-1]; //-1 because array uses zero indexing
+            expectedList.add(TodosToFinish);
             TodosToFinish.setIsFinished(true);
             expectedRemainder = TestUtil.removeToDoFromList(expectedRemainder, startIndex);
             expectedRemainder = TestUtil.addToDosToList(expectedRemainder, expectedRemainder.length, TodosToFinish);
-            finishedIndices += i + ", ";
         }
         commandBox.runCommand("finish " + startIndex + " to " + endIndex);
         
         //confirm the list now contains all previous Todoss except the deleted Todos
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedRemainder));
-        finishedIndices = finishedIndices.substring(0, finishedIndices.length()-2) + "]";
-        
-        //confirm the result message is correct
-        assertResultMessage(String.format(Messages.FINISH_COMMAND, finishedIndices));
-        
 
+        //confirm the result message is correct
+        assertResultMessage(String.format(Messages.FINISH_COMMAND, getToDosString(expectedList)));
+    }
+
+    private String getToDosString(List<ToDo> toDos) {
+        return toDos.stream().map(toDo -> toDo.getTitle().toString()).collect(Collectors.joining(", "));
     }
 }

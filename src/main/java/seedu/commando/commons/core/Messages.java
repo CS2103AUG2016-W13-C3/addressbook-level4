@@ -95,15 +95,17 @@ public class Messages {
     public static final String DELETE_COMMAND_NO_TAGS = "To-do with index '%1$s' has no tags to delete!";
     public static final String DELETE_COMMAND_NO_TIME_CONSTRAINTS = "To-do with index '%1$s' has no time constraints to delete!";
     public static final String DELETE_COMMAND_NO_RECURRENCE = "To-do with index '%1$s' has no recurrence to delete!";
-    public static final String FIND_COMMAND = "Found unfinished to-dos matching keywords %1$s and tags %2$s.";
-    public static final String FIND_COMMAND_CLEAR = "Listed all unfinished to-dos.";
-    public static final String LIST_COMMAND_CLEAR = "Listed all to-dos.";
-    public static final String LIST_COMMAND = "Listed all to-dos in date range: %1$s";
-    public static final String RECALL_COMMAND = "Found finished to-dos matching keywords %1$s and tags %2$s.";
-    public static final String RECALL_COMMAND_CLEAR = "Listed all finished to-dos.";
+    public static final String FIND_COMMAND = "Found unfinished to-dos matching keywords and tags of %1$s.";
+    public static final String FIND_COMMAND_CLEAR = "Listing all unfinished to-dos.";
+    public static final String FIND_COMMAND_NO_TODOS = "No unfinished to-dos found matching keywords and tags of %1$s.";
+    public static final String LIST_COMMAND_CLEAR = "Listing all to-dos.";
+    public static final String LIST_COMMAND = "Listing all to-dos in date range: %1$s";
+    public static final String LIST_COMMAND_NO_TODOS = "No to-dos found in date range: %1$s";
+    public static final String RECALL_COMMAND = "Listing all finished to-dos matching keywords and tags of %1$s.";
+    public static final String RECALL_COMMAND_NO_TODOS = "No finished to-dos found matching keywords and tags of %1$s.";
+    public static final String RECALL_COMMAND_CLEAR = "Listing all finished to-dos.";
     public static final String HELP_COMMAND_INVALID_TOPIC = "Invalid topic for `help`.\n"
                                                         + HELP_COMMAND_FORMAT;
-
 
     /**
      * Returns an additional invalid command format message to be appended
