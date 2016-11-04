@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.util.FxViewUtil;
 
+import java.net.URL;
 import java.util.logging.Logger;
 
 /**
@@ -62,14 +63,16 @@ public class HelpWindow extends UiPart {
      * Shows a window that navigates to help url, anchored at `#{@param anchor}`
      */
     protected void getHelp(String anchor) {
-        visit(helpurl + "#" + anchor);
+        visit(anchor);
+        
     }
     
     /**
      * Shows a window that navigates to a specified url
      */
-    protected void visit(String url) {
-        browser.getEngine().load(url);
+    protected void visit(String anchor) {
+        URL url = getClass().getResource(helpurl);
+        browser.getEngine().load(url.toExternalForm() + "#" + anchor);
         dialogStage.show();
     }
 }
