@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/CS2103AUG2016-W13-C3/main.svg?branch=master)](https://travis-ci.org/CS2103AUG2016-W13-C3/main)
 [![Coverage Status](https://coveralls.io/repos/github/CS2103AUG2016-W13-C3/main/badge.svg?branch=master)](https://coveralls.io/github/CS2103AUG2016-W13-C3/main?branch=master)
-
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1288b177a6b041a1bb8f734d238c2fcf)](https://www.codacy.com/app/shengxuan14/main?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=CS2103AUG2016-W13-C3/main&amp;utm_campaign=Badge_Grade)
 # CommanDo
 
 <img src="docs/images/Ui.png" width="600"><br>
