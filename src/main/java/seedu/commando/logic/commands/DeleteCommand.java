@@ -2,14 +2,16 @@ package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.model.Model;
 import seedu.commando.model.todo.*;
 import seedu.commando.model.ui.UiToDo;
-import seedu.commando.model.Model;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 //@@author A0139697H
 
@@ -20,12 +22,19 @@ public class DeleteCommand extends Command {
 
     public static final String COMMAND_WORD = "delete";
 
-    public final List<Integer> toDoIndices;
-    public boolean ifDeleteTime = false;
-    public boolean ifDeleteTag = false;
-    public boolean ifDeleteRecurrence = false;
+    private final List<Integer> toDoIndices;
+    private boolean ifDeleteTime = false;
+    private boolean ifDeleteTags = false;
+    private boolean ifDeleteRecurrence = false;
 
+    /**
+     * Initializes a delete command.
+     *
+     * @param toDoIndices list of indices of UI to-dos to target, non-null
+     */
     public DeleteCommand(List<Integer> toDoIndices) {
+        assert toDoIndices != null;
+
         this.toDoIndices = toDoIndices;
     }
 
@@ -56,7 +65,7 @@ public class DeleteCommand extends Command {
                 return new CommandResult(exception.getMessage(), true);
             }
 
-            if (ifDeleteTag) {
+            if (ifDeleteTags) {
                 if (toDoToEdit.getTags().size() > 0) {
                     toDoToEdit.setTags(Collections.emptySet());
                 } else {
@@ -107,23 +116,58 @@ public class DeleteCommand extends Command {
         }
 
         // if no deletion of fields, delete the whole to-do
-        if (!ifDeleteTag && !ifDeleteTime && !ifDeleteRecurrence) {
+        if (!ifDeleteTags && !ifDeleteTime && !ifDeleteRecurrence) {
             try {
+                // Form comma-separated list of to-dos to be deleted
+                String toDoTitles = getToDoTitlesString(model);
+
                 model.changeToDoList(new ToDoListChange(new ToDoList(), listToDelete));
+
+                return new CommandResult(String.format(Messages.DELETE_COMMAND, toDoTitles));
             } catch (IllegalValueException exception) {
                 return new CommandResult(exception.getMessage(), true);
             }
-
-            return new CommandResult(String.format(Messages.DELETE_COMMAND, toDoIndices.toString()));
         } else {
             // if any deletion of fields, edit the to-do
             try {
+                // Form comma-separated list of to-dos to be deleted
+                String toDoTitles = getToDoTitlesString(model);
+
                 model.changeToDoList(new ToDoListChange(listToEdit, listToDelete));
+
+                return new CommandResult(String.format(Messages.EDIT_COMMAND, toDoTitles));
+
             } catch (IllegalValueException exception) {
                 return new CommandResult(exception.getMessage(), true);
             }
-            return new CommandResult(String.format(Messages.EDIT_COMMAND, toDoIndices.toString()));
+
         }
     }
 
+    private String getToDoTitlesString(Model model) {
+        return toDoIndices.stream().map(
+            toDoIndex -> model.getUiToDoAtIndex(toDoIndex).get().getTitle().toString()
+        ).collect(Collectors.joining(", "));
+    }
+
+    /**
+     * Sets the delete command to delete the time constraints of the to-dos at indices.
+     */
+    public void deletesTime() {
+        this.ifDeleteTime = true;
+    }
+
+    /**
+     * Sets the delete command to delete the tags of the to-dos at indices.
+     */
+    public void deletesTags() {
+        this.ifDeleteTags = true;
+    }
+
+    /**
+     * Sets the delete command to delete the recurrences of the to-dos at indices.
+     */
+    public void deletesRecurrence() {
+        this.ifDeleteRecurrence = true;
+    }
 }

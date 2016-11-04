@@ -11,45 +11,47 @@ import seedu.commando.model.todo.ToDo;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+//@@author A0142230B
 /**
- * Marks a to-do item as done
+ * Marks a to-do item as done.
  */
 public class FinishCommand extends Command {
 
-	public static final String COMMAND_WORD = "finish";
+    public static final String COMMAND_WORD = "finish";
 
-	public final List<Integer> toDoIndices;
-	//@@author A0142230B
-	public FinishCommand(List<Integer> toDoIndices) {
-		this.toDoIndices = toDoIndices;
-	}
-	//@@author A0142230B
-	@Override
-	public CommandResult execute() throws NoModelException {
-		Model model = getModel();
-		int index;
-		ToDoList listToFinish = new ToDoList();
-		ToDoList finishedToDos = new ToDoList();
-		Iterator<Integer> iterator = toDoIndices.iterator();
+    public final List<Integer> toDoIndices;
 
-		// If to-do with the index is valid and not finished, mark it as finished, else throw error message and return
-		while (iterator.hasNext()) {
-			index = iterator.next();
-			Optional<UiToDo> toDoToFinish = model.getUiToDoAtIndex(index);
+    public FinishCommand(List<Integer> toDoIndices) {
+        this.toDoIndices = toDoIndices;
+    }
 
-			if (!toDoToFinish.isPresent()) {
-				return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, index), true);
-			}
+    @Override
+    public CommandResult execute() throws NoModelException {
+        Model model = getModel();
+        int index;
+        ToDoList listToFinish = new ToDoList();
+        ToDoList finishedToDos = new ToDoList();
+        Iterator<Integer> iterator = toDoIndices.iterator();
 
-			if (toDoToFinish.get().isEvent()) {
-				return new CommandResult(String.format(Messages.FINISH_COMMAND_CANNOT_FINISH_EVENT, toDoToFinish.get().getTitle().toString()), true);
-			}
+        // If to-do with the index is valid and not finished, mark it as finished, else throw error message and return
+        while (iterator.hasNext()) {
+            index = iterator.next();
+            Optional<UiToDo> toDoToFinish = model.getUiToDoAtIndex(index);
 
-			if (toDoToFinish.get().isFinished()) {
-				return new CommandResult(
-						String.format(Messages.FINISH_COMMAND_ALREADY_FINISHED, toDoToFinish.get().getTitle().toString()), true);
-			}
+            if (!toDoToFinish.isPresent()) {
+                return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, index), true);
+            }
+
+            if (toDoToFinish.get().isEvent()) {
+                return new CommandResult(String.format(Messages.FINISH_COMMAND_CANNOT_FINISH_EVENT, toDoToFinish.get().getTitle().toString()), true);
+            }
+
+            if (toDoToFinish.get().isFinished()) {
+                return new CommandResult(
+                    String.format(Messages.FINISH_COMMAND_ALREADY_FINISHED, toDoToFinish.get().getTitle().toString()), true);
+            }
 
             try {
                 listToFinish.add(toDoToFinish.get());
@@ -59,14 +61,23 @@ public class FinishCommand extends Command {
             } catch (IllegalValueException exception) {
                 return new CommandResult(exception.getMessage(), true);
             }
-		}
+        }
 
-		try {
-			model.changeToDoList(new ToDoListChange(finishedToDos, listToFinish));
-		} catch (IllegalValueException exception) {
-			return new CommandResult(exception.getMessage(), true);
-		}
+        try {
+            // Form comma-separated list of to-dos to be finished
+            String toDoTitles = getToDoTitlesString(model);
 
-		return new CommandResult(String.format(Messages.FINISH_COMMAND, toDoIndices.toString()));
-	}
+            model.changeToDoList(new ToDoListChange(finishedToDos, listToFinish));
+
+            return new CommandResult(String.format(Messages.FINISH_COMMAND, toDoTitles.toString()));
+        } catch (IllegalValueException exception) {
+            return new CommandResult(exception.getMessage(), true);
+        }
+    }
+
+    private String getToDoTitlesString(Model model) {
+        return toDoIndices.stream().map(
+            toDoIndex -> model.getUiToDoAtIndex(toDoIndex).get().getTitle().toString()
+        ).collect(Collectors.joining(", "));
+    }
 }

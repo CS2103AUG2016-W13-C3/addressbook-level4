@@ -11,9 +11,10 @@ import seedu.commando.model.todo.ToDo;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 //@@author A0142230B
 /**
- * Marks a to-do item as not done
+ * Marks a to-do item as not done.
  */
 public class UnfinishCommand extends Command {
 
@@ -62,12 +63,18 @@ public class UnfinishCommand extends Command {
 		}
 
 		try {
-			model.changeToDoList(
-					new ToDoListChange(unfinishedToDos, listToUnfinish));
+            // Form comma-separated list of to-dos to be unfinished
+            String toDoTitles = getToDoTitlesString(model);
+			model.changeToDoList(new ToDoListChange(unfinishedToDos, listToUnfinish));
+            return new CommandResult(String.format(Messages.UNFINISHED_COMMAND, toDoTitles));
 		} catch (IllegalValueException exception) {
 			return new CommandResult(exception.getMessage(), true);
 		}
-
-		return new CommandResult(String.format(Messages.UNFINISHED_COMMAND, toDoIndices.toString()));
 	}
+
+    private String getToDoTitlesString(Model model) {
+        return toDoIndices.stream().map(
+            toDoIndex -> model.getUiToDoAtIndex(toDoIndex).get().getTitle().toString()
+        ).collect(Collectors.joining(", "));
+    }
 }

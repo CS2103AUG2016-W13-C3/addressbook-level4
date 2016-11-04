@@ -22,11 +22,9 @@ public class ToDoBuilder {
     public static LocalDateTime OlderDate = now.minusDays(3);
     public static LocalDateTime OldDate = now.minusDays(2);
     public static LocalDateTime RecentDate = now.minusDays(1);
-    public static LocalDateTime TodayPastDate = now.minusHours(2);
-    public static LocalDateTime TodayPastDate2 = now.minusHours(1);
-    public static LocalDateTime TodayFutureDate = now.plusHours(1);
-    public static LocalDateTime TodayFutureDate2 = now.plusHours(2);
-    public static LocalDateTime FutureDate = now.plusDays(2);
+    public static LocalDateTime FutureDate = now.plusDays(1);
+    public static LocalDateTime FutureDate2 = now.plusDays(2);
+    public static LocalDateTime FutureDate3 = now.plusDays(2);
 
     public static ReadOnlyToDo TaskOldDueUnfinishedNewCreated =
         new ToDoBuilder("<DD|UF|>C").withDueDate(RecentDate).created(OldDate).build();
@@ -46,12 +44,6 @@ public class ToDoBuilder {
     public static ReadOnlyToDo TaskUnfinishedOldCreated =
         new ToDoBuilder("UF|<C").created(OlderDate).build();
 
-    public static ReadOnlyToDo TaskTodayNewFinished =
-        new ToDoBuilder(">Ft").created(OldDate).finish(TodayPastDate2).build();
-
-    public static ReadOnlyToDo TaskTodayOldFinished =
-        new ToDoBuilder("<Ft").created(OldDate).finish(TodayPastDate).build();
-
     public static ReadOnlyToDo TaskOldFinished =
         new ToDoBuilder(">F").created(OldDate).finish(OldDate).build();
 
@@ -60,33 +52,23 @@ public class ToDoBuilder {
 
     public static ReadOnlyToDo EventOldRangeUnfinishedNewCreated =
         new ToDoBuilder("<DR|UF|>C").withDateRange(
-            TodayFutureDate, TodayFutureDate2
+            FutureDate, FutureDate2
         ).created(OldDate).build();
 
     public static ReadOnlyToDo EventOldRangeUnfinishedOldCreated =
         new ToDoBuilder("<DR|UF|<C").withDateRange(
-            TodayFutureDate, TodayFutureDate2
+            FutureDate, FutureDate2
         ).created(OlderDate).build();
 
     public static ReadOnlyToDo EventNewRangeUnfinishedNewCreated =
         new ToDoBuilder(">DR|UF|>C").withDateRange(
-            TodayFutureDate2, FutureDate
+            FutureDate2, FutureDate3
         ).created(OldDate).build();
 
     public static ReadOnlyToDo EventNewRangeUnfinishedOldCreated =
         new ToDoBuilder(">DR|UF|<C").withDateRange(
-            TodayFutureDate2, FutureDate
+            FutureDate2, FutureDate3
         ).created(OlderDate).build();
-
-    public static ReadOnlyToDo EventTodayNewFinished =
-        new ToDoBuilder(">Ft").withDateRange(
-            TodayPastDate, TodayPastDate2
-        ).build();
-
-    public static ReadOnlyToDo EventTodayOldFinished =
-        new ToDoBuilder("<Ft").withDateRange(
-            OldDate, TodayPastDate
-        ).build();
 
     public static ReadOnlyToDo EventNewFinished =
         new ToDoBuilder(">F").withDateRange(

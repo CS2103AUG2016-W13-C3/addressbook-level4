@@ -11,20 +11,24 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 //@@author A0139697H
+
 /**
- * Edits a to-do in the current to-do list
- * Public fields are initially null and are optional parameters for the command
+ * Edits a to-do in the current to-do list.
  */
 public class EditCommand extends Command {
-
     public static final String COMMAND_WORD = "edit";
 
     private final int toDoIndex;
-    public Title title;
-    public DateRange dateRange;
-    public DueDate dueDate;
-    public Set<Tag> tags;
+    private Title title = null;
+    private DateRange dateRange = null;
+    private DueDate dueDate = null;
+    private Set<Tag> tags = null;
 
+    /**
+     * Initializes an edit command.
+     *
+     * @param toDoIndex index of UI to-do to edit
+     */
     public EditCommand(int toDoIndex) {
         this.toDoIndex = toDoIndex;
     }
@@ -32,14 +36,45 @@ public class EditCommand extends Command {
     public CommandResult execute() throws NoModelException {
         Model model = getModel();
 
-        Optional<UiToDo> toDoToEdit = model.getUiToDoAtIndex(toDoIndex);
+        try {
+            ReadOnlyToDo toDoToEdit = getToDoAtIndex(model, toDoIndex);
+            ToDo editedToDo = getEditedToDo(toDoToEdit);
+            ensureToDoEdited(toDoToEdit, editedToDo);
+            ensureOnlyDueDateOrDateRangePresent(editedToDo);
 
-        if (!toDoToEdit.isPresent()) {
-            return new CommandResult(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex), true);
+            model.changeToDoList(new ToDoListChange(
+                new ToDoList().add(editedToDo),
+                new ToDoList().add(toDoToEdit)
+            ));
+
+            return new CommandResult(getFeedback(editedToDo));
+
+        } catch (IllegalValueException exception) {
+            return new CommandResult(exception.getMessage(), true);
         }
+    }
 
+    private String getFeedback(ToDo editedToDo) {
+        String feedback = String.format(Messages.EDIT_COMMAND, editedToDo.getTitle().toString());
+
+        // If event already over, warn user
+        if (editedToDo.getDateRange().isPresent()
+            && editedToDo.getDateRange().get().endDate.isBefore(LocalDateTime.now())) {
+            feedback += "\n" + Messages.EDIT_COMMAND_EVENT_OVER_WARNING;
+        }
+        return feedback;
+    }
+
+    private void ensureToDoEdited(ReadOnlyToDo toDoToEdit, ToDo editedToDo) throws IllegalValueException {
+        // Check if to-do has changed
+        if (editedToDo.isSameStateAs(toDoToEdit)) {
+            throw new IllegalValueException(Messages.EDIT_COMMAND_NO_EDITS);
+        }
+    }
+
+    private ToDo getEditedToDo(ReadOnlyToDo toDoToEdit) {
         // Copy original to-do
-        ToDo newToDo = new ToDo(toDoToEdit.get());
+        ToDo newToDo = new ToDo(toDoToEdit);
 
         // Set fields if exist
         if (title != null) {
@@ -58,33 +93,67 @@ public class EditCommand extends Command {
             newToDo.setTags(tags);
         }
 
-        // Check if to-do has changed
-        if (newToDo.isSameStateAs(toDoToEdit.get())) {
-            return new CommandResult(Messages.EDIT_COMMAND_NO_EDITS, true);
-        }
+        return newToDo;
+    }
 
+    private void ensureOnlyDueDateOrDateRangePresent(ReadOnlyToDo toDo) throws IllegalValueException {
         // Ensure to-do doesn't have both duedate and daterange
-        if (newToDo.getDateRange().isPresent() && newToDo.getDueDate().isPresent()) {
-            return new CommandResult(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE, true);
+        if (toDo.getDateRange().isPresent() && toDo.getDueDate().isPresent()) {
+            throw new IllegalValueException(Messages.TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE);
+        }
+    }
+
+    private ReadOnlyToDo getToDoAtIndex(Model model, int toDoIndex) throws IllegalValueException {
+        Optional<UiToDo> toDoToEdit = model.getUiToDoAtIndex(toDoIndex);
+
+        if (!toDoToEdit.isPresent()) {
+            throw new IllegalValueException(String.format(Messages.TODO_ITEM_INDEX_INVALID, toDoIndex));
         }
 
-        try {
-            model.changeToDoList(new ToDoListChange(
-                new ToDoList().add(newToDo),
-                new ToDoList().add(toDoToEdit.get())
-            ));
-        } catch (IllegalValueException exception) {
-            return new CommandResult(exception.getMessage(), true);
-        }
+        return toDoToEdit.get();
+    }
 
-        String feedback = String.format(Messages.EDIT_COMMAND, newToDo.getTitle().toString());
+    /**
+     * Sets the title for the target to-do, must be non-null.
+     *
+     * @param title title to set
+     */
+    public void setTitle(Title title) {
+        assert title != null;
 
-        // If event already over, warn user
-        if (newToDo.getDateRange().isPresent()
-            && newToDo.getDateRange().get().endDate.isBefore(LocalDateTime.now())) {
-            feedback += "\n" + Messages.EDIT_COMMAND_EVENT_OVER;
-        }
+        this.title = title;
+    }
 
-        return new CommandResult(feedback);
+    /**
+     * Sets the date range for the target to-do, must be non-null.
+     *
+     * @param dateRange date range to set
+     */
+    public void setDateRange(DateRange dateRange) {
+        assert dateRange != null;
+
+        this.dateRange = dateRange;
+    }
+
+    /**
+     * Sets the due date for the target to-do, must be non-null.
+     *
+     * @param dueDate due date to set
+     */
+    public void setDueDate(DueDate dueDate) {
+        assert dueDate != null;
+
+        this.dueDate = dueDate;
+    }
+
+    /**
+     * Sets the tags to replace for the target to-do, must be non-null.
+     *
+     * @param tags tags to set
+     */
+    public void setTags(Set<Tag> tags) {
+        assert tags != null;
+
+        this.tags = tags;
     }
 }

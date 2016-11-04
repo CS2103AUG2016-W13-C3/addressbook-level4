@@ -12,7 +12,7 @@ import seedu.commando.commons.util.CollectionUtil;
 
 /**
  * Represents the due date of a to-do, immutable.
- * Ignores the seconds and nano-seconds field of its datetimes.
+ * Ignores the seconds and nano-seconds field of its datetimes, unless it is MIN or MAX.
  */
 public class DueDate {
     private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

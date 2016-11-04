@@ -17,7 +17,7 @@ public class Config {
     public static final String DefaultToDoListFilePath = "data/todos.xml";
     public static final double DefaultWindowWidth = 1200;
     public static final double DefaultWindowHeight = 750;
-    public static String UserGuideUrl = "https://cs2103aug2016-w13-c3.github.io/main/user";
+    public static String UserGuideUrl = "/userguide/user.html";
     public static String AboutUsUrl = "https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/AboutUs.md";
     private static Map<String, String> CommandWordsToUserGuideAnchors = new HashMap<String, String>() {{
         put("cheatsheet", "cheatsheet");
@@ -33,11 +33,8 @@ public class Config {
         put("redo", "redo");
         put("exit", "exit");
         put("faq", "faq");
-        put("about", "about");
-        put("commands", "commands");
-        put("datetime formats", "supported-date-time-formats");
+        put("datetime", "supported-date-time-formats");
         put("find", "find");
-        put("search logic", "search-logic");
         put("unfinish", "unfinish");
         put("recall", "recall");
         put("list", "list");

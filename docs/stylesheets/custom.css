@@ -182,3 +182,7 @@ kbd.light {
 .datagrid.class table th {
     text-align: center;
 }
+
+ul.use-case li {
+    list-style: none;
+}

@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import seedu.commando.commons.core.UnmodifiableObservableList;
 import seedu.commando.commons.util.CollectionUtil;
 import seedu.commando.commons.util.StringUtil;
+import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListManager;
 import seedu.commando.model.todo.*;
 
@@ -16,6 +17,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 //@@author A0139697H
+
 /**
  * In charge of processing and filtering the list of to-dos for the UI.
  */
@@ -29,11 +31,7 @@ public class UiModel {
     private int runningIndex;
 
     // Parameters for filtering
-    private FILTER_MODE filterMode = FILTER_MODE.ALL;
-
-    public enum FILTER_MODE {
-        FINISHED, UNFINISHED, ALL
-    }
+    private Model.FILTER_MODE filterMode = Model.FILTER_MODE.ALL;
 
     /**
      * @param toDoListManager ToDoListManager it tracks and grabs the list of to-dos from
@@ -42,7 +40,7 @@ public class UiModel {
         this.toDoListManager = toDoListManager;
 
         // Initialize the filter to show unfinished to-dos
-        clearToDoListFilter(FILTER_MODE.UNFINISHED);
+        clearToDoListFilter(Model.FILTER_MODE.UNFINISHED);
 
         // Start tracking changes to-do list, and update UI to-dos when a change happens
         toDoListManager.getToDoList().getToDos().addListener(new ListChangeListener<ReadOnlyToDo>() {
@@ -54,7 +52,7 @@ public class UiModel {
     }
 
     /**
-     * Get to-do item at index as displayed on the UI
+     * @see Model#getUiToDoAtIndex(int)
      */
     public Optional<UiToDo> getToDoAtIndex(int index) {
         if (index - 1 < 0 || index - 1 >= toDoAtIndices.size()) {
@@ -65,25 +63,17 @@ public class UiModel {
     }
 
     /**
-     * Clears any keywords, tags or daterange filters on the UI to-dos
-     *   and sets the filter mode.
-     * Asserts parameters to be non-null.
+     * @see Model#clearUiToDoListFilter(Model.FILTER_MODE)
      */
-    public void clearToDoListFilter(FILTER_MODE filterMode) {
+    public void clearToDoListFilter(Model.FILTER_MODE filterMode) {
         assert !CollectionUtil.isAnyNull(filterMode);
         setToDoListFilter(Collections.emptySet(), Collections.emptySet(), filterMode);
     }
 
     /**
-     * Sets a filter mode, keywords filter, and tags filter on the UI to-dos.
-     * Asserts parameters to be non-null.
-     * If {@param filterMode} ==
-     *   - ALL: all to-dos that match keywords and tags are shown.
-     *   - FINISHED: finished to-dos that match keywords and tags are shown
-     *   - UNFINISHED: unfinished to-dos or finished to-dos that are finished on the
-     *       the current day, that match keywords and tags, are shown
+     * @see Model#setUiToDoListFilter(Set, Set, Model.FILTER_MODE)
      */
-    public void setToDoListFilter(Set<String> keywords, Set<Tag> tags, FILTER_MODE filterMode) {
+    public void setToDoListFilter(Set<String> keywords, Set<Tag> tags, Model.FILTER_MODE filterMode) {
         assert !CollectionUtil.isAnyNull(keywords, tags, filterMode);
 
         this.filterMode = filterMode;
@@ -92,28 +82,29 @@ public class UiModel {
     }
 
     //@@author A0142230B
+
     /**
-     * Sets a date range filter on the UI to-dos and sets filter mode to be ALL.
-     * Asserts dateRange to be non-null.
+     * @see Model#setUiToDoListFilter(DateRange)
      */
     public void setToDoListFilter(DateRange dateRange) {
         assert dateRange != null;
 
-        this.filterMode = FILTER_MODE.ALL;
+        this.filterMode = Model.FILTER_MODE.ALL;
 
         updateEventsAndTasksByTime(dateRange);
     }
 
     //@@author A0139697H
+
     /**
-     * @return a list of UI to-dos defined as events, to be shown on the UI
+     * @see Model#getUiEvents()
      */
     public UnmodifiableObservableList<UiToDo> getEvents() {
         return protectedEvents;
     }
 
     /**
-     * @return a list of UI to-dos defined as tasks, to be shown on the UI
+     * @see Model#getUiTasks()
      */
     public UnmodifiableObservableList<UiToDo> getTasks() {
         return protectedTasks;
@@ -121,7 +112,7 @@ public class UiModel {
 
     /**
      * Update the UI to-dos based on {@link #toDoListManager}'s to-do list and
-     *   the keywords and tags filter.
+     * the keywords and tags filter.
      */
     private void updateEventsAndTasks(Set<String> keywords, Set<Tag> tags) {
         // Sort and filter events and tasks for UI
@@ -133,18 +124,20 @@ public class UiModel {
     }
 
     //@@author A0142230B
+
     /**
      * Update the UI to-dos based on {@link #toDoListManager}'s to-do list and the date range filter
      */
     private void updateEventsAndTasksByTime(DateRange filterDateRange) {
-    	// Sort and filter events and tasks for UI
-        List<ReadOnlyToDo> events = filterAndSortEventsByTime(toDoListManager.getToDoList().getToDos(),filterDateRange);
-        List<ReadOnlyToDo> tasks = filterAndSortTasksByTime(toDoListManager.getToDoList().getToDos(),filterDateRange);
+        // Sort and filter events and tasks for UI
+        List<ReadOnlyToDo> events = filterAndSortEventsByTime(toDoListManager.getToDoList().getToDos(), filterDateRange);
+        List<ReadOnlyToDo> tasks = filterAndSortTasksByTime(toDoListManager.getToDoList().getToDos(), filterDateRange);
         // Update its own lists of UI to-dos
         updateUiToDos(events, tasks);
     }
 
     //@@author A0139697H
+
     /**
      * Populate its lists of UI to-dos based on supplied to-dos
      */
@@ -160,13 +153,13 @@ public class UiModel {
         // Map each event to a UI to-do and add an index to each
         // Also check if the events are new with respect to last change
         this.events.setAll(events.stream().map(
-            toDo -> new UiToDo(toDo, ++ runningIndex, newToDos.contains(toDo))
+            toDo -> new UiToDo(toDo, ++runningIndex, newToDos.contains(toDo))
         ).collect(Collectors.toList()));
         toDoAtIndices.addAll(this.events);
 
         // Then do the same for tasks
         this.tasks.setAll(tasks.stream().map(
-            toDo -> new UiToDo(toDo, ++ runningIndex, newToDos.contains(toDo))
+            toDo -> new UiToDo(toDo, ++runningIndex, newToDos.contains(toDo))
         ).collect(Collectors.toList()));
         toDoAtIndices.addAll(this.tasks);
 
@@ -174,55 +167,60 @@ public class UiModel {
         assert runningIndex == toDoAtIndices.size();
     }
     //@@author A0142230B
+
     /**
      * Filter tasks which are within the filterDateRange from the given toDoList.
+     *
      * @return a list of filtered tasks
      */
-	private List<ReadOnlyToDo> filterAndSortTasksByTime(List<ReadOnlyToDo> toDos, DateRange filterDateRange) {
-		List<ReadOnlyToDo> tasks = new ArrayList<ReadOnlyToDo>();
-		for (ReadOnlyToDo toDo : toDos) {
-			if (isTaskInDateRange(toDo, filterDateRange)) {
-				tasks.add(toDo);
-			}
-		}
-		// For tasks, sort by created date first (latest first)
-		tasks.sort((task1, task2) -> task2.getDateCreated().compareTo(task1.getDateCreated()));
+    private List<ReadOnlyToDo> filterAndSortTasksByTime(List<ReadOnlyToDo> toDos, DateRange filterDateRange) {
+        List<ReadOnlyToDo> tasks = new ArrayList<ReadOnlyToDo>();
+        for (ReadOnlyToDo toDo : toDos) {
+            if (isTaskInDateRange(toDo, filterDateRange)) {
+                tasks.add(toDo);
+            }
+        }
+        // For tasks, sort by created date first (latest first)
+        tasks.sort((task1, task2) -> task2.getDateCreated().compareTo(task1.getDateCreated()));
 
-		// Then, by whether they have due date and that date (latest first)
-		tasks.sort((task1, task2) -> compareDueDates(task1, task2));
+        // Then, by whether they have due date and that date (latest first)
+        tasks.sort((task1, task2) -> compareDueDates(task1, task2));
 
-		// Then, by whether they are finished and finished date (latest first)
-		tasks.sort((task1, task2) -> compareDateFinished(task2, task1));
+        // Then, by whether they are finished and finished date (latest first)
+        tasks.sort((task1, task2) -> compareDateFinished(task2, task1));
 
-		return tasks;
-	}
+        return tasks;
+    }
 
     /**
      * Check if a toDo is a task and it is in the filterDateRange
+     *
      * @return true if the toDo is a task and it is in the filterDateRange
      */
-	private boolean isTaskInDateRange(ReadOnlyToDo toDo, DateRange filterDateRange) {
-		if (!toDo.getDueDate().isPresent()) {
-			return false;
-		}
-		LocalDateTime dueDate = toDo.getDueDate().get().value;
+    private boolean isTaskInDateRange(ReadOnlyToDo toDo, DateRange filterDateRange) {
+        if (!toDo.getDueDate().isPresent()) {
+            return false;
+        }
+        LocalDateTime dueDate = toDo.getDueDate().get().value;
 
-		if (isTimeInRange(dueDate, filterDateRange)) {
-			return true;
-		}
+        if (isTimeInRange(dueDate, filterDateRange)) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
+
     /**
      * Filter events which are within the filterDateRange from the given toDoList.
+     *
      * @return a list of filtered events
      */
-	private List<ReadOnlyToDo> filterAndSortEventsByTime(List<ReadOnlyToDo> toDos, DateRange filterDateRange) {
-    	List<ReadOnlyToDo> events = new ArrayList<ReadOnlyToDo>();
-        for(ReadOnlyToDo toDo : toDos) {
-        	if(isEventInDateRange(toDo,filterDateRange)){
-        		events.add(toDo);
-        	}
+    private List<ReadOnlyToDo> filterAndSortEventsByTime(List<ReadOnlyToDo> toDos, DateRange filterDateRange) {
+        List<ReadOnlyToDo> events = new ArrayList<ReadOnlyToDo>();
+        for (ReadOnlyToDo toDo : toDos) {
+            if (isEventInDateRange(toDo, filterDateRange)) {
+                events.add(toDo);
+            }
         }
 
         // For events, sort by created date first (latest first)
@@ -236,47 +234,52 @@ public class UiModel {
 
         return events;
     }
+
     /**
      * Check if a toDo is a event and it is in the filterDateRange
+     *
      * @return true if the toDo is a event and it is in the filterDateRange
      */
-	private boolean isEventInDateRange(ReadOnlyToDo toDo, DateRange filterDateRange) {
-		if (!toDo.getDateRange().isPresent()) {
-			return false;
-		}
-		LocalDateTime startTime = toDo.getDateRange().get().startDate;
-		LocalDateTime endTime = toDo.getDateRange().get().endDate;
+    private boolean isEventInDateRange(ReadOnlyToDo toDo, DateRange filterDateRange) {
+        if (!toDo.getDateRange().isPresent()) {
+            return false;
+        }
+        LocalDateTime startTime = toDo.getDateRange().get().startDate;
+        LocalDateTime endTime = toDo.getDateRange().get().endDate;
 
-		// Case 1: start time is in the range
-		if (isTimeInRange(startTime, filterDateRange)) {
-			return true;
-		}
-		// Case 2:end time is in the range
-		if (isTimeInRange(endTime, filterDateRange)) {
-			return true;
-		}
+        // Case 1: start time is in the range
+        if (isTimeInRange(startTime, filterDateRange)) {
+            return true;
+        }
+        // Case 2:end time is in the range
+        if (isTimeInRange(endTime, filterDateRange)) {
+            return true;
+        }
 
-		// Case 3: filterDateRange is in the range between startTime and endTime
-		if (startTime.isBefore(filterDateRange.startDate) && endTime.isAfter(filterDateRange.endDate)) {
-			return true;
-		}
+        // Case 3: filterDateRange is in the range between startTime and endTime
+        if (startTime.isBefore(filterDateRange.startDate) && endTime.isAfter(filterDateRange.endDate)) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
+
     /**
      * Check if a LocalDateTime is within a dateRange
+     *
      * @return true if the time is in the dateRange
      */
-	private boolean isTimeInRange(LocalDateTime time, DateRange dateRange) {
-		if ((time.isAfter(dateRange.startDate) || time.isEqual(dateRange.startDate))
-				&& (time.isBefore(dateRange.endDate) || time.isEqual(dateRange.endDate))) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	//@@author A0139697H
-	private List<ReadOnlyToDo> filterAndSortTasks(List<ReadOnlyToDo> toDos,
+    private boolean isTimeInRange(LocalDateTime time, DateRange dateRange) {
+        if ((time.isAfter(dateRange.startDate) || time.isEqual(dateRange.startDate))
+            && (time.isBefore(dateRange.endDate) || time.isEqual(dateRange.endDate))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //@@author A0139697H
+    private List<ReadOnlyToDo> filterAndSortTasks(List<ReadOnlyToDo> toDos,
                                                   Set<String> keywords, Set<Tag> tags) {
         List<ReadOnlyToDo> tasks = toDos.stream()
             .filter(toDoFilterModePredicate)
@@ -359,7 +362,8 @@ public class UiModel {
      */
     private Predicate<ReadOnlyToDo> toDoFilterModePredicate = toDo -> {
         switch (filterMode) {
-            case ALL: return true;
+            case ALL:
+                return true;
             case UNFINISHED:
                 // if unfinished mode but to-do is finished before the current day
                 return !toDo.isFinished()

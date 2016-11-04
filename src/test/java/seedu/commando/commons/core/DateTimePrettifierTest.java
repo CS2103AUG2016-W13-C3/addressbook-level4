@@ -17,8 +17,8 @@ public class DateTimePrettifierTest {
     
     private DateTimeFormatter formatDayOfWeek = DateTimeFormatter.ofPattern("EEE");
     private LocalDateTime now = LocalDateTime.now();
-    private LocalDateTime untilNever = LocalDateTime.MAX.withSecond(0).withNano(0);
-    private LocalDateTime sinceForever = LocalDateTime.MIN.withSecond(0).withNano(0);
+    private LocalDateTime untilNever = LocalDateTime.MAX;
+    private LocalDateTime sinceForever = LocalDateTime.MIN;
     
     private final int currentYear = now.getYear();
     private final int currentMonth = now.getMonthValue();
@@ -146,6 +146,16 @@ public class DateTimePrettifierTest {
     }
     
     @Test
+    public void prettifyDateTimeRange_diffYearSameMonthSameDay_showTwoYearTwoMonthAndTwoTimes() {
+        // Should display one year, one month and two times
+        final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 27, 12, 30);
+        final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 2, 27, 13, 30);
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 27 Feb " + currentYear + " to\n" +
+                     "13:30 on " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear + 1),
+                DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
+    }
+    
+    @Test
     public void prettifyDateTimeRange_todayToToday_showTimeAndToday() {
         // Should display time and date
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
@@ -188,5 +198,15 @@ public class DateTimePrettifierTest {
         final LocalDateTime dateTo = untilNever;
         assertEquals("From 12:30 Today onwards",
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
+    }
+
+    @Test
+    public void prettifyDateTimeRange_todayToNextYearToday_showTodayToNextYearToday() {
+        final LocalDateTime dateFrom = LocalDateTime.now().withHour(1).withMinute(0);
+        final LocalDateTime dateTo = LocalDateTime.now().withHour(1).withMinute(0).plusYears(1);
+        assertEquals(
+            "01:00 Today to\n01:00 on " + DateTimeFormatter.ofPattern("EEE d MMM YYYY").format(dateTo),
+            DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo)
+        );
     }
 }

@@ -1,25 +1,20 @@
 package seedu.commando.logic.commands;
 
+import seedu.commando.commons.core.Messages;
+import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.logic.parser.CommandParser;
+import seedu.commando.model.todo.*;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.logic.parser.CommandParser;
-import seedu.commando.model.todo.DateRange;
-import seedu.commando.model.todo.DueDate;
-import seedu.commando.model.todo.Recurrence;
-import seedu.commando.model.todo.Tag;
-import seedu.commando.model.todo.Title;
-
-
 //@@author A0139697H
 
 /**
- * Maps and builds commands from input strings, using {@link CommandParser}
- * In charge of splitting up input strings to required parts for commands
+ * Maps and builds commands from input strings, using {@link CommandParser}.
+ * In charge of splitting up input strings to required parts for commands.
  */
 public class CommandFactory {
     private static final String KEYWORD_DELETE_TIME = "time";
@@ -45,13 +40,15 @@ public class CommandFactory {
         }
     }
 
-    public static class MissingCommandWordException extends Exception {
-    }
+    public static class MissingCommandWordException extends Exception {}
 
     /**
-     * Interprets an input string as a command, initializes it, and returns it
+     * Interprets an input string as a command, initializes it, and returns it.
      *
      * @return instance of a command
+     * @throws InvalidCommandFormatException if command format is invalid
+     * @throws UnknownCommandWordException if command word is unknown
+     * @throws MissingCommandWordException if command word is missing
      */
     public Command build(String inputString) throws InvalidCommandFormatException,
         UnknownCommandWordException, MissingCommandWordException {
@@ -67,40 +64,23 @@ public class CommandFactory {
         String processedCommandWord = commandWord.get().toLowerCase();
         try {
             switch (processedCommandWord) {
-                case AddCommand.COMMAND_WORD:
-                    return buildAddCommand();
-                case DeleteCommand.COMMAND_WORD:
-                    return buildDeleteCommand();
-                case FinishCommand.COMMAND_WORD:
-                    return buildFinishCommand();
-                case UnfinishCommand.COMMAND_WORD:
-                    return buildUnfinishCommand();
-                case FindCommand.COMMAND_WORD:
-                    return buildFindCommand();
-                case ExitCommand.COMMAND_WORD:
-                    return buildExitCommand();
-                case ClearCommand.COMMAND_WORD:
-                    return buildClearCommand();
-                case HelpCommand.COMMAND_WORD:
-                    return buildHelpCommand();
-                case EditCommand.COMMAND_WORD:
-                    return buildEditCommand();
-                case UndoCommand.COMMAND_WORD:
-                    return buildUndoCommand();
-                case RedoCommand.COMMAND_WORD:
-                    return buildRedoCommand();
-                case StoreCommand.COMMAND_WORD:
-                    return buildStoreCommand();
-                case ExportCommand.COMMAND_WORD:
-                    return buildExportCommand();
-                case ImportCommand.COMMAND_WORD:
-                    return buildImportCommand();
-                case RecallCommand.COMMAND_WORD:
-                    return buildRecallCommand();
-                case ListCommand.COMMAND_WORD:
-                    return buildListCommand();
-                default:
-                    throw new UnknownCommandWordException(processedCommandWord);
+                case AddCommand.COMMAND_WORD: return buildAddCommand();
+                case DeleteCommand.COMMAND_WORD: return buildDeleteCommand();
+                case FinishCommand.COMMAND_WORD: return buildFinishCommand();
+                case UnfinishCommand.COMMAND_WORD: return buildUnfinishCommand();
+                case FindCommand.COMMAND_WORD: return buildFindCommand();
+                case ExitCommand.COMMAND_WORD: return buildExitCommand();
+                case ClearCommand.COMMAND_WORD: return buildClearCommand();
+                case HelpCommand.COMMAND_WORD: return buildHelpCommand();
+                case EditCommand.COMMAND_WORD: return buildEditCommand();
+                case UndoCommand.COMMAND_WORD: return buildUndoCommand();
+                case RedoCommand.COMMAND_WORD: return buildRedoCommand();
+                case StoreCommand.COMMAND_WORD: return buildStoreCommand();
+                case ExportCommand.COMMAND_WORD: return buildExportCommand();
+                case ImportCommand.COMMAND_WORD: return buildImportCommand();
+                case RecallCommand.COMMAND_WORD: return buildRecallCommand();
+                case ListCommand.COMMAND_WORD: return buildListCommand();
+                default: throw new UnknownCommandWordException(processedCommandWord);
             }
         } catch (IllegalValueException e) {
             throw new InvalidCommandFormatException(e.getMessage(), processedCommandWord);
@@ -113,20 +93,19 @@ public class CommandFactory {
         // Extract tags
         Set<Tag> tags = commandParser.extractTrailingTags();
         if (!tags.isEmpty()) {
-            command.tags = tags;
+            command.setTags(tags);
         }
 
         // Try to find keywords
-        command.keywords = commandParser.extractWords().stream().collect(Collectors.toSet());
+        Set<String> keywords = commandParser.extractWords().stream().collect(Collectors.toSet());
+        command.setKeywords(keywords);
 
         return command;
     }
 
 
     private Command buildExitCommand() throws IllegalValueException {
-        if (!commandParser.isInputEmpty()) {
-            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ExitCommand.COMMAND_WORD));
-        }
+        ensureInputIsEmpty(ExitCommand.COMMAND_WORD);
 
         return new ExitCommand();
     }
@@ -163,25 +142,24 @@ public class CommandFactory {
 
         return new StoreCommand(path);
     }
-    
+
     //@@author A0142230B
     private Command buildListCommand() throws IllegalValueException {
         // Extract the date range, if exists
-    	Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
-    	// Wrong format
-        if (!commandParser.isInputEmpty()) {
+        Optional<DateRange> dateRange = extractAnyDateRange();
+
+        // Wrong format
+        ensureInputIsEmpty(ListCommand.COMMAND_WORD);
+
+        // Should not have recurrence info in the input
+        if (dateRange.isPresent() && dateRange.get().recurrence != Recurrence.None) {
             throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ListCommand.COMMAND_WORD));
-        }
-        //Should not have recurrence info in the input
-        if(dateRange.isPresent() && dateRange.get().recurrence != Recurrence.None){
-        	throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ListCommand.COMMAND_WORD));
-        }
-        else{
-    		return new ListCommand(dateRange);
+        } else {
+            return new ListCommand(dateRange);
         }
     }
-    
 
+    //@@author A0139697H
     private Command buildAddCommand() throws IllegalValueException {
         // Check if quoted title exists
         Optional<String> quotedTitle = commandParser.extractQuotedTitle();
@@ -190,7 +168,7 @@ public class CommandFactory {
         Set<Tag> tags = commandParser.extractTrailingTags();
 
         // Extract date range, if exists
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = extractToDoDateRange();
 
         // Extract due date, if exists
         Optional<DueDate> dueDate = commandParser.extractTrailingDueDate();
@@ -208,24 +186,19 @@ public class CommandFactory {
 
         // Put in fields
         if (!tags.isEmpty()) {
-            command.tags = tags;
+            command.setTags(tags);
         }
 
-        dueDate.ifPresent(x -> command.dueDate = x);
-        dateRange.ifPresent(x -> command.dateRange = x);
+        dueDate.ifPresent(command::setDueDate);
+        dateRange.ifPresent(command::setDateRange);
 
-        if (!commandParser.isInputEmpty()) {
-            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, AddCommand.COMMAND_WORD));
-        }
+        ensureInputIsEmpty(AddCommand.COMMAND_WORD);
 
         return command;
     }
 
     private Command buildDeleteCommand() throws IllegalValueException {
-        List<Integer> indices = commandParser.extractIndicesList();
-        if (indices.isEmpty()) {
-            throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
-        }
+        List<Integer> indices = extractIndices();
 
         DeleteCommand deleteCommand = new DeleteCommand(indices);
 
@@ -235,17 +208,17 @@ public class CommandFactory {
         int fieldsCount = 0;
 
         if (words.contains(KEYWORD_DELETE_TAG)) {
-            deleteCommand.ifDeleteTag = true;
+            deleteCommand.deletesTags();
             fieldsCount++;
         }
 
         if (words.contains(KEYWORD_DELETE_TIME)) {
-            deleteCommand.ifDeleteTime = true;
+            deleteCommand.deletesTime();
             fieldsCount++;
         }
 
         if (words.contains(KEYWORD_DELETE_RECURRENCE)) {
-            deleteCommand.ifDeleteRecurrence = true;
+            deleteCommand.deletesRecurrence();
             fieldsCount++;
         }
 
@@ -258,26 +231,15 @@ public class CommandFactory {
     }
 
     private Command buildFinishCommand() throws IllegalValueException {
-        List<Integer> indices = commandParser.extractIndicesList();
-        if (indices.isEmpty()) {
-            throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
-        }
-        if (!commandParser.isInputEmpty()) {
-            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
-
-        }
+        List<Integer> indices = extractIndices();
+        ensureInputIsEmpty(FinishCommand.COMMAND_WORD);
 
         return new FinishCommand(indices);
     }
 
     private Command buildUnfinishCommand() throws IllegalValueException {
-        List<Integer> indices = commandParser.extractIndicesList();
-        if (indices.isEmpty()) {
-            throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
-        }
-        if (!commandParser.isInputEmpty()) {
-            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, FinishCommand.COMMAND_WORD));
-        }
+        List<Integer> indices = extractIndices();
+        ensureInputIsEmpty(UnfinishCommand.COMMAND_WORD);
 
         return new UnfinishCommand(indices);
     }
@@ -288,19 +250,18 @@ public class CommandFactory {
         // Extract tags
         Set<Tag> tags = commandParser.extractTrailingTags();
         if (!tags.isEmpty()) {
-            command.tags = tags;
+            command.setTags(tags);
         }
 
         // Try to find keywords
-        command.keywords = commandParser.extractWords().stream().collect(Collectors.toSet());
+        Set<String> keywords = commandParser.extractWords().stream().collect(Collectors.toSet());
+        command.setKeywords(keywords);
 
         return command;
     }
 
     private Command buildClearCommand() throws IllegalValueException {
-        if (!commandParser.isInputEmpty()) {
-            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, ClearCommand.COMMAND_WORD));
-        }
+        ensureInputIsEmpty(ClearCommand.COMMAND_WORD);
 
         return new ClearCommand();
     }
@@ -328,34 +289,24 @@ public class CommandFactory {
         // Extract tags
         Set<Tag> tags = commandParser.extractTrailingTags();
 
-        // Put in tags
+        // Put in fields
         if (!tags.isEmpty()) {
-            command.tags = tags;
+            command.setTags(tags);
         }
-
-        // Extract date range, if exists
-        commandParser.extractTrailingDateRange().ifPresent(
-            x -> command.dateRange = x
-        );
-
-        // Extract due date, if exists
-        commandParser.extractTrailingDueDate().ifPresent(
-            x -> command.dueDate = x
-        );
+        extractToDoDateRange().ifPresent(command::setDateRange);
+        commandParser.extractTrailingDueDate().ifPresent(command::setDueDate);
 
         // Try to extract title, if there was no quoted title
         // Otherwise, use the quoted title
         if (quotedTitle.isPresent()) {
-            command.title = new Title(quotedTitle.get());
+            command.setTitle(new Title(quotedTitle.get()));
         } else {
             commandParser.extractText().ifPresent(
-                title -> command.title = new Title(title)
+                title -> command.setTitle(new Title(title))
             );
         }
 
-        if (!commandParser.isInputEmpty()) {
-            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, EditCommand.COMMAND_WORD));
-        }
+        ensureInputIsEmpty(EditCommand.COMMAND_WORD);
 
         return command;
     }
@@ -363,18 +314,87 @@ public class CommandFactory {
     //@@author A0122001M
 
     private Command buildUndoCommand() throws IllegalValueException {
-        if (!commandParser.isInputEmpty()) {
-            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, UndoCommand.COMMAND_WORD));
-        }
+        ensureInputIsEmpty(UndoCommand.COMMAND_WORD);
 
         return new UndoCommand();
     }
 
     private Command buildRedoCommand() throws IllegalValueException {
-        if (!commandParser.isInputEmpty()) {
-            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, RedoCommand.COMMAND_WORD));
-        }
+        ensureInputIsEmpty(RedoCommand.COMMAND_WORD);
 
         return new RedoCommand();
+    }
+
+    private void ensureInputIsEmpty(String commandWord) throws IllegalValueException {
+        if (!commandParser.isInputEmpty()) {
+            throw new IllegalValueException(String.format(Messages.INVALID_COMMAND_FORMAT, commandWord));
+        }
+    }
+
+    private List<Integer> extractIndices() throws IllegalValueException {
+        List<Integer> indices = commandParser.extractIndicesList();
+        if (indices.isEmpty()) {
+            throw new IllegalValueException(Messages.MISSING_TODO_ITEM_INDEX);
+        }
+        return indices;
+    }
+
+    private Optional<DateRange> extractToDoDateRange() throws IllegalValueException {
+        // Try to extract "on..."
+        Optional<DateRange> singleDateDateRange = commandParser.extractTrailingSingleDateDateRange();
+
+        if (singleDateDateRange.isPresent()) {
+            return singleDateDateRange;
+        }
+
+        // If not, try to extract "from... to..."
+        Optional<DateRange> twoSidedDateRange = commandParser.extractTrailingTwoSidedDateRange();
+
+        if (twoSidedDateRange.isPresent()) {
+            return twoSidedDateRange;
+        }
+
+        // If not, try to extract "to..."
+        Optional<DateRange> endDateDateRange = commandParser.extractTrailingEndDateDateRange();
+
+        if (endDateDateRange.isPresent()) {
+            return endDateDateRange;
+        }
+
+        // No more date formats
+        return Optional.empty();
+    }
+
+    private Optional<DateRange> extractAnyDateRange() throws IllegalValueException {
+        // Try to extract "on..."
+        Optional<DateRange> singleDateDateRange = commandParser.extractTrailingSingleDateDateRange();
+
+        if (singleDateDateRange.isPresent()) {
+            return singleDateDateRange;
+        }
+
+        // If not, try to extract "from... to..."
+        Optional<DateRange> twoSidedDateRange = commandParser.extractTrailingTwoSidedDateRange();
+
+        if (twoSidedDateRange.isPresent()) {
+            return twoSidedDateRange;
+        }
+
+        // If not, try to extract "to..."
+        Optional<DateRange> endDateDateRange = commandParser.extractTrailingEndDateDateRange();
+
+        if (endDateDateRange.isPresent()) {
+            return endDateDateRange;
+        }
+
+        // If not, try to extract "from..."
+        Optional<DateRange> startDateDateRange = commandParser.extractTrailingStartDateDateRange();
+
+        if (startDateDateRange.isPresent()) {
+            return startDateDateRange;
+        }
+
+        // No more date formats
+        return Optional.empty();
     }
 }

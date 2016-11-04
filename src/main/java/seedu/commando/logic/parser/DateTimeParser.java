@@ -1,17 +1,19 @@
 package seedu.commando.logic.parser;
 
-import java.time.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 import javafx.util.Pair;
 
+import java.time.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 //@@author A0139697H
+
 /**
  * Parses datetimes with help of {@link com.joestelmach.natty.Parser}
  */
@@ -37,29 +39,35 @@ public class DateTimeParser {
         "(" + MonthWordRegexString + ")(\\s+" + YearRegexString + ")?";
     private static final String DateWithMonthWordReversedRegexString = "(" + MonthWordRegexString + ")\\s+" +
         "(" + DayOfMonthRegexString + ")(th|rd|st|nd)?(\\s+" + YearRegexString + ")?";
-    private static final String DateWithDayWordRegexString = "((coming|next)\\s+)?(" + DayWordRegexString + ")";
+    private static final String DateWithDayWordRegexString = "((this|coming|next)\\s+)?(" + DayWordRegexString + ")";
     private static final String DateWithLaterAgoRegexString = "((\\d+\\d)|([2-9]))\\s+(days|weeks|months|years)\\s+(later|ago)";
     private static final String DateWithLastNextRegexString = "(last|this|next)\\s+(week|month|year)";
-    private static final String TimeNightRegexString = "(this\\s+)?(night|tonight)";
-    private static final String TimeHourRegexString = "(?<hours>" + Hours24RegexString + ")(?<minutes>" + MinutesRegexString + ")h";
+    private static final String DatePresetsRegexString = "today|tomorrow|tmr|yesterday";
 
-    private static final String[] supportedDateRegexStrings = new String[] {
+    private static final String Time24HourRegexString = "(" + Hours24RegexString + ")(\\.|:)(" + MinutesRegexString + ")";
+    private static final String Time12HourRegexString = "(" + Hours12RegexString + ")(\\.|:)?(" + MinutesRegexString + ")?(am|pm)";
+    private static final String TimePresetsNightRegexString = "(this\\s+)?(night|tonight)";
+    private static final String TimePresetsRegexString = "(this\\s+)?(morning|afternoon|noon|evening|midnight)";
+    private static final String TimeHourNotationRegexString = "(?<hours>" + Hours24RegexString + ")(?<minutes>" + MinutesRegexString + ")h";
+
+    private static final String[] supportedDateRegexStrings = new String[]{
         DateWithSlashesRegexString,
         DateWithMonthWordRegexString,
         DateWithMonthWordReversedRegexString,
         DateWithDayWordRegexString,
         DateWithLaterAgoRegexString,
         DateWithLastNextRegexString,
-        "today", "tomorrow|tmr", "yesterday"
+        DatePresetsRegexString
     };
 
-    private static final String[] supportedTimeRegexStrings = new String[] {
-        "(" + Hours24RegexString + ")(\\.|:)(" + MinutesRegexString + ")",
-        TimeHourRegexString,
-        "(" + Hours12RegexString + ")(\\.|:)?(" + MinutesRegexString + ")?(am|pm)",
-        "(this\\s+)?(morning|afternoon|noon|evening|midnight)",
-        TimeNightRegexString
+    private static final String[] supportedTimeRegexStrings = new String[]{
+        Time24HourRegexString,
+        TimeHourNotationRegexString,
+        Time12HourRegexString,
+        TimePresetsRegexString,
+        TimePresetsNightRegexString
     };
+
     private static final String InitializationDateString = "today";
 
     private Parser parser = new Parser();
@@ -70,20 +78,24 @@ public class DateTimeParser {
     }
 
     /**
-     * Resets any contextual info used based on history of parsing
+     * Resets any contextual info used based on history of parsing.
      */
     public void resetContext() {
         lastLocalDate = null;
     }
 
     /**
-     * @see #parseDateTime(String, LocalTime), but additional processing to
-     *   interpret the datetime as a period.
-     * @return pair of (start datetime, end datetime)
+     * Parses an input string as a datetime period.
+     *
+     * @param input input string to be parsed
+     * @return optional of pair of (start datetime, end datetime), empty if invalid datetime
+     * @see #parseDateTime(String, LocalTime)
      */
     public Optional<Pair<LocalDateTime, LocalDateTime>> parseDateTimePeriod(String input) {
+        // Get the datetime the input string represents
         Optional<LocalDateTime> localDateTime = parseDateTime(input);
 
+        // If input string doesn't represent a datetime, return empty
         if (!localDateTime.isPresent()) {
             return Optional.empty();
         }
@@ -91,103 +103,84 @@ public class DateTimeParser {
         String trimmedInput = input.trim();
 
         // Check if the input is trying to represent a period of > 1 day
-        if (trimmedInput.matches(DateWithLaterAgoRegexString)
-            || trimmedInput.matches(DateWithLastNextRegexString)) {
-            if (trimmedInput.contains("week")) {
-                // Return from monday to sunday of that week 2359h
-                return Optional.of(
-                    new Pair<>(
-                        localDateTime.get().with(DayOfWeek.MONDAY),
-                        localDateTime.get().with(DayOfWeek.SUNDAY).withHour(23).withMinute(59)
-                    )
-                );
-            } else if (trimmedInput.contains("month")) {
-                // Return from 1st to last day of month 2359h
-                return Optional.of(
-                    new Pair<>(
-                        localDateTime.get().withDayOfMonth(1),
-                        localDateTime.get().plusMonths(1).withDayOfMonth(1).minusDays(1)
-                            .withHour(23).withMinute(59)
-                    )
-                );
-            } else if (trimmedInput.contains("year")) {
-                // Return from 1st to last day of year 2359h
-                return Optional.of(
-                    new Pair<>(
-                        localDateTime.get().withDayOfYear(1),
-                        localDateTime.get().plusYears(1).withDayOfYear(1).minusDays(1)
-                            .withHour(23).withMinute(59)
-                    )
-                );
-            }
+        if (ifInputMatchesWeekPeriod(trimmedInput)) {
+            return Optional.of(getWeekPeriod(localDateTime.get()));
+        } else if (ifInputMatchesMonthPeriod(trimmedInput)) {
+            return Optional.of(getMonthPeriod(localDateTime.get()));
+        } else if (ifInputMatchesYearPeriod(trimmedInput)) {
+            return Optional.of(getYearPeriod(localDateTime.get()));
         }
 
-        // If not, treat it as on a single day until 2359h
-        return Optional.of(new Pair<>(localDateTime.get(), localDateTime.get().withHour(23).withMinute(59)));
+        return Optional.of(getDayPeriod(localDateTime.get()));
     }
 
     /**
-     * @see #parseDateTime(String, LocalTime), but with a default time of
-     *   midnight
+     * {@link #parseDateTime(String, LocalTime)}, but with a default time of midnight
      */
     public Optional<LocalDateTime> parseDateTime(String input) {
         return parseDateTime(input, LocalTime.MIDNIGHT);
     }
 
     /**
-     * Gets the first datetime encountered in text
-     * Works based on {@link com.joestelmach.natty.Parser}, but:
-     * - Converted to `LocalDateTime`
+     * Parses an input string as a datetime.
+     * <p>
+     * Works like {@link com.joestelmach.natty.Parser#parse(String)}, but:
+     * - First passed through a stricter filter that regulates what is a valid datetime format.
+     * - Converted to LocalDateTime
      * - If time is deemed as "inferred" (in natty), time = {@param defaultTime}
-     * - If date is "inferred" and there were previous parses, date = {@link #lastLocalDate}
+     * - If date is "inferred" and there were previous parses, date is set as that of last parsed datetime
      * - Seconds and nano-seconds field is always set to 0 (ignored)
+     *
+     * @param input       input string to parse
+     * @param defaultTime default time to set if time is not explicit in {@param input}
+     * @return optional of datetime, empty if invalid datetime
      */
     public Optional<LocalDateTime> parseDateTime(String input, LocalTime defaultTime) {
         Optional<String> preprocessedInput = preprocessInput(input.trim());
 
-        // If preprocessing fails, return empty
+        // If pre-processing fails, return empty
         if (!preprocessedInput.isPresent()) {
             return Optional.empty();
         }
 
+        // Let natty parse pre-processed input
         List<DateGroup> dateGroups = parser.parse(preprocessedInput.get());
 
-        // Return first date parsed
-        if (!dateGroups.isEmpty()) {
-            DateGroup dateGroup = dateGroups.get(0);
-            List<Date> dates = dateGroup.getDates();
-            if (!dates.isEmpty()) {
-                return Optional.of(toLocalDateTime(dateGroup, dates.get(0), defaultTime));
-            }
+        // Returns empty if natty didn't manage to parse it
+        if (dateGroups.isEmpty()) {
+           return Optional.empty();
         }
 
-        return Optional.empty();
+        DateGroup dateGroup = dateGroups.get(0);
+        List<Date> dates = dateGroup.getDates();
+        if (dates.isEmpty()) {
+            return Optional.empty();
+        }
+
+        // Returns the first datetime parsed by natty
+        return Optional.of(toLocalDateTime(dateGroup, dates.get(0), defaultTime));
     }
 
+    /**
+     * Converts natty's output {@code DateGroup} and {@code Date} to a {@code LocalDateTime}.
+     */
     private LocalDateTime toLocalDateTime(DateGroup dateGroup, Date date, LocalTime defaultTime) {
         Instant instant = Instant.ofEpochMilli(date.getTime());
         ZoneId zoneId = ZoneOffset.systemDefault();
-
         LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zoneId);
 
         // Check if date is inferred
         if (dateGroup.isDateInferred() && lastLocalDate != null) {
-            localDateTime = LocalDateTime.of(
-                lastLocalDate,
-                localDateTime.toLocalTime()
-            );
+            localDateTime = LocalDateTime.of(lastLocalDate, localDateTime.toLocalTime());
         }
 
         // Check if time is inferred
         if (dateGroup.isTimeInferred()) {
-            localDateTime = LocalDateTime.of(
-                localDateTime.toLocalDate(),
-                defaultTime
-            );
+            localDateTime = LocalDateTime.of(localDateTime.toLocalDate(), defaultTime);
         }
 
         // Reset seconds
-        localDateTime = localDateTime.withSecond(0);
+        localDateTime = localDateTime.withSecond(0).withNano(0);
 
         // Remember last date parsed
         lastLocalDate = localDateTime.toLocalDate();
@@ -196,10 +189,12 @@ public class DateTimeParser {
     }
 
     /**
-     * Determines with regex whether this is a supported datetime
-     * Preprocesses it to before being parsed in natty
-     * Assumes input is trimmed.
-     * Returns empty if not supported
+     * Determines with regex whether {@param input} is a supported datetime.
+     * Pre-processes it to before being parsed in natty
+     *
+     * @param input input string to pre-process, must be trimmed
+     * @return optional of the datetime string after validation and pre-processing, empty if
+     * deemed as a datetime format not supported by this class
      */
     private Optional<String> preprocessInput(String input) {
         if (input.isEmpty()) {
@@ -207,39 +202,25 @@ public class DateTimeParser {
         }
 
         // Try to match a date
+        Optional<Matcher> dateMatcher = findDateRegexMatch(input);
+
         String dateString = "";
-        for (String regexString : supportedDateRegexStrings) {
-            // Try to match regex + (space or end of string)
-            Matcher matcher = Pattern.compile(regexString + "(\\s|$)", Pattern.CASE_INSENSITIVE).matcher(input);
+        if (dateMatcher.isPresent()) {
+            dateString = getDateFromMatcher(dateMatcher.get());
 
-            // If matched from the start
-            if (matcher.find() && matcher.start() == 0) {
-                dateString = matcher.group().trim();
-                dateString = handleDateWithSlashes(dateString, regexString, matcher);
-                dateString = handleDateTwoDigitYear(dateString, matcher);
-
-                // Extract out date string from text
-                input = input.substring(matcher.end()).trim();
-
-                break;
-            }
+            // Extract out date string from text
+            input = input.substring(dateMatcher.get().end()).trim();
         }
 
         // Try to match a time
+        Optional<Matcher> timeMatcher = findTimeRegexMatch(input);
+
         String timeString = "";
-        for (String regexString : supportedTimeRegexStrings) {
-            // Try to match regex + (space or end of string)
-            Matcher matcher = Pattern.compile(regexString + "(\\s|$)").matcher(input);
+        if (timeMatcher.isPresent()) {
+            timeString = getTimeFromMatcher(timeMatcher.get());
 
-            // If matched from the start
-            if (matcher.find() && matcher.start() == 0) {
-                timeString = matcher.group().trim();
-                timeString = handleTimeFormatHour(timeString, regexString, matcher);
-                timeString = handleTimeNight(timeString, regexString);
-
-                input = input.substring(matcher.end()).trim();
-                break;
-            }
+            // Extract out date string from text
+            input = input.substring(timeMatcher.get().end()).trim();
         }
 
         // If there is any characters left in text, invalid datetime
@@ -247,11 +228,24 @@ public class DateTimeParser {
             return Optional.empty();
         } else {
             String dateTimeString = dateString + " " + timeString;
-
             dateTimeString = handleDateTimeWithLaterAgo(dateString, timeString, dateTimeString);
 
             return Optional.of(dateTimeString);
         }
+    }
+
+    private String getTimeFromMatcher(Matcher timeMatcher) {
+        String timeString = timeMatcher.group().trim();
+        timeString = handleTimeFormatHour(timeString, timeMatcher);
+        timeString = handleTimeNight(timeString, timeMatcher);
+        return timeString;
+    }
+
+    private String getDateFromMatcher(Matcher dateMatcher) {
+        String dateString = dateMatcher.group().trim();
+        dateString = handleDateWithSlashes(dateString, dateMatcher);
+        dateString = handleDateTwoDigitYear(dateString, dateMatcher);
+        return dateString;
     }
 
     private String handleDateTimeWithLaterAgo(String dateString, String timeString, String dateTimeString) {
@@ -264,20 +258,20 @@ public class DateTimeParser {
         }
     }
 
-    private String handleTimeNight(String timeString, String regexString) {
-        // Special case: for TimeNightRegexString format,
+    private String handleTimeNight(String timeString, Matcher matcher) {
+        // Special case: for TimePresetsNightRegexString format,
         // Set time to 9pm
-        if (regexString.equals(TimeNightRegexString)) {
+        if (ifMatcherUsesRegex(matcher, TimePresetsNightRegexString)) {
             return NightLocalTime.toString();
         } else {
             return timeString;
         }
     }
 
-    private String handleTimeFormatHour(String timeString, String regexString, Matcher matcher) {
-        // Special case: for TimeHourRegexString format,
+    private String handleTimeFormatHour(String timeString, Matcher matcher) {
+        // Special case: for TimeHourNotationRegexString format,
         // Change to colon format (natty parses it wrongly when there is no year in the date)
-        if (regexString.equals(TimeHourRegexString)) {
+        if (ifMatcherUsesRegex(matcher, TimeHourNotationRegexString)) {
             return matcher.group("hours") + ":" + matcher.group("minutes");
         } else {
             return timeString;
@@ -298,19 +292,105 @@ public class DateTimeParser {
                     return dateString.replaceFirst(TwoDigitYearRegexString, fullYear);
                 }
             }
-        } catch (IllegalArgumentException exception) { } // no group with "year"
+        } catch (IllegalArgumentException exception) {
+        } // no group with "year"
 
         return dateString;
     }
 
-    private String handleDateWithSlashes(String dateString, String regexString, Matcher matcher) {
+    private String handleDateWithSlashes(String dateString, Matcher matcher) {
         // Special case: for DateWithSlashesRegexString format,
         // Swap month and day
-        if (regexString.equals(DateWithSlashesRegexString)) {
+        if (ifMatcherUsesRegex(matcher, DateWithSlashesRegexString)) {
             return matcher.group("month") + "/" + matcher.group("day")
-            +  (matcher.group("year") != null ? ("/" + matcher.group("year")) : "");
+                + (matcher.group("year") != null ? ("/" + matcher.group("year")) : "");
         } else {
             return dateString;
         }
+    }
+
+
+    private Pair<LocalDateTime, LocalDateTime> getDayPeriod(LocalDateTime localDateTime) {
+        // Return a single day until 2359h
+        return new Pair<>(localDateTime, localDateTime.withHour(23).withMinute(59));
+    }
+
+    private Pair<LocalDateTime, LocalDateTime> getYearPeriod(LocalDateTime localDateTime) {
+        // Return from 1st to last day of year 2359h
+        return new Pair<>(
+            localDateTime.withDayOfYear(1),
+            localDateTime.plusYears(1).withDayOfYear(1).minusDays(1)
+                .withHour(23).withMinute(59)
+        );
+    }
+
+    private Pair<LocalDateTime, LocalDateTime> getMonthPeriod(LocalDateTime localDateTime) {
+        // Return from 1st to last day of month 2359h
+        return new Pair<>(
+            localDateTime.withDayOfMonth(1),
+            localDateTime.plusMonths(1).withDayOfMonth(1).minusDays(1)
+                .withHour(23).withMinute(59)
+        );
+    }
+
+    private Pair<LocalDateTime, LocalDateTime> getWeekPeriod(LocalDateTime localDateTime) {
+        // Return from monday to sunday of that week 2359h
+        return new Pair<>(
+            localDateTime.with(DayOfWeek.MONDAY),
+            localDateTime.with(DayOfWeek.SUNDAY).withHour(23).withMinute(59)
+        );
+    }
+
+    private boolean ifInputMatchesWeekPeriod(String input) {
+        return (input.matches(DateWithLaterAgoRegexString)
+            || input.matches(DateWithLastNextRegexString))
+            && input.toLowerCase().contains("week");
+    }
+
+    private boolean ifInputMatchesMonthPeriod(String input) {
+        return (input.matches(DateWithLaterAgoRegexString)
+            || input.matches(DateWithLastNextRegexString))
+            && input.toLowerCase().contains("month");
+    }
+
+    private boolean ifInputMatchesYearPeriod(String input) {
+        return (input.matches(DateWithLaterAgoRegexString)
+            || input.matches(DateWithLastNextRegexString))
+            && input.toLowerCase().contains("year");
+    }
+
+    private Optional<Matcher> findDateRegexMatch(String input) {
+        for (String regexString : supportedDateRegexStrings) {
+            Matcher matcher = Pattern.compile(prepareRegexString(regexString), Pattern.CASE_INSENSITIVE).matcher(input);
+
+            // If matched from the start
+            if (matcher.find() && matcher.start() == 0) {
+                return Optional.of(matcher);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    private Optional<Matcher> findTimeRegexMatch(String input) {
+        for (String regexString : supportedTimeRegexStrings) {
+            Matcher matcher = Pattern.compile(prepareRegexString(regexString), Pattern.CASE_INSENSITIVE).matcher(input);
+
+            // If matched from the start
+            if (matcher.find() && matcher.start() == 0) {
+                return Optional.of(matcher);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    private String prepareRegexString(String regexString) {
+        // regex + (space or end of string)
+        return regexString + "(\\s+|$)";
+    }
+
+    private boolean ifMatcherUsesRegex(Matcher matcher, String regexString) {
+        return matcher.pattern().pattern().equals(prepareRegexString(regexString));
     }
 }

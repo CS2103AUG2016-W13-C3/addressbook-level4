@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertTrue;
 
@@ -36,7 +37,7 @@ public class RecallCommandTest extends CommanDoGuiTest {
         
         //multiple results
         assertRecallResult("recall title", Sets.newHashSet("title"), Collections.emptySet(), td.toDoItem5.setIsFinished(true), td.toDoItem1.setIsFinished(true));
-        assertRecallResult("recall #tag2", Collections.emptySet(), Sets.newHashSet("tag2"), td.toDoItem5.setIsFinished(true));
+        assertRecallResult("recall #tag2", Collections.emptySet(), Sets.newHashSet("#tag2"), td.toDoItem5.setIsFinished(true));
     }
 
     @Test
@@ -60,12 +61,22 @@ public class RecallCommandTest extends CommanDoGuiTest {
      * @param expectedHits   The expected result list after filtering.
      */
     private void assertRecallResult(String command, Set<String> keywords, Set<String> tags, ToDo... expectedHits ) {
-        Set<Tag> tagsSet = tags.stream().map(Tag::new).collect(Collectors.toSet());
-
         commandBox.runCommand(command);
         assertListSize(expectedHits.length);  //number of expected todos = number of listed todos
-        
-        assertResultMessage(String.format(Messages.RECALL_COMMAND, new TreeSet<>(keywords), new TreeSet<>(tagsSet)));
+
+        if (expectedHits.length == 0) {
+            assertResultMessage(String.format(Messages.RECALL_COMMAND_NO_TODOS, getSearchString(keywords, tags)));
+        } else {
+            assertResultMessage(String.format(Messages.RECALL_COMMAND, getSearchString(keywords, tags)));
+        }
+
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedHits));
+    }
+
+    private String getSearchString(Set<String> keywords, Set<String> tags) {
+        Stream<String> keywordsStream = new TreeSet<>(keywords).stream();
+        Stream<String> tagsStream = new TreeSet<>(tags).stream();
+
+        return "[" + Stream.concat(keywordsStream, tagsStream).collect(Collectors.joining(", ")) + "]";
     }
 }

@@ -82,9 +82,13 @@
                             <li><a href="#managing-dependencies">Managing Dependencies</a></li>
                         </ul>
                         <li><a href="#troubleshooting">Troubleshooting</a></li>
+                        <ul id="second-layer">
+                            <li><a href="#faq">Frequently Asked Questions</li>
+                        </ul>
                         <li><a href="#known-issues-&-future-plans">Known Issues & Future Plans</a></li>
                         <ul id="second-layer">
                             <li><a href="#high-ram-usage">High RAM Usage</li>
+                            <li><a href="#quick-access-keyboard-shortcut">Quick Access Keyboard Shortcut</a></li>
                             <li><a href="#real-time-syntax-highlighting">Real-time Syntax Highlighting</a></li>
                         </ul>
                         <li><a href="#appendices">Appendices</a></li>
@@ -101,7 +105,7 @@
                 <!-- @@author A0139697H -->
                 <h2 id="introduction">Introduction</h2>
 
-                <p><em>CommanDo</em> is a to-do list manager. It is designed to cater for the needs of people who type fast and has a user interface shown in the picture below. to-dos are displayed on a graphical user interface (GUI), split into 2 panels of <em>Events</em> and <em>Tasks</em>. The user manage his/her to-do list by typing commands on a text input - just like in a Command Line Interface (CLI).</p>
+                <p><em>CommanDo</em> is a to-do list manager. It is designed to cater to the needs of people who type fast.  The user manage his/her to-do list by typing commands on a text input - just like in a Command Line Interface (CLI). To-dos are displayed on a graphical user interface (GUI), split into 2 panels of <em>Events</em> (To-dos with a date range) and <em>Tasks</em> (To-dos without a date range), as shown below:</p>
 
                 <figure>
                     <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
@@ -159,7 +163,7 @@
                         <strong>Buildship Gradle Integration</strong> plugin from the Eclipse Marketplace
                     </li>
                 </ol>
-                It is also assumed that you have some prior experience with Java, Eclipse IDE, Github/Git, some OOP and UML diagramming. This guide focuses on the use of the Eclipse IDE.
+                It is also assumed that you have some prior experience with Java, Github/Git, some OOP and UML diagramming. This guide focuses on the use of the Eclipse IDE.
 
                 <h3 id="importing-project-into-eclipse">Importing Project into Eclipse</h3>
 
@@ -188,7 +192,7 @@
 
                 <h2 id="architecture">Architecture</h2>
 
-                <p>This section explains the high level design of the application.</p>
+                <p>This section explains the high level design of the application. The architecture of <em>CommanDo</em> is as follows:</p>
 
                 <!-- @@author A0139697H -->
 
@@ -197,7 +201,7 @@
                     <figcaption>Architecture diagram for <em>CommanDo</em></figcaption>
                 </figure>
 
-                <p><code>MainApp.java</code> is the entry point of the application. It is responsible for:</p>
+                <p>The <code>MainApp</code> class is the entry point of the application. It is responsible for:</p>
 
                 <ul>
                     <li>On application launch, initializing all components in the correct sequence, and connecting them up with one another.</li>
@@ -246,10 +250,10 @@
                     </div>
 
                     <blockquote>
-                        Note that for the <em>Model</em> component, besides the API defined by <code>Model.java</code>, it also contains data structures such as <code>UserPrefs.java</code> and <code>ReadOnlyToDo.java</code> that the other components are dependent on. Such dependencies are listed in the later section <a href="#model-component">Model Component.</a>
+                        Note that for the <em>Model</em> component, besides the API defined by <code>Model.java</code>, it also contains data structures such as the <code>UserPrefs</code> and <code>ReadOnlyToDo</code> classes that the other components are dependent on.
                     </blockquote>
 
-                <p>Underlying all 4 components is the package <code>seedu.commando.commons</code>. It is a collection of utility classes and application constants that are used in all the components. We also use <a href="#eventscenter">Event Driven Design</a> for components to communicate with one another.</p>
+                <p>Underlying all 4 components is the package <code>seedu.commando.commons</code>. It is a collection of utility classes and application constants that are used in all the components. We use <a href="#eventscenter">Event Driven Design</a> for components to communicate with one another, and manage logging through a centralized <a href="logscenter">Logs Center</a>.</p>
 
                 <h3 id="command-execution">What Happens in a Command Execution</h3>
 
@@ -307,27 +311,9 @@
                         <li>Calling the appropriate methods of <em>Model</em> and <em>Storage</em> components, or posting the appropriate events on <em>EventsCenter</em> based on the commands.</li>
                         <li>Informing the <em>UI</em> of the results of the commands executed.</li>
                         <li>Responding to any events from <em>EventsCenter</em> that would require an action on the <code>Model</code> or <code>Storage</code> components (e.g. saving the to-do list to the file system with <em>Storage</em> when the <code>ToDoListChangeEvent</code> is posted).</li>
-                        <li>Relaying the data of <em>Model</em> to the <em>UI</em> through the <code>getUiEvents()</code>, <code>getUiTasks()</code> and <code>getToDoList()</code></li>
+                        <li>Relaying the data of <em>Model</em> to the <em>UI</em> through its methods of <code>getUiEvents()</code>, <code>getUiTasks()</code> and <code>getToDoList()</code>.</li>
                     </ul> 
                 </p>
-
-                <p>The <code>Logic</code> interface has the following methods:</p>
-                
-                <div class="datagrid class">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>&lt;&lt;interface&gt;&gt;<br />Logic</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>+ execute(commandText: String): CommandResult</td></tr>
-                            <tr><td>+ getUiEvents(): UnmodifiableObservableList&lt;UiToDo&gt;</td></tr>
-                            <tr><td>+ getUiTasks(): UnmodifiableObservableList&lt;UiToDo&gt;</td></tr>
-                             <tr><td>+ getToDoList(): ReadOnlyToDoList</td></tr>
-                        </tbody>
-                    </table>
-                </div>
 
                 <h3 id="execute-called">When <code>execute(String)</code> is Called</h3>
 
@@ -365,39 +351,16 @@
                     </ul>
                 </p>
 
-                <p>The <code>Model</code> interface has the following methods:</p>
-
-                <div class="datagrid class">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>&lt;&lt;interface&gt;&gt;<br />Model</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>+ getUiEvents(): UnmodifiableObservableList&lt;UiToDo&gt;</td></tr>
-                            <tr><td>+ getUiTasks(): UnmodifiableObservableList&lt;UiToDo&gt;</td></tr>
-                            <tr><td>+ getToDoList(): ReadOnlyToDoList</td></tr>
-                            <tr><td>+ getUiToDoAtIndex(index: int): Optional&lt;UiToDo&gt;</td></tr>
-                            <tr><td>+ changeToDoList(change: ToDoListChange)</td></tr>
-                            <tr><td>+ undoToDoList()</td></tr>
-                            <tr><td>+ redoToDoList()</td></tr>
-                            <tr><td>+ clearUiToDoListFilter(ifHistoryMode: boolean)</td></tr>
-                            <tr><td>+ setUiToDoListFilter(keywords: Set&lt;String&gt;, tags: Set&lt;Tags&gt;, ifHistoryMode: boolean)</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
                 <h3 id="changing-undoing-redoing">Changing, Undoing and Redoing the To-Do List</h3>
 
                 <p>
-                    Within <code>ModelManager</code>, the <code>ToDoListManager</code> class is in charge of supporting the editing, undoing and redoing of the to-do list, hinging on the <code>ToDoListChange</code> class. All commands will define an edit to the to-do list in a consistent way with the <code>ToDoListChange</code> class and the <code>changeToDoList(ToDoListChange)</code> method, which provides greater flexibility in edits, looser coupling between <em>Model</em> and <em>Logic</em>, and more predictable effects from <code>undoToDoList()</code> and <code>redoToDoList()</code>, which undos or redos the most recent <em>ToDoListChange</em> that has been pushed to <em>Model</em>.
+                    Within <code>ModelManager</code>, the <code>ToDoListManager</code> class is in charge of supporting the editing, undoing and redoing of the to-do list, hinging on the <code>ToDoListChange</code> class. All commands define an edit to the to-do list in a consistent way with the <code>ToDoListChange</code> class and the <code>changeToDoList(ToDoListChange)</code> method, which provides greater flexibility in edits, looser coupling between <em>Model</em> and <em>Logic</em>, and more predictable effects from <code>undoToDoList()</code> and <code>redoToDoList()</code>, which undos or redos the most recent <em>ToDoListChange</em> that has been pushed to <em>Model</em>.
                 </p>
 
                 <h3 id="preparing-for-ui">Preparing for the <em>UI</em></h3>
 
                 <p>
-                    Within <code>ModelManager</code>, the <code>UiModel</code> class is in charge of processing and filtering the list of to-dos for the <em>UI</em>. It tracks changes to the actual list of <code>ToDo</code> of <em>Model</em>, and when a change happens, it will update the <em>Observable</em> lists of <code>UiToDo</code>, which are exposed via <code>getUiEvents()</code> and <code>getUiTasks()</code> for the GUI. In an update, it will split the new list of <code>ToDo</code> into <em>Events</em> and <em>Tasks</em>, filter out those which shouldn't be displayed on the GUI, assign indices to each of them in the correct order, and wraps each <code>ToDo</code> in <code>UiToDo</code> with some additional data. 
+                    Within <code>ModelManager</code>, the <code>UiModel</code> class is in charge of processing, sorting and filtering the list of to-dos for the <em>UI</em>. It tracks changes to the actual list of <code>ToDo</code> of <em>Model</em>, and when a change happens, it will update the <em>Observable</em> lists of <code>UiToDo</code>, which are exposed via <code>getUiEvents()</code> and <code>getUiTasks()</code> for the GUI. In an update, it will split the new list of <code>ToDo</code> into <em>Events</em> and <em>Tasks</em>, filter out those which shouldn't be displayed on the GUI, sort them, assign indices to each of them in the correct order, and wraps each <code>ToDo</code> in <code>UiToDo</code> with some additional data. 
                 </p>
                 <p>
                     A similar update is triggered when the user submits a command that calls <code>clearUiToDoListFilter(...)</code> or <code>clearUiToDoListFilter(...)</code> (e.g. the <code>find</code> or <code>recall</code> command). 
@@ -417,28 +380,6 @@
                 <p>
                     The <code>StorageManager</code> class consists of <code>XmlToDoListStorage</code>, which is in charge of reading/loading the to-do list data, and <code>JsonUserPrefsStorage</code>, which is in charge of reading/loading the user preferences data. The <code>XmlToDoListStorage</code> class saves/loads the to-do list data to the specified file path in <a href="https://www.w3.org/XML/">XML</a> with the help of <a href="https://docs.oracle.com/javase/tutorial/jaxb/intro/">Java Architecture for XML Binding</a>. On the other hand, the <code>JsonUserPrefsStorage</code> class saves/loads the user preferences data to the specified file path in <a href="http://www.json.org/">JSON</a> with the help of the <a href="http://wiki.fasterxml.com/JacksonHome">Jackson JSON Processor</a> library.
                 </p>
-
-                <p>The <code>Storage</code> interface has the following methods:</p>
-
-                <div class="datagrid class">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>&lt;&lt;interface&gt;&gt;<br />Storage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>+ setToDoListFilePath(path: String)</td></tr>
-                            <tr><td>+ readToDoList(): Optional&lt;ReadOnlyToDoList&gt;</td></tr>
-                            <tr><td>+ readToDoList(path: String): Optional&lt;ReadOnlyToDoList&gt;</td></tr>
-                            <tr><td>+ saveToDoList(toDoList: ReadOnlyToDoList)</td></tr>
-                            <tr><td>+ saveToDoList(toDoList: ReadOnlyToDoList, path: String)</td></tr>
-                            <tr><td>+ readUserPrefs(): Optional&lt;UserPrefs&gt;</td></tr>
-                            <tr><td>+ saveUserPrefs(userPrefs: UserPrefs)</td></tr>
-                            <tr><td>+ setUserPrefsFilePath(path: String)</td></tr>
-                        </tbody>
-                    </table>
-                </div>
 
                 <h2 id="commons-package">Commons Package</h2>
 
@@ -590,17 +531,19 @@
                        <li><a href="http://wiki.fasterxml.com/JacksonHome">Jackson JSON Processor</a></li>
                        <li><a href="https://github.com/google/guava">Google Guava</a></li>
                        <li><a href="https://github.com/TestFX/TestFX">TestFX</a></li>
+                       <li><a href="http://site.mockito.org/">Mockito</a></li>
                    </ul>
                </p>
 
                 <!-- @@author A0139697H -->
                 <h2 id="troubleshooting">Troubleshooting</h2>
 
-                <h3>Eclipse reports compile errors after new commits are pulled from Git.</h3>
+                <h3 id="faq">Frequently Asked Questions</h3>
+                <h4>Eclipse reports compile errors after new commits are pulled from Git.</h4>
 
                 <p>It is likely that Eclipse failed to recognise the new files that appeared in the new commits. Refresh the project in Eclipse by right-clicking the project in the package explorer panel and choosing <code>Gradle</code> &gt; <code>Refresh Gradle Project</code>.</p>
 
-                <h3>Eclipse reports some required libraries missing.</h3>
+                <h4>Eclipse reports some required libraries missing.</h4>
 
                 <p>Libraries used by the project might not have been downloaded during project import, or new ones might have been added. <a href="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/UsingGradle.md">Run tests using Gradle</a> once to refresh the libraries in Eclipse.</p>
 
@@ -609,12 +552,16 @@
                 <h3 id="high-ram-usage">High RAM Usage</h3>
 
                 <p>
-                    The application currently consumes quite a bit of RAM, up to 150-200+ MB of RAM when we add more than 50 to-dos. We wish to make it less resource-consuming in order to create a better user experience for those with slower system.
+                    The application currently consumes quite a bit of RAM, up to 150-200+ MB of RAM when we add more than 50 to-dos. We wish to make it less resource-consuming in order to create a better user experience for those with slower systems.
                 </p>
+
+                <h3 id="quick-access-keyboard-shortcut">Quick Access Keyboard Shortcut</h3>
+
+                <p>One of the nice-to-have feature is to allow the user to quickly summon <em>CommanDo</em> using a customizable keyboard shortcut, even when the application is closed. This would bring convenience to very active users who wants to view and edit their to-do list frequently.</p>
 
                 <h3 id="real-time-syntax-highlighting">Real-time Syntax Highlighting</h3>
 
-                <p>One of our nice-to-have features would be colour-coding the input command in real-time as the user types to reflect the different fields of the command. For example, as the user types <code>>> add event from 10 Oct 2016 9pm to 10pm weekly</code> in the command box, "add" (the command word), "event" (one of the command's fields) and "from" (a keyword in the command) should appear in different colours. This allows users to easily validate that their command visually does what they intend it to.</p>
+                <p>A nice-to-have feature is colour-coding the input command in real-time as the user types to reflect the different fields of the command. For example, as the user types <code>>> add event from 10 Oct 2016 9pm to 10pm weekly</code> in the command box, "add" (the command word), "event" (one of the command's fields) and "from" (a keyword in the command) could appear in different colours and the feedback box could state the command format for command word. This allows users to easily validate that their command visually does what they intend it to.</p>
 
                 <h2 id="appendices">Appendices</h2>
 
@@ -731,14 +678,20 @@
                             <tr>
                                 <td><code>* *</code></td>
                                 <td align="left">user</td>
-                                <td align="left">set events as recurring</td>
-                                <td align="left">avoid having to enter identical events periodically</td>
+                                <td align="left">set events and tasks with due dates as recurring</td>
+                                <td align="left">avoid having to enter identical events and tasks periodically</td>
                             </tr>
                             <tr>
                                 <td><code>* *</code></td>
                                 <td align="left">user</td>
                                 <td align="left">use command keywords (eg, "from", "to", "by") in titles of my to-dos</td>
                                 <td align="left">avoid having to change how I write my to-do because of the command keywords</td>
+                            </tr>
+                            <tr>
+                                <td><code>* *</code></td>
+                                <td align="left">user with many to-dos</td>
+                                <td align="left">view all to-dos within a specified date range</td>
+                                <td align="left">be able to preview or review the to-dos that are upcoming or done at a glance</td>
                             </tr>
                             <tr>
                                 <td><code>* *</code></td>
@@ -749,7 +702,7 @@
                             <tr>
                                 <td><code>* *</code></td>
                                 <td align="left">user</td>
-                                <td align="left">receive a visual confirmation of the details of the to-do item I have added/edited</td>
+                                <td align="left">receive a visual confirmation of the details of the to-do  I have added/edited</td>
                                 <td align="left">be able to verify modifications to my to-do list</td>
                             </tr>
                             <tr>
@@ -762,7 +715,7 @@
                                 <td><code>*</code></td>
                                 <td align="left">new user</td>
                                 <td align="left">view syntax highlighting of the various fields of a command while inputting, in real time</td>
-                                <td align="left">be clear about how the application parses my to-do item’s fields and avoid unintended errors in input</td>
+                                <td align="left">be clear about how the application parses my to-do’s fields and avoid unintended errors in input</td>
                             </tr>
                         </tbody>
                     </table>
@@ -791,229 +744,233 @@
                 <p>In all the listed use cases, the <strong>System</strong> is our application and the <strong>Actor</strong> is the user.</p>
 
                 <h4>
-                    <a id="uc01---add-to-do-item-event" class="anchor" href="#uc01---add-to-do-item-event" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC01 - Add to-do item (Event)
+                    <a id="uc01---add-to-do-item-event" class="anchor" href="#uc01---add-to-do-item-event" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC01 - Add an <em>Event</em>
                 </h4>
 
                 <span><strong>MSS:</strong></span>
-                <ul>
-                    <li>1. User types in an <code>add</code> command with details of the to-do item including the title and timeframe</li>
-                    <li>2. Application adds the event to the current to-do list and updates the GUI to reflect the changes</li>
-                    <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1. User types in an <code>add</code> command with details of the <em>Event</em>, including a title, a date range, a recurrence (if any) and tags (if any).</li>
+                    <li>2. Application adds the <em>Event</em> to the current to-do list and updates the GUI to reflect the changes.</li>
+                    <li><i>Use case ends.</i></li>
                 </ul>
 
                 <span><strong>Extensions:</strong></span>
 
-                <ul>
-                    <li>1a. Command name is wrong</li>
-                    <ul>
-                        <li>a. Application uses GUI to report message of unknown command</li>
-                        <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1a. Command word is mistyped.</li>
+                    <ul class="use-case">
+                        <li>1a1. Application updates the GUI to inform the user that command word is unknown.</li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
-                <ul>
-                    <li>1b. Command was not properly structured</li>
-                    <ul>
-                        <li>a. Application uses GUI to report details of the error in parsing command</li>
-                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command</li>
-                        <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1b. Title is missing.</li>
+                    <ul class="use-case">
+                        <li>1b1. Application updates GUI to inform the user that the title is missing.<br></li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
-                <ul>
-                    <li>1c. Title is missing</li>
-                    <ul>
-                        <li>a. Application uses GUI to report the missing of valid title<br></li>
-                        <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1c. Either of the start or end of the date range (i.e. from ... to ...) is not in a valid datetime format.</li>
+                    <ul class="use-case">
+                        <li>1c1. Application updates GUI to inform the user that the which of start date or end date is invalid.<br></li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
-                <ul>
-                    <li>1d. Title contains keywords (i.e. "from", "to") as description or the both start date and end date do not match the time format</li>
-                    <ul>
-                        <li>a. Application considers all keywords to be title and adds the to-do item as task to the current to-do list<br></li>
-                        <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1d. Both start and end of the date range (i.e. from ... to ...) are not in valid datetime formats.</li>
+                    <ul class="use-case">
+                        <li>1d1. Application considers the date range clause as part of a title, adds a corresponding <em>Task</em> to the current to-do list, and updates the GUI to reflect the changes.</li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
-                <ul>
-                    <li>1e. Either start date or end date does not match the time format</li>
-                    <ul>
-                        <li>a. Application uses GUI to report the missing of valid component of timeframe<br></li>
-                        <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1e. The start of the date range (i.e. from ... to ...) is after its end.</li>
+                    <ul class="use-case">
+                        <li>1e1. Application updates GUI to inform user that the start of the date range must not be after its end.</li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
-
-
-                <h4>
-                    <a id="uc01---add-to-do-item-task" class="anchor" href="#uc01---add-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC01 - Add to-do item (Task)
-                </h4>
-
-                <span><strong>MSS:</strong></span>
-                <ul>
-                    <li>1. User types in an <code>add</code> command with details of the to-do item</li>
-                    <li>2. Application adds the task item to the current to-do list</li>
-                    <li>3. Application updates the GUI to reflect the changes</li>
-                    <li><i>*Use case ends</i></li>
-                </ul>
-
-                <span><strong>Extensions:</strong></span>
-
-                <ul>
-                    <li>1a. Command name is wrong</li>
-                    <ul>
-                        <li>a. Application uses GUI to report message of unknown command</li>
-                        <li><i>*Use case ends</i></li>
-                    </ul>
-                </ul>
-
-                <ul>
-                    <li>1b. Command was not properly structured</li>
-                    <ul>
-                        <li>a. Application uses GUI to report details of the error in parsing command</li>
-                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command</li>
-                        <li><i>*Use case ends</i></li>
-                    </ul>
-                </ul>
-
-                <ul>
-                    <li>1c. Title is missing</li>
-                    <ul>
-                        <li>a. Application uses GUI to report the missing of valid title<br></li>
-                        <li><i>*Use case ends</i></li>
-                    </ul>
-                </ul>
-
-                <ul>
-                    <li>1d. Title contains keywords (i.e. "by") as description or the deadline does not match the time format</li>
-                    <ul>
-                        <li>a. Application considers all to be title and adds the task item to the current to-do list with no deadline provided</li>
-                        <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1f. The specified recurrence's interval is shorter than the specified date range.</li>
+                    <ul class="use-case">
+                        <li>1f1. Application updates GUI to inform user that the recurrence is invalid.</li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
                 <h4>
-                    <a id="uc02---delete-to-do-item" class="anchor" href="#uc02---delete-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC02 - Delete to-do item
+                    <a id="uc02---add-to-do-item-task" class="anchor" href="#uc01---add-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC02 - Add a <em>Task</em>
                 </h4>
 
                 <span><strong>MSS:</strong></span>
-                <ul>
-                    <li>1. User types in a <code>delete</code> command with the index of the to-do item</li>
-                    <li>2. Application deletes the to-do item to the current to-do list</li>
-                    <li>3. Application updates the GUI to reflect the changes</li>
-                    <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1. User types in an <code>add</code> command with details of the <em>Task</em>, including a title, a due date and its recurrence (if any), and tags (if any).</li>
+                    <li>2. Application adds the <em>Task</em> to the current to-do list and updates the GUI to reflect the changes.</li>
+                    <li><i>Use case ends.</i></li>
                 </ul>
-
 
                 <span><strong>Extensions:</strong></span>
 
-                <ul>
-                    <li>1a. Command name is wrong</li>
-                    <ul>
-                        <li>a. Application uses GUI to report message of unknown command</li>
-                        <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1a. Command word is mistyped.</li>
+                    <ul class="use-case">
+                        <li>1a1. Application updates the GUI to inform the user that command word is unknown.</li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
-                <ul>
-                    <li>2a. The index of the to-do item is invalid</li>
-                    <ul>
-                        <li>a. Application uses GUI to report that index is invalid</li>
-                        <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1b. Title is missing.</li>
+                    <ul class="use-case">
+                        <li>1b1. Application updates GUI to inform the user that the title is missing.<br></li>
+                        <li><i>Use case ends.</i></li>
+                    </ul>
+                </ul>
+
+                <ul class="use-case">
+                    <li>1c. The due date (i.e. by ...) is not in a valid datetime format.</li>
+                    <ul class="use-case">
+                        <li>1c1. Application considers the due date clause as part of a title, adds a corresponding <em>Task</em> to the current to-do list, and updates the GUI to reflect the changes.</li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
                 <h4>
-                    <a id="uc03---find-to-do-items" class="anchor" href="#uc03---find-to-do-items" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC03 - Find to-dos
+                    <a id="uc03---delete-to-do-item" class="anchor" href="#uc02---delete-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC03 - Delete an <em>Event</em> or <em>Task</em>
                 </h4>
 
                 <span><strong>MSS:</strong></span>
-                <ul>
-                    <li>1. User types in a <code>find</code> command with a list of words to search for</li>
-                    <li>2. Application searches through the to-do list and returns a filtered to-do list</li>
-                    <li>3. Application Updates the GUI to show only the matched to-dos</li>
-                    <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1. User types in a <code>delete</code> command with the index of the to-do to delete.</li>
+                    <li>2. Application removes the to-do with the specified index from the current to-do list, and updates the GUI to reflect the changes.</li>
+                    <li><i>Use case ends.</i></li>
                 </ul>
 
                 <span><strong>Extensions:</strong></span>
-                <ul>
-                    <li>1a. Command name is wrong</li>
-                    <ul>
-                        <li>a. Application uses GUI to report message of unknown command</li>
-                        <li><i>*Use case ends</i></li>
+
+                <ul class="use-case">
+                    <li>1a. Command word is mistyped.</li>
+                    <ul class="use-case">
+                        <li>1a1. Application updates the GUI to inform the user that command word is unknown.</li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
-                <ul>
-                    <li>1b. Command was not properly structured</li>
-                    <ul>
-                        <li>a. Application uses GUI to report details of the error in parsing command</li>
-                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command</li>
-                        <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1b. Index of the to-do is not specified.</li>
+                    <ul class="use-case">
+                        <li>1b1. Application updates GUI to inform the user that the index is missing.</li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
-                <ul>
-                    <li>1c. No words were given</li>
-                    <ul>
-                        <li>a. Application updates GUI to show all to-dos</li>
-                        <li><i>*Use case ends</i></li>
-                    </ul>
-                </ul>
-
-                <ul>
-                    <li>2a. No to-dos matched</li>
-                    <ul>
-                        <li>a. Application uses GUI to report that no to-dos were matched</li>
-                        <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>2a. Index of the to-do is invalid.</li>
+                    <ul class="use-case">
+                        <li>2a1. Application updates GUI to inform the user that the index is invalid.</li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
                 <h4>
-                    <a id="uc04---edit-to-do-item" class="anchor" href="#uc04---edit-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC04 - Edit to-do item
+                    <a id="uc04---find-to-do-items" class="anchor" href="#uc03---find-to-do-items" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC04 - Searching through upcoming <em>Events</em> and unfinished <em>Tasks</em>
                 </h4>
 
                 <span><strong>MSS:</strong></span>
-                <ul>
-                    <li>1. User types in an <code>edit</code> command with the index of the to-do item and changed details of the to-do item</li>
-                    <li>2. Application edits the to-do item to the current to-do list</li>
-                    <li>3. Application updates the GUI to reflect the changes</li>
-                    <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1. User types in a <code>find</code> command, including a list of search keywords and tags.</li>
+                    <li>2. Application searches through the to-do list and updates the GUI to show only upcoming <em>Events</em> and unfinished <em>Tasks</em> that match the search filter.</li>
+                    <li><i>Use case ends.</i></li>
                 </ul>
 
                 <span><strong>Extensions:</strong></span>
-                <ul>
-                    <li>1a. Command name is wrong</li>
-                    <ul>
-                        <li>a. Application uses GUI to report message of unknown command</li>
-                        <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1a. Command word is mistyped.</li>
+                    <ul class="use-case">
+                        <li>1a1. Application updates the GUI to inform the user that command word is unknown.</li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
-                <ul>
-                    <li>1b. Command was not properly structured</li>
-                    <ul>
-                        <li>a. Application uses GUI to report details of the error in parsing command</li>
-                        <li>b. Application uses GUI to show correct <code>delete</code> command syntax and a sample <code>delete</code> command</li>
-                        <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>1b. No search keywords or tags specified.</li>
+                    <ul class="use-case">
+                        <li>1b1. Application updates GUI to show all upcoming <em>Events</em> and unfinished <em>Tasks</em>.</li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
-                <ul>
-                    <li>2a. The index of the to-do item is invalid</li>
-                    <ul>
-                        <li>a. Application uses GUI to report that the index of the to-do item is invalid</li>
-                        <li><i>*Use case ends</i></li>
+                <ul class="use-case">
+                    <li>2a. No to-dos were found in the search.</li>
+                    <ul class="use-case">
+                        <li>2a1. Application updates GUI to inform user that no to-dos were matched.</li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
-                <ul>
-                    <li>2a. Adding timeframe or deadline to floating task</li>
-                    <ul>
-                        <li>a. Application reallocates the task to correct panel with its time details shown</li>
-                        <li>b. Application uses GUI to show updated list</li>
-                        <li><i>*Use case ends</i></li>
+                <h4>
+                    <a id="uc05---edit-to-do-item" class="anchor" href="#uc04---edit-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC05 - Edit to-do item
+                </h4>
+
+                <span><strong>MSS:</strong></span>
+                <ul class="use-case">
+                    <li>1. User types in a <code>edit</code> command with the index of the to-do to edit, including the new title, date range, due date, and tags to edit to.</li>
+                    <li>2. Application modifies the target to-do to the current to-do list and updates the GUI to reflect the changes.</li>
+                    <li><i>Use case ends.</i></li>
+                </ul>
+
+                <span><strong>Extensions:</strong></span>
+                <ul class="use-case">
+                    <li>1a. Command word is mistyped.</li>
+                    <ul class="use-case">
+                        <li>1a1. Application updates the GUI to inform the user that command word is unknown.</li>
+                        <li><i>Use case ends.</i></li>
+                    </ul>
+                </ul>
+
+                <ul class="use-case">
+                    <li>1b. Index of the to-do is not specified.</li>
+                    <ul class="use-case">
+                        <li>1b1. Application updates GUI to inform the user that the index is missing.</li>
+                        <li><i>Use case ends.</i></li>
+                    </ul>
+                </ul>
+
+                <ul class="use-case">
+                    <li>2a. Index of the to-do is invalid.</li>
+                    <ul class="use-case">
+                        <li>2a1. Application updates GUI to inform the user that the index is invalid.</li>
+                        <li><i>Use case ends.</i></li>
+                    </ul>
+                </ul>
+
+                <ul class="use-case">
+                    <li>2b. A due date is to be added to a <em>Event</em> with a date range.</li>
+                    <ul class="use-case">
+                        <li>2b1. Application informs the user that a to-do cannot have both a due date and a date range.</li>
+                        <li><i>Use case ends.</i></li>
+                    </ul>
+                </ul>
+
+                <ul class="use-case">
+                    <li>2c. A date range is to be added to a <em>Task</em> with a due date.</li>
+                    <ul class="use-case">
+                        <li>2c1. Application informs the user that a to-do cannot have both a due date and a date range.</li>
+                        <li><i>Use case ends.</i></li>
+                    </ul>
+                </ul>
+
+                <ul class="use-case">
+                    <li>2d. A date range or due date is to be added to a <em>Task</em> with no time constraints.</li>
+                    <ul class="use-case">
+                        <li>2d1. Application attaches the date range or due date to the <em>Task</em> and updates the GUI to reflect the changes.</li>
+                        <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
 
@@ -1029,7 +986,7 @@
                     <li>Should come with automated unit tests</li>
                     <li>Should make the code be open source</li>
                     <li>Should favor DOS style commands over Unix-style commands</li>
-                    <li>Should not use more than 200MB of RAM</li>
+                    <li>Should not use more than 300MB of RAM</li>
                     <li>Should keep the number of existing files that has to be edited to add new commands at most 2</li>
                     <li>Should not take more than 1 hour for new user to learn the commands and their syntax</li>
                 </ol>
@@ -1038,21 +995,24 @@
 
                 <ul>
                     <li>
-                        <strong>Mainstream OS</strong>: Windows, Linux, Unix and OS-X.
+                        <strong>Mainstream OS</strong>: Refers to Windows, Linux, Unix and OS-X.
                     </li>
                     <li>
-                        <strong>Event</strong>: A to-do item that has a date range.
+                        <strong>Event</strong>: A to-do that has a date range.
                     </li>
 
                     <li>
-                        <strong>Task</strong>: A to-do item without a date range, and optionally has a deadline.
+                        <strong>Task</strong>: A to-do without a date range, and optionally has a deadline.
                     </li>
 
                     <li>
                         <strong>Index of to-do item</strong>: The number visually tagged to a to-do item on the UI (changes with how to-dos are listed).
                     </li>
                     <li>
-                        <strong>CRUD</strong>: Create, read, update and delete
+                        <strong>MSS</strong>: Main Success Scenario of a use case.
+                    </li>
+                    <li>
+                        <strong>CRUD</strong>: Create, Read, Update and Delete.
                     </li>
                 </ul>
 

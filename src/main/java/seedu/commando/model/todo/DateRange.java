@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 //@@author A0139697H
+
 /**
  * Represents a date range of a to-do, immutable.
  * Ignores the seconds and nano-seconds field of its datetimes, unless it is MIN or MAX.
@@ -30,13 +31,14 @@ public class DateRange {
      * Constructor for a date range.
      * Asserts parameters are non-null.
      * Conditions for validity:
-     *   - {@param endDate} must not be before {@param startDate}
-     *   - gap between {@param startDate} and {@param endDate} must not be more than the recurrence interval
+     * - {@param endDate} must not be before {@param startDate}
+     * - gap between {@param startDate} and {@param endDate} must not be more than the recurrence interval
+     *
      * @throws IllegalValueException if given set of arguments is invalid
      */
-    public DateRange(LocalDateTime startDate, LocalDateTime endDate, Recurrence recurrence) 
-            throws IllegalValueException {
-        assert !CollectionUtil.isAnyNull(startDate,endDate, recurrence);
+    public DateRange(LocalDateTime startDate, LocalDateTime endDate, Recurrence recurrence)
+        throws IllegalValueException {
+        assert !CollectionUtil.isAnyNull(startDate, endDate, recurrence);
 
         checkIfValid(startDate, endDate, recurrence);
 
@@ -48,12 +50,17 @@ public class DateRange {
     /**
      * Copy constructor
      */
-    public DateRange(DateRange dateRange){
+    public DateRange(DateRange dateRange) {
         this.startDate = dateRange.startDate;
         this.endDate = dateRange.endDate;
         this.recurrence = dateRange.recurrence;
     }
 
+    /**
+     * Checks if a set of fields for the class is valid.
+     *
+     * @throws IllegalValueException if some set of fields is invalid
+     */
     private static void checkIfValid(LocalDateTime startDate, LocalDateTime endDate, Recurrence recurrence)
         throws IllegalValueException {
 
@@ -90,10 +97,10 @@ public class DateRange {
         // short circuit if same object
         // instanceof handles nulls
         return other == this
-                || (other instanceof DateRange
-                && (startDate.equals(((DateRange) other).startDate) 
-                && endDate.equals(((DateRange) other).endDate)
-                && recurrence.equals(((DateRange) other).recurrence))); // state check
+            || (other instanceof DateRange
+            && (startDate.equals(((DateRange) other).startDate)
+            && endDate.equals(((DateRange) other).endDate)
+            && recurrence.equals(((DateRange) other).recurrence))); // state check
     }
 
     @Override

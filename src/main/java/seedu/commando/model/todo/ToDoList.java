@@ -12,16 +12,18 @@ import java.util.List;
 import java.util.Objects;
 
 //@@author A0139697H
+
 /**
  * Represents a list of to-dos.
  */
 public class ToDoList implements ReadOnlyToDoList {
     private final ObservableList<ReadOnlyToDo> list;
     private final UnmodifiableObservableList<ReadOnlyToDo> protectedList;
+
     {
         // Initializes an observable list to store to-dos, which
         // calls its listeners when any of its to-dos change
-        list = FXCollections.observableArrayList(toDo -> new Observable[] {
+        list = FXCollections.observableArrayList(toDo -> new Observable[]{
             toDo.getObservableValue()
         });
 
@@ -29,7 +31,11 @@ public class ToDoList implements ReadOnlyToDoList {
         protectedList = new UnmodifiableObservableList<>(list);
     }
 
-    public ToDoList() {}
+    /**
+     * Initializes an empty to-do list.
+     */
+    public ToDoList() {
+    }
 
     /**
      * Copy constructor
@@ -50,6 +56,7 @@ public class ToDoList implements ReadOnlyToDoList {
 
         return this;
     }
+
     /**
      * @see #remove(ReadOnlyToDoList)
      */
@@ -64,7 +71,10 @@ public class ToDoList implements ReadOnlyToDoList {
     }
 
     /**
-     * Add all to-dos in {@param toDoList}.
+     * Add all to-dos in {@param toDoList}. Duplicate to-dos are not allowed, based on
+     * {@link ReadOnlyToDo#isSimilar(ReadOnlyToDo)}
+     *
+     * @param toDoList all to-dos to add to the to-do list
      * @throws IllegalValueException if any to-do in {@param toDoList} already exists
      */
     public ToDoList add(ReadOnlyToDoList toDoList) throws IllegalValueException {
@@ -82,7 +92,10 @@ public class ToDoList implements ReadOnlyToDoList {
     }
 
     /**
-     * Removes all to-dos in {@param toDoList}.
+     * Removes every to-do in {@param toDoList} that is considered {@link ReadOnlyToDo#isSimilar(ReadOnlyToDo)}
+     * to any to-do in the to-do list.
+     *
+     * @param toDoList all to-dos to delete from the to-do list
      * @throws IllegalValueException if any to-do in {@param toDoList} was not found for deletion
      */
     public ToDoList remove(ReadOnlyToDoList toDoList) throws IllegalValueException {
@@ -100,7 +113,9 @@ public class ToDoList implements ReadOnlyToDoList {
     }
 
     /**
-     * Clears the list and sets it to a deep copy of {@param newToDos}.
+     * Clears the list and sets it to a deep copy of a new to-do list
+     *
+     * @param newToDos the new to-do list to reset to
      */
     public void reset(List<ReadOnlyToDo> newToDos) {
         List<ToDo> toDos = new LinkedList<>();
@@ -113,24 +128,16 @@ public class ToDoList implements ReadOnlyToDoList {
         return getText();
     }
 
-    /**
-     * @return a read-only list of read-only to-dos it contains
-     */
+    @Override
     public UnmodifiableObservableList<ReadOnlyToDo> getToDos() {
         return protectedList;
     }
 
-    /**
-     *  @see ReadOnlyToDoList#contains(ReadOnlyToDo)
-     */
     @Override
     public boolean contains(ReadOnlyToDo toDo) {
         return list.filtered(x -> x.isSimilar(toDo)).size() > 0;
     }
 
-    /**
-     *  @see ReadOnlyToDoList#isSimilar(ReadOnlyToDoList)
-     */
     @Override
     public boolean isSimilar(ReadOnlyToDoList toDoList) {
         return list.size() == toDoList.getToDos().size()
@@ -142,8 +149,8 @@ public class ToDoList implements ReadOnlyToDoList {
         // short circuit if same object
         // instanceof handles nulls
         return other == this
-                || (other instanceof ToDoList
-                && list.equals(((ToDoList) other).list));
+            || (other instanceof ToDoList
+            && list.equals(((ToDoList) other).list));
     }
 
     @Override

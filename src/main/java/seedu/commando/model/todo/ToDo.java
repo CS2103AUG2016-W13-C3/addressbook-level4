@@ -29,7 +29,8 @@ public class ToDo implements ReadOnlyToDo {
     private LocalDateTime dateFinished;
 
     /**
-     * Asserts that title is non-null
+     * Constructs a to-do with title of {@param title}.
+     * Asserts that title is non-null.
      */
     public ToDo(Title title) {
         assert title != null;
@@ -66,34 +67,57 @@ public class ToDo implements ReadOnlyToDo {
 
         updateValue();
     }
-    
+
+    /**
+     * Sets the title of the to-do, non-null.
+     *
+     * @param title title to set
+     * @return current to-do, for method chaining
+     */
     public ToDo setTitle(Title title) {
         assert title != null;
-        
+
         this.title = title;
         updateValue();
-        
+
         return this;
     }
 
+    /**
+     * Sets the due date of the to-do, non-null.
+     *
+     * @param dueDate due date to set
+     * @return current to-do, for method chaining
+     */
     public ToDo setDueDate(DueDate dueDate) {
         assert dueDate != null;
 
         this.dueDate = dueDate;
         updateValue();
-        
+
         return this;
     }
 
+    /**
+     * Sets the date range of the to-do, non-null.
+     *
+     * @param dateRange date range to set
+     * @return current to-do, for method chaining
+     */
     public ToDo setDateRange(DateRange dateRange) {
         assert dateRange != null;
-        
+
         this.dateRange = dateRange;
         updateValue();
 
         return this;
     }
 
+    /**
+     * Clears any due date or date range set.
+     *
+     * @return current to-do, for method chaining
+     */
     public ToDo clearTimeConstraint() {
         dateRange = null;
         dueDate = null;
@@ -102,23 +126,35 @@ public class ToDo implements ReadOnlyToDo {
         return this;
     }
 
+    /**
+     * Replaces the set of tags of the to-do, non-null.
+     *
+     * @param tags the set of tags to replace the current, which will be copied
+     * @return current to-do, for method chaining
+     */
     public ToDo setTags(Set<Tag> tags) {
         assert tags != null;
-        
-        this.tags = tags;
+
+        this.tags = tags.stream().collect(Collectors.toSet());
         updateValue();
-        
+
         return this;
     }
 
     /**
      * Sets the date finished for the to-do.
+     *
      * If there is a recurring date range, this won't have any effect,
-     *   since the recurrence will not allow the to-do to finish.
+     * since the recurrence will not allow the to-do to finish.
+     *
      * If there is a non-recurring date range, this won't have any effect, since
-     *   the date finished will be automatically the end of the date range.
+     * the date finished will be automatically the end of the date range.
+     *
      * If there is a recurring due date, this will advance the due date
-     *   by the recurrence interval until it's after {@param dateFinished}
+     * by the recurrence interval until it's after {@param dateFinished}
+     *
+     * @param dateFinished date finished to set
+     * @return current to-do, for method chaining
      */
     public ToDo setDateFinished(LocalDateTime dateFinished) {
         if (dateRange != null) {
@@ -137,14 +173,19 @@ public class ToDo implements ReadOnlyToDo {
     }
 
     /**
+     * Does the following:
+     *
      * If {@param isFinished} is true:
-     *   - If it has a recurring due date, its due date will be advanced by its recurrence once,
-     *   - If it has a date range, it will have no effect.
-     *   - Otherwise, its date finished is set to now.
+     * - If it has a recurring due date, its due date will be advanced by its recurrence once,
+     * - If it has a date range, it will have no effect.
+     * - Otherwise, its date finished is set to now.
+     *
      * Else, sets remove to-do's date finished, if there is.
+     *
+     * @param isFinished whether to set the to-do as finished
+     * @return current to-do, for method chaining
      */
     public ToDo setIsFinished(boolean isFinished) {
-        
         if (isFinished) {
             if (dueDate != null && dueDate.recurrence != Recurrence.None) {
                 setDateFinished(dueDate.value);
@@ -161,18 +202,26 @@ public class ToDo implements ReadOnlyToDo {
         return this;
     }
 
-    public ToDo setDateCreated(LocalDateTime date) {
-        this.dateCreated = date;
+    /**
+     * Sets the date created of the to-do, non-null.
+     *
+     * @param dateCreated date created to set
+     * @return current to-do, for method chaining
+     */
+    public ToDo setDateCreated(LocalDateTime dateCreated) {
+        this.dateCreated = dateCreated;
 
         updateValue();
 
         return this;
     }
 
+    @Override
     public Optional<DueDate> getDueDate() {
         return Optional.ofNullable(dueDate);
     }
 
+    @Override
     public Optional<DateRange> getDateRange() {
         // advance based on recurring date range, if applicable
         advanceDateRange(LocalDateTime.now());
@@ -180,6 +229,7 @@ public class ToDo implements ReadOnlyToDo {
         return Optional.ofNullable(dateRange);
     }
 
+    @Override
     public Set<Tag> getTags() {
         if (tags == null) {
             return new HashSet<>();
@@ -188,12 +238,6 @@ public class ToDo implements ReadOnlyToDo {
         }
     }
 
-    /**
-     * Gets the date finished for the to-do.
-     * If there is a recurring date range or due date, this would always be empty.
-     * If there is a non-recurring date range, this would return the end date
-     *   if the current time is after the end date, empty otherwise (not over).
-     */
     @Override
     public Optional<LocalDateTime> getDateFinished() {
         if (dateFinished != null) {
@@ -231,8 +275,8 @@ public class ToDo implements ReadOnlyToDo {
     public boolean equals(Object other) {
         // check if identical object first then check if contains same attributes
         return other == this
-                || (other instanceof ReadOnlyToDo
-                && this.isSameStateAs((ReadOnlyToDo) other));
+            || (other instanceof ReadOnlyToDo
+            && this.isSameStateAs((ReadOnlyToDo) other));
     }
 
     @Override
@@ -250,14 +294,15 @@ public class ToDo implements ReadOnlyToDo {
      */
     private void updateValue() {
         // Reset "invalidated" state of observable value and update
-        value.getValue(); 
+        value.getValue();
         value.setValue(getText());
     }
 
     //@@author A0139697H
+
     /**
      * Called when a to-do is to advance its date range to after {@param dateUntil}
-     *   based on its recurrence.
+     * based on its recurrence.
      * Will only have an effect if to-do has a date range with a recurrence,
      */
     private void advanceDateRange(LocalDateTime dateUntil) {
@@ -289,7 +334,7 @@ public class ToDo implements ReadOnlyToDo {
 
     /**
      * Called when a to-do is to advance its due date to after {@param dateUntil}
-     *   based on its recurrence.
+     * based on its recurrence.
      * Will only have an effect if to-do has a due date with a recurrence,
      */
     private void advanceDueDate(LocalDateTime dateUntil) {

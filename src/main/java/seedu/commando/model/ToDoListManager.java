@@ -12,7 +12,7 @@ import java.util.Optional;
 //@@author A0139697H
 /**
  * In charge of supporting the editing, undoing and redoing of the to-do list,
- *   hinging on the {@link ToDoListChange} class
+ *   hinging on the {@link ToDoListChange} class.
  */
 public class ToDoListManager {
     private final ToDoList toDoList;
@@ -28,7 +28,8 @@ public class ToDoListManager {
     /**
      * Initializes with the given to-do list, which is managed internally.
      * Asserts parameters are non-null.
-     * To-do list is deep copied.
+     *
+     * @param toDoList the internal to-do list will be a deep copy of this
      */
     public ToDoListManager(ReadOnlyToDoList toDoList) {
         assert toDoList != null;
@@ -36,10 +37,16 @@ public class ToDoListManager {
         this.toDoList = new ToDoList(toDoList);
     }
 
+    /**
+     * @see Model#getToDoList()
+     */
     public ReadOnlyToDoList getToDoList() {
         return toDoList;
     }
 
+    /**
+     * @see Model#changeToDoList(ToDoListChange)
+     */
     public void changeToDoList(ToDoListChange change) throws IllegalValueException {
         applyToDoListChange(change);
         toDoListChanges.add(change);
@@ -48,6 +55,9 @@ public class ToDoListManager {
         toDoListUndoChanges.clear();
     }
 
+    /**
+     * @see Model#undoToDoList()
+     */
     public boolean undoToDoList() {
         // Nothing else to undo if the list of changes is empty
         if (toDoListChanges.isEmpty()) {
@@ -71,6 +81,9 @@ public class ToDoListManager {
         return true;
     }
 
+    /**
+     * @see Model#redoToDoList()
+     */
     public boolean redoToDoList() {
         // Check if there are any undos to redo
         if (toDoListUndoChanges.isEmpty()) {
@@ -95,9 +108,9 @@ public class ToDoListManager {
     }
 
     /**
-     * Tries to apply a change to the to-do list
+     * Tries to apply a change to the to-do list.
      * @throws IllegalValueException if there were duplicate to-dos added or
-     *   there were non-existent to-dos deleted
+     *   there were non-existent to-dos deleted.
      */
     private void applyToDoListChange(ToDoListChange change) throws IllegalValueException {
         lastToDoListChange = change;
@@ -116,7 +129,9 @@ public class ToDoListManager {
     }
 
     /**
-     * @return last successful change to the to-do list, considering undos and redos
+     * Gets the last successful change to the to-do list, considering undos and redos
+     *
+     * @return an optional of the last change, empty if there was none
      */
     public Optional<ToDoListChange> getLastToDoListChange() {
         return Optional.ofNullable(lastToDoListChange);

@@ -72,18 +72,18 @@ public class DateTimePrettifier {
         
         if (startIsYtdOrTdyOrTmr) {
             // If same day, don't display month and year
-            if (sameDay) {
-                return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + " on "
+            if (sameDay && sameMonth && sameYear) {
+                return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + " "
                         + getDay(startDateTime);
             } else if (endIsYtdOrTdyOrTmr) {
-                return getTime(startDateTime) + " on " + getDay(startDateTime) + " " + keywordTo + "\n"
-                        + getTime(endDateTime) + " on " + getDay(endDateTime);
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n"
+                        + getTime(endDateTime) + " " + getDay(endDateTime);
             } else if (endDateTime.getYear() == todayDate.getYear()) {
-                return getTime(startDateTime) + " on " + getDay(startDateTime) + " " + keywordTo + "\n"
-                        + getTime(endDateTime) + " on " + getDay(endDateTime) + " " + getMonth(endDateTime);
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n"
+                        + getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime);
             } else {
-                return getTime(startDateTime) + " on " + getDay(startDateTime) + " " + keywordTo + "\n"
-                        + getTime(endDateTime) + " on " + getDay(endDateTime) + " " + getMonth(endDateTime) + " "
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n"
+                        + getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime) + " "
                         + endDateTime.getYear();
             }
         }
@@ -115,11 +115,11 @@ public class DateTimePrettifier {
         if (sameYear && sameMonth && sameDay) {
             // If same year and same month and same day
             // Display one month
-            end = " \non " + getDay(endDateTime) + end;
+            end = " \n" + getDay(endDateTime) + end;
         } else {
             // Display both months
-            start = " on" + getDay(startDateTime) + start;
-            end = " on" + getDay(endDateTime) + end;
+            start = " " + getDay(startDateTime) + start;
+            end = " " + getDay(endDateTime) + end;
         }
 
         // If exactly the same date, start will be "", hence there is a need to
@@ -157,7 +157,7 @@ public class DateTimePrettifier {
         } else if (ld.isEqual(tomorrowDate)) {
             return keywordTomorrow;
         } else {
-            return formatDay.format(ldt);
+            return "on " + formatDay.format(ldt);
         }
     }
 
