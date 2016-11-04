@@ -75,12 +75,12 @@ public class MainWindow extends UiPart {
     private enum FocusPanes {
         COMMANDFIELD, EVENTPANEL, TASKPANEL
     }
-    FocusPanes currentlyFocusedPane = FocusPanes.COMMANDFIELD;
+    private FocusPanes currentlyFocusedPane = FocusPanes.COMMANDFIELD;
     
     // Key combinations
-    KeyCombination altH = KeyCodeCombination.keyCombination("Alt+H");
-    KeyCombination altC = KeyCodeCombination.keyCombination("Alt+C");
-    KeyCombination altM = KeyCodeCombination.keyCombination("Alt+M");
+    private KeyCombination altH = KeyCodeCombination.keyCombination("Alt+H");
+    private KeyCombination altC = KeyCodeCombination.keyCombination("Alt+C");
+    private KeyCombination altM = KeyCodeCombination.keyCombination("Alt+M");
     
     @FXML
     private HBox titleBar;
@@ -167,7 +167,7 @@ public class MainWindow extends UiPart {
         helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl);
     }
 
-    void fillInnerParts() {
+    protected void fillInnerParts() {
         eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getUiEvents());
         taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getUiTasks());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());

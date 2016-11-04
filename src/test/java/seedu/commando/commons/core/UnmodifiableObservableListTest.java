@@ -11,8 +11,8 @@ import static org.junit.Assert.*;
 
 public class UnmodifiableObservableListTest {
 
-    List<Integer> backing;
-    UnmodifiableObservableList<Integer> list;
+    private List<Integer> backing;
+    private UnmodifiableObservableList<Integer> list;
     
     @Before
     public void setUp() {

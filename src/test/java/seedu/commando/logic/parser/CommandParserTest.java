@@ -79,7 +79,7 @@ public class CommandParserTest {
     @Test
     public void extractInteger_noInteger_empty()  {
         commandParser.setInput("no index");
-        assertTrue(!commandParser.extractInteger().isPresent());
+        assertFalse(commandParser.extractInteger().isPresent());
         assertEquals("no index", commandParser.getInput());
     }
 

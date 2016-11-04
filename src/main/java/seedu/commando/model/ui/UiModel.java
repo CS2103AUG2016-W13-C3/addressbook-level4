@@ -203,11 +203,7 @@ public class UiModel {
         }
         LocalDateTime dueDate = toDo.getDueDate().get().value;
 
-        if (isTimeInRange(dueDate, filterDateRange)) {
-            return true;
-        }
-
-        return false;
+        return isTimeInRange(dueDate, filterDateRange);
     }
 
     /**
@@ -270,12 +266,8 @@ public class UiModel {
      * @return true if the time is in the dateRange
      */
     private boolean isTimeInRange(LocalDateTime time, DateRange dateRange) {
-        if ((time.isAfter(dateRange.startDate) || time.isEqual(dateRange.startDate))
-            && (time.isBefore(dateRange.endDate) || time.isEqual(dateRange.endDate))) {
-            return true;
-        } else {
-            return false;
-        }
+        return (time.isAfter(dateRange.startDate) || time.isEqual(dateRange.startDate))
+            && (time.isBefore(dateRange.endDate) || time.isEqual(dateRange.endDate));
     }
 
     //@@author A0139697H
