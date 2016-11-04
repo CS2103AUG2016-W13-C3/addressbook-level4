@@ -74,7 +74,7 @@ public class UnfinishCommand extends Command {
 			// Form comma-separated list of to-dos to be unfinished
 	        String toDoTitles = getToDoTitlesString(model);
 			model.changeToDoList(new ToDoListChange(unfinishedToDos, listToUnfinish));
-			return new CommandResult(String.format(Messages.UNFINISHED_COMMAND, toDoTitles.toString()));
+			return new CommandResult(String.format(Messages.UNFINISHED_COMMAND, toDoTitles));
 		} catch (IllegalValueException exception) {
 			return new CommandResult(exception.getMessage(), true);
 		}

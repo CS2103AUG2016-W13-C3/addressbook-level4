@@ -74,7 +74,7 @@ public class FinishCommand extends Command {
 			// Form comma-separated list of to-dos to be finished
 	        String toDoTitles = getToDoTitlesString(model);
 			model.changeToDoList(new ToDoListChange(finishedToDos, listToFinish));
-			return new CommandResult(String.format(Messages.FINISH_COMMAND, toDoTitles.toString()));
+			return new CommandResult(String.format(Messages.FINISH_COMMAND, toDoTitles));
 		} catch (IllegalValueException exception) {
 			return new CommandResult(exception.getMessage(), true);
 		}
