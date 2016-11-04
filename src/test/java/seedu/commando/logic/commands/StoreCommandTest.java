@@ -37,7 +37,7 @@ public class StoreCommandTest {
     private File toDoListFile;
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         model = new ModelManager();
 
         toDoListFile = folder.newFile();
@@ -52,7 +52,7 @@ public class StoreCommandTest {
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         EventsCenter.clearSubscribers();
     }
 

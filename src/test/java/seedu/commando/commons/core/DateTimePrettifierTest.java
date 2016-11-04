@@ -29,11 +29,11 @@ public class DateTimePrettifierTest {
     private final int tomorrowDay = now.plusDays(1).getDayOfMonth();
     
     @Before
-    public void setup() {
+    public void setUp() {
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
     }
     
     @Test

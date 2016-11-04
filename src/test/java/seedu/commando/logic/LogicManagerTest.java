@@ -39,13 +39,13 @@ public class LogicManagerTest {
     private static Storage storage;
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         eventsCollector = new EventsCollector();
         logic = initLogic();
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         EventsCenter.clearSubscribers();
     }
 

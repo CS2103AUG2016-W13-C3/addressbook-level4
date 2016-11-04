@@ -18,7 +18,7 @@ public class ToDoTest {
     private ToDo toDo;
 
     @Before
-    public void setup() throws IllegalValueException {
+    public void setUp() throws IllegalValueException {
         toDo = new ToDo(new Title("title"));
     }
 

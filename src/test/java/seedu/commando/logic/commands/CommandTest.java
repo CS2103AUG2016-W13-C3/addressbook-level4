@@ -78,7 +78,7 @@ public class CommandTest {
     };
 
     @Before
-    public void setup() {
+    public void setUp() {
         command = new Command() {
             @Override
             public CommandResult execute() throws NoModelException, NoEventsCenterException {

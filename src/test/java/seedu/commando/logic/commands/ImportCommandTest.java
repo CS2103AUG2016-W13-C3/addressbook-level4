@@ -34,7 +34,7 @@ public class ImportCommandTest {
     private File toDoListFile;
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         toDoListFile = folder.newFile();
         File userPrefsFile  = folder.newFile();
         Model model = new ModelManager();
@@ -48,7 +48,7 @@ public class ImportCommandTest {
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         EventsCenter.clearSubscribers();
     }
 

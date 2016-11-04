@@ -37,7 +37,7 @@ public class ModelManagerTest {
     private boolean hasReached;
 
     @Before
-    public void setup() throws IllegalValueException {
+    public void setUp() throws IllegalValueException {
         toDoList = new ToDoList();
         toDoListItem1 = new ToDoBuilder("title")
             .created(now.plusYears(-1))

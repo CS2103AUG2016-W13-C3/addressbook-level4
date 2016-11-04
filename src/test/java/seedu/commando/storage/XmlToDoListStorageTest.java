@@ -34,7 +34,7 @@ public class XmlToDoListStorageTest {
     private File tempFile;
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         tempFile = folder.newFile();
     }
 

@@ -35,7 +35,7 @@ public class StorageManagerTest {
     private File userPrefsFile;
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         toDoListFile = folder.newFile();
         userPrefsFile = folder.newFile();
         storageManager = new StorageManager(

@@ -20,7 +20,7 @@ public class UiModelTest {
     private ToDoListManager toDoListManager;
 
     @Before
-    public void setup() throws IllegalValueException {
+    public void setUp() throws IllegalValueException {
         ReadOnlyToDoList toDoList = new ToDoList()
             .add(TaskOldDueUnfinishedNewCreated)
             .add(TaskOldDueUnfinishedOldCreated)
