@@ -30,10 +30,10 @@ public class RecallCommand extends Command {
 
         if (keywords.isEmpty() && tags.isEmpty()) {
             // if no keywords or tags are provided, show all finished to-dos
-            model.clearUiToDoListFilter(UiModel.FILTER_MODE.FINISHED);
+            model.clearUiToDoListFilter(Model.FILTER_MODE.FINISHED);
             return new CommandResult(Messages.RECALL_COMMAND_CLEAR);
         } else {
-            model.setUiToDoListFilter(keywords, tags, UiModel.FILTER_MODE.FINISHED);
+            model.setUiToDoListFilter(keywords, tags, Model.FILTER_MODE.FINISHED);
             return new CommandResult(String.format(Messages.RECALL_COMMAND, new TreeSet<>(keywords), new TreeSet<>(tags)));
         }
     }

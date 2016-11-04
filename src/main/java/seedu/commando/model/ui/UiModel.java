@@ -31,11 +31,7 @@ public class UiModel {
     private int runningIndex;
 
     // Parameters for filtering
-    private FILTER_MODE filterMode = FILTER_MODE.ALL;
-
-    public enum FILTER_MODE {
-        FINISHED, UNFINISHED, ALL
-    }
+    private Model.FILTER_MODE filterMode = Model.FILTER_MODE.ALL;
 
     /**
      * @param toDoListManager ToDoListManager it tracks and grabs the list of to-dos from
@@ -44,7 +40,7 @@ public class UiModel {
         this.toDoListManager = toDoListManager;
 
         // Initialize the filter to show unfinished to-dos
-        clearToDoListFilter(FILTER_MODE.UNFINISHED);
+        clearToDoListFilter(Model.FILTER_MODE.UNFINISHED);
 
         // Start tracking changes to-do list, and update UI to-dos when a change happens
         toDoListManager.getToDoList().getToDos().addListener(new ListChangeListener<ReadOnlyToDo>() {
@@ -67,17 +63,17 @@ public class UiModel {
     }
 
     /**
-     * @see Model#clearUiToDoListFilter(FILTER_MODE)
+     * @see Model#clearUiToDoListFilter(Model.FILTER_MODE)
      */
-    public void clearToDoListFilter(FILTER_MODE filterMode) {
+    public void clearToDoListFilter(Model.FILTER_MODE filterMode) {
         assert !CollectionUtil.isAnyNull(filterMode);
         setToDoListFilter(Collections.emptySet(), Collections.emptySet(), filterMode);
     }
 
     /**
-     * @see Model#setUiToDoListFilter(Set, Set, FILTER_MODE)
+     * @see Model#setUiToDoListFilter(Set, Set, Model.FILTER_MODE)
      */
-    public void setToDoListFilter(Set<String> keywords, Set<Tag> tags, FILTER_MODE filterMode) {
+    public void setToDoListFilter(Set<String> keywords, Set<Tag> tags, Model.FILTER_MODE filterMode) {
         assert !CollectionUtil.isAnyNull(keywords, tags, filterMode);
 
         this.filterMode = filterMode;
@@ -93,7 +89,7 @@ public class UiModel {
     public void setToDoListFilter(DateRange dateRange) {
         assert dateRange != null;
 
-        this.filterMode = FILTER_MODE.ALL;
+        this.filterMode = Model.FILTER_MODE.ALL;
 
         updateEventsAndTasksByTime(dateRange);
     }

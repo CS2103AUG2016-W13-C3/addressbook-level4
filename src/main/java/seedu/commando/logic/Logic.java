@@ -22,7 +22,7 @@ public interface Logic {
     CommandResult execute(String commandText);
 
     /**
-     * Returns observable list of UI to-dos considered as events by {@link UiToDo#isEvent()}
+     * Returns observable read-only list of UI to-dos considered as events by {@link UiToDo#isEvent()}
      * to be displayed on the UI.
      * The ordering of the list is to be respected.
      *
@@ -31,7 +31,7 @@ public interface Logic {
     UnmodifiableObservableList<UiToDo> getUiEvents();
 
     /**
-     * Returns observable list of UI to-dos considered as tasks by {@link UiToDo#isTask()}
+     * Returns observable read-only list of UI to-dos considered as tasks by {@link UiToDo#isTask()}
      * to be displayed on the UI.
      * The ordering of the list is to be respected.
      *

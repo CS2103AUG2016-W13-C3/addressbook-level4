@@ -26,7 +26,7 @@ public class ListCommand extends Command {
 
 		// if no time provided, show all to-dos
 		if (!dateRange.isPresent()) {
-			model.clearUiToDoListFilter(UiModel.FILTER_MODE.ALL);
+			model.clearUiToDoListFilter(Model.FILTER_MODE.ALL);
 			return new CommandResult(Messages.LIST_COMMAND_CLEAR);
 		}
 

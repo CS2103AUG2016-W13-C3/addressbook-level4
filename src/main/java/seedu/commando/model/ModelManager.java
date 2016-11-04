@@ -66,7 +66,7 @@ public class ModelManager extends ComponentManager implements Model {
         toDoListManager.changeToDoList(change);
 
         // if to-do list has changed, reset any find or history filter
-        clearUiToDoListFilter(UiModel.FILTER_MODE.UNFINISHED);
+        clearUiToDoListFilter(FILTER_MODE.UNFINISHED);
         indicateToDoListChanged();
         logUiToDoList();
     }
@@ -77,7 +77,7 @@ public class ModelManager extends ComponentManager implements Model {
         boolean hasChanged = toDoListManager.undoToDoList();
 
         if (hasChanged) {
-            clearUiToDoListFilter(UiModel.FILTER_MODE.UNFINISHED);
+            clearUiToDoListFilter(FILTER_MODE.UNFINISHED);
             indicateToDoListChanged();
             logUiToDoList();
         }
@@ -91,7 +91,7 @@ public class ModelManager extends ComponentManager implements Model {
         boolean hasChanged = toDoListManager.redoToDoList();
 
         if (hasChanged) {
-            clearUiToDoListFilter(UiModel.FILTER_MODE.UNFINISHED);
+            clearUiToDoListFilter(FILTER_MODE.UNFINISHED);
             indicateToDoListChanged();
             logUiToDoList();
         }
@@ -115,7 +115,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void clearUiToDoListFilter(UiModel.FILTER_MODE filterMode) {
+    public void clearUiToDoListFilter(FILTER_MODE filterMode) {
         logger.info("Clearing filter on UI to-dos with filter mode: " + filterMode);
 
         uiModel.clearToDoListFilter(filterMode);
@@ -123,7 +123,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, UiModel.FILTER_MODE filterMode) {
+    public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, FILTER_MODE filterMode) {
         logger.info("Filtering UI to-dos by keywords " + keywords + " and tags " + tags
             + " with filter mode: " + filterMode);
 

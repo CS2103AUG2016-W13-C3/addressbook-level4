@@ -34,10 +34,10 @@ public class FindCommand extends Command {
 
         if (keywords.isEmpty() && tags.isEmpty()) {
             // if no keywords or tags are provided, show all unfinished to-dos
-            model.clearUiToDoListFilter(UiModel.FILTER_MODE.UNFINISHED);
+            model.clearUiToDoListFilter(Model.FILTER_MODE.UNFINISHED);
             return new CommandResult(Messages.FIND_COMMAND_CLEAR);
         } else {
-            model.setUiToDoListFilter(keywords, tags, UiModel.FILTER_MODE.UNFINISHED);
+            model.setUiToDoListFilter(keywords, tags, Model.FILTER_MODE.UNFINISHED);
             return new CommandResult(String.format(Messages.FIND_COMMAND, new TreeSet<>(keywords), new TreeSet<>(tags)));
         }
     }
