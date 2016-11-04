@@ -17,6 +17,10 @@ public class ListCommand extends Command {
     public static final String COMMAND_WORD = "list";
     private Optional<DateRange> dateRange;
 
+    /**
+     * Initializes a list command.
+     * @param dateRange requested date range to list
+     */
     public ListCommand(Optional<DateRange> dateRange) {
         this.dateRange = dateRange;
     }

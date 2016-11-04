@@ -21,38 +21,44 @@ public class ExportCommand extends Command {
 
     private String path;
 
+    /**
+     * Initializes a export command.
+     * @param inputPath requested file path to export data, non-null
+     */
     public ExportCommand(String inputPath) {
         assert inputPath != null;
         this.path = inputPath;
     }
-    //@@author A0142230B
 
     /**
      * Asserts that {@code model} are non-null
      */
-    @Override
-    public CommandResult execute() throws NoModelException {
-        Model model = getModel();
+	@Override
+	public CommandResult execute() throws NoModelException {
+		Model model = getModel();
 
-        File file = new File(path);
+		File file = new File(path);
 
-        // Check if the path has a file name to save
-        if (path.endsWith("\\")) {
-            return new CommandResult(Messages.MISSING_EXPORT_FILE, true);
-        }
-        // Check if the destination file already exists (avoid overwriting important data)
-        if (file.exists()) {
-            return new CommandResult(String.format(Messages.EXPORT_COMMAND_FILE_EXIST, path), true);
-        }
+		// Check if the path has a file name to save
+		if (path.endsWith("\\")) {
+			return new CommandResult(Messages.MISSING_EXPORT_FILE, true);
+		}
+		// Check if the destination file already exists (avoid overwriting
+		// important data)
+		else if (file.exists()) {
+			return new CommandResult(String.format(Messages.EXPORT_COMMAND_FILE_EXIST, path), true);
+		} 		
+		else {
 
-        XmlToDoListStorage export = new XmlToDoListStorage(path);
+			XmlToDoListStorage export = new XmlToDoListStorage(path);
 
-        try {
-            export.saveToDoList(model.getToDoList(), path);
-        } catch (IOException e) {
-            return new CommandResult(e.getMessage(), true);
-        }
+			try {
+				export.saveToDoList(model.getToDoList(), path);
+			} catch (IOException e) {
+				return new CommandResult(e.getMessage(), true);
+			}
 
-        return new CommandResult(String.format(Messages.EXPORT_COMMAND, path));
-    }
+			return new CommandResult(String.format(Messages.EXPORT_COMMAND, path));
+		}
+	}
 }
