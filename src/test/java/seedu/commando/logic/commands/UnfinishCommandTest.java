@@ -14,7 +14,6 @@ import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.ToDoBuilder;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 import static org.junit.Assert.*;
 import static seedu.commando.logic.LogicManagerTest.initLogic;

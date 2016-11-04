@@ -6,8 +6,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
-import seedu.commando.commons.events.model.ToDoListChangedEvent;
-import seedu.commando.commons.events.storage.DataSavingExceptionEvent;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.ToDoList;

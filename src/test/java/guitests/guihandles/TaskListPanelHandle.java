@@ -2,7 +2,6 @@ package guitests.guihandles;
 
 
 import guitests.GuiRobot;
-import guitests.utils.TestApp;
 import guitests.utils.TestUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;

@@ -10,11 +10,9 @@ import seedu.commando.model.todo.ToDo;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 //@@author A0122001M
 

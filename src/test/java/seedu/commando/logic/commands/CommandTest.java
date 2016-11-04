@@ -13,7 +13,6 @@ import seedu.commando.model.todo.ToDoListChange;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.Tag;
-import seedu.commando.model.ui.UiModel;
 import seedu.commando.model.ui.UiToDo;
 
 import java.util.Optional;

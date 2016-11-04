@@ -1,7 +1,6 @@
 package guitests.guihandles;
 
 import guitests.GuiRobot;
-import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;

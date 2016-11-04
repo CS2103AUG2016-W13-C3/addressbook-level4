@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import guitests.guihandles.ToDoListPanelHandle;
 import seedu.commando.commons.core.Messages;
-import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ToDo;
 
 import java.util.Collections;

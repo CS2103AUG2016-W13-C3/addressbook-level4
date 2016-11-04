@@ -3,13 +3,10 @@ package guitests;
 import seedu.commando.commons.core.Messages;
 
 import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.logic.commands.AddCommand;
 import seedu.commando.model.todo.ToDo;
-import seedu.commando.testutil.ToDoBuilder;
 
 import org.junit.Test;
 
-import guitests.guihandles.EventCardHandle;
 import guitests.guihandles.ToDoCardHandle;
 import guitests.guihandles.ToDoListPanelHandle;
 import guitests.utils.CommandBuilder;
