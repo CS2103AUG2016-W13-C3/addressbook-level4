@@ -176,7 +176,7 @@ This command allows you to change the default save location.
 If the folders specified in the new filepath does not exist, they will be created.
 Note that the save file in the old save location remains.
 
-I.e. `export .\src\test\data\ManualTesting\newData.xml`
+I.e. `store .\src\test\data\ManualTesting\Test\newData.xml`
 
 ##Help
 This command opens up a link to the user guide of this application.
