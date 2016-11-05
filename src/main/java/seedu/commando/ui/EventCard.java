@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import seedu.commando.commons.core.DateTimePrettifier;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
@@ -24,7 +25,7 @@ public class EventCard extends UiPart {
     @FXML
     private HBox eventPane;
     @FXML
-    private HBox datePane;
+    private VBox dateTagsPane;
     @FXML
     private FlowPane tagsPane;
     @FXML
@@ -40,6 +41,9 @@ public class EventCard extends UiPart {
 
     private ReadOnlyToDo toDo;
     private int index;
+    
+    private boolean containsTags = true;
+    private boolean containsDates = true;
 
     public EventCard() {
     }
@@ -59,6 +63,7 @@ public class EventCard extends UiPart {
         setDateTimesLabels();
         setRecurrenceLabel();
         createTagLabels();
+        checkContainsTagsAndDates();
     }
 
     // @@author A0139080J
@@ -79,6 +84,7 @@ public class EventCard extends UiPart {
                 tagsPane.getChildren().add(label);
             }
         } else {
+            containsTags = false;
             tagsPane.setManaged(false);
         }
     }
@@ -104,8 +110,15 @@ public class EventCard extends UiPart {
             dateIntervalLabel
                     .setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityBlue((int) startDayDifference));
         } else {
+            containsDates = false;
             dateIntervalLabel.setManaged(false);
             endLabel.setManaged(false);
+        }
+    }
+    
+    private void checkContainsTagsAndDates() {
+        if (!containsTags && !containsDates) {
+            dateTagsPane.setManaged(false);
         }
     }
 
@@ -135,7 +148,7 @@ public class EventCard extends UiPart {
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        CardStyleManager.addStyleAll("finished", eventPane, datePane, indexLabel);
+        CardStyleManager.addStyleAll("finished", eventPane, dateTagsPane, indexLabel);
     }
 
     /**

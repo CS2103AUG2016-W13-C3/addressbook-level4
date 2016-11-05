@@ -26,7 +26,7 @@ public class TaskCard extends UiPart {
     @FXML
     private FlowPane tagsPane;
     @FXML
-    private VBox datePane;
+    private VBox dateTagsPane;
     @FXML
     private Label titleLabel;
     @FXML
@@ -40,6 +40,9 @@ public class TaskCard extends UiPart {
 
     private ReadOnlyToDo toDo;
     private int index;
+    
+    private boolean containsTags = true;
+    private boolean containsDates = true;
 
     public TaskCard() {
     }
@@ -60,6 +63,7 @@ public class TaskCard extends UiPart {
         setDateTimeLabel();
         setRecurrenceLabel();
         createTagLabels();
+        checkContainsTagsAndDates();
     }
 
     // @@author A0139080J
@@ -80,6 +84,7 @@ public class TaskCard extends UiPart {
                 tagsPane.getChildren().add(label);
             }
         } else {
+            containsTags = false;
             tagsPane.setManaged(false);
         }
     }
@@ -105,8 +110,14 @@ public class TaskCard extends UiPart {
             dueLabel.setText("by " + DateTimePrettifier.prettifyDateTime(due));
             dueLabel.setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityGreen((int) dayDifference));
         } else {
+            containsDates = false;
             dueLabel.setManaged(false);
-            datePane.setManaged(false);
+        }
+    }
+    
+    private void checkContainsTagsAndDates() {
+        if (!containsTags && !containsDates) {
+            dateTagsPane.setManaged(false);
         }
     }
 
@@ -136,7 +147,7 @@ public class TaskCard extends UiPart {
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        CardStyleManager.addStyleAll("finished", taskPane, datePane, indexLabel);
+        CardStyleManager.addStyleAll("finished", taskPane, dateTagsPane, indexLabel);
     }
 
     /**
