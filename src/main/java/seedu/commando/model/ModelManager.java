@@ -61,7 +61,9 @@ public class ModelManager extends ComponentManager implements Model {
     }
     
     /**
-     * @see Model#changeToDoList(ToDoListChange)
+     * Applies a change to its to-do list.
+     *
+     * @throws IllegalValueException if the change was invalid
      */
     @Override
     public synchronized void changeToDoList(ToDoListChange change) throws IllegalValueException {
@@ -75,7 +77,9 @@ public class ModelManager extends ComponentManager implements Model {
     }
     
     /**
-     * @see Model#undoToDoList()
+     * Undos the last successful change to its to-do list.
+     *
+     * @return true if there was a change that was undone
      */
     @Override
     public boolean undoToDoList() {
@@ -92,7 +96,9 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     /**
-     * @see Model#redoToDoList()
+     * Redos the last successful undo to its to-do list.
+     *
+     * @return true if there was an undo that was redone
      */
     @Override
     public boolean redoToDoList() {
@@ -109,7 +115,11 @@ public class ModelManager extends ComponentManager implements Model {
     }
      
     /**
-     * @see Model#getUiEvents()
+     * Returns observable read-only list of UI to-dos considered as events by {@link UiToDo#isEvent()}.
+     * This changes with the filter on the UI to-dos and the to-do list of model.
+     * The ordering of the list is to be respected.
+     *
+     * @return an observable read-only list of {@link UiToDo} that are events
      */
     @Override
     public UnmodifiableObservableList<UiToDo> getUiEvents() {
@@ -117,7 +127,11 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     /**
-     * @see Model#getUiTasks()
+     * Return observable read-only list of UI to-dos considered as tasks by {@link UiToDo#isTask()}.
+     * This changes with the filter on the UI to-dos and the to-do list of model.
+     * The ordering of the list is to be respected.
+     *
+     * @return an observable read-only list of {@link UiToDo} that are tasks
      */
     @Override
     public UnmodifiableObservableList<UiToDo> getUiTasks() {
@@ -125,7 +139,10 @@ public class ModelManager extends ComponentManager implements Model {
     }
     
     /**
-     * @see Model#getUiToDoAtIndex(int)
+     * Returns the {@link UiToDo} in {@link #getUiEvents()} and {@link #getUiTasks()}
+     * that have the {@link UiToDo#getIndex()} of {@param toDoIndex}, in constant time.
+     *
+     * @return the UI to-do with the given index, if exists
      */
     @Override
     public Optional<UiToDo> getUiToDoAtIndex(int index) {
@@ -133,7 +150,9 @@ public class ModelManager extends ComponentManager implements Model {
     }
     
     /**
-     * @see Model#clearUiToDoListFilter(seedu.commando.model.Model.FILTER_MODE)
+     * Clears any keywords, tags or daterange filters on the UI to-dos
+     * and sets the filter mode.
+     * Asserts parameters to be non-null.
      */
     @Override
     public void clearUiToDoListFilter(FILTER_MODE filterMode) {
@@ -145,7 +164,14 @@ public class ModelManager extends ComponentManager implements Model {
 
     
     /**
-     * @see Model#setUiToDoListFilter(java.util.Set, java.util.Set, seedu.commando.model.Model.FILTER_MODE)
+     * Sets a filter mode, keywords filter, and tags filter on the UI to-dos.
+     * Asserts parameters to be non-null.
+     * <p>
+     * If {@param filterMode} ==
+     * - ALL: all to-dos that match keywords and tags are shown.
+     * - FINISHED: finished to-dos that match keywords and tags are shown
+     * - UNFINISHED: unfinished to-dos or finished to-dos that are finished on the
+     * the current day, that match keywords and tags, are shown.
      */
     @Override
     public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, FILTER_MODE filterMode) {

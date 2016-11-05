@@ -338,7 +338,14 @@ public class TestUtil {
     public static boolean compareCardAndToDo(ToDoCardHandle card, ReadOnlyToDo todo) {
         return card.isSameToDo(todo);
     }
-
+    
+    
+    /**
+     * Retrieve the set of tags in the current todo
+     * 
+     * @param tags
+     * @return array of tags
+     */
     public static Tag[] getTagList(String tags) {
         if ("".equals(tags)) {
             return new Tag[]{};
