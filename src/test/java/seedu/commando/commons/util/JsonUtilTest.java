@@ -64,6 +64,6 @@ public class JsonUtilTest {
         
 
         thrown.expect(DataConversionException.class);
-        Optional<Integer> dummy = JsonUtil.readJsonFile("testJsonUtil.json", Integer.class);
+        JsonUtil.readJsonFile("testJsonUtil.json", Integer.class);
     }
 }

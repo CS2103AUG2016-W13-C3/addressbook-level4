@@ -74,10 +74,16 @@ public class TestUtil {
         try {
             //CHECKSTYLE.OFF: LineLength
             return new ToDo[]{
-                new ToDo(new Title("test1")).setDateRange(new DateRange(LocalDateTime.now(), LocalDateTime.now().plusDays(2))).setIsFinished(false),
-                new ToDo(new Title("test2")).setDateRange(new DateRange(LocalDateTime.now().plusWeeks(1), LocalDateTime.now().plusWeeks(2))).setIsFinished(false),
-                new ToDo(new Title("test3")).setDueDate(new DueDate(LocalDateTime.now())).setIsFinished(false),
-                new ToDo(new Title("test4")).setDueDate(new DueDate(LocalDateTime.now().plusDays(3))).setIsFinished(false),
+                new ToDo(new Title("test1")).setDateRange(new DateRange(LocalDateTime.now(), 
+                                                                        LocalDateTime.now().plusDays(2)))
+                                            .setIsFinished(false),
+                new ToDo(new Title("test2")).setDateRange(new DateRange(LocalDateTime.now().plusWeeks(1), 
+                                                                        LocalDateTime.now().plusWeeks(2)))
+                                            .setIsFinished(false),
+                new ToDo(new Title("test3")).setDueDate(new DueDate(LocalDateTime.now()))
+                                            .setIsFinished(false),
+                new ToDo(new Title("test4")).setDueDate(new DueDate(LocalDateTime.now().plusDays(3)))
+                                            .setIsFinished(false),
                 new ToDo(new Title("test5")),
                 new ToDo(new Title("test6")),
             };
@@ -338,7 +344,14 @@ public class TestUtil {
     public static boolean compareCardAndToDo(ToDoCardHandle card, ReadOnlyToDo todo) {
         return card.isSameToDo(todo);
     }
-
+    
+    
+    /**
+     * Retrieve the set of tags in the current todo
+     * 
+     * @param tags
+     * @return array of tags
+     */
     public static Tag[] getTagList(String tags) {
         if ("".equals(tags)) {
             return new Tag[]{};

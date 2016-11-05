@@ -62,12 +62,12 @@ public class FinishCommandTest extends CommanDoGuiTest {
      * @param currentList   A copy of the current list of Todos (before finish command).
      */
     
-    private void assertFinishSuccess(int targetIndex, ToDo[] currentList) {
-        ToDo TodosToFinish = currentList[targetIndex-1]; //-1 because array uses zero indexing
+    private void assertFinishSuccess(int idx, ToDo[] currentList) {
+        ToDo TodosToFinish = currentList[idx-1]; //-1 because array uses zero indexing
         TodosToFinish.setIsFinished(true);
-        ToDo[] expectedRemainder = TestUtil.removeToDoFromList(currentList, targetIndex);
+        ToDo[] expectedRemainder = TestUtil.removeToDoFromList(currentList, idx);
         expectedRemainder = TestUtil.addToDosToList(expectedRemainder, expectedRemainder.length, TodosToFinish);
-        commandBox.runCommand("finish " + targetIndex);
+        commandBox.runCommand("finish " + idx);
 
         //confirm the list now contains all previous Todos with one marked as done
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedRemainder));
@@ -76,9 +76,9 @@ public class FinishCommandTest extends CommanDoGuiTest {
         assertResultMessage(String.format(Messages.FINISH_COMMAND, TodosToFinish.getTitle().toString()));
         
         //finish finished task
-        targetIndex = 5;
-        commandBox.runCommand("finish " + targetIndex);
-        assertResultMessage(String.format(Messages.FINISH_COMMAND_ALREADY_FINISHED, expectedRemainder[targetIndex-1].getTitle().toString()));
+        idx = 5;
+        commandBox.runCommand("finish " + idx);
+        assertResultMessage(String.format(Messages.FINISH_COMMAND_ALREADY_FINISHED, expectedRemainder[idx-1].getTitle().toString()));
         
     }
     
@@ -104,7 +104,7 @@ public class FinishCommandTest extends CommanDoGuiTest {
         }
         commandBox.runCommand("finish " + startIndex + " to " + endIndex);
         
-        //confirm the list now contains all previous Todoss except the deleted Todos
+        //confirm the list now contains all previous Todos except the deleted Todos
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedRemainder));
 
         //confirm the result message is correct

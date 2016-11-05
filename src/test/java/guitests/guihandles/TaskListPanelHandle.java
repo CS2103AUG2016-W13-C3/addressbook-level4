@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 //@@author A0122001M
 
 /**
- * Provides a handle for the panel containing the Todo list.
+ * Provides a handle for the panel containing the task list.
  */
 public class TaskListPanelHandle extends GuiHandle implements ToDoListPanelHandle {
 

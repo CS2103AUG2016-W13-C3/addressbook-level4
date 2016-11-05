@@ -9,7 +9,7 @@ import seedu.commando.model.todo.ReadOnlyToDo;
 //@@author A0122001M
 
 /**
- * Provides a handle to a person card in the person list panel.
+ * Provides a handle to a event card in the event list panel.
  */
 public class EventCardHandle extends GuiHandle implements ToDoCardHandle{
     private static final String TITLE_FIELD_ID = "#titleLabel";
