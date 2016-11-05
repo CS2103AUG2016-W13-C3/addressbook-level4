@@ -112,7 +112,7 @@
                     <figcaption>A typical view of <em>CommanDo</em> in action</figcaption>
                 </figure>
 
-                <p>This guide describes the development of <em>CommanDo</em>, how it is currently designed and implemented at a technical level, some of the known issues, and some future plans and extensions for it.</p>
+                <p>This guide describes the development of <em>CommanDo</em>, how it is currently designed and implemented at a technical level, some of its known issues, and some planned developments and extensions for it.</p>
 
                 <p>If you are a new developer, we warmly welcome you on board to our <em>CommanDo</em> team! If you are someone interested to join us in this exciting project, we invite you to <a href="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/AboutUs.md">contact us</a> to help make <em>CommanDo</em> even better.</p>
 
@@ -124,7 +124,7 @@
                     Our main target users (<em>Jim</em>) are characterised by people who...
                     <ul>
                         <li>Have most to-dos coming as emails</li>
-                        <li>Update their to-do list very often and wants speed in doing so</li>
+                        <li>Update their to-do list very often and desires speed in doing so</li>
                         <li>Want to capture the idea of deadlines in their to-dos</li>
                     </ul>
                 </p>
@@ -135,11 +135,11 @@
 
                 <p>In summary, we are focusing on these features:</p>
                 <ol>
-                    <li>2 types of to-dos: <em>Events</em> and <em>Tasks</em>, displayed in separate panels in chronological order</li>
-                    <li>Command-line style input, with commands being short, flexible and intuitive</li>
-                    <li>Able to search through to-dos easily, empowered by a tagging system</li>
-                    <li>Undoing and redoing to-do list operations</li>
-                    <li>Importing and exporting to-do list to a human-readable data file</li>
+                    <li>2 types of to-dos: <em>Events</em> and <em>Tasks</em>, displayed in separate panels in chronological order.</li>
+                    <li>Command-line style input, with commands being short, flexible and intuitive.</li>
+                    <li>Able to search through to-dos easily, empowered by a tagging system.</li>
+                    <li>Undoing and redoing to-do list operations.</li>
+                    <li>Importing and exporting to-do list to a human-readable data file.</li>
                 </ol>
 
                 <p>The full list of features is outlined in our <a href="#appendix-a-user-stories">User Stories</a>. To ensure that the interface is user-friendly and the codebase stays maintainable, we also set ourselves some <a href="#appendix-c-non-functional-requirements">Non-Functional Requirements</a>.</p>
@@ -157,10 +157,10 @@
                         <strong>Eclipse</strong> IDE
                     </li>
                     <li>
-                        <strong>e(fx)clipse</strong> plugin for Eclipse (Do the steps 2 onwards given in <a href="http://www.eclipse.org/efxclipse/install.html#for-the-ambitious">this page</a>)
+                        <strong>e(fx)clipse</strong> plugin for <strong>Eclipse</strong> (Do the steps 2 onwards given in <a href="http://www.eclipse.org/efxclipse/install.html#for-the-ambitious">this page</a>)
                     </li>
                     <li>
-                        <strong>Buildship Gradle Integration</strong> plugin from the Eclipse Marketplace
+                        <strong>Buildship Gradle Integration</strong> plugin from the </strong>Eclipse</strong> Marketplace
                     </li>
                 </ol>
                 It is also assumed that you have some prior experience with Java, Github/Git, some OOP and UML diagramming. This guide focuses on the use of the Eclipse IDE.
@@ -185,7 +185,7 @@
                             <ul>
                                 <li>If you are asked whether to 'keep' or 'overwrite' config files, choose to 'keep'.</li>
                                 <li>Depending on your connection speed and server load, it can even take up to 30 minutes for the set up to finish (This is because Gradle downloads library files from servers during the project set up process).</li>
-                                <li>If Eclipse auto-changed any settings files during the import process, you can discard those changes.</li>
+                                <li>If Eclipse modifies any settings files during the import process, you can discard those changes.</li>
                             </ul>
                     </li>
                 </ol>
@@ -330,7 +330,7 @@
                 <h3 id="parsing-of-datetimes">Parsing of Datetimes</h3>
                 
                 <p>
-                    The <code>DateTimeParser</code> class in charge of taking in an input string with <code>parseDateTime(String)</code>, and returning a <code>LocalDateTime</code> if the string represents a valid datetime. Within the class, it first validates and pre-processes the input string (using regex), then delegates the actual parsing to the <a href="http://natty.joestelmach.com/"><em>natty</em></a> library. 
+                    The <code>DateTimeParser</code> class in charge of taking in an input string with <code>parseDateTime(String)</code>, and returning a <code>LocalDateTime</code> if the string represents a valid datetime. Within the class, it first validates and pre-processes the input string (using regex), then delegates the actual parsing to the <a href="http://natty.joestelmach.com/"><em>Natty</em></a> library. 
                 </p>
 				<!-- @@author A0122001M -->
                 <h2 id="model-component"><em>Model</em> Component</h2>
