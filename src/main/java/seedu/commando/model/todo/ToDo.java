@@ -6,10 +6,7 @@ import javafx.beans.value.ObservableStringValue;
 import seedu.commando.commons.exceptions.IllegalValueException;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 //@@author A0122001M
@@ -231,10 +228,11 @@ public class ToDo implements ReadOnlyToDo {
 
     @Override
     public Set<Tag> getTags() {
+        // Return a copy of the set for defensiveness
         if (tags == null) {
-            return new HashSet<>();
+            return Collections.emptySet();
         } else {
-            return new HashSet<>(tags);
+            return new TreeSet<>(tags);
         }
     }
 

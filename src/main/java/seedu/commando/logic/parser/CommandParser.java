@@ -306,12 +306,17 @@ public class CommandParser {
             input = matcher.group("left").trim();
 
             // Split to words to get tags
+            // trim any leading spaces and filter out empty tags
             return Arrays.stream(matcher.group("tags").trim()
                 .split("\\s+"))
                 .map(word -> {
-                    word = word.trim(); // trim any leading spaces
-                    assert word.indexOf(TAG_PREFIX) == 0; // pattern should have ensured this
+                    word = word.trim();
+
+                    // pattern should have ensured this
+                    assert word.indexOf(TAG_PREFIX) == 0;
+
                     return new Tag(word.substring(TAG_PREFIX.length()).trim());
+
                 }).filter(x -> !x.value.isEmpty())
                 .collect(Collectors.toSet());
         }
