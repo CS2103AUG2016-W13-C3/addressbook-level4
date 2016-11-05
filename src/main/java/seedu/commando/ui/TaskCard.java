@@ -40,8 +40,6 @@ public class TaskCard extends UiPart {
 
     private ReadOnlyToDo toDo;
     private int index;
-    private boolean containsTags;
-    private boolean containsRecurrence;
 
     public TaskCard() {
     }
@@ -61,11 +59,14 @@ public class TaskCard extends UiPart {
 
         setDateTimeLabel();
         setRecurrenceLabel();
-        setTagLabel();
+        createTagLabels();
     }
 
     // @@author A0139080J
-    private void setTagLabel() {
+    /**
+     * Creates a variable number of labels and put them in a flowpane
+     */
+    private void createTagLabels() {
         if (!toDo.getTags().isEmpty()) {
             for (Tag tag : toDo.getTags()) {
                 Label label = new Label();
@@ -75,12 +76,10 @@ public class TaskCard extends UiPart {
                 label.getStyleClass().add("cell_big_label");
                 label.setAlignment(Pos.CENTER);
                 label.setPadding(new Insets(0, 3, 0, 3));
-                
+
                 tagsPane.getChildren().add(label);
             }
-            containsTags = true;
         } else {
-            containsTags = false;
             tagsPane.setManaged(false);
         }
     }
@@ -88,10 +87,8 @@ public class TaskCard extends UiPart {
     private void setRecurrenceLabel() {
         if (toDo.getDueDate().isPresent() && toDo.getDueDate().get().recurrence != Recurrence.None) {
             recurrenceLabel.setText(toDo.getDueDate().get().recurrence.toString());
-            containsRecurrence = true;
         } else {
             recurrenceLabel.setManaged(false);
-            containsRecurrence = false;
         }
     }
 
@@ -106,7 +103,7 @@ public class TaskCard extends UiPart {
             final long dayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), due);
 
             dueLabel.setText("by " + DateTimePrettifier.prettifyDateTime(due));
-            dueLabel.setStyle("-fx-text-fill: " + ToDoCardStyleManager.getDateProximityGreen((int) dayDifference));
+            dueLabel.setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityGreen((int) dayDifference));
         } else {
             dueLabel.setManaged(false);
             datePane.setManaged(false);
@@ -132,14 +129,14 @@ public class TaskCard extends UiPart {
      * modification via undo, edit, add
      */
     private void setRecentlyModifiedState() {
-        ToDoCardStyleManager.addStyleAll("recently-modified", taskPane);
+        CardStyleManager.addStyleAll("recently-modified", taskPane);
     }
 
     /**
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        ToDoCardStyleManager.addStyleAll("finished", taskPane, datePane, indexLabel);
+        CardStyleManager.addStyleAll("finished", taskPane, datePane, indexLabel);
     }
 
     /**
@@ -148,14 +145,14 @@ public class TaskCard extends UiPart {
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            ToDoCardStyleManager.addStyleAll("hover", taskPane, indexLabel);
+            CardStyleManager.addStyleAll("hover", taskPane, indexLabel);
         }
     }
 
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            ToDoCardStyleManager.removeStyleAll("hover", taskPane, indexLabel);
+            CardStyleManager.removeStyleAll("hover", taskPane, indexLabel);
         }
     }
     // @@author

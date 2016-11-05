@@ -10,7 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import seedu.commando.commons.core.DateTimePrettifier;
 import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
@@ -41,9 +40,6 @@ public class EventCard extends UiPart {
 
     private ReadOnlyToDo toDo;
     private int index;
-    
-    private boolean containsTags;
-    private boolean containsRecurrence;
 
     public EventCard() {
     }
@@ -62,10 +58,14 @@ public class EventCard extends UiPart {
 
         setDateTimesLabels();
         setRecurrenceLabel();
-        setTagLabel();
+        createTagLabels();
     }
 
-    private void setTagLabel() {
+    // @@author A0139080J
+    /**
+     * Creates a variable number of labels and put them in a flowpane
+     */
+    private void createTagLabels() {
         if (!toDo.getTags().isEmpty()) {
             for (Tag tag : toDo.getTags()) {
                 Label label = new Label();
@@ -75,27 +75,26 @@ public class EventCard extends UiPart {
                 label.getStyleClass().add("cell_big_label");
                 label.setAlignment(Pos.CENTER);
                 label.setPadding(new Insets(0, 3, 0, 3));
-                
+
                 tagsPane.getChildren().add(label);
             }
-            containsTags = true;
         } else {
-            containsTags = false;
             tagsPane.setManaged(false);
         }
     }
 
-    // @@author A0139080J
     private void setRecurrenceLabel() {
         if (toDo.getDateRange().isPresent() && toDo.getDateRange().get().recurrence != Recurrence.None) {
             recurrenceLabel.setText(toDo.getDateRange().get().recurrence.toString());
-            containsRecurrence = true;
         } else {
             recurrenceLabel.setManaged(false);
-            containsRecurrence = false;
         }
     }
-    
+
+    /**
+     * The colour of the dates will become "more red" as the days pass. Also,
+     * when the date is over, the colour will be red.
+     */
     private void setDateTimesLabels() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
@@ -103,11 +102,10 @@ public class EventCard extends UiPart {
 
             dateIntervalLabel.setText(DateTimePrettifier.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
             dateIntervalLabel
-                    .setStyle("-fx-text-fill: " + ToDoCardStyleManager.getDateProximityBlue((int) startDayDifference));
+                    .setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityBlue((int) startDayDifference));
         } else {
             dateIntervalLabel.setManaged(false);
             endLabel.setManaged(false);
-            //datePane.setManaged(false);
         }
     }
 
@@ -130,14 +128,14 @@ public class EventCard extends UiPart {
      * modification via undo, edit, add
      */
     private void setRecentlyModifiedState() {
-        ToDoCardStyleManager.addStyleAll("recently-modified", eventPane);
+        CardStyleManager.addStyleAll("recently-modified", eventPane);
     }
-    
+
     /**
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        ToDoCardStyleManager.addStyleAll("finished", eventPane, datePane, indexLabel);
+        CardStyleManager.addStyleAll("finished", eventPane, datePane, indexLabel);
     }
 
     /**
@@ -146,14 +144,14 @@ public class EventCard extends UiPart {
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            ToDoCardStyleManager.addStyleAll("hover", eventPane, indexLabel);
+            CardStyleManager.addStyleAll("hover", eventPane, indexLabel);
         }
     }
 
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            ToDoCardStyleManager.removeStyleAll("hover", eventPane, indexLabel);
+            CardStyleManager.removeStyleAll("hover", eventPane, indexLabel);
         }
     }
     // @@author
