@@ -85,7 +85,6 @@ public class TaskCard extends UiPart {
             }
         } else {
             containsTags = false;
-            tagsPane.setManaged(false);
         }
     }
 
@@ -117,6 +116,7 @@ public class TaskCard extends UiPart {
     
     private void checkContainsTagsAndDates() {
         if (!containsTags && !containsDates) {
+            tagsPane.setManaged(false);
             dateTagsPane.setManaged(false);
         }
     }
