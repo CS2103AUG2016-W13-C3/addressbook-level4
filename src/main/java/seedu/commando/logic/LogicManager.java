@@ -41,6 +41,8 @@ public class LogicManager extends ComponentManager implements Logic {
         this.model = model;
         this.storage = storage;
         this.userPrefs = userPrefs;
+
+        saveToDoListToStorage(model.getToDoList());
     }
 
     @Override
