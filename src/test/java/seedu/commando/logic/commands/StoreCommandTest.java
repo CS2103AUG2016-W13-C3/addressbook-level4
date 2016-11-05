@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
+import org.controlsfx.tools.Platform;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -88,13 +89,16 @@ public class StoreCommandTest {
     }
 
     @Test
-    public void execute_storeValidPath_fileSaved() throws IOException {
+    public void execute_storeValidPath_fileSaved() throws IOException, InterruptedException {
         String storeFilePath = folder.getRoot() + "/test.xml";
 
         CommandResult result = logic.execute("store " + storeFilePath);
         assertFalse(result.hasError());
         assertEquals(String.format(Messages.STORE_COMMAND, storeFilePath), result.getFeedback());
         assertTrue(eventsCollector.hasCollectedEvent(ToDoListFilePathChangeRequestEvent.class));
+
+        // Storage should save to-do list in <= 1s
+        Thread.sleep(1000);
         assertTrue(eventsCollector.hasCollectedEvent(ToDoListSavedEvent.class));
     }
 
