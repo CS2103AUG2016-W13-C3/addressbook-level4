@@ -131,7 +131,7 @@ public class DateTimePrettifierTest {
         // Should display one year and both month
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 27, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 2, 28, 12, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 27 to " +
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 27 Feb to " +
                      "12:30 on " + formatDayOfWeek.format(dateTo) + " 28 Feb",
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
