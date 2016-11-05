@@ -16,7 +16,7 @@ public class Messages {
         + "Available topics: " + HELP_TOPICS;
 
     //@@author A0139080J
-    public static final String STORE_COMMAND_FORMAT = ">> store <file path>";
+    public static final String STORE_COMMAND_FORMAT = ">> store <file path> [override]";
     public static final String IMPORT_COMMAND_FORMAT = ">> import <file path>";
     public static final String EXPORT_COMMAND_FORMAT = ">> export <file path>";
     public static final String ADD_COMMAND_FORMAT = ">> add <description of task> #<tag1> #<tag2>...\n" +
@@ -73,7 +73,7 @@ public class Messages {
     public static final String REDO_COMMAND = "Redid the last undo command.";
     public static final String REDO_COMMAND_FAIL = "Nothing more to redo!";
     public static final String STORE_COMMAND = "Changed the storage path to: %1$s.";
-    public static final String STORE_COMMAND_FILE_EXIST = "Failed to store the storage file to %1$s: destination file exists";
+    public static final String STORE_COMMAND_FILE_EXIST = "Failed to store the storage file to %1$s: destination file exists, no override request";
     public static final String EXPORT_COMMAND = "Export the storage file to: %1$s.";
     public static final String EXPORT_COMMAND_FILE_EXIST = "Failed to export the storage file to %1$s: destination file exists";
     public static final String IMPORT_COMMAND = "Import the storage file from: %1$s.";

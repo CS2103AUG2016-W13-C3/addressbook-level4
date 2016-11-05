@@ -32,6 +32,7 @@ public class CommandParser {
     public static final String RECURRENCE_REGEX = "daily|weekly|monthly|yearly";
     public static final String TAG_PREFIX = "#";
     public static final String QUOTE_CHARACTER = "`";
+    public static final String KEYWORD_OVERRIDE = "override";
 
     // Pattern for "from ... to ... (recurrence)?"
     private static final Pattern DATERANGE_TWO_SIDED_PATTERN = Pattern.compile(
@@ -60,6 +61,12 @@ public class CommandParser {
     private static final Pattern DATERANGE_END_DATE_PATTERN = Pattern.compile(
         "(?<left>.*)(" + KEYWORD_DATERANGE_END + "\\s+(?<end>(.+?)))"
             + "(?<recurrence>(\\s+" + RECURRENCE_REGEX + ")?)$",
+        Pattern.CASE_INSENSITIVE
+    );
+    
+    // Pattern for "path (override)?"
+    private static final Pattern OVERRIDE_PATTERN = Pattern.compile(
+        "^(?<path>.*)("+ KEYWORD_OVERRIDE + ")$",
         Pattern.CASE_INSENSITIVE
     );
 
@@ -419,6 +426,24 @@ public class CommandParser {
         return indices;
 
     }
+    
+    /**
+     * Extract the keyword 'override' from input
+     * @return true if 'override' found
+     */
+    public boolean isOverrideThenExtract() {
+        final Matcher matcher = OVERRIDE_PATTERN.matcher(input.trim());
+        
+        if (matcher.find()) {
+            input = matcher.group("path").trim();
+            return true;
+        }
+        else {
+        	return false;
+        }
+    }
+    
+    
 
     //@@author A0139697H
 
