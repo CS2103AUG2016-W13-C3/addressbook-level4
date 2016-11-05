@@ -555,7 +555,9 @@ public class CommandParser {
 
     private Optional<DueDate> parseDueDate(String dateString, String recurrenceString) {
         // Parse datetime and recurrence
-        Optional<LocalDateTime> date = dateTimeParser.parseDateTime(dateString);
+        Optional<LocalDateTime> date = dateTimeParser.parseDateTime(
+            dateString, LocalTime.of(23, 59)
+        );
         Recurrence recurrence = parseRecurrence(recurrenceString);
 
         if (date.isPresent()) {

@@ -138,7 +138,7 @@ public class CommandParserTest {
 
         assertTrue(dueDate.isPresent());
         assertEquals(
-            new DueDate(LocalDateTime.of(2015, 11, 10, 0, 0)),
+            new DueDate(LocalDateTime.of(2015, 11, 10, 23, 59)),
             dueDate.get()
         );
 
