@@ -18,7 +18,12 @@ public class TypicalTestToDos {
     public TypicalTestToDos() {
         resetToDos();
     }
-
+    
+    
+    /**
+     * Reset the test data to the default 
+     * if there are any changes to data in test
+     */
     private void resetToDos() {
         toDoItem1 = new ToDoBuilder("title").finish(null).build();
         toDoItem2 = new ToDoBuilder("title 2").withTags("tag1", "tag2")

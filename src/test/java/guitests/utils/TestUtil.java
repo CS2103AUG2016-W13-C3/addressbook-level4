@@ -65,6 +65,11 @@ public class TestUtil {
                 String.format("Expected %s to be thrown, but nothing was thrown.", expected.getName()));
     }
 
+    /**
+     * Generate sample ToDo data 
+     * 
+     * @return array of sample ToDo data
+     */
     private static ToDo[] getSampleToDoData() {
         try {
             //CHECKSTYLE.OFF: LineLength
@@ -85,6 +90,11 @@ public class TestUtil {
     }
 
 
+    /**
+     * Generate sample tags data
+     * 
+     * @return array of sample tags
+     */
     private static Tag[] getSampleTagData() {
         return new Tag[]{
             new Tag("tag1"),
@@ -99,8 +109,9 @@ public class TestUtil {
     /**
      * Appends the file name to the sandbox folder path.
      * Creates the sandbox folder if it doesn't exist.
+     * 
      * @param fileName
-     * @return
+     * @return the relative path of the file path
      */
     public static String getFilePathInSandboxFolder(String fileName) {
         try {
@@ -292,6 +303,7 @@ public class TestUtil {
 
     /**
      * Replaces todos[i] with a todo.
+     * 
      * @param todos The array of todos.
      * @param todo The replacement todo
      * @param index The index of the todo to be replaced.

@@ -110,7 +110,13 @@ public class FinishCommandTest extends CommanDoGuiTest {
         //confirm the result message is correct
         assertResultMessage(String.format(Messages.FINISH_COMMAND, getToDosString(expectedList)));
     }
-
+    
+    /**
+     * Get the result message string for find command
+     * 
+     * @param toDos
+     * @return expected message string of indices
+     */
     private String getToDosString(List<ToDo> toDos) {
         return toDos.stream().map(toDo -> toDo.getTitle().toString()).collect(Collectors.joining(", "));
     }

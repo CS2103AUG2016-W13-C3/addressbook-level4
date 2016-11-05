@@ -44,7 +44,8 @@ public class FindCommandTest extends CommanDoGuiTest {
 
     @Test
     public void findCommand_invalidCommand_reportUnknownCommand() {
-        commandBox.runCommand("findgeorge");
+        //invalid command name
+        commandBox.runCommand("findg 2");
         assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "findgeorge"));
     }
     
@@ -61,7 +62,8 @@ public class FindCommandTest extends CommanDoGuiTest {
 
         commandBox.runCommand(command);
         assertListSize(expectedHits.length); //number of expected todos = number of listed todos in result
-
+        
+        //check the number of matched items
         if (expectedHits.length == 0) {
             assertResultMessage(String.format(Messages.FIND_COMMAND_NO_TODOS, getSearchString(keywords, tags)));
         } else {
@@ -70,7 +72,15 @@ public class FindCommandTest extends CommanDoGuiTest {
 
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedHits));
     }
-
+    
+    
+    /**
+     * Get the result message string for find command
+     * 
+     * @param keywords
+     * @param tags
+     * @return expected message string of indices
+     */
     private String getSearchString(Set<String> keywords, Set<String> tags) {
         Stream<String> keywordsStream = new TreeSet<>(keywords).stream();
         Stream<String> tagsStream = new TreeSet<>(tags).stream();
