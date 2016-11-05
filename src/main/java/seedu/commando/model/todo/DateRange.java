@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-//@@author A0139697H
+//@@author A0122001M
 
 /**
  * Represents a date range of a to-do, immutable.
@@ -107,7 +107,13 @@ public class DateRange {
     public int hashCode() {
         return Objects.hash(startDate, endDate, recurrence);
     }
-
+    
+    /**
+     * Remove the seconds in the dateTime if the dateTime is not set to max or min
+     * 
+     * @param localDateTime
+     * @return processed localDateTime
+     */
     private LocalDateTime processDateTime(LocalDateTime localDateTime) {
         if (localDateTime.equals(LocalDateTime.MAX) || localDateTime.equals(LocalDateTime.MIN)) {
             return localDateTime;
