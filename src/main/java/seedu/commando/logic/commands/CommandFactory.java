@@ -135,15 +135,14 @@ public class CommandFactory {
     }
 
     //@@author A0142230B
-    private Command buildStoreCommand() throws IllegalValueException {
-        // Extract the file path
-        String path = commandParser.extractText()
-            .orElseThrow(
-                () -> new IllegalValueException(Messages.MISSING_STORE_PATH)
-            );
+	private Command buildStoreCommand() throws IllegalValueException {
+		// Check if override
+		Boolean isOverride = commandParser.isOverrideThenExtract();
+		String path = commandParser.extractText()
+				.orElseThrow(() -> new IllegalValueException(Messages.MISSING_STORE_PATH));
 
-        return new StoreCommand(path);
-    }
+		return new StoreCommand(path, isOverride);
+	}
 
     //@@author A0142230B
     private Command buildListCommand() throws IllegalValueException {

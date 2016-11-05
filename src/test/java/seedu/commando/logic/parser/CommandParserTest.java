@@ -375,6 +375,20 @@ public class CommandParserTest {
         indices = commandParser.extractIndicesList();
         assertEquals("[2]", indices.toString());
     }
+    
+    @Test
+    public void isOverrideThenExtract_override_extracted() {
+    	commandParser.setInput("/ss/ss/ss.xml override");
+    	assertTrue(commandParser.isOverrideThenExtract());
+    	assertEquals("/ss/ss/ss.xml", commandParser.getInput());
+    }
+    
+    @Test
+    public void isOverrideThenExtract_overrideInMid_unchanged() {
+    	commandParser.setInput("/ss/ss/ss.xml override test");
+    	assertFalse(commandParser.isOverrideThenExtract());
+    	assertEquals("/ss/ss/ss.xml override test", commandParser.getInput());
+    }
 
     @Test
     public void extractTrailingTwoSidedDateRange_recurrence_extracted() throws IllegalValueException {
