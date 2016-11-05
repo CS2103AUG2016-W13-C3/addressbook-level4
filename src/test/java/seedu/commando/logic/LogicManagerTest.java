@@ -78,7 +78,6 @@ public class LogicManagerTest {
         // Should try to save to-do list and get data saving exception after <= 1s
         Mockito.verify(spy, Mockito.timeout(1000))
             .saveToDoListToStorage(logic.getToDoList());
-        Thread.sleep(1000);
         assertTrue(eventsCollector.hasCollectedEvent(StorageStub.ToDoListSavedEvent.class));
     }
     
@@ -94,7 +93,6 @@ public class LogicManagerTest {
         // Should try to save to-do list and get data saving exception after <= 1s
         Mockito.verify(mockedStorage, Mockito.timeout(1000).atLeastOnce())
             .saveToDoList(event.toDoList);
-        Thread.sleep(1000);
         assertTrue(eventsCollector.hasCollectedEvent(DataSavingExceptionEvent.class));
     }
 

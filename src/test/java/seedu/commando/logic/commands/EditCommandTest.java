@@ -346,7 +346,7 @@ public class EditCommandTest {
         assertToDoExists(logic,
             new ToDoBuilder("task")
                 .withDueDate(
-                    LocalDateTime.of(nextYear, 4, 11, 0, 0),
+                    LocalDateTime.of(nextYear, 4, 11, 23, 59),
                     Recurrence.Weekly
                 )
                 .build()

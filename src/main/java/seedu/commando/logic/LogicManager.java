@@ -99,7 +99,12 @@ public class LogicManager extends ComponentManager implements Logic {
     public void handleToDoListChangedEvent(ToDoListChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
 
-        new Thread(() -> saveToDoListToStorage(event.toDoList)).start();
+        // Try to run on JavaFX UI thread to prevent lag. If not, just run on current thread.
+        try {
+            Platform.runLater(() -> saveToDoListToStorage(event.toDoList));
+        } catch (IllegalStateException e) {
+           saveToDoListToStorage(event.toDoList);
+        }
     }
 
     /**
@@ -115,7 +120,12 @@ public class LogicManager extends ComponentManager implements Logic {
         storage.setToDoListFilePath(event.path);
         userPrefs.setToDoListFilePath(event.path);
 
-        new Thread(() -> saveToDoListToStorage(model.getToDoList())).start();
+        // Try to run on JavaFX UI thread to prevent lag. If not, just run on current thread.
+        try {
+            Platform.runLater(() -> saveToDoListToStorage(model.getToDoList()));
+        } catch (IllegalStateException e) {
+            saveToDoListToStorage(model.getToDoList());
+        }
     }
 
     private CommandResult getCommandResultForInvalidFormat(CommandFactory.InvalidCommandFormatException e) {
