@@ -68,6 +68,7 @@ public class EventListPanel extends UiPart {
 
     private void setConnections(ObservableList<UiToDo> events) {
         ObservableList<UiToDo> eventsForUi = FXCollections.observableArrayList(events);
+        
         events.addListener(new ListChangeListener<UiToDo>() {
             @Override
             public void onChanged(Change<? extends UiToDo> c) {

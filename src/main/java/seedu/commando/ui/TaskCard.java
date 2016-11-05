@@ -4,14 +4,17 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import seedu.commando.commons.core.DateTimePrettifier;
-import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.Recurrence;
+import seedu.commando.model.todo.Tag;
 
 public class TaskCard extends UiPart {
 
@@ -21,9 +24,7 @@ public class TaskCard extends UiPart {
     @FXML
     private HBox taskPane;
     @FXML
-    private HBox taskPaneInner;
-    @FXML
-    private VBox tagsPane;
+    private FlowPane tagsPane;
     @FXML
     private VBox datePane;
     @FXML
@@ -39,8 +40,8 @@ public class TaskCard extends UiPart {
 
     private ReadOnlyToDo toDo;
     private int index;
-    private boolean containsTags = true;
-    private boolean containsDate = true;
+    private boolean containsTags;
+    private boolean containsRecurrence;
 
     public TaskCard() {
     }
@@ -60,40 +61,37 @@ public class TaskCard extends UiPart {
 
         setDateTimeLabel();
         setRecurrenceLabel();
-        checkTagsPane();
         setTagLabel();
     }
 
     // @@author A0139080J
     private void setTagLabel() {
         if (!toDo.getTags().isEmpty()) {
-            String tags = "";
             for (Tag tag : toDo.getTags()) {
-                tags += "#" + tag.value + " ";
+                Label label = new Label();
+                label.setText("#" + tag.value);
+                label.setId("tagsLabel");
+                label.setMaxWidth(100);
+                label.getStyleClass().add("cell_big_label");
+                label.setAlignment(Pos.CENTER);
+                label.setPadding(new Insets(0, 3, 0, 3));
+                
+                tagsPane.getChildren().add(label);
             }
-            tagsLabel.setText(tags);
+            containsTags = true;
         } else {
-            tagsLabel.setManaged(false);
             containsTags = false;
+            tagsPane.setManaged(false);
         }
     }
 
     private void setRecurrenceLabel() {
         if (toDo.getDueDate().isPresent() && toDo.getDueDate().get().recurrence != Recurrence.None) {
             recurrenceLabel.setText(toDo.getDueDate().get().recurrence.toString());
+            containsRecurrence = true;
         } else {
             recurrenceLabel.setManaged(false);
-            containsDate = false;
-        }
-    }
-
-    /**
-     * If both tags and recurrence are non-existent, hide the pane that contains
-     * them
-     */
-    private void checkTagsPane() {
-        if (!containsTags && !containsDate) {
-            tagsPane.setManaged(false);
+            containsRecurrence = false;
         }
     }
 
@@ -134,16 +132,14 @@ public class TaskCard extends UiPart {
      * modification via undo, edit, add
      */
     private void setRecentlyModifiedState() {
-        taskPaneInner.setStyle(ToDoCardStyleManager.recentlyModifiedStateCSS);
+        ToDoCardStyleManager.addStyleAll("recently-modified", taskPane);
     }
 
     /**
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        taskPaneInner.setStyle(ToDoCardStyleManager.finishedStateContentCSS);
-        datePane.setStyle(ToDoCardStyleManager.finishedStateDateCSS);
-        indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
+        ToDoCardStyleManager.addStyleAll("finished", taskPane, datePane, indexLabel);
     }
 
     /**
@@ -152,16 +148,14 @@ public class TaskCard extends UiPart {
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            taskPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateContentCSS);
-            indexLabel.setStyle(ToDoCardStyleManager.activateHoverStateIndexCSS);
+            ToDoCardStyleManager.addStyleAll("hover", taskPane, indexLabel);
         }
     }
 
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            taskPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateContentCSS);
-            indexLabel.setStyle(ToDoCardStyleManager.deactivateHoverStateIndexCSS);
+            ToDoCardStyleManager.removeStyleAll("hover", taskPane, indexLabel);
         }
     }
     // @@author

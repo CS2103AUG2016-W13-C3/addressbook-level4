@@ -26,8 +26,9 @@
 }
 
 .label {
-    -fx-font-size: 12pt;
+    -fx-font-size: 14pt;
     -fx-font-family: "Segoe UI Light";
+    -fx-line-spacing: -0.5em;
     -fx-text-fill: #555555;
     -fx-opacity: 0.9;
 }
@@ -35,6 +36,7 @@
 .label-bright {
     -fx-font-size: 12pt;
     -fx-font-family: "Segoe UI Semibold";
+    -fx-line-spacing: -0.5em;
     -fx-text-fill: white;
     -fx-opacity: 1;
 }
@@ -42,12 +44,13 @@
 .label-header {
     -fx-font-size: 32pt;
     -fx-font-family: "Segoe UI Light";
+    -fx-line-spacing: -0.5em;
     -fx-text-fill: white;
     -fx-opacity: 1;
 }
 
 .text-field {
-    -fx-font-size: 12pt;
+    -fx-font-size: 15pt;
     -fx-font-family: "Segoe UI Semibold";
 }
 
@@ -89,6 +92,7 @@
 .table-view .column-header .label {
     -fx-font-size: 20pt;
     -fx-font-family: "Segoe UI Light";
+    -fx-line-spacing: -0.5em;
     -fx-text-fill: white;
     -fx-alignment: center-left;
     -fx-opacity: 1;
@@ -128,58 +132,41 @@
 }
 
 .cell_big_label {
-    -fx-font-size: 16px;
-    -fx-text-fill: #010504;
-}
-
-.cell_small_label {
-    -fx-font-size: 11px;
+    -fx-font-size: 12pt;
     -fx-text-fill: #010504;
 }
 
 #indexLabel, #dateIntervalLabel, #dueLabel, #tagsLabel, #recurrenceLabel {
 	-fx-font-family: "Segoe UI bold";
+	-fx-font-size: 12pt;
+	-fx-line-spacing: -0.5em;
 }
 
 #tagsLabel {
-	-fx-border-radius: 10px;
-	-fx-border-width: 2 2 2 2;
-	-fx-border-color: derive(#1d1d1d, 60%); 
-	-fx-background-radius: 10px;
-	-fx-background-color: derive(#DCDCDC, 30%);
+	-fx-background-radius: 16px;
+	-fx-background-color: derive(#DCDCDC, 50%);
 }
 
 #recurrenceLabel {
-	-fx-border-radius: 10px;
-	-fx-border-width: 2 2 2 2;
+	-fx-background-radius: 16px;
 	-fx-background-color: derive(#1d1d1d, 60%); 
-	-fx-background-radius: 10px;
-	-fx-border-color: derive(#DCDCDC, -80%);
 	-fx-text-fill: derive(#DCDCDC, 80%);
 }
 
 #indexLabel {
-	-fx-background-color: derive(#1d1d1d, 60%);
+	-fx-background-color: derive(#DCDCDC, -50%);
+	-fx-font-size: 14pt;
 	-fx-text-fill: #FFFFFF;
-	-fx-border-width: 0 2px 0 0;
-	-fx-border-color: derive(#1d1d1d, 40%);
 }
 
-#datePane {
-	-fx-background-color: derive(#DCDCDC, 30%);
-	-fx-border-color: derive(#DCDCDC, 20%);
+#eventListView, #taskListView {
+	-fx-background-color: derive(#DCDCDC, 50%);
 }
 
 .task-pane, .event-pane {
-	-fx-background-color: #FFFFFF;
-}
-
-.task-pane-inner, .event-pane-inner {
-	-fx-background-color: #DCDCDC; 
-    -fx-background-radius: 8px;
-    -fx-border-width: 2px;
-    -fx-border-radius: 3px;
-    -fx-border-color:  derive(#1d1d1d, 50%);
+	-fx-background-color: #DCDCDC;
+	-fx-border-width: 0 0 3px 0;
+	-fx-border-color: white;
 }
 
 .anchor-pane {
@@ -248,6 +235,7 @@
 .menu-bar .label {
     -fx-font-size: 14pt;
     -fx-font-family: "Segoe UI Light";
+    -fx-line-spacing: -0.5em;
     -fx-text-fill: white;
     -fx-opacity: 0.9;
 }
@@ -389,4 +377,17 @@
 
 .tooltip-text {
     -fx-text-fill: white;
+}
+
+.recently-modified {
+	-fx-border-width: 2px;
+	-fx-border-color: derive(red, 90%);
+}
+
+.finished {
+	-fx-background-color: derive(#1d1d1d, 95%);
+}
+
+.hover {
+	-fx-background-color: derive(#DCDCDC, 30%);
 }

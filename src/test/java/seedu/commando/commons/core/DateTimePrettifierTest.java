@@ -81,7 +81,7 @@ public class DateTimePrettifierTest {
         // Should not display any year
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 3, 1, 12, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" +
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb to " +
                      "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar",
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
@@ -91,7 +91,7 @@ public class DateTimePrettifierTest {
         // Should display one year
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear - 1, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear - 1, 3, 1, 12, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" +
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb to " +
                      "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear - 1),
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
@@ -101,7 +101,7 @@ public class DateTimePrettifierTest {
         // Should display both years
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 3, 1, 12, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb " + (currentYear) + " to\n" +
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb " + (currentYear) + " to " +
                      "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear + 1),
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
@@ -111,7 +111,7 @@ public class DateTimePrettifierTest {
         // Should display both years
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear - 1, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 3, 1, 12, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb " + (currentYear - 1) + " to\n" +
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb " + (currentYear - 1) + " to " +
                      "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear + 1),
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
@@ -121,7 +121,7 @@ public class DateTimePrettifierTest {
         // Should display one year and both months
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 3, 1, 12, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" +
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb to " +
                      "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar",
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
@@ -131,7 +131,7 @@ public class DateTimePrettifierTest {
         // Should display one year and both month
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 27, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 2, 28, 12, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 27 to\n" +
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 27 to " +
                      "12:30 on " + formatDayOfWeek.format(dateTo) + " 28 Feb",
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
@@ -141,7 +141,7 @@ public class DateTimePrettifierTest {
         // Should display one year, one month and two times
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 27, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 2, 27, 13, 30);
-        assertEquals("12:30 to 13:30 \non " + formatDayOfWeek.format(dateTo) + " 27 Feb",
+        assertEquals("12:30 to 13:30 on " + formatDayOfWeek.format(dateTo) + " 27 Feb",
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -150,7 +150,7 @@ public class DateTimePrettifierTest {
         // Should display one year, one month and two times
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 27, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 2, 27, 13, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 27 Feb " + currentYear + " to\n" +
+        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 27 Feb " + currentYear + " to " +
                      "13:30 on " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear + 1),
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
@@ -169,7 +169,7 @@ public class DateTimePrettifierTest {
         // Should display time and date
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(tomorrowYear, tomorrowMonth, tomorrowDay, 13, 30);
-        assertEquals("12:30 Today to\n13:30 Tomorrow",
+        assertEquals("12:30 Today to 13:30 Tomorrow",
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -178,7 +178,7 @@ public class DateTimePrettifierTest {
         // Should display time and date
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 2, 27, 13, 30);
-        assertEquals("12:30 Today to\n13:30 on " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear + 1),
+        assertEquals("12:30 Today to 13:30 on " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear + 1),
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
