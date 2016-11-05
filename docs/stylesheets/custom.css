@@ -66,9 +66,8 @@ pre em {
 }
 
 code {
-  border: solid 3px #7D7D7D;
-  border-radius: 6px;
-  background-color: #FFFFFF;
+  border-radius: 6px;    
+  background-color: #F8F8F8;
   color: #303030
 }
 
@@ -185,4 +184,13 @@ kbd.light {
 
 ul.use-case li {
     list-style: none;
+}
+
+span.comment {
+    font-size: 14px;
+    color: #644;
+    padding: 0;
+    margin: 0;
+    display: block;
+    margin-top: -10px;
 }
