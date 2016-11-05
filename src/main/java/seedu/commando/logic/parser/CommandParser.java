@@ -268,8 +268,8 @@ public class CommandParser {
 
 
     /**
-     * From start, extracts a quoted title in input, if found
-     * e.g. "`quoted` text" returns "quoted" and retains input "text"
+     * From start, extracts a quoted title in input, if found.
+     * e.g. "`quoted` text" returns "quoted" and retains input "text".
      *
      * @return quoted text with quotes removed and trimmed if found,
      * empty if no quotes found
@@ -320,7 +320,7 @@ public class CommandParser {
     }
 
     /**
-     * From start, extracts a single word in input, if found
+     * From start, extracts a single word in input, if found.
      *
      * @return optional of word extracted from input, empty if not found
      */
@@ -336,8 +336,9 @@ public class CommandParser {
     }
 
     /**
-     * Extracts all words in input
-     * If input is empty, returns empty list
+     * Extracts all words in input (space-separated).
+     *
+     * @return list of words found, an empty list if input is empty
      */
     public List<String> extractWords() {
         return Arrays.stream(extractText().orElse("").split("\\s+"))
@@ -346,7 +347,7 @@ public class CommandParser {
     }
 
     /**
-     * From start, extracts an integer in input, if found
+     * From start, extracts an integer in input, if found.
      *
      * @return optional of found integer extracted from input, empty if not found
      */
@@ -371,7 +372,8 @@ public class CommandParser {
     //@@author A0142230B
 
     /**
-     * From start, extracts multiple integers in input, it can be a range of integers or different integers separate by space.
+     * From start, extracts multiple integers in input.
+     * It can be a range of integers or different integers separate by space.
      *
      * @return A List of integers found
      * @throws IllegalValueException

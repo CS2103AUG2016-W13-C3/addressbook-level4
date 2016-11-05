@@ -26,7 +26,7 @@ public class CommandFactory {
     public static class InvalidCommandFormatException extends Exception {
         public final String command;
 
-        public InvalidCommandFormatException(String message, String command) {
+        private InvalidCommandFormatException(String message, String command) {
             super(message);
             this.command = command;
         }
@@ -35,12 +35,14 @@ public class CommandFactory {
     public static class UnknownCommandWordException extends Exception {
         public final String commandWord;
 
-        UnknownCommandWordException(String commandWord) {
+        private UnknownCommandWordException(String commandWord) {
             this.commandWord = commandWord;
         }
     }
 
-    public static class MissingCommandWordException extends Exception {}
+    public static class MissingCommandWordException extends Exception {
+        private MissingCommandWordException() {}
+    }
 
     /**
      * Interprets an input string as a command, initializes it, and returns it.

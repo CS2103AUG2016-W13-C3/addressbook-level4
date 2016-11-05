@@ -303,7 +303,7 @@ public class ToDo implements ReadOnlyToDo {
     /**
      * Called when a to-do is to advance its date range to after {@param dateUntil}
      * based on its recurrence.
-     * Will only have an effect if to-do has a date range with a recurrence,
+     * Will only have an effect if to-do has a date range with a recurrence.
      */
     private void advanceDateRange(LocalDateTime dateUntil) {
         if (dateRange == null
@@ -335,7 +335,7 @@ public class ToDo implements ReadOnlyToDo {
     /**
      * Called when a to-do is to advance its due date to after {@param dateUntil}
      * based on its recurrence.
-     * Will only have an effect if to-do has a due date with a recurrence,
+     * Will only have an effect if to-do has a due date with a recurrence.
      */
     private void advanceDueDate(LocalDateTime dateUntil) {
         if (dueDate == null

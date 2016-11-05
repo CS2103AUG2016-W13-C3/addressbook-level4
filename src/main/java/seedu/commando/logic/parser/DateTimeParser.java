@@ -226,11 +226,15 @@ public class DateTimeParser {
         if (!input.trim().isEmpty()) {
             return Optional.empty();
         } else {
-            String dateTimeString = dateString + " " + timeString;
-            dateTimeString = handleDateTimeWithLaterAgo(dateString, timeString, dateTimeString);
-
+            String dateTimeString = getCombinedDateTimeString(dateString, timeString);
             return Optional.of(dateTimeString);
         }
+    }
+
+    private String getCombinedDateTimeString(String dateString, String timeString) {
+        String dateTimeString = dateString + " " + timeString;
+        dateTimeString = handleDateTimeWithLaterAgo(dateString, timeString, dateTimeString);
+        return dateTimeString;
     }
 
     private String getTimeFromMatcher(Matcher timeMatcher) {

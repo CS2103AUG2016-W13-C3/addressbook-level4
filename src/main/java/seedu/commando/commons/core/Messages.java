@@ -41,11 +41,13 @@ public class Messages {
     public static final String MISSING_COMMAND_WORD = "Missing command word.";
     public static final String INVALID_COMMAND_FORMAT = "Invalid format for '%1$s' command!";
     public static final String MISSING_TODO_TITLE = "Missing title for to-do.";
-    
     public static final String MISSING_TODO_DATERANGE_START = "Missing start date for date range of to-do.";
     public static final String MISSING_TODO_DATERANGE_END = "Missing end date for date range of to-do.";
     public static final String INVALID_TODO_DATERANGE_START = "Invalid start date for date range of to-do.";
     public static final String INVALID_TODO_DATERANGE_END = "Invalid end date for date range of to-do.";
+    public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.";
+    public static final String INDEXRANGE_CONSTRAINTS = "The end index must be equal or larger than the start index.";
+
     public static final String TODO_DATERANGE_END_MUST_AFTER_START = "The end date of the date range must be after start date.";
     public static final String TODO_DATERANGE_RECURRENCE_INVALID = "The recurrence for the given date range is not valid.";
     public static final String TODO_ALREADY_EXISTS = "To-do already exists!";
@@ -53,10 +55,6 @@ public class Messages {
     public static final String TODO_ITEM_INDEX_INVALID = "Invalid to-do index: %1$d.";
     public static final String TODO_CANNOT_HAVE_DUEDATE_AND_DATERANGE = "To-do cannot have both due date and date range!";
 
-    public static final String MISSING_TODO_ITEM_INDEX = "Missing to-do item index.";
-    
-    public static final String INDEXRANGE_CONSTRAINTS = "The end index must be equal or larger than the start index.";
-    
     public static final String MISSING_STORE_PATH = "Missing the path to store.";
     public static final String MISSING_IMPORT_PATH = "Missing the path to import.";
     public static final String MISSING_EXPORT_PATH = "Missing the path to export.";
@@ -64,9 +62,6 @@ public class Messages {
     public static final String MISSING_EXPORT_FILE = "Missing the file name to export.";
     public static final String MISSING_IMPORT_FILE = "Missing the file name to import.";
 
-    public static final String EXIT_APPLICATION = "Exiting application...";
-    public static final String TODO_LIST_CLEARED = "Boom. Cleared to-do list!";
-    public static final String HELP_WINDOW_SHOWN = "Opened help window for topic '%1$s'.";
     public static final String FINISH_COMMAND = "Task marked as done: %1$s.";
     public static final String FINISH_COMMAND_ALREADY_FINISHED = "Task already marked done: %1$s";
     public static final String FINISH_COMMAND_CANNOT_FINISH_EVENT = "To-do must be a task to be marked done: %1$s.";
@@ -104,6 +99,9 @@ public class Messages {
     public static final String RECALL_COMMAND = "Listing all finished to-dos matching keywords and tags of %1$s.";
     public static final String RECALL_COMMAND_NO_TODOS = "No finished to-dos found matching keywords and tags of %1$s.";
     public static final String RECALL_COMMAND_CLEAR = "Listing all finished to-dos.";
+    public static final String EXIT_COMMAND = "Exiting application...";
+    public static final String CLEAR_COMMAND = "Boom. Cleared to-do list!";
+    public static final String HELP_COMMAND = "Opened help window for topic '%1$s'.";
     public static final String HELP_COMMAND_INVALID_TOPIC = "Invalid topic for `help`.\n"
                                                         + HELP_COMMAND_FORMAT;
 

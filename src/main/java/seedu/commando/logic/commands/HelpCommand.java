@@ -50,6 +50,6 @@ public class HelpCommand extends Command {
             eventsCenter.post(new ShowHelpRequestEvent(anchor.get()));
         }
 
-        return new CommandResult(String.format(Messages.HELP_WINDOW_SHOWN, commandWord));
+        return new CommandResult(String.format(Messages.HELP_COMMAND, commandWord));
     }
 }
