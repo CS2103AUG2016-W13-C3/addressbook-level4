@@ -22,6 +22,7 @@ We are a team based in the [School of Computing, National University of Singapor
 	- [`help` command](https://cs2103aug2016-w13-c3.github.io/main/user#help)
 	- Deletion of tags or time constraints of to-do with `delete` command 
 	- Flexible parsing of datetime
+	- Drafted and Kept updating API
 
 - Code written: [[functional code]](../collated/main/A0139697H.md) [[test code]](../collated/test/A0139697H.md) [[docs]](../collated/docs/A0139697H.md)
 
@@ -61,19 +62,21 @@ We are a team based in the [School of Computing, National University of Singapor
 
 - Component in charge of: [Storage](https://cs2103aug2016-w13-c3.github.io/main/developer#storage-component)
 
-- Aspects/tools in charge of: UI prototypes, JAXB (XML Binding)
+- Aspects/tools in charge of: UI prototypes(PhotoShop), JAXB (XML Binding)
 
 - Features implemented:
 	- Use of multiple indices in `finish`, `unfinish` and `delete` commands [#106](https://github.com/CS2103AUG2016-W13-C3/main/pull/106)
 	- [`export` command](https://cs2103aug2016-w13-c3.github.io/main/user#export)	
 	- [`import` command](https://cs2103aug2016-w13-c3.github.io/main/user#import)
 	- [`store` command](https://cs2103aug2016-w13-c3.github.io/main/user#store)
+	- [`list` command](https://cs2103aug2016-w13-c3.github.io/main/user#list)
 
 - Code written: [[functional code]](../collated/main/A0142230B.md) [[test code]](../collated/test/A0142230B.md) [[docs]](../collated/docs/A0142230B.md)
 
 - Other major contributions:
 	- Did morphing of _Storage_ from _AddressBook_ for _CommanDo_ [#3](https://github.com/CS2103AUG2016-W13-C3/main/pull/3)
 	- Improved developer guide based on feedback
+	- Improved overall coding style issues based on feedback from codacy
 
 -----
 
