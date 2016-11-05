@@ -37,9 +37,9 @@
                             <li><a href="#delete">Deleting To-Dos and its Fields</a></li>
                             <li><a href="#edit">Editing To-Dos</a></li>
                             <li><a href="#finish">Marking Tasks as Done</a></li>
-                            <li><a href="#find">Finding To-Dos</a></li>
-                            <li><a href="#list"> Listing To-Dos with time constraint</a></li>
+                            <li><a href="#find">Searching through Undone To-Dos</a></li>
                             <li><a href="#recall">Browsing To-Dos that are Done</a></li>
+                            <li><a href="#list">Listing To-Dos within Time Window</a></li>
                             <li><a href="#unfinish">Marking Tasks as Not Done</a></li>
                             <li><a href="#store">Setting Save Location</a></li>
                             <li><a href="#export">Exporting</a></li>
@@ -89,6 +89,14 @@
                     </li>
                     <li>
                         Type <code>help</code> and press <kbd class="light">Enter</kbd>. The <code>help</code> command will be executed, and a window will open up to show this guide. Refer to the <a href="#commands">Commands</a> section below for the list of commands available in <em>CommanDo</em>.
+                    </li>
+                    <li>
+                        For your convenience:
+                        <ul>
+                            <li>Anything you type will immediately go into the command box, even if it was out of focus.</li>
+                            <li>With focus on the command box, press <kbd class="light">&uarr;</kbd> and <kbd class="light">&darr;</kbd> to navigate through your command history.</li>
+                            <li>Press <kbd class="light">Tab</kbd> to switch focus between the panels, and press <kbd class="light">&uarr;</kbd> and <kbd class="light">&darr;</kbd> with focus on a panel to scroll it up or down.</li>
+                        </ul>
                     </li>
                 </ol>
 
@@ -337,7 +345,7 @@
 
                 <h4>Editing Tasks</h4>
 
-                <p>By including suitable fields and their keywords, you'll similarly be able to replace the description, the deadline and the tags of a <em>Task</em>.</p>
+                <p>By including suitable fields and their keywords, you'll similarly be able to replace the description, the due date and the tags of a <em>Task</em>.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> edit <span>&lt;index&gt;</span> [<span>&lt;description&gt;</span>] [by <span>&lt;due_datetime&gt;</span>] [#<span>&lt;tag&gt;</span>...]</pre>
@@ -377,13 +385,13 @@
 
                 <span><strong>Examples:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> find <span>lunch meeting</span></pre>
-                <span class="comment">What it does:  Filters to show only <em>Events</em> and <em>Tasks</em> from the current day onwards, with description or tags matching both <code>lunch</code> and <code>meeting</code>.</span>
+                <span class="comment">What it does:  Filters to show only upcoming <em>Events</em> and unfinished <em>Tasks</em>, with description or tags matching both <code>lunch</code> and <code>meeting</code>.</span>
 
                 <pre><span class="inputstart">&gt;&gt;</span> find #<span>homework</span></pre>
-                <span class="comment">What it does: Filters to show only <em>Events</em> and <em>Tasks</em> from the current day onwards, with a tag <code>#homework</code>.</span>
+                <span class="comment">What it does: Filters to show only upcoming <em>Events</em> and unfinished <em>Tasks</em>, with a tag <code>#homework</code>.</span>
 
                 <pre><span class="inputstart">&gt;&gt;</span> find</pre>
-                <span class="comment">What it does: Shows all to-dos from the current day onwards.</span>
+                <span class="comment">What it does: Shows all undone to-dos.</span>
 
                 <p>
                     More details on how search works:
@@ -423,18 +431,20 @@
                 <h3 id="list">Listing To-Dos Within Time Window: <code>list</code></h3>
 
                 <p>
-                    Sometimes you may want to browse your to-dos in certain period of time. Use the <code>list</code> command to search for <em>Events</em> that happen in a specific period of time, and <em>Tasks</em> that are due in that period. The period of time to search can be
-                    any time. This means that you can list both finished to-dos and upcoming to-dos as long as they are in the time window you give. If you use this command without any keywords, you will see all to-dos(both finished and upcoming).
+                    Sometimes you may want to list all your to-dos within certain period of time. Use the <code>list</code> command, followed by a time window. This would search for <em>Events</em> that are going to happen or have happened within that time window, and <em>Tasks</em> that are finished or are due in that period. If you use this command without any keywords, you will see all to-dos - both done and undone.
                 </p>
 
                 <span><strong>Command Format:</strong></span>
-                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> list from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span> </pre>
-                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> list on <span>&lt;time_duration&gt;</span> </pre>
+                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> list [from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span>]</pre>
+                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> list on <span>&lt;datetime&gt;</span></pre>
 
                 <span><strong>Examples:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> list from <span>31 Dec 2016</span> to <span>1 Jan 2017</span></pre>
+                <pre><span class="inputstart">&gt;&gt;</span> list </pre>
+                <span class="comment">What it does:  Lists all <em>Events</em> and <em>Tasks</em>, both done and undone.</span>
                 <pre><span class="inputstart">&gt;&gt;</span> list from <span>today</span> to <span>tmr</span></pre>
+                <span class="comment">What it does:  Lists all <em>Events</em> and <em>Tasks</em> that have time windows or due dates between the current day 0000h to the next day 2359h.</span>
                 <pre><span class="inputstart">&gt;&gt;</span> list on <span>next week</span></pre>
+                <span class="comment">What it does:  Lists all <em>Events</em> and <em>Tasks</em> that have time windows or due dates on next week.</span>
                 <p>
                 </p>
 
@@ -447,7 +457,7 @@
 
                 <h3 id="unfinish">Marking Tasks as Not Done: <code>unfinish</code></h3>
 
-                <p>Oops, you marked a task as done when it's not exactly done. Simply bring up the list of finished tasks using the <a href="#recall"><code>recall</code> command</a>, then use the <code>unfinish</code> command.</p>
+                <p>Oops, you marked a task as done when it's not exactly done. You can use the <code>unfinish</code> command:</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> unfinish <span>&lt;index&gt;</span>... </pre>
@@ -455,17 +465,21 @@
 
                 <h3 id="store">Setting Save Location: <code>store</code></h3>
 
-                <p>Perhaps you want to save your to-do list in your <em>Dropbox</em> or <em>OneDrive</em> folder that is cloud-synced. The <code>store</code> command lets you do exactly that - it migrates the save file to that of the given file path. Note that the default save location is <code>./data/todos.xml</code>.</p>
-
-                <span><strong>Command Format:</strong></span>
-                <pre class="command-format">&gt;&gt; store <span>&lt;file_path&gt;</span></pre>
-
-                <span><strong>Examples:</strong></span>
-                <pre><span class="inputstart">&gt;&gt;</span> store <span>../../Dropbox/work/todolist.xml</span></pre>
-                <span class="comment">What it does:   Changes the default file path to store the to-do list data to <code>../../Dropbox/work/todolist.xml</code> relative to your <code>commando.jar</code>, and saves the latest data to that file.</span>
+                <p>Perhaps you want to save your to-do list in your <em>Dropbox</em> or <em>OneDrive</em> folder that is cloud-synced. The <code>store</code> command lets you do exactly that - it migrates the save file to that of the specified file path. This command will fail if there is an existing file at the specified file path, but you can end the command with the keyword <code>override</code> to forcibly override it.</p>
 
                 <blockquote>
-                    <b>File Paths:</b> A file path can be absolute (<code>C:/Users/Jim/Dropbox/work/todolist.xml</code>) or relative to the <code>commando.jar</code> file (<code>../../Dropbox/work/todolist.xml</code>). You can use any file extension you wish, but ending with <code>.xml</code> is recommended because the date file is in <em>XML</em>.
+                    <strong>Default Save Location:</strong> The default save location is <code>data/todos.xml</code>, relative to the <code>commando.jar</code> file.
+                </blockquote>
+
+                <span><strong>Command Format:</strong></span>
+                <pre class="command-format">&gt;&gt; store <span>&lt;file_path&gt;</span> [override]</pre>
+
+                <span><strong>Examples:</strong></span>
+                <pre><span class="inputstart">&gt;&gt;</span> store <span>../../Dropbox/work/todolist.xml</span> override</pre>
+                <span class="comment">What it does: Changes the save location for storing the to-do list data to <code>../../Dropbox/work/todolist.xml</code> relative to your <code>commando.jar</code>, and saves the latest to-do list data to that file, overriding any data if that file already exists.</span>
+
+                <blockquote>
+                    <b>File Paths:</b> A file path can be absolute (<code>C:/Users/Jim/Dropbox/work/todolist.xml</code>) or relative to the <code>commando.jar</code> file (<code>../../Dropbox/work/todolist.xml</code>). You can use any file extension you wish, but ending with <code>.xml</code> is recommended because the date file is in that file format.
                 </blockquote>
 
                 <!-- @@author A0139080J -->
@@ -485,7 +499,7 @@
 
                 <h3 id="undo">Undoing: <code>undo</code></h3>
 
-                <p>Scenario: you deleted a to-do by accident and you want to undo your last modification. With the <code>undo</code> command, the most recent <code>add</code>, <code>edit</code>, <code>delete</code>, <code>clear</code> and <code>import</code> would be reverted. Multiple <code>undo</code> commands can be used in succession, as long as there is something to undo. <strong>Note that you can only undo commands in your current session, which ends when you close the application.</strong></p>
+                <p>Scenario: you deleted a to-do by accident and you want to undo your last modification. With the <code>undo</code> command, the most recent <code>add</code>, <code>edit</code>, <code>delete</code>, <code>clear</code> and <code>import</code> would be reverted. Multiple <code>undo</code> commands can be used in succession. <strong>Note that you can only undo commands in your current session, which ends when you close the application.</strong></p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> undo</pre>
@@ -529,7 +543,7 @@
 
                 <h3>4. I have some <em>Events</em> or <em>Tasks</em> that are not appearing!</h3>
 
-                <p><em>CommanDo</em> automatically hides <em>Events</em> that are already over and <em>Tasks</em> that are already marked done, to ensure that your to-do list is kept clean. To see these to-dos, use the <a href="#recall"><code>recall</code> command</a>. </p>
+                <p><em>CommanDo</em> automatically hides <em>Events</em> that are already over and <em>Tasks</em> that are already marked done, to ensure that your to-do list is kept clean. To see these to-dos, use the <a href="#recall"><code>recall</code></a> or <a href="#list"><code>list</code></a> commands.</p>
 
                 <h3>5. I keep forgetting how to use certain commands.</h3>
 
@@ -537,9 +551,7 @@
 
                 <h3 id="supported-date-time-formats">6. What date & time formats can I use in my commands?</h3>
 
-                <p><em>CommanDo</em> supports a wide variety of date and time formats, backed by the awesome date parser library <a href="http://natty.joestelmach.com/" target="_blank">Natty</a>. A valid datetime contains a valid date, a valid time, or a valid date and time. A sample of the accepted date & time formats are shown below:</p>
-
-                <p>*If no times are specified in an event, it is assumed to be a whole day event - the event starts at 00:00AM and ends at 23:59PM.</p>
+                <p><em>CommanDo</em> supports a wide variety of date and time formats, backed by the awesome date parser library <a href="http://natty.joestelmach.com/" target="_blank">natty</a>. A valid datetime contains a valid date, a valid time, or a valid date and time. A sample of the accepted date & time formats are shown below:</p>
 
                 <!-- @@author A0139080J -->
                 <h4>Valid Dates</h4>
@@ -569,7 +581,7 @@
                                 </td>
                                 <td><code>11 Oct 2016</code></td>
                                 <td><code>tomorrow/tmr</code></td>
-                                <td><code>last week/month</code></td>
+                                <td><code>last week/month/year</code></td>
                             </tr>
                             <tr>
                                 <td>
@@ -582,12 +594,12 @@
                             <tr>
                                 <td></td>
                                 <td><code>3rd Apr</code></td>
-                                <td><code>coming friday</code></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td><code>Sept 29</code></td>
-                                <td><code>next saturday</code></td>
+                                <td></td>
                                 <td></td>
                             </tr>
                         </tbody>
@@ -717,7 +729,7 @@
                             </tr>
                             <tr>
                                 <td>List To-Dos</td>
-                                <td><pre><span class="inputstart">&gt;&gt;</span> list from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span></td>
+                                <td><pre><span class="inputstart">&gt;&gt;</span> list [from <span>&lt;start_datetime&gt;</span> to <span>&lt;end_datetime&gt;</span>]</pre></td>
                             </tr>
                             <tr>
                                 <td>Finish To-Dos</td>
@@ -741,7 +753,7 @@
                             </tr>
                             <tr>
                                 <td>Store at File Path</td>
-                                <td><pre><span class="inputstart">&gt;&gt;</span> store <span>&lt;file_path&gt;</span></pre></td>
+                                <td><pre><span class="inputstart">&gt;&gt;</span> store <span>&lt;file_path&gt;</span> [override]</pre></td>
                             </tr>
                             <tr>
                                 <td>Undo</td>
