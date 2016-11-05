@@ -19,7 +19,6 @@ import seedu.commando.model.todo.Recurrence;
 
 public class EventCard extends UiPart {
 
-    private static final int labelMaxWidth = 200;
     private static final String FXML = "EventCard.fxml";
     private boolean isFinished;
 
@@ -77,7 +76,7 @@ public class EventCard extends UiPart {
                 Label label = new Label();
                 label.setText("#" + tag.value);
                 label.setId("tagsLabel");
-                label.setMaxWidth(labelMaxWidth);
+                label.setMaxWidth(200);
                 label.getStyleClass().add("cell_big_label");
                 label.setAlignment(Pos.CENTER);
                 label.setPadding(new Insets(0, 3, 0, 3));

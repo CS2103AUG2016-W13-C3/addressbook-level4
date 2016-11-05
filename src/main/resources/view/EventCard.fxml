@@ -39,7 +39,10 @@
             <Label fx:id="dateIntervalLabel" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="\$interval">
                <padding>
                   <Insets right="5.0" />
-               </padding></Label>
+               </padding>
+               <VBox.margin>
+                  <Insets bottom="3.0" />
+               </VBox.margin></Label>
             <FlowPane fx:id="tagsPane" alignment="CENTER_RIGHT" columnHalignment="RIGHT" hgap="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWrapLength="350.0" vgap="3.0" VBox.vgrow="SOMETIMES">
                <children>
                   <Label fx:id="recurrenceLabel" alignment="CENTER" maxHeight="-Infinity" minWidth="-Infinity" text="\$recurr" wrapText="true">

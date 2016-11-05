@@ -18,7 +18,6 @@ import seedu.commando.model.todo.Tag;
 
 public class TaskCard extends UiPart {
 
-    private static final int labelMaxWidth = 200;
     private static final String FXML = "TaskCard.fxml";
     private boolean isFinished;
 
@@ -77,7 +76,7 @@ public class TaskCard extends UiPart {
                 Label label = new Label();
                 label.setText("#" + tag.value);
                 label.setId("tagsLabel");
-                label.setMaxWidth(labelMaxWidth);
+                label.setMaxWidth(200);
                 label.getStyleClass().add("cell_big_label");
                 label.setAlignment(Pos.CENTER);
                 label.setPadding(new Insets(0, 3, 0, 3));
