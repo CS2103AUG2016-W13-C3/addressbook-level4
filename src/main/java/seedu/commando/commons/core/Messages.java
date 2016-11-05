@@ -101,7 +101,8 @@ public class Messages {
     public static final String RECALL_COMMAND_CLEAR = "Listing all finished to-dos.";
     public static final String EXIT_COMMAND = "Exiting application...";
     public static final String CLEAR_COMMAND = "Boom. Cleared to-do list!";
-    public static final String HELP_COMMAND = "Opened help window for topic '%1$s'.";
+    public static final String HELP_COMMAND = "Opened help window.";
+    public static final String HELP_COMMAND_TOPIC = "Opened help window for topic '%1$s'.";
     public static final String HELP_COMMAND_INVALID_TOPIC = "Invalid topic for `help`.\n"
                                                         + HELP_COMMAND_FORMAT;
 

@@ -76,13 +76,13 @@ public class DateTimePrettifier {
                 return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + " "
                         + getDay(startDateTime);
             } else if (endIsYtdOrTdyOrTmr) {
-                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n"
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + " "
                         + getTime(endDateTime) + " " + getDay(endDateTime);
             } else if (endDateTime.getYear() == todayDate.getYear()) {
-                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n"
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + " "
                         + getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime);
             } else {
-                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n"
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + " "
                         + getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime) + " "
                         + endDateTime.getYear();
             }
@@ -115,7 +115,7 @@ public class DateTimePrettifier {
         if (sameYear && sameMonth && sameDay) {
             // If same year and same month and same day
             // Display one month
-            end = " \n" + getDay(endDateTime) + end;
+            end = " " + getDay(endDateTime) + end;
         } else {
             // Display both months
             start = " " + getDay(startDateTime) + start;
@@ -133,7 +133,7 @@ public class DateTimePrettifier {
         // because its comparatively short to other intervals that span over
         // days
         if (!sameYear || !sameMonth || !sameDay) {
-            return start + " " + keywordTo + "\n" + end;
+            return start + " " + keywordTo + " " + end;
         } else {
             return start + " " + keywordTo + " " + end;
         }

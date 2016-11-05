@@ -26,12 +26,13 @@ public class HelpWindow extends UiPart {
     private AnchorPane mainPane;
     private Stage dialogStage;
     private WebView browser;
-    private String helpurl = "";
+    private String helpUrl = "";
+    private String aboutUsUrl = "";
 
-    protected static HelpWindow load(Stage primaryStage, String helpurl) {
+    protected static HelpWindow load(Stage primaryStage, String helpUrl, String aboutUsUrl) {
         logger.fine("Showing help page about the application.");
         HelpWindow helpWindow = UiPartLoader.loadUiPart(primaryStage, new HelpWindow());
-        helpWindow.configure(helpurl);
+        helpWindow.configure(helpUrl, aboutUsUrl);
         return helpWindow;
     }
 
@@ -45,8 +46,9 @@ public class HelpWindow extends UiPart {
         return FXML;
     }
 
-    private void configure(String helpurl){
-        this.helpurl = helpurl;
+    private void configure(String helpurl, String aboutUsUrl){
+        this.helpUrl = helpurl;
+        this.aboutUsUrl = aboutUsUrl;
 
         Scene scene = new Scene(mainPane);
         // Null passed as the parent stage to make it non-modal.
@@ -63,15 +65,23 @@ public class HelpWindow extends UiPart {
      * Shows a window that navigates to help url, anchored at `#{@param anchor}`
      */
     protected void getHelp(String anchor) {
-        visit(anchor);
+        visitUserGuide(anchor);
     }
     
     /**
-     * Shows a window that navigates to a specified url
+     * Shows a window that navigates to the user guide
      */
-    protected void visit(String anchor) {
-        URL url = getClass().getResource(helpurl);
+    protected void visitUserGuide(String anchor) {
+        URL url = getClass().getResource(helpUrl);
         browser.getEngine().load(url.toExternalForm() + "#" + anchor);
+        dialogStage.show();
+    }
+
+    /**
+     * Shows a window that navigates to the about us page
+     */
+    protected void visitAboutUs() {
+        browser.getEngine().load(aboutUsUrl);
         dialogStage.show();
     }
 }

@@ -48,6 +48,6 @@ public class ListCommand extends Command {
     private String getDateRangeString() {
         return DateTimePrettifier.prettifyDateTimeRange(
             dateRange.get().startDate, dateRange.get().endDate
-        ).replaceAll("\\n", " ");
+        );
     }
 }

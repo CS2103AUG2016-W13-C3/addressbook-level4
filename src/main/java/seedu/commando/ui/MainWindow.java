@@ -164,7 +164,7 @@ public class MainWindow extends UiPart {
         setTabAndArrowKeysNavigations();
         
         primaryStage.setScene(scene);
-        helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl);
+        helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl, Config.AboutUsUrl);
     }
 
     protected void fillInnerParts() {
@@ -408,7 +408,7 @@ public class MainWindow extends UiPart {
      */
     @FXML
     private void handleCredits() {
-        helpWindow.visit(Config.AboutUsUrl);
+        helpWindow.visitAboutUs();
     }
     
     /**

@@ -39,6 +39,8 @@ public class HelpCommand extends Command {
 
         if (commandWord.isEmpty()) {
             eventsCenter.post(new ShowHelpRequestEvent(""));
+
+            return new CommandResult(Messages.HELP_COMMAND);
         } else {
             Optional<String> anchor = Config.getUserGuideAnchorForCommandWord(commandWord);
 
@@ -48,8 +50,7 @@ public class HelpCommand extends Command {
             }
 
             eventsCenter.post(new ShowHelpRequestEvent(anchor.get()));
+            return new CommandResult(String.format(Messages.HELP_COMMAND_TOPIC, commandWord));
         }
-
-        return new CommandResult(String.format(Messages.HELP_COMMAND, commandWord));
     }
 }

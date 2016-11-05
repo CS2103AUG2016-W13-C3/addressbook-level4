@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import seedu.commando.commons.core.DateTimePrettifier;
@@ -22,11 +25,9 @@ public class EventCard extends UiPart {
     @FXML
     private HBox eventPane;
     @FXML
-    private HBox eventPaneInner;
-    @FXML
-    private VBox tagsPane;
-    @FXML
     private HBox datePane;
+    @FXML
+    private FlowPane tagsPane;
     @FXML
     private Label titleLabel;
     @FXML
@@ -36,14 +37,13 @@ public class EventCard extends UiPart {
     @FXML
     private Label endLabel;
     @FXML
-    private Label tagsLabel;
-    @FXML
     private Label recurrenceLabel;
 
     private ReadOnlyToDo toDo;
     private int index;
-    private boolean containsTags = true;
-    private boolean containsDate = true;
+    
+    private boolean containsTags;
+    private boolean containsRecurrence;
 
     public EventCard() {
     }
@@ -62,20 +62,26 @@ public class EventCard extends UiPart {
 
         setDateTimesLabels();
         setRecurrenceLabel();
-        checkTagsPane();
         setTagLabel();
     }
 
     private void setTagLabel() {
         if (!toDo.getTags().isEmpty()) {
-            String tags = "";
             for (Tag tag : toDo.getTags()) {
-                tags += "#" + tag.value + " ";
+                Label label = new Label();
+                label.setText("#" + tag.value);
+                label.setId("tagsLabel");
+                label.setMaxWidth(100);
+                label.getStyleClass().add("cell_big_label");
+                label.setAlignment(Pos.CENTER);
+                label.setPadding(new Insets(0, 3, 0, 3));
+                
+                tagsPane.getChildren().add(label);
             }
-            tagsLabel.setText(tags);
+            containsTags = true;
         } else {
-            setNotManaged(tagsLabel);
             containsTags = false;
+            tagsPane.setManaged(false);
         }
     }
 
@@ -83,22 +89,13 @@ public class EventCard extends UiPart {
     private void setRecurrenceLabel() {
         if (toDo.getDateRange().isPresent() && toDo.getDateRange().get().recurrence != Recurrence.None) {
             recurrenceLabel.setText(toDo.getDateRange().get().recurrence.toString());
+            containsRecurrence = true;
         } else {
-            setNotManaged(recurrenceLabel);
-            containsDate = false;
+            recurrenceLabel.setManaged(false);
+            containsRecurrence = false;
         }
     }
-
-    /**
-     * If both tags and recurrence are non-existent, hide the pane that contains
-     * them
-     */
-    private void checkTagsPane() {
-        if (!containsTags && !containsDate) {
-            setNotManaged(tagsPane);
-        }
-    }
-
+    
     private void setDateTimesLabels() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
@@ -108,7 +105,9 @@ public class EventCard extends UiPart {
             dateIntervalLabel
                     .setStyle("-fx-text-fill: " + ToDoCardStyleManager.getDateProximityBlue((int) startDayDifference));
         } else {
-            setNotManaged(dateIntervalLabel, endLabel, datePane);
+            dateIntervalLabel.setManaged(false);
+            endLabel.setManaged(false);
+            //datePane.setManaged(false);
         }
     }
 
@@ -131,16 +130,14 @@ public class EventCard extends UiPart {
      * modification via undo, edit, add
      */
     private void setRecentlyModifiedState() {
-        eventPaneInner.setStyle(ToDoCardStyleManager.recentlyModifiedStateCSS);
+        ToDoCardStyleManager.addStyleAll("recently-modified", eventPane);
     }
-
+    
     /**
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        eventPaneInner.setStyle(ToDoCardStyleManager.finishedStateContentCSS);
-        datePane.setStyle(ToDoCardStyleManager.finishedStateDateCSS);
-        indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
+        ToDoCardStyleManager.addStyleAll("finished", eventPane, datePane, indexLabel);
     }
     
     /**
@@ -158,16 +155,14 @@ public class EventCard extends UiPart {
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            eventPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateContentCSS);
-            indexLabel.setStyle(ToDoCardStyleManager.activateHoverStateIndexCSS);
+            ToDoCardStyleManager.addStyleAll("hover", eventPane, indexLabel);
         }
     }
 
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            eventPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateContentCSS);
-            indexLabel.setStyle(ToDoCardStyleManager.deactivateHoverStateIndexCSS);
+            ToDoCardStyleManager.removeStyleAll("hover", eventPane, indexLabel);
         }
     }
     // @@author
