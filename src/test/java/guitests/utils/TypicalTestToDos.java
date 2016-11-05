@@ -13,7 +13,8 @@ import seedu.commando.testutil.ToDoBuilder;
  */
 public class TypicalTestToDos {
 
-    public ToDo toDoItem1, toDoItem2, toDoItem3, toDoItem4, toDoItem5, toDoItem6, toDoItem7, testToDoItem1, testToDoItem2, testToDoItem3;
+    public ToDo toDoItem1, toDoItem2, toDoItem3, toDoItem4, toDoItem5, toDoItem6, toDoItem7, 
+            testToDoItem1, testToDoItem2, testToDoItem3;
 
     public TypicalTestToDos() {
         resetToDos();
