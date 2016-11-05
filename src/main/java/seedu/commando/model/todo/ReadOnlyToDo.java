@@ -6,7 +6,7 @@ import java.util.Set;
 
 import javafx.beans.value.ObservableValue;
 
-//@@author A0139697H
+//@@author A0122001M
 
 /**
  * A read-only immutable interface for a to-do.
@@ -117,8 +117,8 @@ public interface ReadOnlyToDo {
      * @return whether current to-do is similar to {@param other}
      */
     default boolean isSimilar(ReadOnlyToDo other) {
-        return other == this // short circuit if same object
-            || (other != null // this is first to avoid NPE below
+        return other == this
+            || (other != null
             && other.getTitle().equals(getTitle())
             && other.getDateRange().equals(getDateRange())
             && other.getDueDate().equals(getDueDate())
