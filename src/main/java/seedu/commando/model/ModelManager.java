@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-//@@author A0139697H
+//@@author A0122001M
 
 /**
  * Concrete implementation of {@link Model} for the Model component.
@@ -59,7 +59,10 @@ public class ModelManager extends ComponentManager implements Model {
     public ReadOnlyToDoList getToDoList() {
         return toDoListManager.getToDoList();
     }
-
+    
+    /**
+     * @see Model#changeToDoList(ToDoListChange)
+     */
     @Override
     public synchronized void changeToDoList(ToDoListChange change) throws IllegalValueException {
         logger.info("Applying change to to-do list: " + change);
@@ -70,7 +73,10 @@ public class ModelManager extends ComponentManager implements Model {
         indicateToDoListChanged();
         logUiToDoList();
     }
-
+    
+    /**
+     * @see Model#undoToDoList()
+     */
     @Override
     public boolean undoToDoList() {
         logger.info("Undoing to-do list...");
@@ -85,6 +91,9 @@ public class ModelManager extends ComponentManager implements Model {
         return hasChanged;
     }
 
+    /**
+     * @see Model#redoToDoList()
+     */
     @Override
     public boolean redoToDoList() {
         logger.info("Redoing to-do list...");
@@ -98,22 +107,34 @@ public class ModelManager extends ComponentManager implements Model {
 
         return hasChanged;
     }
-
+     
+    /**
+     * @see Model#getUiEvents()
+     */
     @Override
     public UnmodifiableObservableList<UiToDo> getUiEvents() {
         return uiModel.getEvents();
     }
 
+    /**
+     * @see Model#getUiTasks()
+     */
     @Override
     public UnmodifiableObservableList<UiToDo> getUiTasks() {
         return uiModel.getTasks();
     }
-
+    
+    /**
+     * @see Model#getUiToDoAtIndex(int)
+     */
     @Override
     public Optional<UiToDo> getUiToDoAtIndex(int index) {
         return uiModel.getToDoAtIndex(index);
     }
-
+    
+    /**
+     * @see Model#clearUiToDoListFilter(seedu.commando.model.Model.FILTER_MODE)
+     */
     @Override
     public void clearUiToDoListFilter(FILTER_MODE filterMode) {
         logger.info("Clearing filter on UI to-dos with filter mode: " + filterMode);
@@ -122,6 +143,10 @@ public class ModelManager extends ComponentManager implements Model {
         logUiToDoList();
     }
 
+    
+    /**
+     * @see Model#setUiToDoListFilter(java.util.Set, java.util.Set, seedu.commando.model.Model.FILTER_MODE)
+     */
     @Override
     public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, FILTER_MODE filterMode) {
         logger.info("Filtering UI to-dos by keywords " + keywords + " and tags " + tags
@@ -138,9 +163,11 @@ public class ModelManager extends ComponentManager implements Model {
     private void indicateToDoListChanged() {
         raise(new ToDoListChangedEvent(toDoListManager.getToDoList()));
     }
-
+    
+    /**
+     * log events and tasks shown
+     */
     private void logUiToDoList() {
-        // log events and tasks shown
         logger.info("Events: " + uiModel.getEvents().stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
             .collect(Collectors.joining(", ")));
 
