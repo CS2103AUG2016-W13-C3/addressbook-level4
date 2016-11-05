@@ -46,7 +46,7 @@ public class FindCommandTest extends CommanDoGuiTest {
     public void findCommand_invalidCommand_reportUnknownCommand() {
         //invalid command name
         commandBox.runCommand("findg 2");
-        assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "findgeorge"));
+        assertResultMessage(String.format(Messages.UNKNOWN_COMMAND, "findg"));
     }
     
     /**

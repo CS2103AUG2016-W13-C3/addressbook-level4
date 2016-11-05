@@ -165,7 +165,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
     
     /**
-     * log events and tasks shown
+     * Log events and tasks shown
      */
     private void logUiToDoList() {
         logger.info("Events: " + uiModel.getEvents().stream().map(uiToDo -> uiToDo.getIndex() + ") " + uiToDo.getTitle())
