@@ -79,7 +79,7 @@ public class TaskCard extends UiPart {
                 Label label = new Label();
                 label.setText("#" + tag.value);
                 label.setId("tagsLabel");
-                label.setMaxWidth(100);
+                label.setMaxWidth(200);
                 label.getStyleClass().add("cell_big_label");
                 label.setAlignment(Pos.CENTER);
                 label.setPadding(new Insets(0, 3, 0, 3));

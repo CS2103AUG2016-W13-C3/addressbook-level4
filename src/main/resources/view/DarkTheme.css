@@ -17,17 +17,16 @@
 
 .event-pane-title-background, .task-pane-title-background {
 	-fx-background-color: derive(#1d1d1d, 20%);
-	-fx-border-color: derive(#1d1d1d, 20%);
 }
 
 .event-pane-title, .task-pane-title {
 	-fx-font-family: "Helvetica Light";
-	-fx-font-size: 32pt;
+	-fx-font-size: 30pt;
 }
 
 .label {
     -fx-font-size: 14pt;
-    -fx-font-family: "Segoe UI Light";
+    -fx-font-family: "Helvetica Light";
     -fx-line-spacing: -0.5em;
     -fx-text-fill: #555555;
     -fx-opacity: 0.9;
@@ -35,7 +34,7 @@
 
 .label-bright {
     -fx-font-size: 12pt;
-    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-family: "Helvetica Semibold";
     -fx-line-spacing: -0.5em;
     -fx-text-fill: white;
     -fx-opacity: 1;
@@ -43,7 +42,7 @@
 
 .label-header {
     -fx-font-size: 32pt;
-    -fx-font-family: "Segoe UI Light";
+    -fx-font-family: "Helvetica Light";
     -fx-line-spacing: -0.5em;
     -fx-text-fill: white;
     -fx-opacity: 1;
@@ -51,7 +50,7 @@
 
 .text-field {
     -fx-font-size: 15pt;
-    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-family: "Helvetica Semibold";
 }
 
 .tab-pane {
@@ -91,7 +90,7 @@
 
 .table-view .column-header .label {
     -fx-font-size: 20pt;
-    -fx-font-family: "Segoe UI Light";
+    -fx-font-family: "Helvetica Light";
     -fx-line-spacing: -0.5em;
     -fx-text-fill: white;
     -fx-alignment: center-left;
@@ -127,18 +126,9 @@
     -fx-padding: 0 0 0 0;
 }
 
-.list-cell .label {
-    -fx-text-fill: #010504;
-}
-
-.cell_big_label {
-    -fx-font-size: 12pt;
-    -fx-text-fill: #010504;
-}
-
-#indexLabel, #dateIntervalLabel, #dueLabel, #tagsLabel, #recurrenceLabel {
-	-fx-font-family: "Segoe UI bold";
-	-fx-font-size: 12pt;
+#titleLabel, #indexLabel, #dateIntervalLabel, #dueLabel, #tagsLabel, #recurrenceLabel {
+	-fx-font-family: "Helvetica bold";
+	-fx-font-size: 14pt;
 	-fx-line-spacing: -0.5em;
 }
 
@@ -234,7 +224,7 @@
 
 .menu-bar .label {
     -fx-font-size: 14pt;
-    -fx-font-family: "Segoe UI Light";
+    -fx-font-family: "Helvetica Light";
     -fx-line-spacing: -0.5em;
     -fx-text-fill: white;
     -fx-opacity: 0.9;
@@ -380,8 +370,7 @@
 }
 
 .recently-modified {
-	-fx-border-width: 2px;
-	-fx-border-color: derive(red, 90%);
+	-fx-background-color: derive(red, 90%);
 }
 
 .finished {
