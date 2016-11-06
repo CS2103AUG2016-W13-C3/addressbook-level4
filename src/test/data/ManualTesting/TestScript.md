@@ -1,17 +1,20 @@
 #Manual Testing Guidelines
 
-Please ensure that you are testing this application in an IDE. In the same folder as this file, there should be a sample data set named `SampleData.xml`.
-I will be referring to todos with a datetime interval as "events", with a deadline as "task with deadline", and without any datetimes as "floating task".
+You can find the sample data at `SampleData.xml` in the same folder as this document. Throughout this document, I will be referring to to-dos with a datetime interval as _Events_, to-dos with a due date as _Tasks With Deadlines_, and to-dos without any time constraint as _Floating Tasks_.
 
-##Importing
-To import the said data set for testing, first run the application.
-Type 
-```
-> import .\src\test\data\ManualTesting\SampleData.xml
-```
- and submit. (Press enter)
-You will see that there are 9 events and 16 tasks visible on the screen.
-Note that there are 50 todos (events and tasks) present in the data set.
+##Importing Sample Data
+
+To start doing manual scripted testing, follow these steps:
+
+1. Download `commando.jar` from our [releases](https://github.com/CS2103AUG2016-W13-C3/main/releases).
+2. Copy `commando.jar` in a directory that would be the home directory for _CommanDo_
+3. Double-click on `commando.jar`. You should have Java version `1.8.0_60` or later on your device - otherwise, download it [here](https://java.com/en/download/help/download_options.xml). You will notice that a `./data` folder would be created in the home directory for _CommanDo_ you chose.
+4. Download `SampleData.xml` [here](https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/src/test/data/ManualTesting/SampleData.xml) - this is our sample data file of more than 50 to-dos.
+5. Copy `SampleData.xml` into the newly created `./data` folder in the home directory.
+4. Switch back to _CommanDo_, type `>> import ./data/SampleData.xml` and hit <kbd>Enter</kbd>.
+5. You have just used the `import` command to import our sample to-do list into _CommanDo_. You will see that the 2 panels will be populated with to-dos. The to-dos visible are only those which are undone - you can type ` >> recall` to see all to-dos that are done.
+
+For more details on how _CommanDo_ works that is not described in this document, visit our [user guide](https://cs2103aug2016-w13-c3.github.io/main/user).
 
 ##Datetime Formats
 Before you begin adding or editing todos with datetimes, have a quick brief on the formats of date and times accepted.
