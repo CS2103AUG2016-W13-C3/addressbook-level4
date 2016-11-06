@@ -58,8 +58,10 @@
                 <!-- @@author A0139697H -->
                 <p><em>You have a ton of things to do. But you are really tired of the amount of mouse-clicking required to add to-dos in your to-do list management application...</em></p>
                 <p>
-                    Introducing <em>CommanDo</em>: the to-do list manager designed for you. With <em>CommanDo</em>, you can manage your to-do list in double quick time with just typing, completely mouse-free. With <em>CommanDo</em>, you can edit your to-dos with short, intuitive and English-like commands. With <em>CommanDo</em>, you can preview your upcoming <em>Events</em> and unfinished <em>Tasks</em> at a glance, when you open up the application. Here's <em>CommanDo</em> at work:
+                    Introducing <em>CommanDo</em>: the to-do list manager designed for you. With <em>CommanDo</em>, you can manage your to-do list in double quick time with just typing, completely mouse-free. With <em>CommanDo</em>, you can edit your to-dos with short, intuitive and English-like commands. With <em>CommanDo</em>, you can preview your upcoming <em>Events</em> and unfinished <em>Tasks</em> at a glance, when you open up the application.
                 </p>
+
+                <p>Here's <em>CommanDo</em> at work:</p>
 
                 <figure>
                     <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
@@ -81,14 +83,14 @@
                         Copy <code>commando.jar</code> to the folder you want to use as the home folder for <em>CommanDo</em>.
                     </li>
                     <li>
-                        Double-click the file to start the application. <em>CommanDo's</em> window should appear in a few seconds:
+                        Double-click <code>commando.jar</code> to start the application. <em>CommanDo's</em> window should appear in a few seconds:
                         <figure>
                             <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/firstLaunch.png" width="600">
                             <figcaption><em>CommanDo</em> on its first launch</figcaption>
                         </figure>
                     </li>
                     <li>
-                        Type <code>help</code> and press <kbd class="light">Enter</kbd>. The <code>help</code> command will be executed, and a window will open up to show this guide. Refer to the <a href="#commands">Commands</a> section below for the list of commands available in <em>CommanDo</em>.
+                        Type <code>help</code> and press <kbd class="light">Enter</kbd>. A link to this user guide will be opened in a window. Refer to the <a href="#commands">Commands</a> section below for the list of commands available in <em>CommanDo</em>.
                     </li>
                     <li>
                         For your convenience:
@@ -141,7 +143,7 @@
                     Adding To-Dos: <code>add</code>
                 </h3>
 
-                <p>The very first thing you'll want to do is to add a to-do. Each to-do contains minimally a description. In addition, it can be optionally associated with multiple tags and a time constraint. Depending on nature of the time constraint, to-dos are categorised into 2 types: <em>Events</em> (shown in the left panel) and <em>Tasks</em> (shown in the right panel):</p>
+                <p>The very first thing you'll want to do is to add a to-do. Each to-do contains at minimum, a description. Each to-do can be optionally associated with multiple tags and a time constraint. Depending on nature of the time constraint, to-dos are categorised into 2 types: <em>Events</em> (shown in the left panel) and <em>Tasks</em> (shown in the right panel):</p>
 
                 <figure>
                     <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
@@ -167,6 +169,7 @@
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>tour with Jimmy</span> on <span>next Saturday </span></pre>
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>clean room</span> on <span>tomorrow </span>#<span>important </span></pre>
 
+<<<<<<< HEAD
                 <p>
                     In <em>CommanDo</em>, there are 3 ways to specify its time window of an <em>Event</em>:
                     <ul>
@@ -285,7 +288,7 @@
                 <span class="comment">What it does:  Deletes the to-dos with <em>Indices</em> 1, 2, 3, 4 and 5.</span>
 
                 <blockquote>
-                    <b><em>Index</em> of a To-Do:</b> To refer to an existing to-do in <em>CommanDo</em>, its <em>Index</em> is used, which is the number visually tagged to a to-do on the interface. This is clarified in the following figure:
+                    <b><em>Index</em> of a To-Do:</b> To refer to an existing to-do in <em>CommanDo</em>, its <em>Index</em> is used, which is the number visually tagged to a to-do on the interface. This is clarified in the following picture:
 
                     <figure>
                         <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/index.png" width="600">
@@ -311,7 +314,7 @@
 
                 <h4>Deleting Tags of To-Dos</h4>
 
-                <p>To clear the tags of a to-do, use the <code>delete</code> command as well, but end with the keyword <code>tag</code>.</p>
+                <p>Similarly, to clear the tags of a to-do, use the <code>delete</code> command as well, but end with the keyword <code>tag</code>.</p>
 
                 <span><strong>Command Formats:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... tag</pre>
@@ -328,7 +331,7 @@
                 <!-- @@author A0139080J -->
                 <h3 id="edit">Editing To-Dos: <code>edit</code></h3>
 
-                <p>More often than not, you'll need to edit the fields of a to-do after adding it, such as when you made a mistake, when an <em>Event</em> gets postponed, or when you receive more details for a <em>Task</em>.</p>
+                <p>More often than not, you'll need to edit the fields of a to-do after some time, such as when you made a mistake, when an <em>Event</em> gets postponed, or when you receive more details for a <em>Task</em>.</p>
 
                 <h4>Editing Events</h4>
 
@@ -361,7 +364,7 @@
                 <!-- @@author A0139697H -->
                 <h3 id="finish">Marking Tasks as Done: <code>finish</code></h3>
 
-                <p>When you've completed a <em>Task</em>, mark it as done with the <code>finish</code> command. The to-do will initially be moved to the bottom of its list, greyed out, and subsequently be hidden and archived on the next day. You'll be able to browse through these finished <em>Tasks</em> with the <a href="#recall"><code>recall</code></a> command.</p>
+                <p>When you've completed a <em>Task</em>, mark it as done with the <code>finish</code> command. The to-do will initially be moved to the bottom of its list, greyed out. It is subsequently archived on the next day. You'll be able to browse through these finished <em>Tasks</em> with the <a href="#recall"><code>recall</code></a> command.</p>
 
                 <blockquote>
                     <em>Events</em> will automatically be marked done and greyed out when the current datetime is after the end of their time window. Therefore, you cannot use the <code>finish</code> command on an <em>Event</em>.
@@ -378,7 +381,7 @@
 
                 <h3 id="find">Searching through Undone To-Dos: <code>find</code></h3>
 
-                <p>So you now have a long list of pending to-dos. Use the <code>find</code> command to search through all upcoming <em>Events</em> (from the current day onwards) and all unfinished <em>Tasks</em> by their description or their tags. After doing the search, use the <code>find</code> command again without any trailing keywords to revert to showing all upcoming <em>Events</em> and unfinished <em>Tasks</em>.</p>
+                <p>At some point in time, you might have a long list of to-dos. Use the <code>find</code> command to search through all upcoming <em>Events</em> (from the current day onwards) and all unfinished <em>Tasks</em> by their description or their tags. After doing the search, use the <code>find</code> command again without any trailing keywords to revert to showing all upcoming <em>Events</em> and unfinished <em>Tasks</em>.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> find [<span>&lt;keyword&gt;</span>...] [#<span>&lt;tag&gt;</span>...]</pre>
@@ -468,7 +471,7 @@
                 <p>Perhaps you want to save your to-do list in your <em>Dropbox</em> or <em>OneDrive</em> folder that is cloud-synced. The <code>store</code> command lets you do exactly that - it migrates the save file to that of the specified file path. This command will fail if there is an existing file at the specified file path, but you can end the command with the keyword <code>override</code> to forcibly override it.</p>
 
                 <blockquote>
-                    <strong>Default Save Location:</strong> The default save location is <code>data/todos.xml</code>, relative to the <code>commando.jar</code> file.
+                    <strong>Default Save Location:</strong> The default save location is <code>data/todos.xml</code>. It is relative to the <code>commando.jar</code> file.
                 </blockquote>
 
                 <span><strong>Command Format:</strong></span>
@@ -485,7 +488,7 @@
                 <!-- @@author A0139080J -->
                 <h3 id="export">Exporting: <code>export</code></h3>
 
-                <p>If you want to copy your to-do list data file in your current save location to another local destination, there's no need to manually do so. Instead, use the <code>export</code> command to save a copy of the current to-do list data to the specified file at given file path.</p>
+                <p>If you want to clone your to-do list data file in your current save location to another local destination, there's no need to manually do so. Instead, use the <code>export</code> command to save a copy of the current to-do list data to the specified file at given file path.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> export <span>&lt;file_path&gt;</span></pre>
@@ -499,14 +502,14 @@
 
                 <h3 id="undo">Undoing: <code>undo</code></h3>
 
-                <p>Scenario: you deleted a to-do by accident and you want to undo your last modification. With the <code>undo</code> command, the most recent <code>add</code>, <code>edit</code>, <code>delete</code>, <code>clear</code> and <code>import</code> would be reverted. Multiple <code>undo</code> commands can be used in succession. <strong>Note that you can only undo commands in your current session, which ends when you close the application.</strong></p>
+                <p>You deleted a to-do by accident and you want to undo your last modification. With the <code>undo</code> command, the most recent <code>add</code>, <code>edit</code>, <code>delete</code>, <code>clear</code> and <code>import</code> would be reverted. Multiple <code>undo</code> commands can be used in succession. <strong>Note that you can only undo commands in your current session, which ends when you close the application.</strong></p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> undo</pre>
 
                 <h3 id="redo">Redoing: <code>redo</code></h3>
 
-                <p>Scenario: You deleted a to-do by accident. You had used <code>undo</code> to restore that to-do, but eventually realised that the to-do isn't worth keeping after all. The <code>redo</code> command reverts the most recent <code>undo</code>, and can be used in sucession. <strong>What you can redo is also limited to the current session.</strong></p>
+                <p>You deleted a to-do by accident. You had used <code>undo</code> to restore that to-do, but eventually realised that the to-do isn't worth keeping after all. The <code>redo</code> command reverts the most recent <code>undo</code>, and can be used in sucession. <strong>How many times you can redo is limited to the current session, which ends when you close the application.</strong></p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> redo</pre>
@@ -534,7 +537,7 @@
 
                 <h3>2. How do I save my to-do list after modifying it?</h3>
 
-                <p>Your to-do list is automatically saved to your file system after any command that changes the data. There is no need to save manually.</p>
+                <p>Your save file is immediately updated after every change. There is no need to save manually.</p>
 
                 <!-- @@author A0139697H -->
                 <h3>3. Is sharing across devices supported?</h3>
@@ -547,12 +550,12 @@
 
                 <h3>5. I keep forgetting how to use certain commands.</h3>
 
-                <p>The <code>help</code> command can be used to quickly summon this guide or a relevant section of this guide when you need it. Alternatively, you can just try typing your command - if it is invalid, <em>CommanDo</em> will display the correct command format for that command in the command feedback box just below the command input. This might be helpful for you to correctively learn the command format.</p>
+                <p>The <code>help</code> command can be used to quickly summon this guide or a relevant section of this guide when you need it. Alternatively, you can just try typing a random command - if it is invalid, <em>CommanDo</em> will display the correct command format for that command in the command feedback box just below the command input.</p>
 
                 <h3 id="supported-date-time-formats">6. What date & time formats can I use in my commands?</h3>
 
-                <p><em>CommanDo</em> supports a wide variety of date and time formats, backed by the awesome date parser library <a href="http://natty.joestelmach.com/" target="_blank">natty</a>. A valid datetime contains a valid date, a valid time, or a valid date and time. A sample of the accepted date & time formats are shown below:</p>
-
+                <p><em>CommanDo</em> supports a wide variety of date and time formats, backed by the date parser library <a href="http://natty.joestelmach.com/" target="_blank">natty</a>. A valid datetime contains a valid date, a valid time, or a valid date and time. A sample of the accepted date & time formats are shown below:</p>
+                
                 <!-- @@author A0139080J -->
                 <h4>Valid Dates</h4>
 
@@ -767,7 +770,7 @@
                     </table>
                 </div>
 
-                <p>
+                <blockquote>
                     <span><strong>Legend</strong></span>
                     <ul class="indent">
                         <li>
