@@ -1,8 +1,8 @@
 #Manual Testing Guidelines
 
-You can find the sample data at `SampleData.xml` in the same folder as this document. Throughout this document, I will be referring to to-dos with a datetime interval as _Events_, to-dos with a due date as _Tasks With Deadlines_, and to-dos without any time constraint as _Floating Tasks_.
+You can find the sample data at `SampleData.xml` in the same folder as this document. Throughout this document, we will be referring to to-dos with a start and end datetime as _Events_. On the other hand, to-dos without any time constraints or with a single due date are referred to as _Tasks_. 
 
-##Importing Sample Data
+## Importing Sample Data
 
 To start doing manual scripted testing, follow these steps:
 
@@ -15,6 +15,83 @@ To start doing manual scripted testing, follow these steps:
 5. You have just used the `import` command to import our sample to-do list into _CommanDo_. You will see that the 2 panels will be populated with to-dos. The to-dos visible are only those which are undone - you can type ` >> recall` to see all to-dos that are done.
 
 For more details on how _CommanDo_ works that is not described in this document, visit our [user guide](https://cs2103aug2016-w13-c3.github.io/main/user).
+
+## Viewing Help: `help` command
+
+Command | What should happen |
+------- | :--------------
+`>> help` | Our user guide will open up in a new window.
+`>> help add` | Our user guide will open up in a new window, automatically jumping to the section of "Adding To-Dos" with the `add` command
+`>> help cheatsheet` | Our user guide will open up in a new window, automatically jumping to the section of "Cheatsheet"
+
+## Searching through Undone To-Dos: `find` command
+
+In _CommanDo_, the default view is that every upcoming _Event_ is listed in the left panel and every unfinished _Task_ is listed in the right panel. To search through this list of undone to-dos, you use the `find` command:
+
+Command | What should happen |
+------- | :--------------
+`>> find final` | Only upcoming _Events_ and unfinished _Tasks_ with description or tags containing "final" will be listed, in chronological order.
+`>> find #2105` | Only upcoming _Events_ and unfinished _Tasks_ with a tag of "#2105" will be listed, in chronological order.
+`>> find` | All upcoming _Events_ and finished _Tasks_ will be listed, in chronological order (default view).
+
+## Browsing To-Dos that are Done: `recall` command
+
+Any _Event_ that is over, or any _Task_ that has been marked done will be hidden and archived from the next day onwards. To browse through these to-dos that are considered done that are not visible on the default view of _CommanDo_, you use the `recall` command:
+
+Command | What should happen |
+------- | :--------------
+`>> recall` | Only past _Events_ and finished _Tasks_ will be listed, in reverse chronological order.
+`>> recall 2105` | Only past _Events_ and finished _Tasks_ with description or tags containing "2105" will be listed, in reverse chronological order.
+`>> recall #homework` | Only past _Events_ and finished _Tasks_ with a tag "#2105" will be listed, in reverse chronological order.
+
+Type `>> find` to return to the default view of all upcoming _Events_ and unfinished _Tasks_
+
+## Listing To-Dos Within Time Window: `list` command
+
+To browse through both done and undone to-dos within a specific time interval, you use the `list` command:
+
+Command | What should happen |
+------- | :--------------
+`>> list` | Shows all to-dos, done and undone.
+`>> list from ` | Only past _Events_ and finished _Tasks_ with description or tags containing "2105" will be listed, in reverse chronological order.
+`>> recall #homework` | Only past _Events_ and finished _Tasks_ with a tag "#2105" will be listed, in reverse chronological order.
+
+Type `>> find` to return to the default view of all upcoming _Events_ and unfinished _Tasks_
+
+
+`>> add physics revision from tues 9.30pm to 10pm weekly #physics` | A to-do will appear in the left panel.  It will have the description "physics revision", accompanied by a time window labelled "21:30 to 22:00 on Tue 8 Nov", tagged with "#physics" and a "Weekly" recurrence.
+`>> add tour with Jimmy on next Saturday` | A to-do will appear in the left panel.  It will have the description "tour with Jimmy", accompanied by a time window labelled "21:30 to 22:00 on Tue 8 Nov".
+
+
+## Adding Events `add` command
+
+An _Event_ is a to-do happening within a time window. In _CommanDo_, by default, every upcoming _Event_ is listed in the left panel, in chronological order. When an _Event_ is over, it will drop down to the bottom of the list, greyed out. On the next day, _CommanDo_ will hide it for you.
+
+Command | What should happen |
+------- | :--------------
+`>> add wild party in hostel room from 31 Dec 2016 to 1 Jan 2017` | A to-do will appear in the left panel, tinted yellow, which signifies that it is newly added.  It will have the description "wild party in hostel room", accompanied by a time window labelled "00:00 on Sat 31 Dec 2016 to 23:59 on Sun 1 Jan 2017". If it doesn't appear, it means that it has past. 
+`>> add physics revision from tues 9.30pm to 10pm weekly #physics` | A to-do will appear in the left panel.  It will have the description "physics revision", accompanied by a time window labelled "21:30 to 22:00 on Tue 8 Nov", tagged with "#physics" and a "Weekly" recurrence.
+`>> add tour with Jimmy on next Saturday` | A to-do will appear in the left panel.  It will have the description "tour with Jimmy", accompanied by a time window labelled "21:30 to 22:00 on Tue 8 Nov".
+
+
+`>> help add` | Our user guide will open up in a new window, automatically jumping to the section of "Adding To-Dos" with the `add` command
+`>> help cheatsheet` | Our user guide will open up in a new window, automatically jumping to the section of "Cheatsheet"
+
+
+add task1 on today | A task with name `task1` and starting date `today` is added to the top of the list. <br> The default time is `00:00 hrs` <br> The task should appear at the Today panel on the right.
+add task2 on today 1800 by tomorrow 1900 | A task with name `task2`, starting date `today` and ending date `tomorrow` is added to the top of the list. <br> The starting time is `18:00 hrs` and the ending time is `19:00 hrs`<br> `task2` should appear at the Today panel and the Next 7 Days panel on the right.
+add task3 on 12/25/2017 1800 by 12/26/2017 1900 priority high every week| A task with name `task3`, starting date `12/25/2017` and ending date `12/26/2017` is added to the top of the list. <br> The starting time is `18:00 hrs` and the ending time is `19:00 hrs`<br> The priority circle should be red. <br> The recurrence label should display `Every: WEEK` <br>
+
+## Using the Add Command
+
+Command | Expected Results |
+------- | :--------------
+add floating task| A floating task with name `floating task` is added to top of the list.
+add task1 on today | A task with name `task1` and starting date `today` is added to the top of the list. <br> The default time is `00:00 hrs` <br> The task should appear at the Today panel on the right.
+add task2 on today 1800 by tomorrow 1900 | A task with name `task2`, starting date `today` and ending date `tomorrow` is added to the top of the list. <br> The starting time is `18:00 hrs` and the ending time is `19:00 hrs`<br> `task2` should appear at the Today panel and the Next 7 Days panel on the right.
+add task3 on 12/25/2017 1800 by 12/26/2017 1900 priority high every week| A task with name `task3`, starting date `12/25/2017` and ending date `12/26/2017` is added to the top of the list. <br> The starting time is `18:00 hrs` and the ending time is `19:00 hrs`<br> The priority circle should be red. <br> The recurrence label should display `Every: WEEK` <br>
+
+
 
 ##Datetime Formats
 Before you begin adding or editing todos with datetimes, have a quick brief on the formats of date and times accepted.
