@@ -189,12 +189,11 @@
                             </ul>
                     </li>
                 </ol>
-
+	
+                <!-- @@author A0139697H -->	
                 <h2 id="architecture">Architecture</h2>
 
                 <p>This section explains the high level design of the application. The architecture of <em>CommanDo</em> is as follows:</p>
-
-                <!-- @@author A0139697H -->
 
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/architecture.PNG" width="600">
@@ -396,10 +395,10 @@
                 <blockquote>
                     All events should extend the <code>BaseEvent</code> class and be placed in package <code>seedu.commando.commons.events</code>.
                 </blockquote>
-
+				
+				<!-- @@author A0139080J -->
                 <h3 id="logscenter"><code>LogsCenter</code> and Logging</h3>
 
-                <!-- @@author A0139080J -->
                 <p> We are using the <code>java.util.logging</code> package for logging. The <code>LogsCenter</code> class is used to manage the logging levels and logging destinations. The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level. </p>
 
                 <p>Currently, log messages are output through the console and to a <code>.log</code> file at the project root.</p>

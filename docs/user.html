@@ -104,7 +104,8 @@
                         </ul>
                     </li>
                 </ol>
-
+				
+				<!-- @@author A0139697H -->
                 <h2 id="commands">Commands</h2>
 
                 <h3 id="help">
@@ -116,7 +117,6 @@
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> help [<span>&lt;topic&gt;</span>]</pre>
 
-                <!-- @@author A0139697H -->
                 <blockquote>
                     <b>Understanding Command Formats:</b> For every command, the first word is the <em>command word</em> that specifies the type of the command. What follows after are fields to fill in for that command. The following legend describes the syntax we used to specify command formats:
                     <ul class="indent">
@@ -135,13 +135,13 @@
                     </ul>
                 </blockquote>
 
-                <!-- @@author A0139080J -->
                 <span><strong>Examples:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> help</pre>
                 <pre><span class="inputstart">&gt;&gt;</span> help <span>add</span></pre>
                 <pre><span class="inputstart">&gt;&gt;</span> help <span>cheatsheet</span></pre>
                 <span class="comment">What it does:  Opens up this user guide, jumping to the <a href="#cheatsheet">Cheatsheet</a> section.</span>
-
+				
+				 <!-- @@author A0139080J -->
                 <h3 id="add">
                     Adding To-Dos: <code>add</code>
                 </h3>
@@ -269,7 +269,7 @@
                     <span class="comment">What it does:  Adds a <em>Task</em> with description <code>shop by today</code>.</span>
                 </blockquote>
 
-                <!-- @@author A0139080J -->
+                <!-- @@author A0142230B -->
                 <h3 id="delete">
                     Deleting To-Dos and their Fields: <code>delete</code>
                 </h3>
@@ -278,7 +278,6 @@
 
                 <p>If you want to delete a to-do that is no longer relevant, whether it is an <em>Event</em> or a <em>Task</em>, use the <code>delete</code> command, followed by the <em>Index</em> of the to-do you want to delete.</p>
 
-                <!-- @@author A0142230B -->
                 <span><strong>Command Formats:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>...</pre>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;start index&gt;</span> - <span>&lt;end index&gt;</span></pre>
@@ -487,7 +486,6 @@
                     <b>File Paths:</b> A file path can be absolute (<code>C:/Users/Jim/Dropbox/work/todolist.xml</code>) or relative to the <code>commando.jar</code> file (<code>../../Dropbox/work/todolist.xml</code>). You can use any file extension you wish, but ending with <code>.xml</code> is recommended because the date file is in that file format.
                 </blockquote>
 
-                <!-- @@author A0139080J -->
                 <h3 id="export">Exporting: <code>export</code></h3>
 
                 <p>If you want to clone your to-do list data file in your current save location to another local destination, there's no need to manually do so. Instead, use the <code>export</code> command to save a copy of the current to-do list data to the specified file at given file path. Similar to the <code>store</code> command, append the keyword <code>override</code> behind the command to forcibly override any existing file.</p>
@@ -501,6 +499,8 @@
 
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> import <span>&lt;file_path&gt;</span></pre>
+
+				<!-- @@author A0139080J -->
 
                 <h3 id="undo">Undoing: <code>undo</code></h3>
 
@@ -530,6 +530,8 @@
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> exit</pre>
 
+				<!-- @@author A0139697H -->
+                
                 <h2 id="troubleshooting">Troubleshooting</h2>
 
                 <h3 id="faq">Frequently Asked Questions</h3>
@@ -543,7 +545,6 @@
 
                 <p>Your save file is immediately updated after every change. There is no need to save manually.</p>
 
-                <!-- @@author A0139697H -->
                 <h4>3. Is sharing across devices supported?</h4>
 
                 <p><em>CommanDo</em> doesn't directly support syncing of the to-do list across devices. Instead, use the <code>export</code> command to generate a save data file, transfer the file to another device, and use the <code>import</code> command on the 2nd device to import your to-do list from that save file. Alternatively, use a cloud-syncing service (e.g. <a href="dropbox.com">Dropbox</a>) and the <code>store</code> command to sync the to-do list automatically by setting the save location to the same file on both devices. </p>
