@@ -73,7 +73,7 @@ public class EventListPanel extends UiPart {
         });
 
         eventListView.setItems(eventsForUi);
-        eventListView.setCellFactory(listView -> new ToDoListViewCell(Card.Event));
+        eventListView.setCellFactory(listView -> new ToDoListViewCell(eventListView, Card.Event));
     }
 
     private void addToPlaceholder() {

@@ -75,7 +75,7 @@ public class TaskListPanel extends UiPart {
         });
 
         taskListView.setItems(tasksForUi);
-        taskListView.setCellFactory(listView -> new ToDoListViewCell(Card.Task));
+        taskListView.setCellFactory(listView -> new ToDoListViewCell(taskListView, Card.Task));
     }
 
     private void addToPlaceholder() {
