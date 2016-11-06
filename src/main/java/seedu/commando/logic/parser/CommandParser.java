@@ -32,6 +32,7 @@ public class CommandParser {
     public static final String RECURRENCE_REGEX = "daily|weekly|monthly|yearly";
     public static final String TAG_PREFIX = "#";
     public static final String QUOTE_CHARACTER = "`";
+    public static final String KEYWORD_OVERRIDE = "override";
 
     // Pattern for "from ... to ... (recurrence)?"
     private static final Pattern DATERANGE_TWO_SIDED_PATTERN = Pattern.compile(
@@ -60,6 +61,12 @@ public class CommandParser {
     private static final Pattern DATERANGE_END_DATE_PATTERN = Pattern.compile(
         "(?<left>.*)(" + KEYWORD_DATERANGE_END + "\\s+(?<end>(.+?)))"
             + "(?<recurrence>(\\s+" + RECURRENCE_REGEX + ")?)$",
+        Pattern.CASE_INSENSITIVE
+    );
+    
+    // Pattern for "path (override)?"
+    private static final Pattern OVERRIDE_PATTERN = Pattern.compile(
+        "^(?<path>.*)("+ KEYWORD_OVERRIDE + ")$",
         Pattern.CASE_INSENSITIVE
     );
 
@@ -268,8 +275,8 @@ public class CommandParser {
 
 
     /**
-     * From start, extracts a quoted title in input, if found
-     * e.g. "`quoted` text" returns "quoted" and retains input "text"
+     * From start, extracts a quoted title in input, if found.
+     * e.g. "`quoted` text" returns "quoted" and retains input "text".
      *
      * @return quoted text with quotes removed and trimmed if found,
      * empty if no quotes found
@@ -306,12 +313,17 @@ public class CommandParser {
             input = matcher.group("left").trim();
 
             // Split to words to get tags
+            // trim any leading spaces and filter out empty tags
             return Arrays.stream(matcher.group("tags").trim()
                 .split("\\s+"))
                 .map(word -> {
-                    word = word.trim(); // trim any leading spaces
-                    assert word.indexOf(TAG_PREFIX) == 0; // pattern should have ensured this
+                    word = word.trim();
+
+                    // pattern should have ensured this
+                    assert word.indexOf(TAG_PREFIX) == 0;
+
                     return new Tag(word.substring(TAG_PREFIX.length()).trim());
+
                 }).filter(x -> !x.value.isEmpty())
                 .collect(Collectors.toSet());
         }
@@ -320,7 +332,7 @@ public class CommandParser {
     }
 
     /**
-     * From start, extracts a single word in input, if found
+     * From start, extracts a single word in input, if found.
      *
      * @return optional of word extracted from input, empty if not found
      */
@@ -336,8 +348,9 @@ public class CommandParser {
     }
 
     /**
-     * Extracts all words in input
-     * If input is empty, returns empty list
+     * Extracts all words in input (space-separated).
+     *
+     * @return list of words found, an empty list if input is empty
      */
     public List<String> extractWords() {
         return Arrays.stream(extractText().orElse("").split("\\s+"))
@@ -346,7 +359,7 @@ public class CommandParser {
     }
 
     /**
-     * From start, extracts an integer in input, if found
+     * From start, extracts an integer in input, if found.
      *
      * @return optional of found integer extracted from input, empty if not found
      */
@@ -371,7 +384,8 @@ public class CommandParser {
     //@@author A0142230B
 
     /**
-     * From start, extracts multiple integers in input, it can be a range of integers or different integers separate by space.
+     * From start, extracts multiple integers in input.
+     * It can be a range of integers or different integers separate by space.
      *
      * @return A List of integers found
      * @throws IllegalValueException
@@ -379,7 +393,8 @@ public class CommandParser {
     public List<Integer> extractIndicesList() throws IllegalValueException {
         final Matcher matcher = INDEXRANGE_PATTERN.matcher(input.trim());
         List<Integer> indices = new ArrayList<Integer>();
-        int firstInt = -1, secondInt = -1;
+        int firstInt = -1;
+        int secondInt = -1;
         Optional<Integer> aNumber;
 
         // Add the index range to a list of indices
@@ -412,6 +427,24 @@ public class CommandParser {
         return indices;
 
     }
+    
+    /**
+     * Extract the keyword 'override' from input
+     * @return true if 'override' found
+     */
+    public boolean isOverrideThenExtract() {
+        final Matcher matcher = OVERRIDE_PATTERN.matcher(input.trim());
+        
+        if (matcher.find()) {
+            input = matcher.group("path").trim();
+            return true;
+        }
+        else {
+        	return false;
+        }
+    }
+    
+    
 
     //@@author A0139697H
 
@@ -478,10 +511,11 @@ public class CommandParser {
             return Optional.empty();
         }
 
-        Optional<LocalDateTime> date = dateTimeParser.parseDateTime(endDateString);
+        Optional<LocalDateTime> endDateTime
+            = dateTimeParser.parseEndDateTime(endDateString);
 
         // Invalid datetime
-        if (!date.isPresent()) {
+        if (!endDateTime.isPresent()) {
             return Optional.empty();
         }
 
@@ -489,7 +523,7 @@ public class CommandParser {
 
         try {
             // Return from now to the date end
-            DateRange dateRange = new DateRange(LocalDateTime.now(), date.get(), recurrence);
+            DateRange dateRange = new DateRange(LocalDateTime.now(), endDateTime.get(), recurrence);
             return Optional.of(dateRange);
         } catch (IllegalValueException e) {
             // Date range was invalid - should not treat it as date range then
@@ -522,7 +556,6 @@ public class CommandParser {
     }
 
     private Optional<DateRange> parseDateRangeWithSingleDate(String dateString, String recurrenceString) {
-
         if (dateString.isEmpty()) {
             return Optional.empty();
         }
@@ -548,11 +581,12 @@ public class CommandParser {
 
     private Optional<DueDate> parseDueDate(String dateString, String recurrenceString) {
         // Parse datetime and recurrence
-        Optional<LocalDateTime> date = dateTimeParser.parseDateTime(dateString);
+        Optional<LocalDateTime> datetime
+            = dateTimeParser.parseEndDateTime(dateString);
         Recurrence recurrence = parseRecurrence(recurrenceString);
 
-        if (date.isPresent()) {
-            return Optional.of(new DueDate(date.get(), recurrence));
+        if (datetime.isPresent()) {
+            return Optional.of(new DueDate(datetime.get(), recurrence));
         } else {
             return Optional.empty();
         }

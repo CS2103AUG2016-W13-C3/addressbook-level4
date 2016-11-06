@@ -11,10 +11,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -164,7 +161,7 @@ public class MainWindow extends UiPart {
         setTabAndArrowKeysNavigations();
         
         primaryStage.setScene(scene);
-        helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl);
+        helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl, Config.AboutUsUrl);
     }
 
     protected void fillInnerParts() {
@@ -325,6 +322,8 @@ public class MainWindow extends UiPart {
                     key.consume();
                     break;
                 default:
+                    consumeKeyIfLeftOrRightAndFocusOnPanel(key);
+
                     // Else, any other sutiable character is considered input to command box
                     // and it will be in focus
                     currentlyFocusedPane = FocusPanes.COMMANDFIELD;
@@ -332,6 +331,14 @@ public class MainWindow extends UiPart {
                 }
             }
         });
+    }
+
+    private void consumeKeyIfLeftOrRightAndFocusOnPanel(KeyEvent key) {
+        if ((key.getCode() == KeyCode.LEFT
+            || key.getCode() == KeyCode.RIGHT)
+            && currentlyFocusedPane != FocusPanes.COMMANDFIELD) {
+            key.consume();
+        }
     }
 
     /**
@@ -408,7 +415,7 @@ public class MainWindow extends UiPart {
      */
     @FXML
     private void handleCredits() {
-        helpWindow.visit(Config.AboutUsUrl);
+        helpWindow.visitAboutUs();
     }
     
     /**

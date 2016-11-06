@@ -350,7 +350,7 @@ public class AddCommandTest {
         assertToDoExists(logic,
             new ToDoBuilder("task")
                 .withDueDate(
-                    LocalDateTime.now().plusDays(1).withHour(0).withMinute(0),
+                    LocalDateTime.now().plusDays(1).withHour(23).withMinute(59),
                     Recurrence.Monthly
                 )
                 .build()

@@ -95,7 +95,7 @@ public class ListCommandTest {
 		
 		//Tasks
 		assertToDoExistsFiltered(logic, new ToDoBuilder("title3")
-				.withDueDate(LocalDateTime.of(2016, 11, 12, 0, 0)).build());
+				.withDueDate(LocalDateTime.of(2016, 11, 12, 23, 59)).build());
 		assertToDoNotExistsFiltered(logic, new ToDoBuilder("title4")
 				.withDueDate(LocalDateTime.of(2016, 11, 14, 0, 0)).build());
 	}
@@ -126,9 +126,9 @@ public class ListCommandTest {
 		
 		//Tasks
 		assertToDoExistsFiltered(logic, new ToDoBuilder("title3")
-				.withDueDate(LocalDateTime.of(2016, 11, 12, 0, 0)).build());
+				.withDueDate(LocalDateTime.of(2016, 11, 12, 23, 59)).build());
 		assertToDoExistsFiltered(logic, new ToDoBuilder("title4")
-				.withDueDate(LocalDateTime.of(2016, 11, 15, 0, 0)).build());
+				.withDueDate(LocalDateTime.of(2016, 11, 15, 23, 59)).build());
 		assertToDoNotExistsFiltered(logic, new ToDoBuilder("title6")
 				.withDueDate(LocalDateTime.of(2016, 11, 17, 0, 0)).build());
 	}

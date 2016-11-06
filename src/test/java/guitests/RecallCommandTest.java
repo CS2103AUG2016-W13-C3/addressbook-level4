@@ -41,6 +41,7 @@ public class RecallCommandTest extends CommanDoGuiTest {
 
     @Test
     public void recallCommand_emptyList() {
+        //recall on empty list
         commandBox.runCommand("clear");
         assertRecallResult("recall title", Sets.newHashSet("title"), Collections.emptySet()); //no results
     }
@@ -69,9 +70,23 @@ public class RecallCommandTest extends CommanDoGuiTest {
             assertResultMessage(String.format(Messages.RECALL_COMMAND, getSearchString(keywords, tags)));
         }
 
+        // Sleep to let the UI update
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedHits));
     }
-
+    
+    /**
+     * Get the result message string for find command
+     * 
+     * @param keywords
+     * @param tags
+     * @return expected message string of indices
+     */
     private String getSearchString(Set<String> keywords, Set<String> tags) {
         Stream<String> keywordsStream = new TreeSet<>(keywords).stream();
         Stream<String> tagsStream = new TreeSet<>(tags).stream();

@@ -25,22 +25,26 @@ public class DateTimeParser {
     private static final String MonthWordRegexString = "January|Feburary|March|April|June|July|August|September|October|November|December|" +
         "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec";
     private static final String DayWordRegexString = "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri|Sat|Sun";
-    private static final String YearRegexString = "(?<year>\\d{4}|\\d{2})";
-    private static final String TwoDigitYearRegexString = "\\d{2}$";
+    private static final String FullYearRegexString = "\\d{4}";
+    private static final String TwoDigitYearRegexString = "\\d{2}";
     private static final String MonthRegexString = "(0?[1-9])|10|11|12";
     private static final String DayOfMonthRegexString = "([12]\\d)|([3][01])|(0?[1-9])";
     private static final String Hours24RegexString = "(1\\d)|20|21|22|23|(0?\\d)";
     private static final String Hours12RegexString = "11|12|(0?[1-9])";
     private static final String MinutesRegexString = "([1234]\\d)|(5[0-9])|(0?\\d)";
 
+    private static final String YearRegexString = "(?<year>(" + FullYearRegexString + ")|(" + TwoDigitYearRegexString + "))";
+
     private static final String DateWithSlashesRegexString = "(?<day>" + DayOfMonthRegexString + ")\\/(?<month>" + MonthRegexString + ")(\\/" + YearRegexString + ")?";
-    private static final String DateWithMonthWordRegexString = "((" + DayOfMonthRegexString + ")(th|rd|st|nd)?)\\s+" +
+    private static final String DateWithMonthWordAndDayRegexString = "((" + DayOfMonthRegexString + ")(th|rd|st|nd)?)\\s+" +
         "(" + MonthWordRegexString + ")(\\s+" + YearRegexString + ")?";
     private static final String DateWithMonthWordReversedRegexString = "(" + MonthWordRegexString + ")\\s+" +
         "(" + DayOfMonthRegexString + ")(th|rd|st|nd)?(\\s+" + YearRegexString + ")?";
-    private static final String DateWithDayWordRegexString = "((this|coming|next)\\s+)?(" + DayWordRegexString + ")";
+    private static final String DateWithDayWordRegexString = "((this|last|coming|next)\\s+)?(" + DayWordRegexString + ")";
+    private static final String DateWithMonthWordAndYearRegexString = "(" + MonthWordRegexString + ")\\s+(" + FullYearRegexString + ")";
+    private static final String DateWithMonthWordRegexString = "((this|last|coming||next)\\s+)?(" + MonthWordRegexString + ")";
     private static final String DateWithLaterAgoRegexString = "((\\d+\\d)|([2-9]))\\s+(days|weeks|months|years)\\s+(later|ago)";
-    private static final String DateWithLastNextRegexString = "(last|this|next)\\s+(week|month|year)";
+    private static final String DateWithLastNextRegexString = "(this|last|this|next)\\s+(week|month|year)";
     private static final String DatePresetsRegexString = "today|tomorrow|tmr|yesterday";
 
     private static final String Time24HourRegexString = "(" + Hours24RegexString + ")(\\.|:)(" + MinutesRegexString + ")";
@@ -51,9 +55,11 @@ public class DateTimeParser {
 
     private static final String[] supportedDateRegexStrings = new String[]{
         DateWithSlashesRegexString,
-        DateWithMonthWordRegexString,
+        DateWithMonthWordAndDayRegexString,
         DateWithMonthWordReversedRegexString,
+        DateWithMonthWordAndYearRegexString,
         DateWithDayWordRegexString,
+        DateWithMonthWordRegexString,
         DateWithLaterAgoRegexString,
         DateWithLastNextRegexString,
         DatePresetsRegexString
@@ -103,14 +109,64 @@ public class DateTimeParser {
 
         // Check if the input is trying to represent a period of > 1 day
         if (ifInputMatchesWeekPeriod(trimmedInput)) {
-            return Optional.of(getWeekPeriod(localDateTime.get()));
+            // Return from monday to sunday of that week 2359h
+            return Optional.of(new Pair<>(
+                getWeekStartDateTime(localDateTime.get()),
+                getWeekEndDateTime(localDateTime.get())
+            ));
         } else if (ifInputMatchesMonthPeriod(trimmedInput)) {
-            return Optional.of(getMonthPeriod(localDateTime.get()));
+            // Return from 1st to last day of month 2359h
+            return Optional.of(new Pair<>(
+                getMonthStartDateTime(localDateTime.get()),
+                getMonthEndDateTime(localDateTime.get())
+            ));
         } else if (ifInputMatchesYearPeriod(trimmedInput)) {
-            return Optional.of(getYearPeriod(localDateTime.get()));
+            // Return from 1st to last day of year 2359h
+            return Optional.of(new Pair<>(
+                getYearStartDateTime(localDateTime.get()),
+                getYearEndDateTime(localDateTime.get())
+            ));
         }
 
-        return Optional.of(getDayPeriod(localDateTime.get()));
+        // Return a single day until 2359h
+        return Optional.of(new Pair<>(
+            localDateTime.get(),
+            getDayEndDateTime(localDateTime.get())
+        ));
+    }
+
+    /**
+     * Parses an input string as an end datetime.
+     *
+     * @param input input string to be parsed
+     * @return optional of datetime, empty if invalid datetime
+     * @see #parseDateTime(String, LocalTime)
+     */
+    public Optional<LocalDateTime> parseEndDateTime(String input) {
+        // Get the datetime the input string represents
+        Optional<LocalDateTime> localDateTime = parseDateTime(input, LocalTime.of(23, 59));
+
+        // If input string doesn't represent a datetime, return empty
+        if (!localDateTime.isPresent()) {
+            return Optional.empty();
+        }
+
+        String trimmedInput = input.trim();
+
+        // Check if the input is trying to represent a period of > 1 day
+        if (ifInputMatchesWeekPeriod(trimmedInput)) {
+            // Return sunday of that week 2359h
+            return Optional.of(getWeekEndDateTime(localDateTime.get()));
+        } else if (ifInputMatchesMonthPeriod(trimmedInput)) {
+            // Return from last day of month 2359h
+            return Optional.of(getMonthEndDateTime(localDateTime.get()));
+        } else if (ifInputMatchesYearPeriod(trimmedInput)) {
+            // Return from 1st to last day of year 2359h
+            return Optional.of(getYearEndDateTime(localDateTime.get()));
+        }
+
+        // Return that datetime
+        return Optional.of(localDateTime.get());
     }
 
     /**
@@ -226,11 +282,15 @@ public class DateTimeParser {
         if (!input.trim().isEmpty()) {
             return Optional.empty();
         } else {
-            String dateTimeString = dateString + " " + timeString;
-            dateTimeString = handleDateTimeWithLaterAgo(dateString, timeString, dateTimeString);
-
+            String dateTimeString = getCombinedDateTimeString(dateString, timeString);
             return Optional.of(dateTimeString);
         }
+    }
+
+    private String getCombinedDateTimeString(String dateString, String timeString) {
+        String dateTimeString = dateString + " " + timeString;
+        dateTimeString = handleDateTimeWithLaterAgo(dateString, timeString, dateTimeString);
+        return dateTimeString;
     }
 
     private String getTimeFromMatcher(Matcher timeMatcher) {
@@ -250,7 +310,7 @@ public class DateTimeParser {
     private String handleDateTimeWithLaterAgo(String dateString, String timeString, String dateTimeString) {
         // Special case: if DateWithLaterRegexString is used,
         // swap date and time (for parsing in natty)
-        if (dateString.matches(DateWithLaterAgoRegexString)) {
+        if (ifMatches(dateString, DateWithLaterAgoRegexString)) {
             return timeString + " " + dateString;
         } else {
             return dateTimeString;
@@ -288,7 +348,7 @@ public class DateTimeParser {
                 if (thisFullYear.length() > 2) {
                     String fullYear = thisFullYear.substring(0, thisFullYear.length() - 2)
                         + matcher.group("year");
-                    return dateString.replaceFirst(TwoDigitYearRegexString, fullYear);
+                    return dateString.replaceFirst(TwoDigitYearRegexString + "$", fullYear);
                 }
             }
         } catch (IllegalArgumentException exception) {
@@ -309,58 +369,70 @@ public class DateTimeParser {
     }
 
 
-    private Pair<LocalDateTime, LocalDateTime> getDayPeriod(LocalDateTime localDateTime) {
-        // Return a single day until 2359h
-        return new Pair<>(localDateTime, localDateTime.withHour(23).withMinute(59));
+    private LocalDateTime getDayEndDateTime(LocalDateTime localDateTime) {
+        return localDateTime.withHour(23).withMinute(59);
     }
 
-    private Pair<LocalDateTime, LocalDateTime> getYearPeriod(LocalDateTime localDateTime) {
-        // Return from 1st to last day of year 2359h
-        return new Pair<>(
-            localDateTime.withDayOfYear(1),
-            localDateTime.plusYears(1).withDayOfYear(1).minusDays(1)
-                .withHour(23).withMinute(59)
-        );
+    private LocalDateTime getYearStartDateTime(LocalDateTime localDateTime) {
+        return localDateTime.withDayOfYear(1);
     }
 
-    private Pair<LocalDateTime, LocalDateTime> getMonthPeriod(LocalDateTime localDateTime) {
-        // Return from 1st to last day of month 2359h
-        return new Pair<>(
-            localDateTime.withDayOfMonth(1),
-            localDateTime.plusMonths(1).withDayOfMonth(1).minusDays(1)
-                .withHour(23).withMinute(59)
-        );
+    private LocalDateTime getYearEndDateTime(LocalDateTime localDateTime) {
+        return localDateTime.plusYears(1).withDayOfYear(1).minusDays(1)
+            .withHour(23).withMinute(59);
     }
 
-    private Pair<LocalDateTime, LocalDateTime> getWeekPeriod(LocalDateTime localDateTime) {
-        // Return from monday to sunday of that week 2359h
-        return new Pair<>(
-            localDateTime.with(DayOfWeek.MONDAY),
-            localDateTime.with(DayOfWeek.SUNDAY).withHour(23).withMinute(59)
-        );
+    private LocalDateTime getMonthStartDateTime(LocalDateTime localDateTime) {
+        return localDateTime.withDayOfMonth(1);
+    }
+
+    private LocalDateTime getMonthEndDateTime(LocalDateTime localDateTime) {
+        return localDateTime.plusMonths(1).withDayOfMonth(1).minusDays(1)
+            .withHour(23).withMinute(59);
+    }
+
+    private LocalDateTime getWeekStartDateTime(LocalDateTime localDateTime) {
+        return localDateTime.with(DayOfWeek.MONDAY);
+    }
+
+    private LocalDateTime getWeekEndDateTime(LocalDateTime localDateTime) {
+        return localDateTime.with(DayOfWeek.SUNDAY).withHour(23).withMinute(59);
     }
 
     private boolean ifInputMatchesWeekPeriod(String input) {
-        return (input.matches(DateWithLaterAgoRegexString)
-            || input.matches(DateWithLastNextRegexString))
+        return (ifMatches(input, DateWithLaterAgoRegexString)
+            || ifMatches(input, DateWithLastNextRegexString))
             && input.toLowerCase().contains("week");
     }
 
     private boolean ifInputMatchesMonthPeriod(String input) {
-        return (input.matches(DateWithLaterAgoRegexString)
-            || input.matches(DateWithLastNextRegexString))
-            && input.toLowerCase().contains("month");
+        // last/next month or x months ago/later
+        if ((ifMatches(input, DateWithLaterAgoRegexString)
+            || ifMatches(input, DateWithLastNextRegexString))
+            && input.toLowerCase().contains("month")) {
+            return true;
+        }
+
+        // month word only or month word + year
+        if (ifMatches(input, DateWithMonthWordRegexString)
+            || ifMatches(input, DateWithMonthWordAndYearRegexString)) {
+            return true;
+        }
+
+        return false;
     }
 
     private boolean ifInputMatchesYearPeriod(String input) {
-        return (input.matches(DateWithLaterAgoRegexString)
-            || input.matches(DateWithLastNextRegexString))
+        return (ifMatches(input, DateWithLaterAgoRegexString)
+            || ifMatches(input, DateWithLastNextRegexString))
             && input.toLowerCase().contains("year");
     }
 
+
+
     private Optional<Matcher> findDateRegexMatch(String input) {
         for (String regexString : supportedDateRegexStrings) {
-            Matcher matcher = Pattern.compile(prepareRegexString(regexString), Pattern.CASE_INSENSITIVE).matcher(input);
+            Matcher matcher = preparePattern(prepareRegexString(regexString)).matcher(input);
 
             // If matched from the start
             if (matcher.find() && matcher.start() == 0) {
@@ -373,7 +445,7 @@ public class DateTimeParser {
 
     private Optional<Matcher> findTimeRegexMatch(String input) {
         for (String regexString : supportedTimeRegexStrings) {
-            Matcher matcher = Pattern.compile(prepareRegexString(regexString), Pattern.CASE_INSENSITIVE).matcher(input);
+            Matcher matcher = preparePattern(prepareRegexString(regexString)).matcher(input);
 
             // If matched from the start
             if (matcher.find() && matcher.start() == 0) {
@@ -382,6 +454,14 @@ public class DateTimeParser {
         }
 
         return Optional.empty();
+    }
+
+    private boolean ifMatches(String input, String regexString) {
+        return preparePattern("^" + regexString + "$").matcher(input).find();
+    }
+
+    private Pattern preparePattern(String regexString) {
+        return Pattern.compile(regexString, Pattern.CASE_INSENSITIVE);
     }
 
     private String prepareRegexString(String regexString) {

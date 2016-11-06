@@ -34,7 +34,29 @@ public class UiModel {
     private Model.FILTER_MODE filterMode = Model.FILTER_MODE.ALL;
 
     /**
-     * @param toDoListManager ToDoListManager it tracks and grabs the list of to-dos from
+     * Predicate that filters to-dos based on filter mode.
+     */
+    private Predicate<ReadOnlyToDo> toDoFilterModePredicate = toDo -> {
+        switch (filterMode) {
+            case ALL:
+                return true;
+            case UNFINISHED:
+                // if unfinished mode but to-do is finished before the current day
+                return !toDo.isFinished()
+                    || (toDo.isFinished() && toDo.getDateFinished().get().toLocalDate().isEqual(LocalDate.now()));
+            case FINISHED:
+                // if finished mode but to-do is unfinished
+                return toDo.isFinished();
+            default:
+                assert false : "Should have covered all filter modes";
+                return false;
+        }
+    };
+
+    /**
+     * Initializes with the given to-do list manager, setting its filter mode to UNFINISHED.
+     *
+     * @param toDoListManager the to-do list manager it tracks and grabs the list of to-dos from
      */
     public UiModel(ToDoListManager toDoListManager) {
         this.toDoListManager = toDoListManager;
@@ -139,7 +161,7 @@ public class UiModel {
     //@@author A0139697H
 
     /**
-     * Populate its lists of UI to-dos based on supplied to-dos
+     * Populate its lists of UI to-dos based on supplied to-dos.
      */
     private void updateUiToDos(List<ReadOnlyToDo> events, List<ReadOnlyToDo> tasks) {
         toDoAtIndices.clear();
@@ -350,27 +372,7 @@ public class UiModel {
     }
 
     /**
-     * Predicate that filters to-dos based on filter mode
-     */
-    private Predicate<ReadOnlyToDo> toDoFilterModePredicate = toDo -> {
-        switch (filterMode) {
-            case ALL:
-                return true;
-            case UNFINISHED:
-                // if unfinished mode but to-do is finished before the current day
-                return !toDo.isFinished()
-                    || (toDo.isFinished() && toDo.getDateFinished().get().toLocalDate().isEqual(LocalDate.now()));
-            case FINISHED:
-                // if finished mode but to-do is unfinished
-                return toDo.isFinished();
-            default:
-                assert false : "Should have covered all filter modes";
-                return false;
-        }
-    };
-
-    /**
-     * Returns whether a to-do matches a set of keywords and tags
+     * Returns whether a to-do matches a set of keywords and tags.
      */
     private boolean ifMatchesKeywordsAndTags(ReadOnlyToDo toDo, Set<String> keywords, Set<Tag> tags) {
         return (keywords.stream()

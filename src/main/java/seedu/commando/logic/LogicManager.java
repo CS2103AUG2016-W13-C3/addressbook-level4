@@ -1,6 +1,7 @@
 package seedu.commando.logic;
 
 import com.google.common.eventbus.Subscribe;
+import javafx.application.Platform;
 import seedu.commando.commons.core.ComponentManager;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.core.Messages;
@@ -40,6 +41,8 @@ public class LogicManager extends ComponentManager implements Logic {
         this.model = model;
         this.storage = storage;
         this.userPrefs = userPrefs;
+
+        saveToDoListToStorage(model.getToDoList());
     }
 
     @Override
@@ -73,43 +76,56 @@ public class LogicManager extends ComponentManager implements Logic {
     }
 
     /**
-     * Called upon an event that the Model's to-do list has changed.
-     *
-     * It saves the current version of the to-do list to the hard disk at the default
-     * to-do list filepath with Storage.
-     *
+     * Saves the to-do list to the file system with Storage.
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
+     *
+     * @param toDoList to-do list to save
      */
-    @Subscribe
-    public void handleToDoListChangedEvent(ToDoListChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
-
+    public void saveToDoListToStorage(ReadOnlyToDoList toDoList) {
         try {
-            storage.saveToDoList(event.toDoList);
+            storage.saveToDoList(toDoList);
         } catch (IOException e) {
             raise(new DataSavingExceptionEvent(e));
         }
     }
 
     /**
+     * Called upon an event that the Model's to-do list has changed.
+     *
+     * In a separate thread, it saves the current version of the to-do list to the hard disk
+     * at the default to-do list filepath with Storage.
+     */
+    @Subscribe
+    public void handleToDoListChangedEvent(ToDoListChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
+
+        // Try to run on JavaFX UI thread to prevent lag. If not, just run on current thread.
+        try {
+            Platform.runLater(() -> saveToDoListToStorage(event.toDoList));
+        } catch (IllegalStateException e) {
+           saveToDoListToStorage(event.toDoList);
+        }
+    }
+
+    /**
      * Called upon an event that the to-do list file path change has been requested.
      *
-     * It changes to-do list file path in user prefs and storage and saves the
-     * to-do data to that new file path with Storage.
+     * It changes to-do list file path in user prefs and storage.
+     * Then, in a separate thread, it saves the to-do data to that new file path with Storage.
      */
     @Subscribe
     public void handleToDoListFilePathRequestEvent(ToDoListFilePathChangeRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
 
         storage.setToDoListFilePath(event.path);
-
-        try {
-            storage.saveToDoList(model.getToDoList());
-        } catch (IOException exception) {
-            logger.warning("Failed to save to-do list data file: " + StringUtil.getDetails(exception));
-        }
-
         userPrefs.setToDoListFilePath(event.path);
+
+        // Try to run on JavaFX UI thread to prevent lag. If not, just run on current thread.
+        try {
+            Platform.runLater(() -> saveToDoListToStorage(model.getToDoList()));
+        } catch (IllegalStateException e) {
+            saveToDoListToStorage(model.getToDoList());
+        }
     }
 
     private CommandResult getCommandResultForInvalidFormat(CommandFactory.InvalidCommandFormatException e) {

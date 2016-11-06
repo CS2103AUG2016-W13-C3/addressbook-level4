@@ -114,12 +114,14 @@ public class DeleteCommandTest extends CommanDoGuiTest {
     
     @Test
     public void deleteCommand_endIndexGreaterThanStartIndex_reportErrorMessage() {
+        //index range invalid
         commandBox.runCommand("delete 2 to 1");
         assertResultMessage(Messages.INDEXRANGE_CONSTRAINTS + "\n" + Messages.DELETE_COMMAND_FORMAT);
     }
     
     @Test
     public void deleteCommand_invalidParams_reportErrorMessage() {
+        // invalid or reordered parameters
         commandBox.runCommand("delete abc 1");
         assertResultMessage(Messages.MISSING_TODO_ITEM_INDEX + "\n" + Messages.DELETE_COMMAND_FORMAT);
         

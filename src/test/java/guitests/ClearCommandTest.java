@@ -47,6 +47,6 @@ public class ClearCommandTest extends CommanDoGuiTest {
     private void assertClearCommandSuccess() {
         commandBox.runCommand("clear");
         assertListSize(0);
-        assertResultMessage(Messages.TODO_LIST_CLEARED);
+        assertResultMessage(Messages.CLEAR_COMMAND);
     }
 }

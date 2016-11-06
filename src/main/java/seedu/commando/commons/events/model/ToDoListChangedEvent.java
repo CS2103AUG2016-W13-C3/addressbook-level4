@@ -16,6 +16,6 @@ public class ToDoListChangedEvent extends BaseEvent {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + " with to-do list: " + toDoList.toString();
+        return this.getClass().getSimpleName();
     }
 }

@@ -63,7 +63,8 @@ public class ToDoTest {
     }
 
     @Test
-    public void setDueDate_validDueDate_getDueDateEquals() throws IllegalValueException {
+    public void setDueDate_validDueDate_getDueDateEquals()
+        throws IllegalValueException {
         assertFalse(toDo.getDueDate().isPresent());
         toDo.setDueDate(new DueDate(LocalDateTime.of(2001, 10, 8, 12, 59)));
         assertTrue(toDo.getDueDate().isPresent());
@@ -73,7 +74,8 @@ public class ToDoTest {
     }
 
     @Test
-    public void setDateRange_validDateRange_getDateRangeEquals() throws IllegalValueException {
+    public void setDateRange_validDateRange_getDateRangeEquals()
+        throws IllegalValueException {
         assertFalse(toDo.getDateRange().isPresent());
         toDo.setDateRange(new DateRange(
             LocalDateTime.of(2001, 10, 8, 12, 59),
@@ -87,7 +89,8 @@ public class ToDoTest {
     }
 
     @Test
-    public void setDateRange_recurringDateRange_getDateRangeConsidersRecurrence() throws IllegalValueException {
+    public void setDateRange_recurringDateRange_getDateRangeConsidersRecurrence()
+        throws IllegalValueException {
         assertFalse(toDo.getDateRange().isPresent());
         toDo.setDateRange(new DateRange(
             LocalDateTime.now().minusDays(2),
@@ -103,7 +106,8 @@ public class ToDoTest {
     }
 
     @Test
-    public void setIsFinished_trueThenFalse_getDateFinishedEqualsNowThenEmpty() throws IllegalValueException {
+    public void setIsFinished_trueThenFalse_getDateFinishedEqualsNowThenEmpty()
+        throws IllegalValueException {
         assertFalse(toDo.isFinished());
         assertFalse(toDo.getDateFinished().isPresent());
         toDo.setIsFinished(true);
@@ -115,7 +119,8 @@ public class ToDoTest {
     }
 
     @Test
-    public void setIsFinished_withRecurringDueDate_advancesDueDate() throws IllegalValueException {
+    public void setIsFinished_withRecurringDueDate_advancesDueDate()
+        throws IllegalValueException {
         toDo.setDueDate(new DueDate(
             LocalDateTime.now().minusDays(1),
             Recurrence.Yearly
@@ -144,7 +149,8 @@ public class ToDoTest {
     }
 
     @Test
-    public void setGetDateFinished_withDateRange_dateFinishedAlwaysEqualsEndDate() throws IllegalValueException {
+    public void setGetDateFinished_withDateRange_dateFinishedAlwaysEqualsEndDate()
+        throws IllegalValueException {
         LocalDateTime endDate = LocalDateTime.of(2012, 11, 2, 1, 23);
         toDo.setDateRange(
             new DateRange(
@@ -158,7 +164,8 @@ public class ToDoTest {
     }
 
     @Test
-    public void setGetDateFinished_withRecurringDateRange_dateFinishedAlwaysEmpty() throws IllegalValueException {
+    public void setGetDateFinished_withRecurringDateRange_dateFinishedAlwaysEmpty()
+        throws IllegalValueException {
         LocalDateTime endDate = LocalDateTime.of(2011, 11, 2, 2, 23);
         toDo.setDateRange(
             new DateRange(
@@ -173,7 +180,8 @@ public class ToDoTest {
     }
 
     @Test
-    public void setGetDateFinished_withRecurringDueDate_dateFinishedAlwaysEmpty() throws IllegalValueException {
+    public void setGetDateFinished_withRecurringDueDate_dateFinishedAlwaysEmpty()
+        throws IllegalValueException {
         LocalDateTime dueDate = LocalDateTime.of(2011, 11, 2, 2, 23);
         toDo.setDueDate(
             new DueDate(
@@ -188,14 +196,16 @@ public class ToDoTest {
 
 
     @Test
-    public void setDateFinished_validDateTime_getDateFinishedEquals() throws IllegalValueException {
+    public void setDateFinished_validDateTime_getDateFinishedEquals()
+        throws IllegalValueException {
         LocalDateTime datetime = LocalDateTime.of(2011, 11, 2, 1, 23);
         toDo.setDateFinished(datetime);
         assertEquals(datetime, toDo.getDateFinished().orElse(null));
     }
 
     @Test
-    public void setDateCreated_validDateTime_getDateCreatedEquals() throws IllegalValueException {
+    public void setDateCreated_validDateTime_getDateCreatedEquals()
+        throws IllegalValueException {
         LocalDateTime datetime = LocalDateTime.of(2011, 11, 2, 1, 23);
         toDo.setDateCreated(datetime);
         assertEquals(datetime, toDo.getDateCreated());
@@ -222,7 +232,8 @@ public class ToDoTest {
     }
 
     @Test
-    public void getObservableValue_allFields_changeListenerCalledEachFieldChange() throws IllegalValueException {
+    public void getObservableValue_allFields_changeListenerCalledEachFieldChange()
+        throws IllegalValueException {
         List<String> changes = new LinkedList<>();
         toDo.getObservableValue().addListener((observable, oldValue, newValue) -> {
             changes.add(newValue);

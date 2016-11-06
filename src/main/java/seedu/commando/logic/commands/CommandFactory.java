@@ -26,7 +26,7 @@ public class CommandFactory {
     public static class InvalidCommandFormatException extends Exception {
         public final String command;
 
-        public InvalidCommandFormatException(String message, String command) {
+        private InvalidCommandFormatException(String message, String command) {
             super(message);
             this.command = command;
         }
@@ -35,12 +35,14 @@ public class CommandFactory {
     public static class UnknownCommandWordException extends Exception {
         public final String commandWord;
 
-        UnknownCommandWordException(String commandWord) {
+        private UnknownCommandWordException(String commandWord) {
             this.commandWord = commandWord;
         }
     }
 
-    public static class MissingCommandWordException extends Exception {}
+    public static class MissingCommandWordException extends Exception {
+        private MissingCommandWordException() {}
+    }
 
     /**
      * Interprets an input string as a command, initializes it, and returns it.
@@ -124,24 +126,24 @@ public class CommandFactory {
     //@@author A0142230B
     private Command buildExportCommand() throws IllegalValueException {
         // Extract the file path
+        Boolean isOverride = commandParser.isOverrideThenExtract();
         String path = commandParser.extractText()
             .orElseThrow(
                 () -> new IllegalValueException(Messages.MISSING_EXPORT_PATH)
             );
 
-        return new ExportCommand(path);
+        return new ExportCommand(path, isOverride);
     }
 
     //@@author A0142230B
-    private Command buildStoreCommand() throws IllegalValueException {
-        // Extract the file path
-        String path = commandParser.extractText()
-            .orElseThrow(
-                () -> new IllegalValueException(Messages.MISSING_STORE_PATH)
-            );
+	private Command buildStoreCommand() throws IllegalValueException {
+		// Check if override
+		Boolean isOverride = commandParser.isOverrideThenExtract();
+		String path = commandParser.extractText()
+				.orElseThrow(() -> new IllegalValueException(Messages.MISSING_STORE_PATH));
 
-        return new StoreCommand(path);
-    }
+		return new StoreCommand(path, isOverride);
+	}
 
     //@@author A0142230B
     private Command buildListCommand() throws IllegalValueException {

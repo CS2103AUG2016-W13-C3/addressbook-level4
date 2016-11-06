@@ -1,30 +1,31 @@
 package seedu.commando.ui;
 
+import javafx.scene.Node;
+
 //@@author A0139080J
 /**
  * Contains the common functions and variables that EventCard and TaskCard
- * shares and additional styling choices of elements that are doen
- * programmatically
+ * shares
  */
-public class ToDoCardStyleManager {
-
-    // Styles for EventCard and TaskCard for their respective states:
-    // Recently modified
-    // Finished
-    // Hover and non hover
-    public static String recentlyModifiedStateCSS = "-fx-border-color: red";
-
-    public static String finishedStateContentCSS = "-fx-background-color: derive(#1d1d1d, 95%);";
-    public static String finishedStateDateCSS = "-fx-border-color: derive(#1d1d1d, 100%);"
-            + "-fx-background-color: derive(#1d1d1d, 100%);";
-    public static String finishedStateIndexCSS = "-fx-background-color: derive(#1d1d1d, 30%);";
-
-    public static String activateHoverStateContentCSS = "-fx-background-color: derive(#DCDCDC, 50%);";
-    public static String activateHoverStateIndexCSS = "-fx-background-color: derive(#1d1d1d, 40%);";
-
-    public static String deactivateHoverStateContentCSS = "-fx-background-color: #DCDCDC;";
-    public static String deactivateHoverStateIndexCSS = "-fx-background-color: derive(#1d1d1d, 60%);";
-
+public class CardStyleManager {
+    /**
+     * Adds given style to all nodes providede
+     */
+    public static void addStyleAll(String style, Node...nodes) {
+        for (Node node : nodes) {
+            node.getStyleClass().add(style);
+        }
+    }
+    
+    /**
+     * Removes given style to all nodes providede
+     */
+    public static void removeStyleAll(String style, Node...nodes) {
+        for (Node node : nodes) {
+            node.getStyleClass().remove(style);
+        }
+    }
+    
     /**
      * @param dayDifference
      * @return colour code for a date label. The closer it is to today, the more

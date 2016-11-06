@@ -47,7 +47,7 @@ public class ImportCommand extends Command {
 
 		// Check if the source file exists (should not);
 		else if (!file.exists()) {
-			return new CommandResult(Messages.IMPORT_COMMAND_FILE_NOT_EXIST, true);
+			return new CommandResult(String.format(Messages.IMPORT_COMMAND_FILE_NOT_EXIST, path), true);
 		}
 
 		else {
@@ -56,9 +56,9 @@ public class ImportCommand extends Command {
 				XmlSerializableToDoList newXmlToDoList = XmlFileStorage.loadDataFromSaveFile(file);
 				updateToDoList(model, newXmlToDoList);
 			} catch (FileNotFoundException e) {
-				return new CommandResult(Messages.IMPORT_COMMAND_FILE_NOT_EXIST, true);
+				return new CommandResult(String.format(Messages.IMPORT_COMMAND_FILE_NOT_EXIST, path), true);
 			} catch (DataConversionException e) {
-				return new CommandResult(Messages.IMPORT_COMMAND_INVALID_DATA, true);
+				return new CommandResult(String.format(Messages.IMPORT_COMMAND_INVALID_DATA, path), true);
 			} catch (IllegalValueException e) {
 				return new CommandResult(e.getMessage(), true);
 			}

@@ -189,12 +189,11 @@
                             </ul>
                     </li>
                 </ol>
-
+	
+                <!-- @@author A0139697H -->	
                 <h2 id="architecture">Architecture</h2>
 
                 <p>This section explains the high level design of the application. The architecture of <em>CommanDo</em> is as follows:</p>
-
-                <!-- @@author A0139697H -->
 
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/architecture.PNG" width="600">
@@ -396,10 +395,10 @@
                 <blockquote>
                     All events should extend the <code>BaseEvent</code> class and be placed in package <code>seedu.commando.commons.events</code>.
                 </blockquote>
-
+				
+				<!-- @@author A0139080J -->
                 <h3 id="logscenter"><code>LogsCenter</code> and Logging</h3>
 
-                <!-- @@author A0139080J -->
                 <p> We are using the <code>java.util.logging</code> package for logging. The <code>LogsCenter</code> class is used to manage the logging levels and logging destinations. The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level. </p>
 
                 <p>Currently, log messages are output through the console and to a <code>.log</code> file at the project root.</p>
@@ -557,7 +556,7 @@
 
                 <h3 id="quick-access-keyboard-shortcut">Quick Access Keyboard Shortcut</h3>
 
-                <p>One of the nice-to-have feature is to allow the user to quickly summon <em>CommanDo</em> using a customizable keyboard shortcut, even when the application is closed. This would bring convenience to very active users who wants to view and edit their to-do list frequently.</p>
+                <p>One of the nice-to-have features is to allow the user to quickly summon <em>CommanDo</em> using a customizable keyboard shortcut, even when the application is closed. This would bring convenience to users who would view and edit their to-do list frequently.</p>
 
                 <h3 id="real-time-syntax-highlighting">Real-time Syntax Highlighting</h3>
 
@@ -738,7 +737,7 @@
                 </p>
 
                 <div class="pagebreak"> </div>
-                <!-- //@@author A0122001M -->
+                <!-- @@author A0122001M -->
                 <h3 id="appendix-b-use-cases">Appendix B: Use Cases</h3>
 
                 <p>In all the listed use cases, the <strong>System</strong> is our application and the <strong>Actor</strong> is the user.</p>

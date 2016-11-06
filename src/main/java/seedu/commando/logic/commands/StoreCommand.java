@@ -15,14 +15,17 @@ public class StoreCommand extends Command {
     public static final String COMMAND_WORD = "store";
 
     private String path;
+    private Boolean isOverride;
     
     /**
      * Initializes a store command.
      * @param inputPath requested file path to store data, non-null
+     * @param isOverride if override the path file
      */
-    public StoreCommand(String inputPath) {
+    public StoreCommand(String inputPath, Boolean isOverride) {
         assert inputPath != null;
         this.path = inputPath;
+        this.isOverride = isOverride;
     }
 
     /**
@@ -39,9 +42,9 @@ public class StoreCommand extends Command {
 			return new CommandResult(Messages.MISSING_STORE_FILE, true);
 		}
 
-		// Check if the destination file already exists (avoid overwriting
+		// Check if the destination file already exists and no override request(avoid overwriting
 		// important data);
-		else if (file.exists()) {
+		else if (file.exists() && !isOverride) {
 			return new CommandResult(String.format(Messages.STORE_COMMAND_FILE_EXIST, path), true);
 		}
 
