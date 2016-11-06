@@ -147,7 +147,7 @@ public class DateTimePrettifier {
         } else if (ld.isEqual(tomorrowDate)) {
             return keywordTomorrow;
         } else {
-            return "on " + formatDay.format(ldt);
+            return formatDay.format(ldt);
         }
     }
 
