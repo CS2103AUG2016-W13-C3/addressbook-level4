@@ -491,10 +491,10 @@
                 <!-- @@author A0139080J -->
                 <h3 id="export">Exporting: <code>export</code></h3>
 
-                <p>If you want to clone your to-do list data file in your current save location to another local destination, there's no need to manually do so. Instead, use the <code>export</code> command to save a copy of the current to-do list data to the specified file at given file path.</p>
+                <p>If you want to clone your to-do list data file in your current save location to another local destination, there's no need to manually do so. Instead, use the <code>export</code> command to save a copy of the current to-do list data to the specified file at given file path. Similar to the <code>store</code> command, append the keyword <code>override</code> behind the command to forcibly override any existing file.</p>
 
                 <span><strong>Command Format:</strong></span>
-                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> export <span>&lt;file_path&gt;</span></pre>
+                <pre class="command-format"><span class="inputstart">&gt;&gt;</span> export <span>&lt;file_path&gt;</span> [override]</pre>
 
                 <h3 id="import">Importing: <code>import</code></h3>
 
@@ -730,7 +730,7 @@
                             </tr>
                             <tr>
                                 <td>Export</td>
-                                <td><pre><span class="inputstart">&gt;&gt;</span> export <span>&lt;file_path&gt;</span></pre></td>
+                                <td><pre><span class="inputstart">&gt;&gt;</span> export <span>&lt;file_path&gt;</span></pre> [override]</td>
                             </tr>
                             <tr>
                                 <td>Find To-Dos</td>

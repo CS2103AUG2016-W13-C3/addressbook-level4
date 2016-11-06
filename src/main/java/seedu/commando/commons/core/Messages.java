@@ -73,12 +73,12 @@ public class Messages {
     public static final String REDO_COMMAND = "Redid the last undo command.";
     public static final String REDO_COMMAND_FAIL = "Nothing more to redo!";
     public static final String STORE_COMMAND = "Changed the storage path to: %1$s.";
-    public static final String STORE_COMMAND_FILE_EXIST = "Failed to store the storage file to %1$s: destination file exists, no override request";
+    public static final String STORE_COMMAND_FILE_EXIST = "Failed to store the storage file to %1$s: destination file exists. Add `override` behind command to force a file override.";
     public static final String EXPORT_COMMAND = "Export the storage file to: %1$s.";
-    public static final String EXPORT_COMMAND_FILE_EXIST = "Failed to export the storage file to %1$s: destination file exists";
+    public static final String EXPORT_COMMAND_FILE_EXIST = "Failed to export the storage file to %1$s: destination file exists. Add `override` behind command to force a file override.";
     public static final String IMPORT_COMMAND = "Import the storage file from: %1$s.";
-    public static final String IMPORT_COMMAND_FILE_NOT_EXIST = "Invalid import file: the file does not exist.";
-    public static final String IMPORT_COMMAND_INVALID_DATA = "Invalid import file: the file is of an invalid format.";
+    public static final String IMPORT_COMMAND_FILE_NOT_EXIST = "Failed to import file from %1$s: the file does not exist.";
+    public static final String IMPORT_COMMAND_INVALID_DATA = "Failed to import file from %1$s: the file is of an invalid format.";
     public static final String ADD_COMMAND = "Added: %1$s.";
     public static final String ADD_COMMAND_EVENT_OVER_WARNING = "Warning: event added is already over!\n" +
         "Use `recall` to find the to-do.";

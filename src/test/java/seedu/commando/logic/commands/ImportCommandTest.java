@@ -74,9 +74,9 @@ public class ImportCommandTest {
         assertEquals(Messages.MISSING_IMPORT_FILE, result.getFeedback());
         result = logic.execute("import this cant be there.XMl");
         assertTrue(result.hasError());
-        assertEquals(Messages.IMPORT_COMMAND_FILE_NOT_EXIST, result.getFeedback());
+        assertEquals(String.format(Messages.IMPORT_COMMAND_FILE_NOT_EXIST, "this cant be there.XMl"), result.getFeedback());
     }
-    
+
     @Test
     public void execute_importInvalidData_error() throws IOException {
         File temp = folder.newFile();
@@ -86,7 +86,7 @@ public class ImportCommandTest {
         
         CommandResult result = logic.execute("import " + temp.getPath());
         assertTrue(result.hasError());
-        assertEquals(Messages.IMPORT_COMMAND_INVALID_DATA, result.getFeedback());
+        assertEquals(String.format(Messages.IMPORT_COMMAND_INVALID_DATA, temp.getPath()), result.getFeedback());
     }
 
     @Test

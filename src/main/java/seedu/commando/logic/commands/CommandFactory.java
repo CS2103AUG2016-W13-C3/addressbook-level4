@@ -126,12 +126,13 @@ public class CommandFactory {
     //@@author A0142230B
     private Command buildExportCommand() throws IllegalValueException {
         // Extract the file path
+        Boolean isOverride = commandParser.isOverrideThenExtract();
         String path = commandParser.extractText()
             .orElseThrow(
                 () -> new IllegalValueException(Messages.MISSING_EXPORT_PATH)
             );
 
-        return new ExportCommand(path);
+        return new ExportCommand(path, isOverride);
     }
 
     //@@author A0142230B

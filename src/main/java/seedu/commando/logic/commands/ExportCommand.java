@@ -16,14 +16,17 @@ public class ExportCommand extends Command {
     public static final String COMMAND_WORD = "export";
 
     private String path;
+	private Boolean isOverride;
 
     /**
      * Initializes a export command.
      * @param inputPath requested file path to export data, non-null
+	 * @param isOverride if override the path file
      */
-    public ExportCommand(String inputPath) {
+    public ExportCommand(String inputPath, boolean isOverride) {
         assert inputPath != null;
         this.path = inputPath;
+		this.isOverride = isOverride;
     }
 
     /**
@@ -39,13 +42,12 @@ public class ExportCommand extends Command {
 		if (path.endsWith("\\")) {
 			return new CommandResult(Messages.MISSING_EXPORT_FILE, true);
 		}
-		// Check if the destination file already exists (avoid overwriting
+		// Check if the destination file already exists and no override request(avoid overwriting
 		// important data)
-		else if (file.exists()) {
+		else if (file.exists() && !isOverride) {
 			return new CommandResult(String.format(Messages.EXPORT_COMMAND_FILE_EXIST, path), true);
 		} 		
 		else {
-
 			XmlToDoListStorage export = new XmlToDoListStorage(path);
 
 			try {
