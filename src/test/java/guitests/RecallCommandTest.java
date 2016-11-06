@@ -70,6 +70,13 @@ public class RecallCommandTest extends CommanDoGuiTest {
             assertResultMessage(String.format(Messages.RECALL_COMMAND, getSearchString(keywords, tags)));
         }
 
+        // Sleep to let the UI update
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedHits));
     }
     
