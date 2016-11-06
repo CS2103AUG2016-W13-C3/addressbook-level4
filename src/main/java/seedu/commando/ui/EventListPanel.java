@@ -16,7 +16,7 @@ import seedu.commando.model.ui.UiToDo;
 import seedu.commando.ui.ToDoListViewCell.Card;
 
 /**
- * Panel containing the list of to-dos
+ * Panel that will contain the ListView of events
  */
 public class EventListPanel extends UiPart {
 
@@ -63,7 +63,7 @@ public class EventListPanel extends UiPart {
 
     private void setConnections(ObservableList<UiToDo> events) {
         ObservableList<UiToDo> eventsForUi = FXCollections.observableArrayList(events);
-        
+
         events.addListener(new ListChangeListener<UiToDo>() {
             @Override
             public void onChanged(Change<? extends UiToDo> c) {

@@ -16,7 +16,7 @@ import seedu.commando.model.ui.UiToDo;
 import seedu.commando.ui.ToDoListViewCell.Card;
 
 /**
- * Panel containing the list of to-dos
+ * Panel that will contain the ListView of tasks
  */
 public class TaskListPanel extends UiPart {
 

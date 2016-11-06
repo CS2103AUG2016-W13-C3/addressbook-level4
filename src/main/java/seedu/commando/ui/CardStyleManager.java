@@ -11,26 +11,26 @@ public class CardStyleManager {
     /**
      * Adds given style to all nodes providede
      */
-    public static void addStyleAll(String style, Node...nodes) {
+    public static void addStyleAll(String style, Node... nodes) {
         for (Node node : nodes) {
             node.getStyleClass().add(style);
         }
     }
-    
+
     /**
      * Removes given style to all nodes providede
      */
-    public static void removeStyleAll(String style, Node...nodes) {
+    public static void removeStyleAll(String style, Node... nodes) {
         for (Node node : nodes) {
             node.getStyleClass().remove(style);
         }
     }
-    
+
     /**
      * @param dayDifference
      * @return colour code for a date label. The closer it is to today, the more
      *         red it will become, otherwise, tends towards green. If it is
-     *         already over (neg), it is fully red
+     *         already over (neg), it is fully red.
      */
     protected static String getDateProximityGreen(int dayDifference) {
         if (dayDifference < 0) {
@@ -52,7 +52,7 @@ public class CardStyleManager {
      * @param dayDifference
      * @return colour code for a date label. The closer it is to today, the more
      *         red it will become, otherwise, tends towards blue. If it is
-     *         already over (neg), it is fully red
+     *         already over (neg), it is fully red.
      */
     protected static String getDateProximityBlue(int dayDifference) {
         if (dayDifference < 0) {

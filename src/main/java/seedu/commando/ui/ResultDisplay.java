@@ -17,15 +17,15 @@ import seedu.commando.commons.util.FxViewUtil;
  * A ui for the status bar that is displayed at the header of the application.
  */
 public class ResultDisplay extends UiPart {
-    
-    private static final int RESULT_MINIMUM_HEIGHT = 30;
-    private static final int RESULT_INCREMENT_HEIGHT = 22;
+
     // Fixed variables
+    private static final int RESULT_INCREMENT_HEIGHT = 22;
+    private static final int RESULT_MINIMUM_HEIGHT = 30;
     private final String FXML = "ResultDisplay.fxml";
     private final String RESULT_DISPLAY_ID = "resultDisplay";
     private final String STATUS_BAR_STYLE_SHEET = "result-display";
     private final StringProperty displayed = new SimpleStringProperty("");
-    
+
     private TextArea resultDisplayArea;
     private AnchorPane placeHolder;
     private AnchorPane mainPane;
@@ -44,20 +44,24 @@ public class ResultDisplay extends UiPart {
         resultDisplayArea.getStyleClass().add(STATUS_BAR_STYLE_SHEET);
         resultDisplayArea.setText("");
         resultDisplayArea.textProperty().bind(displayed);
-        
-        //@@author A0139080J
+
+        // @@author A0139080J
         SimpleIntegerProperty initHeight = new SimpleIntegerProperty(RESULT_MINIMUM_HEIGHT);
         resultDisplayArea.prefHeightProperty().bindBidirectional(initHeight);
         resultDisplayArea.minHeightProperty().bindBidirectional(initHeight);
+
+        // Changes the height of the resultDisplayArea according to the number
+        // of newlines present
         resultDisplayArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
-            public void changed(final ObservableValue<? extends String> observable, final String oldValue, final String newValue) {
+            public void changed(final ObservableValue<? extends String> observable, final String oldValue,
+                    final String newValue) {
                 final int count = StringUtils.countMatches(newValue, "\n");
                 initHeight.setValue(RESULT_MINIMUM_HEIGHT + count * RESULT_INCREMENT_HEIGHT);
             }
         });
-        //@@author 
-        
+        // @@author
+
         FxViewUtil.applyAnchorBoundaryParameters(resultDisplayArea, 0.0, 0.0, 0.0, 0.0);
         mainPane.getChildren().add(resultDisplayArea);
         FxViewUtil.applyAnchorBoundaryParameters(mainPane, 0.0, 0.0, 0.0, 0.0);

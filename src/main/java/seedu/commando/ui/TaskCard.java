@@ -16,6 +16,10 @@ import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.Recurrence;
 
+/**
+ * A "card" that represents a single event. This will be shown in the
+ * taskListViewPanel
+ */
 public class TaskCard extends UiPart {
 
     private static final String FXML = "Card.fxml";
@@ -38,9 +42,10 @@ public class TaskCard extends UiPart {
 
     private ReadOnlyToDo toDo;
     private int index;
-    
+
     private boolean containsTags = true;
     private boolean containsDates = true;
+    private boolean containsRecurrence = true;
 
     public TaskCard() {
     }
@@ -66,7 +71,7 @@ public class TaskCard extends UiPart {
 
     // @@author A0139080J
     /**
-     * Creates a variable number of labels and put them in a flowpane
+     * Creates a variable number of labels and put them in the FlowPane tagsPane
      */
     private void createTagLabels() {
         if (!toDo.getTags().isEmpty()) {
@@ -90,6 +95,8 @@ public class TaskCard extends UiPart {
         if (toDo.getDueDate().isPresent() && toDo.getDueDate().get().recurrence != Recurrence.None) {
             recurrenceLabel.setText(toDo.getDueDate().get().recurrence.toString());
         } else {
+            containsRecurrence = false;
+            // Hides the recurrence label
             recurrenceLabel.setManaged(false);
         }
     }
@@ -108,15 +115,21 @@ public class TaskCard extends UiPart {
             dateLabel.setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityGreen((int) dayDifference));
         } else {
             containsDates = false;
+            // hides the date label
             dateLabel.setManaged(false);
         }
     }
-    
+
+    /**
+     * Hides the pane containing tags and recurrence if both are not present
+     */
     private void checkContainsTagsAndDates() {
-        if (!containsTags && !containsDates) {
+        if (!containsTags && !containsRecurrence) {
             tagsPane.setManaged(false);
-            dateTagsPane.setManaged(false);
+            if (!containsDates) {
+                dateTagsPane.setManaged(false);
             }
+        }
     }
 
     /*
@@ -133,24 +146,14 @@ public class TaskCard extends UiPart {
         return cardPane;
     }
 
-    /**
-     * Every recently modified event will have a red border This includes
-     * modification via undo, edit, add
-     */
     private void setRecentlyModifiedState() {
         CardStyleManager.addStyleAll("recently-modified", cardPane);
     }
 
-    /**
-     * Tints a finished event gray
-     */
     private void setFinishedState() {
         CardStyleManager.addStyleAll("finished", cardPane, dateTagsPane, indexLabel);
     }
 
-    /**
-     * Tints a hovered event a slight gray
-     */
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
