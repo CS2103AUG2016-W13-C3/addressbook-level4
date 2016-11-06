@@ -265,7 +265,8 @@
                 <h3 id="delete">
                     Deleting To-Dos and their Fields: <code>delete</code>
                 </h3>
-
+                
+<!-- @@author A0122001M -->
                 <h4>Deleting To-Dos</h4>
 
                 <p>If you want to delete a to-do that is no longer relevant, whether it is an <em>Event</em> or a <em>Task</em>, use the <code>delete</code> command, followed by the <em>Index</em> of the to-do you want to delete.</p>
@@ -273,7 +274,7 @@
                 <span><strong>Command Formats:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>...</pre>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;start index&gt;</span> - <span>&lt;end index&gt;</span></pre>
-<!-- @@author A0122001M -->
+
                 <span><strong>Examples:</strong></span>
                 <pre><span class="inputstart">&gt;&gt;</span> delete <span>2 3</span></pre>
                 <span class="comment">This command will delete the to-dos with <em>Indices</em> 2 and 3.</span>
@@ -401,7 +402,8 @@
                         </li>
                     </ul>
                 </p>
-
+                
+<!-- @@author A0142230B -->
                 <h3 id="recall">Browsing To-Dos that are Done: <code>recall</code></h3>
 
                 <p>When you need to review, refer back to, or search through the past <em>Events</em> or finished <em>Tasks</em>, use the <code>recall</code> command. It works in the exactly same way as the <a href="#find"><code>find</code></a> command - except it only shows to-dos that are done.</p>
@@ -416,7 +418,7 @@
 
                 <pre><span class="inputstart">&gt;&gt;</span> recall <span>wedding</span></pre>
                 <span class="comment">This command will filter and show <em>Events</em> that are already over and <em>Tasks</em> that have been finished, with description or tags matching <code>wedding</code>.</span>
-<!-- @@author A0142230B -->
+
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/find.png" width="600">
                     <figcaption>Result of <code>>> recall wedding</code></figcaption>
@@ -546,9 +548,9 @@
                 <h4 id="supported-date-time-formats">6. What date & time formats can I use in my commands?</h4>
 
                 <p><em>CommanDo</em> supports a wide variety of date and time formats, backed by the date parser library <a href="http://natty.joestelmach.com/" target="_blank">Natty</a>. A valid datetime contains a valid date, a valid time, or a valid date and time. A sample of the accepted date & time formats are shown below:</p>
-                
+<!-- @@author A0139697H -->               
                 <h5>Valid Dates</h5>
-<!-- @@author A0139697H -->
+
                 <div class="datagrid">
                     <table>
                         <thead>
