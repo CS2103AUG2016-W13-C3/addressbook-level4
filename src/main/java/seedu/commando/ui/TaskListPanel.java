@@ -71,8 +71,7 @@ public class TaskListPanel extends UiPart {
         });
 
         taskListView.setItems(tasksForUi);
-        Platform.runLater(() -> scrollbar = (ScrollBar) taskListView.lookup(".scroll-bar:vertical"));
-        taskListView.setCellFactory(listView -> new ToDoListViewCell(Card.Task));
+        taskListView.setCellFactory(listView -> new ToDoListViewCell(taskListView, Card.Task));
     }
 
     private void addToPlaceholder() {

@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 public class EventListPanelHandle extends GuiHandle implements ToDoListPanelHandle {
 
     public static final int NOT_FOUND = -1;
-    public static final String CARD_PANE_ID = "#eventPane";
+    public static final String CARD_PANE_ID = "#cardPane";
 
     private static final String EVENT_LIST_VIEW_ID = "#eventListView";
 

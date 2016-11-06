@@ -21,23 +21,21 @@ import seedu.commando.model.todo.Tag;
 
 public class TaskCard extends UiPart {
 
-    private static final String FXML = "TaskCard.fxml";
+    private static final String FXML = "Card.fxml";
     private boolean isFinished;
 
     @FXML
-    private HBox taskPane;
-    @FXML
-    private FlowPane tagsPane;
+    private HBox cardPane;
     @FXML
     private VBox dateTagsPane;
+    @FXML
+    private FlowPane tagsPane;
     @FXML
     private Label titleLabel;
     @FXML
     private Label indexLabel;
     @FXML
-    private Label dueLabel;
-    @FXML
-    private Label tagsLabel;
+    private Label dateLabel;
     @FXML
     private Label recurrenceLabel;
 
@@ -109,11 +107,11 @@ public class TaskCard extends UiPart {
             final LocalDateTime due = toDo.getDueDate().get().value;
             final long dayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), due);
 
-            dueLabel.setText("by " + DateTimePrettifier.prettifyDateTime(due));
-            dueLabel.setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityGreen((int) dayDifference));
+            dateLabel.setText("by " + DateTimePrettifier.prettifyDateTime(due));
+            dateLabel.setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityGreen((int) dayDifference));
         } else {
             containsDates = false;
-            dueLabel.setManaged(false);
+            dateLabel.setManaged(false);
         }
     }
     
@@ -135,7 +133,7 @@ public class TaskCard extends UiPart {
         if (isFinished) {
             setFinishedState();
         }
-        return taskPane;
+        return cardPane;
     }
 
     /**
@@ -143,14 +141,14 @@ public class TaskCard extends UiPart {
      * modification via undo, edit, add
      */
     private void setRecentlyModifiedState() {
-        CardStyleManager.addStyleAll("recently-modified", taskPane);
+        CardStyleManager.addStyleAll("recently-modified", cardPane);
     }
 
     /**
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        CardStyleManager.addStyleAll("finished", taskPane, dateTagsPane, indexLabel);
+        CardStyleManager.addStyleAll("finished", cardPane, dateTagsPane, indexLabel);
     }
 
     /**
@@ -168,21 +166,21 @@ public class TaskCard extends UiPart {
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            CardStyleManager.addStyleAll("hover", taskPane, indexLabel);
+            CardStyleManager.addStyleAll("hover", cardPane, indexLabel);
         }
     }
 
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            CardStyleManager.removeStyleAll("hover", taskPane, indexLabel);
+            CardStyleManager.removeStyleAll("hover", cardPane, indexLabel);
         }
     }
     // @@author
 
     @Override
     public void setNode(Node node) {
-        taskPane = (HBox) node;
+        cardPane = (HBox) node;
     }
 
     @Override

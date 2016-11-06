@@ -12,18 +12,18 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import seedu.commando.commons.core.DateTimePrettifier;
-import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.Recurrence;
+import seedu.commando.model.todo.Tag;
 
 public class EventCard extends UiPart {
 
-    private static final String FXML = "EventCard.fxml";
+    private static final String FXML = "Card.fxml";
     private boolean isFinished;
 
     @FXML
-    private HBox eventPane;
+    private HBox cardPane;
     @FXML
     private VBox dateTagsPane;
     @FXML
@@ -33,9 +33,7 @@ public class EventCard extends UiPart {
     @FXML
     private Label indexLabel;
     @FXML
-    private Label dateIntervalLabel;
-    @FXML
-    private Label endLabel;
+    private Label dateLabel;
     @FXML
     private Label recurrenceLabel;
 
@@ -105,13 +103,12 @@ public class EventCard extends UiPart {
             final DateRange dateRange = toDo.getDateRange().get();
             final long startDayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.startDate);
 
-            dateIntervalLabel.setText(DateTimePrettifier.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
-            dateIntervalLabel
+            dateLabel.setText(DateTimePrettifier.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
+            dateLabel
                     .setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityBlue((int) startDayDifference));
         } else {
             containsDates = false;
-            dateIntervalLabel.setManaged(false);
-            endLabel.setManaged(false);
+            dateLabel.setManaged(false);
         }
     }
     
@@ -133,7 +130,7 @@ public class EventCard extends UiPart {
         if (isFinished) {
             setFinishedState();
         }
-        return eventPane;
+        return cardPane;
     }
 
     /**
@@ -141,14 +138,14 @@ public class EventCard extends UiPart {
      * modification via undo, edit, add
      */
     private void setRecentlyModifiedState() {
-        CardStyleManager.addStyleAll("recently-modified", eventPane);
+        CardStyleManager.addStyleAll("recently-modified", cardPane);
     }
 
     /**
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        CardStyleManager.addStyleAll("finished", eventPane, dateTagsPane, indexLabel);
+        CardStyleManager.addStyleAll("finished", cardPane, dateTagsPane, indexLabel);
     }
     
     /**
@@ -166,21 +163,21 @@ public class EventCard extends UiPart {
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            CardStyleManager.addStyleAll("hover", eventPane, indexLabel);
+            CardStyleManager.addStyleAll("hover", cardPane, indexLabel);
         }
     }
 
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            CardStyleManager.removeStyleAll("hover", eventPane, indexLabel);
+            CardStyleManager.removeStyleAll("hover", cardPane, indexLabel);
         }
     }
     // @@author
 
     @Override
     public void setNode(Node node) {
-        eventPane = (HBox) node;
+        cardPane = (HBox) node;
     }
 
     @Override
