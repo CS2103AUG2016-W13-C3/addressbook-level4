@@ -37,7 +37,7 @@ public class CommandParser {
     // Pattern for "from ... to ... (recurrence)?"
     private static final Pattern DATERANGE_TWO_SIDED_PATTERN = Pattern.compile(
         "(?<left>.*)"
-            + "(\\s" + KEYWORD_DATERANGE_START + "\\s+" + "(?<start>(.+\\s+)?)" + KEYWORD_DATERANGE_END + "(?<end>(\\s+.+?)?))"
+            + "((^|\\s)" + KEYWORD_DATERANGE_START + "\\s+" + "(?<start>(.+\\s+)?)" + KEYWORD_DATERANGE_END + "(?<end>(\\s+.+?)?))"
             + "(?<recurrence>(\\s+" + RECURRENCE_REGEX + ")?)$",
         Pattern.CASE_INSENSITIVE
     );
@@ -45,33 +45,33 @@ public class CommandParser {
     // Pattern for "on ... (recurrence)?"
     private static final Pattern DATERANGE_SINGLE_DATE_PATTERN = Pattern.compile(
         "(?<left>.*)"
-            + "(\\s" + KEYWORD_DATERANGE_DATE + "\\s+(?<date>(.+?)?))"
+            + "((^|\\s)" + KEYWORD_DATERANGE_DATE + "\\s+(?<date>(.+?)?))"
             + "(?<recurrence>(\\s+" + RECURRENCE_REGEX + ")?)$",
         Pattern.CASE_INSENSITIVE
     );
 
     // Pattern for "from ... (recurrence)?"
     private static final Pattern DATERANGE_START_DATE_PATTERN = Pattern.compile(
-        "(?<left>.*)(\\s" + KEYWORD_DATERANGE_START + "\\s+(?<start>(.+?)))"
+        "(?<left>.*)((^|\\s)" + KEYWORD_DATERANGE_START + "\\s+(?<start>(.+?)))"
             + "(?<recurrence>(\\s+" + RECURRENCE_REGEX + ")?)$",
         Pattern.CASE_INSENSITIVE
     );
 
     // Pattern for "to ... (recurrence)?"
     private static final Pattern DATERANGE_END_DATE_PATTERN = Pattern.compile(
-        "(?<left>.*)(\\s" + KEYWORD_DATERANGE_END + "\\s+(?<end>(.+?)))"
+        "(?<left>.*)((^|\\s)" + KEYWORD_DATERANGE_END + "\\s+(?<end>(.+?)))"
             + "(?<recurrence>(\\s+" + RECURRENCE_REGEX + ")?)$",
         Pattern.CASE_INSENSITIVE
     );
     
     // Pattern for "path (override)?"
     private static final Pattern OVERRIDE_PATTERN = Pattern.compile(
-        "^(?<path>.*)("+ KEYWORD_OVERRIDE + ")$",
+        "^(?<path>.*)\\s("+ KEYWORD_OVERRIDE + ")$",
         Pattern.CASE_INSENSITIVE
     );
 
     private static final Pattern DUEDATE_PATTERN = Pattern.compile(
-        "(?<left>.*)" + KEYWORD_DUEDATE + "\\s+" + "(?<date>.+?)"
+        "(?<left>.*)(^|\\s)" + KEYWORD_DUEDATE + "\\s+" + "(?<date>.+?)"
             + "(?<recurrence>(\\s+" + RECURRENCE_REGEX + ")?)$",
         Pattern.CASE_INSENSITIVE
     );
