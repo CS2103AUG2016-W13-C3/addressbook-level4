@@ -2,7 +2,6 @@ package seedu.commando.ui;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Optional;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -14,10 +13,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import seedu.commando.commons.core.DateTimePrettifier;
 import seedu.commando.model.todo.Tag;
-import seedu.commando.model.todo.DueDate;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.Recurrence;
-import seedu.commando.model.todo.Tag;
 
 public class TaskCard extends UiPart {
 
@@ -151,15 +148,6 @@ public class TaskCard extends UiPart {
         CardStyleManager.addStyleAll("finished", cardPane, dateTagsPane, indexLabel);
     }
 
-    /**
-     * Hides all nodes given
-     */
-    private void setNotManaged(Node... nodes) {
-        for (Node node : nodes) {
-            node.setManaged(false);
-        }
-    }
-    
     /**
      * Tints a hovered event a slight gray
      */

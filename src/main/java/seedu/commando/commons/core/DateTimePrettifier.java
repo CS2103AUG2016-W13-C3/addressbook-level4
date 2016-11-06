@@ -73,16 +73,16 @@ public class DateTimePrettifier {
         if (startIsYtdOrTdyOrTmr) {
             // If same day, don't display month and year
             if (sameDay && sameMonth && sameYear) {
-                return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + " "
+                return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + "\n"
                         + getDay(startDateTime);
             } else if (endIsYtdOrTdyOrTmr) {
-                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + " "
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n"
                         + getTime(endDateTime) + " " + getDay(endDateTime);
             } else if (endDateTime.getYear() == todayDate.getYear()) {
-                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + " "
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n"
                         + getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime);
             } else {
-                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + " "
+                return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n"
                         + getTime(endDateTime) + " " + getDay(endDateTime) + " " + getMonth(endDateTime) + " "
                         + endDateTime.getYear();
             }
@@ -105,7 +105,7 @@ public class DateTimePrettifier {
         if (sameYear && sameDay) {
             // If same year and same month and same day
             // Display one month
-            end = " " + getDay(endDateTime) + " " + getMonth(endDateTime) + end;
+            end = "\n" + getDay(endDateTime) + " " + getMonth(endDateTime) + end;
         } else {
             // Display both months
             start = " " + getDay(startDateTime) + " " + getMonth(startDateTime) + start;
@@ -123,7 +123,7 @@ public class DateTimePrettifier {
         // because its comparatively short to other intervals that span over
         // days
         if (!sameYear || !sameMonth || !sameDay) {
-            return start + " " + keywordTo + " " + end;
+            return start + " " + keywordTo + "\n" + end;
         } else {
             return start + " " + keywordTo + " " + end;
         }

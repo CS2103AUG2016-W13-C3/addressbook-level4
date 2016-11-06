@@ -56,6 +56,7 @@ public class EventCard extends UiPart {
     @FXML
     public void initialize() {
         titleLabel.setText(toDo.getTitle().value);
+        titleLabel.setStyle("-fx-line-spacing: -0.5em;");
         indexLabel.setText(String.valueOf(index));
 
         setDateTimesLabels();
@@ -104,8 +105,7 @@ public class EventCard extends UiPart {
             final long startDayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.startDate);
 
             dateLabel.setText(DateTimePrettifier.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
-            dateLabel
-                    .setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityBlue((int) startDayDifference));
+            dateLabel.setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityBlue((int) startDayDifference));
         } else {
             containsDates = false;
             dateLabel.setManaged(false);
@@ -114,7 +114,6 @@ public class EventCard extends UiPart {
     
     private void checkContainsTagsAndDates() {
         if (!containsTags && !containsDates) {
-            tagsPane.setManaged(false);
             dateTagsPane.setManaged(false);
         }
     }
@@ -148,15 +147,6 @@ public class EventCard extends UiPart {
         CardStyleManager.addStyleAll("finished", cardPane, dateTagsPane, indexLabel);
     }
     
-    /**
-     * Hides all nodes given
-     */
-    private void setNotManaged(Node... nodes) {
-        for (Node node : nodes) {
-            node.setManaged(false);
-        }
-    }
-
     /**
      * Tints a hovered event a slight gray
      */

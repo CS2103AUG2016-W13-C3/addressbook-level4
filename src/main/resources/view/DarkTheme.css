@@ -24,7 +24,7 @@
 	-fx-font-size: 30pt;
 }
 
-.label {
+.label, .label .content {
     -fx-font-size: 12pt;
     -fx-font-family: "Helvetica bold";
     -fx-line-spacing: -0.5em;
@@ -35,7 +35,6 @@
 .label-bright {
     -fx-font-size: 12pt;
     -fx-font-family: "Helvetica Semibold";
-    -fx-line-spacing: -0.5em;
     -fx-text-fill: white;
     -fx-opacity: 1;
 }
@@ -43,7 +42,6 @@
 .label-header {
     -fx-font-size: 32pt;
     -fx-font-family: "Helvetica Light";
-    -fx-line-spacing: -0.5em;
     -fx-text-fill: white;
     -fx-opacity: 1;
 }
@@ -91,7 +89,6 @@
 .table-view .column-header .label {
     -fx-font-size: 20pt;
     -fx-font-family: "Helvetica Light";
-    -fx-line-spacing: -0.5em;
     -fx-text-fill: white;
     -fx-alignment: center-left;
     -fx-opacity: 1;
@@ -136,7 +133,6 @@
 #titleLabel{
 	-fx-font-family: "Helvetica bold";
 	-fx-font-size: 14pt;
-	-fx-line-spacing: -0.5em;
 	-fx-text-fill:black;
 }
 
@@ -233,7 +229,6 @@
 .menu-bar .label {
     -fx-font-size: 14pt;
     -fx-font-family: "Helvetica Light";
-    -fx-line-spacing: -0.5em;
     -fx-text-fill: white;
     -fx-opacity: 0.9;
 }
