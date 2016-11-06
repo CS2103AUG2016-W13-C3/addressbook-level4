@@ -93,7 +93,7 @@
                         </figure>
                     </li>
                     <li>
-                        Type <code>help</code> and press <kbd class="light">Enter</kbd>. A link to this user guide will be opened in a window. Refer to the <a href="#commands">Commands</a> section below for the list of commands available in <em>CommanDo</em>.
+                        Type <code>help</code> and press <kbd class="light">Enter</kbd>. You can open this user guide another window. Refer to the <a href="#commands">Commands</a> section below for the list of commands available in <em>CommanDo</em>.
                     </li>
                     <li>
                         For your convenience:
@@ -146,7 +146,7 @@
                     Adding To-Dos: <code>add</code>
                 </h3>
 
-                <p>The very first thing you'll want to do is to add a to-do. Each to-do contains at minimum, a description. Each to-do can be optionally associated with multiple tags and a time constraint. Depending on nature of the time constraint, to-dos are categorised into 2 types: <em>Events</em> (shown in the left panel) and <em>Tasks</em> (shown in the right panel):</p>
+                <p>The very first thing you'll want to do is to add a to-do. Each to-do contains at minimum, a description. You can associate each to-do with multiple tags and a time constraint. Depending on nature of the time constraint, to-dos are categorised into 2 types: <em>Events</em> (shown in the left panel) and <em>Tasks</em> (shown in the right panel):</p>
 
                 <figure>
                     <img src="https://github.com/CS2103AUG2016-W13-C3/main/blob/master/docs/images/Ui.png?raw=true" width="600">
@@ -253,9 +253,9 @@
                 <pre><span class="inputstart">&gt;&gt;</span> add <span>code parser to parse by tomorrow</span> by <span>today</span></pre>
                 <span class="comment">What it does:  Adds a <em>Task</em> with description <code>code parser to parse by tomorrow</code> with due date of the current day 2359h.</span>
 
-               <p>If you do not specify a time in <code>due_datetime</code>, the time will default to 2359h. Tags and recurrence can be added to a <em>Task</em> in a way similar to adding <em>Events</em>. </p>
+               <p>If you do not specify a time in <code>due_datetime</code>, the time will default to 2359h. You can add tags and recurrence to a <em>Task</em> in a way similar to adding <em>Events</em>. </p>
                 
-                <p>When you have completed a <em>Task</em>, it can be marked as done with the <a href="#finish"><code>finish</code></a> command. In <em>CommanDo</em>, every unfinished <em>Task</em> is listed on the right panel, with those with due dates prioritized at the top, in chronological order. The following screenshot shows how a <em>Task</em> is displayed when it is added:</p>
+                <p>When you have completed a <em>Task</em>, you can mark it as done with the <a href="#finish"><code>finish</code></a> command. In <em>CommanDo</em>, every unfinished <em>Task</em> is listed on the right panel, with those with due dates prioritized at the top, in chronological order. The following screenshot shows how a <em>Task</em> is displayed when you add it:</p>
 
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/addDdl.png" width="600">
@@ -289,7 +289,7 @@
                 <span class="comment">What it does:  Deletes the to-dos with <em>Indices</em> 1, 2, 3, 4 and 5.</span>
 
                 <blockquote>
-                    <b><em>Index</em> of a To-Do:</b> To refer to an existing to-do in <em>CommanDo</em>, its <em>Index</em> is used, which is the number visually tagged to a to-do on the interface. This is clarified in the following picture:
+                    <b><em>Index</em> of a To-Do:</b> To refer to an existing to-do in <em>CommanDo</em>, you can use its <em>Index</em>, which is the number visually tagged to a to-do on the interface. This is clarified in the following picture:
 
                     <figure>
                         <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/Userguide/index.png" width="600">
@@ -299,7 +299,7 @@
 
                 <h4>Deleting Time Constraints of To-Dos</h4>
 
-                <p>There are situations where the time window of an <em>Event</em> or the due date of a <em>Task</em> become no longer relevant. These time constraints can be removed from the to-do with the <code>delete</code> command, ending the command with the keyword <code>time</code>. Note that this means that a target <em>Event</em> will become a <em>Task</em> after such a command.</p>
+                <p>There are situations where the time window of an <em>Event</em> or the due date of a <em>Task</em> become no longer relevant. You can remove these time constraints from the to-do with the <code>delete</code> command, ending the command with the keyword <code>time</code>. Note that this means that a target <em>Event</em> will become a <em>Task</em> after such a command.</p>
 
                 <span><strong>Command Formats:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> delete <span>&lt;index&gt;</span>... time</pre>
@@ -414,7 +414,7 @@
 
                 <h3 id="recall">Browsing To-Dos that are Done: <code>recall</code></h3>
 
-                <p>When you need to review, refer back to, or search through the past <em>Events</em> or finished <em>Tasks</em>, use the <code>recall</code> command. It works exactly the same way as the <a href="#find"><code>find</code></a> command - except it only shows to-dos that are considered done.</p>
+                <p>When you need to review, refer back to, or search through the past <em>Events</em> or finished <em>Tasks</em>, use the <code>recall</code> command. It works exactly the same way as the <a href="#find"><code>find</code></a> command - except it only shows to-dos that are done.</p>
 
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> recall [<span>&lt;keyword&gt;</span>...] [#<span>&lt;tag&gt;</span>...]</pre>
