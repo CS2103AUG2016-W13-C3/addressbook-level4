@@ -23,7 +23,7 @@
 			<children>
 				<FlowPane HBox.hgrow="ALWAYS">
 					<children>
-						<MenuBar prefWidth="297.0" styleClass="title-button">
+						<MenuBar styleClass="title-button">
 							<menus>
 								<Menu disable="true" mnemonicParsing="false" text="Help (Alt + H)" />
 								<Menu disable="true" mnemonicParsing="false" text="Credits (Alt + C)" />

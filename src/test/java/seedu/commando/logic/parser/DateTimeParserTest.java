@@ -16,7 +16,7 @@ public class DateTimeParserTest {
     private LocalDateTime now = LocalDateTime.now();
 
     @Before
-    public void setup() {
+    public void setUp() {
         dateTimeParser = new DateTimeParser();
     }
 

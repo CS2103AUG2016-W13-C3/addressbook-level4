@@ -8,7 +8,6 @@ import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.*;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.Set;
 
 //@@author A0139697H

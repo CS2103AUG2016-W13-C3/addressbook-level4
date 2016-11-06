@@ -26,7 +26,6 @@ public class ModelManagerTest {
     private ToDoList toDoList;
     private ToDo toDoListItem1;
     private ToDo toDoListItem2;
-    private ToDoList toDoList2;
     private ToDo toDoList2Item1;
     private ModelManager modelManager;
 
@@ -34,10 +33,8 @@ public class ModelManagerTest {
     private ToDoListChange toDoListChangeDelete1;
     private ToDoListChange toDoListChangeEdit1;
 
-    private boolean hasReached;
-
     @Before
-    public void setup() throws IllegalValueException {
+    public void setUp() throws IllegalValueException {
         toDoList = new ToDoList();
         toDoListItem1 = new ToDoBuilder("title")
             .created(now.plusYears(-1))
@@ -64,7 +61,6 @@ public class ModelManagerTest {
                 LocalDateTime.of(2016, 4, 1, 20, 1)
             )
             .build();
-        toDoList2 = new ToDoList().add(toDoList2Item1);
 
         modelManager = new ModelManager(toDoList);
 
@@ -82,8 +78,6 @@ public class ModelManagerTest {
             new ToDoList().add(toDoList2Item1),
             new ToDoList().add(toDoListItem1)
         );
-
-        hasReached = false;
     }
 
     @Test

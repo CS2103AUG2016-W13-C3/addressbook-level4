@@ -4,20 +4,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import seedu.commando.commons.core.EventsCenter;
-import seedu.commando.commons.core.UnmodifiableObservableList;
-import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.logic.ModelStub;
 import seedu.commando.model.Model;
-import seedu.commando.model.todo.ToDoListChange;
-import seedu.commando.model.todo.DateRange;
-import seedu.commando.model.todo.ReadOnlyToDoList;
-import seedu.commando.model.todo.Tag;
-import seedu.commando.model.ui.UiModel;
-import seedu.commando.model.ui.UiToDo;
-
-import java.util.Optional;
-import java.util.Set;
 
 //@@author A0139697H
 public class CommandTest {
@@ -26,74 +15,11 @@ public class CommandTest {
 
     private final String feedback = "Feedback";
     private Command command;
-    private Model modelStub = new Model() {
-        @Override
-        public ReadOnlyToDoList getToDoList() {
-            return null;
-        }
-
-        @Override
-        public void changeToDoList(ToDoListChange change) throws IllegalValueException {
-
-        }
-
-        @Override
-        public boolean undoToDoList() {
-            return false;
-        }
-
-        @Override
-        public boolean redoToDoList() {
-            return false;
-        }
-
-        @Override
-        public UnmodifiableObservableList<UiToDo> getUiEvents() {
-            return null;
-        }
-
-        @Override
-        public UnmodifiableObservableList<UiToDo> getUiTasks() {
-            return null;
-        }
-
-        @Override
-        public Optional<UiToDo> getUiToDoAtIndex(int index) {
-            return null;
-        }
-
-        @Override
-        public void clearUiToDoListFilter(UiModel.FILTER_MODE filterMode) {
-
-        }
-
-        @Override
-        public void setUiToDoListFilter(Set<String> keywords, Set<Tag> tags, UiModel.FILTER_MODE filterMode) {
-
-        }
-
-		@Override
-		public void setUiToDoListFilter(DateRange dateRange) {
-			
-		}
-    };
+    private Model modelStub = new ModelStub();
 
     @Before
-    public void setup() {
-        command = new Command() {
-            @Override
-            public CommandResult execute() throws NoModelException, NoEventsCenterException {
-                if (getModel() == null) {
-                    throw new NoModelException();
-                }
-
-                if (getEventsCenter() == null) {
-                    throw new NoEventsCenterException();
-                }
-
-                return new CommandResult(feedback);
-            }
-        };
+    public void setUp() {
+        command = new CommandStub();
     }
 
     @Test
@@ -110,4 +36,18 @@ public class CommandTest {
         command.execute();
     }
 
+    private class CommandStub extends Command {
+        @Override
+        public CommandResult execute() throws NoModelException, NoEventsCenterException {
+            if (getModel() == null) {
+                throw new NoModelException();
+            }
+
+            if (getEventsCenter() == null) {
+                throw new NoEventsCenterException();
+            }
+
+            return new CommandResult(feedback);
+        }
+    }
 }

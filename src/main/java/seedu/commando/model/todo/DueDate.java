@@ -3,9 +3,6 @@ package seedu.commando.model.todo;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-
-import seedu.commando.commons.core.Messages;
-import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.commons.util.CollectionUtil;
 
 //@@author A0122001M
@@ -65,7 +62,13 @@ public class DueDate {
     public int hashCode() {
         return Objects.hash(value, recurrence);
     }
-
+    
+    /**
+     * Remove the seconds in the dateTime if the dateTime is not set to max or min
+     * 
+     * @param localDateTime
+     * @return processed localDateTime
+     */
     private LocalDateTime processDateTime(LocalDateTime localDateTime) {
         if (localDateTime.equals(LocalDateTime.MAX) || localDateTime.equals(LocalDateTime.MIN)) {
             return localDateTime;

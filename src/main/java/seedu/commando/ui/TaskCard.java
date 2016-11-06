@@ -2,6 +2,7 @@ package seedu.commando.ui;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -12,6 +13,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import seedu.commando.commons.core.DateTimePrettifier;
+import seedu.commando.model.todo.Tag;
+import seedu.commando.model.todo.DueDate;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.Recurrence;
 import seedu.commando.model.todo.Tag;
@@ -22,7 +25,7 @@ public class TaskCard extends UiPart {
     private boolean isFinished;
 
     @FXML
-    private HBox eventPane;
+    private HBox cardPane;
     @FXML
     private VBox dateTagsPane;
     @FXML
@@ -116,7 +119,7 @@ public class TaskCard extends UiPart {
         if (!containsTags && !containsDates) {
             tagsPane.setManaged(false);
             dateTagsPane.setManaged(false);
-        }
+            }
     }
 
     /*
@@ -130,7 +133,7 @@ public class TaskCard extends UiPart {
         if (isFinished) {
             setFinishedState();
         }
-        return eventPane;
+        return cardPane;
     }
 
     /**
@@ -138,37 +141,46 @@ public class TaskCard extends UiPart {
      * modification via undo, edit, add
      */
     private void setRecentlyModifiedState() {
-        CardStyleManager.addStyleAll("recently-modified", eventPane);
+        CardStyleManager.addStyleAll("recently-modified", cardPane);
     }
 
     /**
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        CardStyleManager.addStyleAll("finished", eventPane, dateTagsPane, indexLabel);
+        CardStyleManager.addStyleAll("finished", cardPane, dateTagsPane, indexLabel);
     }
 
+    /**
+     * Hides all nodes given
+     */
+    private void setNotManaged(Node... nodes) {
+        for (Node node : nodes) {
+            node.setManaged(false);
+        }
+    }
+    
     /**
      * Tints a hovered event a slight gray
      */
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            CardStyleManager.addStyleAll("hover", eventPane, indexLabel);
+            CardStyleManager.addStyleAll("hover", cardPane, indexLabel);
         }
     }
 
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            CardStyleManager.removeStyleAll("hover", eventPane, indexLabel);
+            CardStyleManager.removeStyleAll("hover", cardPane, indexLabel);
         }
     }
     // @@author
 
     @Override
     public void setNode(Node node) {
-        eventPane = (HBox) node;
+        cardPane = (HBox) node;
     }
 
     @Override

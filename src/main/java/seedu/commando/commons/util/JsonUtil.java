@@ -26,11 +26,11 @@ import java.util.logging.Logger;
 public class JsonUtil {
     private static final Logger logger = LogsCenter.getLogger(JsonUtil.class);
 
-    static <T> void serializeObjectToJsonFile(File jsonFile, T objectToSerialize) throws IOException {
+    private static <T> void serializeObjectToJsonFile(File jsonFile, T objectToSerialize) throws IOException {
         FileUtil.writeToFile(jsonFile, toJsonString(objectToSerialize));
     }
 
-    static <T> T deserializeObjectFromJsonFile(File jsonFile, Class<T> classOfObjectToDeserialize)
+    private static <T> T deserializeObjectFromJsonFile(File jsonFile, Class<T> classOfObjectToDeserialize)
             throws IOException {
         return fromJsonString(FileUtil.readFromFile(jsonFile), classOfObjectToDeserialize);
     }

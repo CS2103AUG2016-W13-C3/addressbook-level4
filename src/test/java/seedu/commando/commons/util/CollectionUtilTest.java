@@ -2,7 +2,6 @@ package seedu.commando.commons.util;
 
 import static org.junit.Assert.*;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -16,7 +15,9 @@ import seedu.commando.model.todo.ToDo;
 public class CollectionUtilTest {
     @Test
     public void isAnyNull_NoNull() {
-        assertFalse(CollectionUtil.isAnyNull(new Object(), new String(), new ToDo(new Title(new String()))));
+        assertFalse(CollectionUtil.isAnyNull(new Object(), 
+                                             new Object(), 
+                                             new ToDo(new Title(new String()))));
     }
 
     @Test

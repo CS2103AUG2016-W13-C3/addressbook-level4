@@ -5,7 +5,6 @@ import seedu.commando.commons.core.Config;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.events.logic.ShowHelpRequestEvent;
-import seedu.commando.commons.exceptions.IllegalValueException;
 
 import java.util.Optional;
 
@@ -40,17 +39,18 @@ public class HelpCommand extends Command {
 
         if (commandWord.isEmpty()) {
             eventsCenter.post(new ShowHelpRequestEvent(""));
+
+            return new CommandResult(Messages.HELP_COMMAND);
         } else {
             Optional<String> anchor = Config.getUserGuideAnchorForCommandWord(commandWord);
 
             // Check if the command word is recognized
             if (!anchor.isPresent()) {
-                return new CommandResult(String.format(Messages.UNKNOWN_COMMAND_FOR_HELP, commandWord), true);
+                return new CommandResult(Messages.HELP_COMMAND_INVALID_TOPIC, true);
             }
 
             eventsCenter.post(new ShowHelpRequestEvent(anchor.get()));
+            return new CommandResult(String.format(Messages.HELP_COMMAND_TOPIC, commandWord));
         }
-
-        return new CommandResult(Messages.HELP_WINDOW_SHOWN);
     }
 }

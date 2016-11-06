@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-//@@author A0139697H
+//@@author A0122001M
 
 /**
  * Represents a list of to-dos.
@@ -19,7 +19,6 @@ import java.util.Objects;
 public class ToDoList implements ReadOnlyToDoList {
     private final ObservableList<ReadOnlyToDo> list;
     private final UnmodifiableObservableList<ReadOnlyToDo> protectedList;
-
     {
         // Initializes an observable list to store to-dos, which
         // calls its listeners when any of its to-dos change

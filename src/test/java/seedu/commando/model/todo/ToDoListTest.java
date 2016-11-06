@@ -26,7 +26,7 @@ public class ToDoListTest {
     private ToDo toDoList2Item1;
 
     @Before
-    public void setup() throws IllegalValueException {
+    public void setUp() throws IllegalValueException {
         toDoList = new ToDoList();
         toDoListItem1 = new ToDoBuilder("title").build();
         toDoListItem2 = new ToDoBuilder("title 2").withTags("tag1", "tag2")

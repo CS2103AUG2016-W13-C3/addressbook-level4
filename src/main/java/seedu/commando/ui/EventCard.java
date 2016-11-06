@@ -23,7 +23,7 @@ public class EventCard extends UiPart {
     private boolean isFinished;
 
     @FXML
-    private HBox eventPane;
+    private HBox cardPane;
     @FXML
     private VBox dateTagsPane;
     @FXML
@@ -130,7 +130,7 @@ public class EventCard extends UiPart {
         if (isFinished) {
             setFinishedState();
         }
-        return eventPane;
+        return cardPane;
     }
 
     /**
@@ -138,14 +138,23 @@ public class EventCard extends UiPart {
      * modification via undo, edit, add
      */
     private void setRecentlyModifiedState() {
-        CardStyleManager.addStyleAll("recently-modified", eventPane);
+        CardStyleManager.addStyleAll("recently-modified", cardPane);
     }
 
     /**
      * Tints a finished event gray
      */
     private void setFinishedState() {
-        CardStyleManager.addStyleAll("finished", eventPane, dateTagsPane, indexLabel);
+        CardStyleManager.addStyleAll("finished", cardPane, dateTagsPane, indexLabel);
+    }
+    
+    /**
+     * Hides all nodes given
+     */
+    private void setNotManaged(Node... nodes) {
+        for (Node node : nodes) {
+            node.setManaged(false);
+        }
     }
 
     /**
@@ -154,21 +163,21 @@ public class EventCard extends UiPart {
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            CardStyleManager.addStyleAll("hover", eventPane, indexLabel);
+            CardStyleManager.addStyleAll("hover", cardPane, indexLabel);
         }
     }
 
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            CardStyleManager.removeStyleAll("hover", eventPane, indexLabel);
+            CardStyleManager.removeStyleAll("hover", cardPane, indexLabel);
         }
     }
     // @@author
 
     @Override
     public void setNode(Node node) {
-        eventPane = (HBox) node;
+        cardPane = (HBox) node;
     }
 
     @Override

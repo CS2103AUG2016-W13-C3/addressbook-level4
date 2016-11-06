@@ -1,10 +1,10 @@
 package guitests.guihandles;
 
 import guitests.GuiRobot;
-import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import seedu.commando.commons.core.Config;
 
 //@@author A0122001M
 
@@ -15,7 +15,6 @@ public class HelpWindowHandle extends GuiHandle {
 
     private static final String HELP_WINDOW_TITLE = "Help";
     private static final String HELP_WINDOW_ROOT_FIELD_ID = "#helpWindowRoot";
-    private static final String USER_GUIDE_URL = "https://cs2103aug2016-w13-c3.github.io/main/user";
 
     public HelpWindowHandle(GuiRobot guiRobot, Stage primaryStage) {
         super(guiRobot, primaryStage, HELP_WINDOW_TITLE);
@@ -28,7 +27,7 @@ public class HelpWindowHandle extends GuiHandle {
     
     public boolean isWindowShowing(String commandName) {
         WebView node = (WebView) ((AnchorPane) getNode(HELP_WINDOW_ROOT_FIELD_ID)).getChildren().get(0);
-        return node.getEngine().getLocation().equals(USER_GUIDE_URL + "#");
+        return node.getEngine().getLocation().contains(Config.UserGuideUrl);
     }
     
     public void closeWindow() {

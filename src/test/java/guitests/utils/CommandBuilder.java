@@ -5,6 +5,13 @@ import seedu.commando.model.todo.ToDo;
 //@@author A0122001M
 
 public class CommandBuilder {
+    
+    /**
+     * get the add command for the ToDo provided
+     * 
+     * @param todo
+     * @return command string to add the given ToDo
+     */
     public static String buildAddCommand(ToDo todo) {
         StringBuilder sb = new StringBuilder();
         sb.append("add " + todo.getTitle().toString());

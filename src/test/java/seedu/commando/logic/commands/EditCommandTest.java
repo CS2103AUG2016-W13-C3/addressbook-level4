@@ -33,13 +33,13 @@ public class EditCommandTest {
     private int nextYear = LocalDateTime.now().getYear() + 1;
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         logic = initLogic();
         eventsCollector = new EventsCollector();
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         EventsCenter.clearSubscribers();
     }
 
@@ -346,7 +346,7 @@ public class EditCommandTest {
         assertToDoExists(logic,
             new ToDoBuilder("task")
                 .withDueDate(
-                    LocalDateTime.of(nextYear, 4, 11, 0, 0),
+                    LocalDateTime.of(nextYear, 4, 11, 23, 59),
                     Recurrence.Weekly
                 )
                 .build()

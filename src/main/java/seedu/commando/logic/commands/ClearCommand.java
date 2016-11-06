@@ -27,7 +27,7 @@ public class ClearCommand extends Command {
                 model.getToDoList()
             ));
 
-            return new CommandResult(Messages.TODO_LIST_CLEARED);
+            return new CommandResult(Messages.CLEAR_COMMAND);
         } catch (IllegalValueException exception) {
             return new CommandResult(exception.getMessage(), true);
         }

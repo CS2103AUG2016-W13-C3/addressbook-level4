@@ -60,7 +60,7 @@ public class EditCommand extends Command {
         // If event already over, warn user
         if (editedToDo.getDateRange().isPresent()
             && editedToDo.getDateRange().get().endDate.isBefore(LocalDateTime.now())) {
-            feedback += "\n" + Messages.EDIT_COMMAND_EVENT_OVER;
+            feedback += "\n" + Messages.EDIT_COMMAND_EVENT_OVER_WARNING;
         }
         return feedback;
     }

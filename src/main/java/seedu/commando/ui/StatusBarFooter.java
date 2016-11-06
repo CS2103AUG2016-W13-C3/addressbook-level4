@@ -7,7 +7,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.controlsfx.control.StatusBar;
-
 import seedu.commando.commons.util.FxViewUtil;
 
 import java.time.LocalDateTime;

@@ -6,7 +6,6 @@ import org.junit.rules.ExpectedException;
 
 import seedu.commando.commons.core.Config;
 import seedu.commando.commons.util.AppUtil;
-import seedu.commando.ui.MainWindow;
 
 import static org.junit.Assert.assertNotNull;
 

@@ -10,7 +10,6 @@ import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.logic.Logic;
-import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.Recurrence;
 import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.ToDoBuilder;
@@ -34,13 +33,13 @@ public class AddCommandTest {
     private LocalDateTime now = LocalDateTime.now();
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         logic = initLogic();
         eventsCollector = new EventsCollector();
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         EventsCenter.clearSubscribers();
     }
 
@@ -351,7 +350,7 @@ public class AddCommandTest {
         assertToDoExists(logic,
             new ToDoBuilder("task")
                 .withDueDate(
-                    LocalDateTime.now().plusDays(1).withHour(0).withMinute(0),
+                    LocalDateTime.now().plusDays(1).withHour(23).withMinute(59),
                     Recurrence.Monthly
                 )
                 .build()

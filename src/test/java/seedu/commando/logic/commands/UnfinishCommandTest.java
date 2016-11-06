@@ -14,7 +14,6 @@ import seedu.commando.testutil.EventsCollector;
 import seedu.commando.testutil.ToDoBuilder;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 import static org.junit.Assert.*;
 import static seedu.commando.logic.LogicManagerTest.initLogic;
@@ -29,13 +28,13 @@ public class UnfinishCommandTest {
     private EventsCollector eventsCollector;
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         logic = initLogic();
         eventsCollector = new EventsCollector();
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         EventsCenter.clearSubscribers();
     }
 
@@ -116,6 +115,37 @@ public class UnfinishCommandTest {
         assertTrue(result.hasError());
         assertEquals(String.format(Messages.UNFINISH_COMMAND_CANNOT_UNFINISH_EVENT, "test"), 
                 result.getFeedback());
+    }
+    
+    //@@author A0142230B
+    @Test
+    public void execute_unfinishMutipleTaskAndEvent_error() throws IllegalValueException {
+        logic.execute("add title1");
+        logic.execute("finish 1");
+        logic.execute("add title2 on yesterday");
+        logic.execute("recall");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("unfinish 1 2");
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertEquals(String.format(Messages.UNFINISH_COMMAND_CANNOT_UNFINISH_EVENT, "title2"), result.getFeedback());
+    }
+    
+    @Test
+    public void execute_deleteMutipleTasks_Finished() throws IllegalValueException {
+        logic.execute("add title1");
+        logic.execute("add title2");
+        logic.execute("finish 1-2");
+        logic.execute("recall");
+
+        eventsCollector.reset();
+
+        logic.execute("unfinish 1-2");
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertToDoExists(logic, new ToDoBuilder("title1").build());
+        assertToDoExists(logic, new ToDoBuilder("title2").build());
     }
 
 }

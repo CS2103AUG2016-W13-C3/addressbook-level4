@@ -1,8 +1,6 @@
 package seedu.commando.logic.commands;
 
 import seedu.commando.commons.core.EventsCenter;
-import seedu.commando.commons.exceptions.IllegalValueException;
-import seedu.commando.model.ui.UiModel;
 import seedu.commando.model.Model;
 
 //@@author A0139697H

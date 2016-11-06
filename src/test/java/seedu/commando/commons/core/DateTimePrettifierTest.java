@@ -28,14 +28,6 @@ public class DateTimePrettifierTest {
     private final int tomorrowMonth = now.plusDays(1).getMonthValue();
     private final int tomorrowDay = now.plusDays(1).getDayOfMonth();
     
-    @Before
-    public void setup() {
-    }
-
-    @After
-    public void teardown() {
-    }
-    
     @Test
     public void prettifyDateTime_currentYear_dontShowYear() {
         // Should not display year
@@ -198,5 +190,15 @@ public class DateTimePrettifierTest {
         final LocalDateTime dateTo = untilNever;
         assertEquals("From 12:30 Today onwards",
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
+    }
+
+    @Test
+    public void prettifyDateTimeRange_todayToNextYearToday_showTodayToNextYearToday() {
+        final LocalDateTime dateFrom = LocalDateTime.now().withHour(1).withMinute(0);
+        final LocalDateTime dateTo = LocalDateTime.now().withHour(1).withMinute(0).plusYears(1);
+        assertEquals(
+            "01:00 Today to 01:00 on " + DateTimeFormatter.ofPattern("EEE d MMM YYYY").format(dateTo),
+            DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo)
+        );
     }
 }

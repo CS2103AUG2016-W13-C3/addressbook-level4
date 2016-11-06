@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
+import org.controlsfx.tools.Platform;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -40,7 +41,7 @@ public class StoreCommandTest {
     private File toDoListFile;
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         model = new ModelManager();
 
         toDoListFile = folder.newFile();
@@ -55,7 +56,7 @@ public class StoreCommandTest {
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         EventsCenter.clearSubscribers();
     }
 
@@ -91,14 +92,41 @@ public class StoreCommandTest {
     }
 
     @Test
-    public void execute_storeValidPath_fileSaved() throws IOException {
+    public void execute_storeValidPath_fileSaved() throws IOException, InterruptedException {
         String storeFilePath = folder.getRoot() + "/test.xml";
 
         CommandResult result = logic.execute("store " + storeFilePath);
         assertFalse(result.hasError());
         assertEquals(String.format(Messages.STORE_COMMAND, storeFilePath), result.getFeedback());
         assertTrue(eventsCollector.hasCollectedEvent(ToDoListFilePathChangeRequestEvent.class));
+
+        // Storage should save to-do list in <= 1s
+        Thread.sleep(1000);
         assertTrue(eventsCollector.hasCollectedEvent(ToDoListSavedEvent.class));
+    }
+
+    @Test
+    public void execute_storeToExistingFile_error() throws IOException, InterruptedException {
+        File file = folder.newFile();
+
+        CommandResult result = logic.execute("store " + file.getPath());
+        assertTrue(result.hasError());
+        assertEquals(String.format(Messages.STORE_COMMAND_FILE_EXIST, file.getPath()), result.getFeedback());
+    }
+
+    @Test
+    public void execute_storeToExistingFileButOverride_fileSaved() throws IOException, InterruptedException {
+        String storeFilePath = folder.newFile().getPath();
+
+        CommandResult result = logic.execute("store " + storeFilePath + " override");
+        assertFalse(result.hasError());
+        assertEquals(String.format(Messages.STORE_COMMAND, storeFilePath), result.getFeedback());
+        assertTrue(eventsCollector.hasCollectedEvent(ToDoListFilePathChangeRequestEvent.class));
+
+        // Storage should save to-do list in <= 1s
+        Thread.sleep(1000);
+        assertTrue(eventsCollector.hasCollectedEvent(ToDoListSavedEvent.class));
+        assertTrue(Arrays.equals(Files.readAllBytes(toDoListFile.toPath()), Files.readAllBytes(Paths.get(storeFilePath))));
     }
 
 }

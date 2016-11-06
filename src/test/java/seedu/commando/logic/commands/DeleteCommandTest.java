@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 import seedu.commando.commons.core.EventsCenter;
@@ -35,13 +34,13 @@ public class DeleteCommandTest {
     private int nextYear = LocalDate.now().getYear() + 1;
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         logic = initLogic();
         eventsCollector = new EventsCollector();
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         EventsCenter.clearSubscribers();
     }
 
@@ -266,5 +265,50 @@ public class DeleteCommandTest {
         CommandResult result = logic.execute("delete 1 recurrence");
         assertTrue(result.hasError());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
+    
+    //@@author A0142230B
+    @Test
+    public void execute_deleteMutipleToDo_deletedToDos() throws IllegalValueException {
+        logic.execute("add title1");
+        logic.execute("add title2");
+        logic.execute("add title3");
+
+        eventsCollector.reset();
+
+        logic.execute("delete 1-3");
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertToDoNotExists(logic, new ToDoBuilder("title1").build());
+        assertToDoNotExists(logic, new ToDoBuilder("title3").build());
+        assertToDoNotExists(logic, new ToDoBuilder("title2").build());
+    }
+    
+    @Test
+    public void execute_deleteMutipleWithTag_deletedTag() throws IllegalValueException {
+        logic.execute("add title1 #test1");
+        logic.execute("add title2 #test2");
+        logic.execute("add title3 #test3");
+
+        eventsCollector.reset();
+
+        logic.execute("delete 1 3 tag");
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertToDoExists(logic, new ToDoBuilder("title1").build());
+        assertToDoExists(logic, new ToDoBuilder("title3").build());
+        assertToDoExists(logic, new ToDoBuilder("title2").withTags("test2").build());
+    }
+    
+    @Test
+    public void execute_deleteMutipleTimeWithSomeFloatingTasks_error() throws IllegalValueException {
+        logic.execute("add title1 by 12/12/2016");
+        logic.execute("add title2");
+        logic.execute("add title3 by 13/12/2016");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("delete 1-3 time");
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertEquals(String.format(Messages.DELETE_COMMAND_NO_TIME_CONSTRAINTS, 3), result.getFeedback() );
     }
 }

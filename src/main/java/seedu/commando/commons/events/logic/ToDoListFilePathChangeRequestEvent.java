@@ -1,7 +1,6 @@
 package seedu.commando.commons.events.logic;
 
 import seedu.commando.commons.events.BaseEvent;
-import seedu.commando.model.todo.ReadOnlyToDoList;
 //@@author A0142230B
 /**
  * An event requesting to change the to-do list file path

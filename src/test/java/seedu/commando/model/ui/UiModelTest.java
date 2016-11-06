@@ -4,6 +4,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import seedu.commando.commons.exceptions.IllegalValueException;
+import seedu.commando.model.Model;
 import seedu.commando.model.ToDoListManager;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.ToDoList;
@@ -19,7 +20,7 @@ public class UiModelTest {
     private ToDoListManager toDoListManager;
 
     @Before
-    public void setup() throws IllegalValueException {
+    public void setUp() throws IllegalValueException {
         ReadOnlyToDoList toDoList = new ToDoList()
             .add(TaskOldDueUnfinishedNewCreated)
             .add(TaskOldDueUnfinishedOldCreated)
@@ -57,7 +58,7 @@ public class UiModelTest {
     // Check if the order of events for ui is correct for history mode
     @Test
     public void getUiEvents_setupFinishedMode_orderCorrect() {
-        uiModel.setToDoListFilter(Collections.emptySet(), Collections.emptySet(), UiModel.FILTER_MODE.FINISHED);
+        uiModel.setToDoListFilter(Collections.emptySet(), Collections.emptySet(), Model.FILTER_MODE.FINISHED);
         List<UiToDo> events = uiModel.getEvents();
 
         assertEquals(2, events.size());
@@ -84,7 +85,7 @@ public class UiModelTest {
     // Check if the order of tasks for ui is correct for history
     @Test
     public void getUiTasks_setupFinishedMode_orderCorrect() {
-        uiModel.setToDoListFilter(Collections.emptySet(), Collections.emptySet(), UiModel.FILTER_MODE.FINISHED);
+        uiModel.setToDoListFilter(Collections.emptySet(), Collections.emptySet(), Model.FILTER_MODE.FINISHED);
 
         List<UiToDo> tasks = uiModel.getTasks();
 

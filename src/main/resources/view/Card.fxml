@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="eventPane" maxHeight="1.7976931348623157E308" minHeight="-Infinity" onMouseEntered="#activateHoverState" onMouseExited="#deactivateHoverState" styleClass="card-pane" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="cardPane" maxHeight="1.7976931348623157E308" minHeight="-Infinity" onMouseEntered="#activateHoverState" onMouseExited="#deactivateHoverState" styleClass="card-pane" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" minHeight="-Infinity" spacing="5" HBox.hgrow="ALWAYS">
          <children>

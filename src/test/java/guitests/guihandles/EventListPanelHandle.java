@@ -2,7 +2,6 @@ package guitests.guihandles;
 
 
 import guitests.GuiRobot;
-import guitests.utils.TestApp;
 import guitests.utils.TestUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -21,12 +20,12 @@ import static org.junit.Assert.assertTrue;
 //@@author A0122001M
 
 /**
- * Provides a handle for the panel containing the Todo list.
+ * Provides a handle for the panel containing the event list.
  */
 public class EventListPanelHandle extends GuiHandle implements ToDoListPanelHandle {
 
     public static final int NOT_FOUND = -1;
-    public static final String CARD_PANE_ID = "#eventPane";
+    public static final String CARD_PANE_ID = "#cardPane";
 
     private static final String EVENT_LIST_VIEW_ID = "#eventListView";
 

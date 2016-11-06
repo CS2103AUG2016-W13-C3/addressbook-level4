@@ -5,71 +5,74 @@ body {
 }
 
 a {
-  color: #d5000d;
+    color: #d5000d;
 }
 
-a:hover {
-  color: #c5000c;
-}
+    a:hover {
+        color: #c5000c;
+    }
 
 blockquote {
-    border-left: 5px solid #CC4444;
     padding: 10px;
     color: #444444;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(190, 190, 190, 0.2);
     overflow: auto;
     text-shadow: none;
-    border-radius: 0 6px 6px 0;
+    border-radius: 0 12px 12px 0;
+    border-left: 5px solid #CC4444;
     margin-left: 20px;
     padding-left: 20px;
 }
 
-blockquote>b {
-    font-weight: bold;
-    padding-right: 10px;
-}
+    blockquote > b {
+        font-weight: bold;
+        padding-right: 10px;
+    }
 
 
 code, pre {
-  padding-left: 3px;
-  padding-right: 3px;
-  font-family: Consolas;
-  color: #303030;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-family: Consolas;
+    color: #303030;
 }
 
 pre {
-  color: #DCDCCC;
-  text-shadow: none;
-  background: #3F3F3F;
-  border: solid 3px #101010;
-  border-radius: 6px;
-  white-space: normal;
-  font-size: 0.9em;
+    color: #DCDCCC;
+    text-shadow: none;
+    background: #4F4F4F;
+    border: solid 2px #928097;
+    border-radius: 6px;
+    white-space: normal;
+    font-size: 0.9em;
 }
 
-pre span {
-    color: #c3e069;
-}
+    pre span {
+        color: #c3e069;
+    }
 
-pre span.inputstart {
-    color: #99dfcd;
-}
+        pre span.inputstart {
+            color: #99dfcd;
+        }
 
-pre i {
-    padding-left: 0.4em;
-    padding-right: 0.4em;
-    color: #CEDF99;
-}
+    pre i {
+        padding-left: 0.4em;
+        padding-right: 0.4em;
+        color: #CEDF99;
+    }
 
-pre em {
-    color: #FFFFFF;
-}
+    pre em {
+        color: #FFFFFF;
+    }
 
 code {
-  border: solid 3px #7D7D7D;
-  border-radius: 6px;
-  background-color: #FFFFFF;
-  color: #303030
+    background: #eeeeee; /* Old browsers */
+    background: -moz-linear-gradient(top, #eeeeee 0%, #ffffff 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #eeeeee 0%,#ffffff 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #eeeeee 0%,#ffffff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+    border-radius: 6px;
+    color: #303030;
 }
 
 a code {
@@ -77,23 +80,23 @@ a code {
 }
 
 h3 code {
-  font-size: inherit;
+    font-size: inherit;
 }
 
 table.black tbody {
-  background: #303030;
-  color: #FFFFFF;
+    background: #303030;
+    color: #FFFFFF;
 }
 
-table.black tbody td {
-    border-bottom: 0;
-}
+    table.black tbody td {
+        border-bottom: 0;
+    }
 
 table pre {
     white-space: normal;
-  border-radius: 0;
-  border: solid 3px #303030;
-  margin: -3px 0;
+    border-radius: 0;
+    border: solid 3px #303030;
+    margin: -3px 0;
 }
 
 ul#first-layer,
@@ -102,40 +105,40 @@ ul#search-logic {
     margin-left: -25px;
 }
 
-ul#first-layer li {
-    margin-bottom: 0;
-}
+    ul#first-layer li {
+        margin-bottom: 0;
+    }
 
-ul#first-layer li:before,
-ul#search-logic li:before {
-    /*
+        ul#first-layer li:before,
+        ul#search-logic li:before {
+            /*
     The desired width gets defined in two places: The element width, and background size.
     The height only gets defined once, in background size.
     */
-    display: inline-block;
-    content: '\2022'; /* bullet point, for screen readers */
-    text-indent: -999999px; /* move the bullet point out of sight */
-    width: 20px; /* desired width of the image */
-    background-repeat: no-repeat;
-    background-image: url('../images/Magnifying_glass_icon.svg.png');
-    background-size: 20px 20px;
-    background-position: 0 .2em;
-    padding-right: 5px;
-}
+            display: inline-block;
+            content: '\2022'; /* bullet point, for screen readers */
+            text-indent: -999999px; /* move the bullet point out of sight */
+            width: 20px; /* desired width of the image */
+            background-repeat: no-repeat;
+            background-image: url('../images/Magnifying_glass_icon.svg.png');
+            background-size: 20px 20px;
+            background-position: 0 .2em;
+            padding-right: 5px;
+        }
 
 
-ul#first-layer ul#second-layer {
-    list-style: none;
-}
+    ul#first-layer ul#second-layer {
+        list-style: none;
+    }
 
-ul#first-layer ul#second-layer li:before {
-    margin-left: 0;
-    background-size: 12px 12px;
-    background-position: 0.3em .3em;
-}
+        ul#first-layer ul#second-layer li:before {
+            margin-left: 0;
+            background-size: 12px 12px;
+            background-position: 0.3em .3em;
+        }
 
 h2 {
-   -webkit-margin-before: 0px;
+    -webkit-margin-before: 0px;
 }
 
 img {
@@ -145,12 +148,12 @@ img {
 }
 
 figure {
-  text-align: center;
+    text-align: center;
 }
 
 figcaption {
-  font-size: 14px;
-  margin-bottom: 30px;
+    font-size: 12px;
+    margin-bottom: 30px;
 }
 
 figure img {
@@ -179,6 +182,19 @@ kbd.light {
     width: auto;
 }
 
-.datagrid.class table th {
-    text-align: center;
+    .datagrid.class table th {
+        text-align: center;
+    }
+
+ul.use-case li {
+    list-style: none;
+}
+
+span.comment {
+    font-size: 14px;
+    color: #644;
+    padding: 0;
+    margin: 0;
+    display: block;
+    margin-top: -10px;
 }

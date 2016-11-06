@@ -8,6 +8,8 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.core.Messages;
+import seedu.commando.commons.events.logic.ToDoListFilePathChangeRequestEvent;
+import seedu.commando.commons.events.storage.ToDoListSavedEvent;
 import seedu.commando.logic.Logic;
 import seedu.commando.logic.LogicManager;
 import seedu.commando.model.Model;
@@ -36,7 +38,7 @@ public class ExportCommandTest {
     private EventsCollector eventsCollector;
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         toDoListFile = folder.newFile();
         File userPrefsFile  = folder.newFile();
         Model model = new ModelManager();
@@ -50,7 +52,7 @@ public class ExportCommandTest {
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         EventsCenter.clearSubscribers();
     }
 
@@ -91,5 +93,24 @@ public class ExportCommandTest {
         CommandResult result = logic.execute("export " + file.getPath());
         assertTrue(result.hasError());
         assertEquals(String.format(Messages.EXPORT_COMMAND_FILE_EXIST, file.getPath()), result.getFeedback());
+    }
+
+    @Test
+    public void execute_exportToExistingFile_error() throws IOException, InterruptedException {
+        File file = folder.newFile();
+
+        CommandResult result = logic.execute("export " + file.getPath());
+        assertTrue(result.hasError());
+        assertEquals(String.format(Messages.EXPORT_COMMAND_FILE_EXIST, file.getPath()), result.getFeedback());
+    }
+
+    @Test
+    public void execute_exportToExistingFileButOverride_fileSaved() throws IOException, InterruptedException {
+        String filePath = folder.newFile().getPath();
+
+        CommandResult result = logic.execute("export " + filePath + " override");
+        assertFalse(result.hasError());
+        assertEquals(String.format(Messages.EXPORT_COMMAND, filePath), result.getFeedback());
+        assertTrue(Arrays.equals(Files.readAllBytes(toDoListFile.toPath()), Files.readAllBytes(Paths.get(filePath))));
     }
 }

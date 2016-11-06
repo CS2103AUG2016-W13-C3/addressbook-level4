@@ -2,7 +2,6 @@ package guitests.guihandles;
 
 
 import guitests.GuiRobot;
-import guitests.utils.TestApp;
 import guitests.utils.TestUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -21,12 +20,12 @@ import static org.junit.Assert.assertTrue;
 //@@author A0122001M
 
 /**
- * Provides a handle for the panel containing the Todo list.
+ * Provides a handle for the panel containing the task list.
  */
 public class TaskListPanelHandle extends GuiHandle implements ToDoListPanelHandle {
 
     public static final int NOT_FOUND = -1;
-    public static final String CARD_PANE_ID = "#taskPane";
+    public static final String CARD_PANE_ID = "#cardPane";
 
     private static final String TASK_LIST_VIEW_ID = "#taskListView";
 
@@ -165,6 +164,9 @@ public class TaskListPanelHandle extends GuiHandle implements ToDoListPanelHandl
         return guiRobot.lookup(CARD_PANE_ID).queryAll();
     }
 
+    /**
+     * Get the number of ToDo items in the panel
+     */
     public int getNumberOfToDo() {
         return getListView().getItems().size();
     }

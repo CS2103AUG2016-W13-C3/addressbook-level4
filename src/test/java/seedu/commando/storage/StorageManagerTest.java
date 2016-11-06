@@ -6,8 +6,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
-import seedu.commando.commons.events.model.ToDoListChangedEvent;
-import seedu.commando.commons.events.storage.DataSavingExceptionEvent;
 import seedu.commando.commons.exceptions.IllegalValueException;
 import seedu.commando.model.todo.ReadOnlyToDoList;
 import seedu.commando.model.todo.ToDoList;
@@ -32,19 +30,17 @@ public class StorageManagerTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private EventsCollector eventCollector;
     private File toDoListFile;
     private File userPrefsFile;
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         toDoListFile = folder.newFile();
         userPrefsFile = folder.newFile();
         storageManager = new StorageManager(
             toDoListFile.getAbsolutePath(),
             userPrefsFile.getAbsolutePath()
         );
-        eventCollector = new EventsCollector();
     }
 
     /*

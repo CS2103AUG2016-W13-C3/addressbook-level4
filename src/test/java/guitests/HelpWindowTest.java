@@ -37,7 +37,7 @@ public class HelpWindowTest extends CommanDoGuiTest {
      */    
     private void assertHelpWindowOpenAtCommand(HelpWindowHandle helpWindowHandle, String commandName) {
         assertTrue(helpWindowHandle.isWindowOpen());
-        assertTrue(helpWindowHandle.isWindowShowing("add"));
+        assertTrue(helpWindowHandle.isWindowShowing(commandName));
         helpWindowHandle.closeWindow();
     }
 }

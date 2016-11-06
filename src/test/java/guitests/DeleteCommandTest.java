@@ -10,9 +10,9 @@ import seedu.commando.model.todo.ToDo;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //@@author A0122001M
 
@@ -53,38 +53,42 @@ public class DeleteCommandTest extends CommanDoGuiTest {
     @Test
     public void deleteCommand_deleteTime_removeTimeAndChangeToTask() {
         ToDo[] currentList = td.getTypicalToDos();
+        String toDoTitle = currentList[0].getTitle().toString();
         // delete the time window
         commandBox.runCommand("delete 1 time");
         currentList = TestUtil.removeToDoFromList(currentList, 1);
         currentList = TestUtil.addToDosToList(currentList, currentList.length, td.toDoItem2.clearTimeConstraint());
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
 
-        assertResultMessage(String.format(Messages.EDIT_COMMAND, "[1]"));
+        assertResultMessage(String.format(Messages.EDIT_COMMAND, toDoTitle));
     }
 
     @Test
     public void deleteCommand_deleteTag_allTagsRemoved() {
         ToDo[] currentList = td.getTypicalToDos();
+        String toDoTitle = currentList[0].getTitle().toString();
+
         // delete the tag
         commandBox.runCommand("delete 1 tag");
         currentList = TestUtil.removeToDoFromList(currentList, 1);
         currentList = TestUtil.addToDosToList(currentList, 0, td.toDoItem2.setTags(Collections.emptySet()));
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
 
-        assertResultMessage(String.format(Messages.EDIT_COMMAND, "[1]"));
+        assertResultMessage(String.format(Messages.EDIT_COMMAND, toDoTitle));
     }
     
     
     @Test
     public void deleteCommand_deleteDeadline_MoveToBottomOfList() {
         ToDo[] currentList = td.getTypicalToDos();
+        String toDoTitle = currentList[2].getTitle().toString();
         // delete the deadline
         commandBox.runCommand("delete 3 time");
         currentList = TestUtil.removeToDoFromList(currentList, 3);
         currentList = TestUtil.addToDosToList(currentList, currentList.length, td.toDoItem4.clearTimeConstraint());
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, currentList));
 
-        assertResultMessage(String.format(Messages.EDIT_COMMAND, "[3]"));
+        assertResultMessage(String.format(Messages.EDIT_COMMAND, toDoTitle));
     }
 
     @Test
@@ -110,12 +114,14 @@ public class DeleteCommandTest extends CommanDoGuiTest {
     
     @Test
     public void deleteCommand_endIndexGreaterThanStartIndex_reportErrorMessage() {
+        //index range invalid
         commandBox.runCommand("delete 2 to 1");
         assertResultMessage(Messages.INDEXRANGE_CONSTRAINTS + "\n" + Messages.DELETE_COMMAND_FORMAT);
     }
     
     @Test
     public void deleteCommand_invalidParams_reportErrorMessage() {
+        // invalid or reordered parameters
         commandBox.runCommand("delete abc 1");
         assertResultMessage(Messages.MISSING_TODO_ITEM_INDEX + "\n" + Messages.DELETE_COMMAND_FORMAT);
         
@@ -138,8 +144,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
      * @param currentList   A copy of the current list of Todos (before deletion).
      */
     private void assertDeleteSuccess(int targetIndexOneIndexed, final ToDo[] currentList) {
-
-        ToDo TodosToDelete = currentList[targetIndexOneIndexed - 1]; 
+        ToDo TodoToDelete = currentList[targetIndexOneIndexed - 1];
         ToDo[] expectedRemainder = TestUtil.removeToDoFromList(currentList, targetIndexOneIndexed);
 
         commandBox.runCommand("delete " + targetIndexOneIndexed);
@@ -148,7 +153,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedRemainder));
 
         // confirm the result message is correct
-        assertResultMessage(String.format(Messages.DELETE_COMMAND, "[" + targetIndexOneIndexed + "]"));
+        assertResultMessage(String.format(Messages.DELETE_COMMAND, getToDosString(Collections.singletonList(TodoToDelete))));
     }
     
     /**
@@ -161,25 +166,27 @@ public class DeleteCommandTest extends CommanDoGuiTest {
      */
     private void assertDeleteConsectiveSuccess(int startIndex, int endIndex, final ToDo[] currentList) {
         ToDo[] expectedRemainder = currentList;
-        String deletedIndices = "[";
 
+        List<ToDo> expectedList = new ArrayList<ToDo>();
         // delete all indices from the list
         for (int i = startIndex; i <= endIndex; i++) {
-            ToDo TodosToDelete = expectedRemainder[startIndex - 1]; 
+            expectedList.add(expectedRemainder[startIndex - 1]);
             expectedRemainder = TestUtil.removeToDoFromList(expectedRemainder, startIndex);
-            deletedIndices += i + ", ";
         }
+
         commandBox.runCommand("delete " + startIndex + " to " + endIndex);
 
         // confirm the list now contains all previous Todoss except the deleted Todos
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedRemainder));
 
-        deletedIndices = deletedIndices.substring(0, deletedIndices.length() - 2) + "]";
-
         // confirm the result message is correct
-        assertResultMessage(String.format(Messages.DELETE_COMMAND, deletedIndices));
+        assertResultMessage(String.format(Messages.DELETE_COMMAND, getToDosString(expectedList)));
     }
-    
+
+    private String getToDosString(List<ToDo> toDos) {
+        return toDos.stream().map(toDo -> toDo.getTitle().toString()).collect(Collectors.joining(", "));
+    }
+
     /**
      * Runs the delete command to delete multiple Todos (e.g. 2 4 5) and
      * confirms the result is correct.
@@ -190,7 +197,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
     private void assertDeleteMultipleSuccess(final ToDo[] currentList, int... indices) {
         ToDo[] expectedRemainder = currentList;
         String deletedIndices = "";
-        
+
         // delete all indices from the list
         List<ToDo> expectedList = new ArrayList<ToDo>();
         for (int i=0; i<indices.length; i++) {
@@ -206,7 +213,7 @@ public class DeleteCommandTest extends CommanDoGuiTest {
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedRemainder));
 
         // confirm the result message is correct
-        assertResultMessage(String.format(Messages.DELETE_COMMAND, Arrays.toString(indices)));
+        assertResultMessage(String.format(Messages.DELETE_COMMAND, getToDosString(expectedList)));
     }
 
 }
