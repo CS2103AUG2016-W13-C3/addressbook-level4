@@ -20,7 +20,7 @@ We are a team based in the [School of Computing, National University of Singapor
 	- [`find` command](https://cs2103aug2016-w13-c3.github.io/main/user#find)
 	- [`edit` command](https://cs2103aug2016-w13-c3.github.io/main/user#edit)
 	- [`help` command](https://cs2103aug2016-w13-c3.github.io/main/user#help)
-	- Deletion of tags, time constraints, recurrence of to-dos with `delete` command [#98](https://github.com/CS2103AUG2016-W13-C3/main/issues/98)
+	- Deletion of tags, time constraints and recurrence of to-dos with `delete` command [#98](https://github.com/CS2103AUG2016-W13-C3/main/issues/98)
 	- Flexible parsing of datetimes for formats: `from ... to ...` and `on ...`
 
 - Code written: [[functional code]](../collated/main/A0139697H.md) [[test code]](../collated/test/A0139697H.md) [[docs]](../collated/docs/A0139697H.md)
@@ -31,6 +31,7 @@ We are a team based in the [School of Computing, National University of Singapor
 	- Draw diagrams in developer guide 
 	- Did morphing of _Logic_ from _AddressBook_ for _CommanDo_ [#5](https://github.com/CS2103AUG2016-W13-C3/main/pull/5)
 	- Improved on content of user and developer guides
+	- Updated diagrams in developer guide
 
 -----
 
@@ -62,7 +63,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 - Component in charge of: [Storage](https://cs2103aug2016-w13-c3.github.io/main/developer#storage-component)
 
-- Aspects/tools in charge of: UI prototypes(PhotoShop), JAXB (XML Binding)
+- Aspects/tools in charge of: UI prototypes (using Photoshop), JAXB (XML Binding)
 
 - Features implemented:
 	- Use of multiple indices in `finish`, `unfinish` and `delete` commands [#106](https://github.com/CS2103AUG2016-W13-C3/main/pull/106)
