@@ -21,7 +21,7 @@ import seedu.commando.model.todo.Tag;
 
 public class EventCard extends UiPart {
 
-    private static final String FXML = "EventCard.fxml";
+    private static final String FXML = "Card.fxml";
     private boolean isFinished;
 
     @FXML
@@ -35,9 +35,7 @@ public class EventCard extends UiPart {
     @FXML
     private Label indexLabel;
     @FXML
-    private Label dateIntervalLabel;
-    @FXML
-    private Label endLabel;
+    private Label dateLabel;
     @FXML
     private Label recurrenceLabel;
 
@@ -107,13 +105,12 @@ public class EventCard extends UiPart {
             final DateRange dateRange = toDo.getDateRange().get();
             final long startDayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.startDate);
 
-            dateIntervalLabel.setText(DateTimePrettifier.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
-            dateIntervalLabel
+            dateLabel.setText(DateTimePrettifier.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
+            dateLabel
                     .setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityBlue((int) startDayDifference));
         } else {
             containsDates = false;
-            dateIntervalLabel.setManaged(false);
-            endLabel.setManaged(false);
+            dateLabel.setManaged(false);
         }
     }
     

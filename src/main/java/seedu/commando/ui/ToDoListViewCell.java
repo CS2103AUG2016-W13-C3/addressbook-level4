@@ -1,5 +1,6 @@
 package seedu.commando.ui;
 
+import javafx.application.Platform;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
@@ -18,6 +19,12 @@ class ToDoListViewCell extends ListCell<UiToDo> {
     public ToDoListViewCell(ListView<UiToDo> list, Card card) {
         assert card != null;
         chosenCard = card;
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(list.getWidth());                
+            }
+        });
         prefWidthProperty().bind(list.widthProperty().subtract(2));
     }
     
