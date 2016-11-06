@@ -19,13 +19,7 @@ class ToDoListViewCell extends ListCell<UiToDo> {
     public ToDoListViewCell(ListView<UiToDo> list, Card card) {
         assert card != null;
         chosenCard = card;
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println(list.getWidth());                
-            }
-        });
-        prefWidthProperty().bind(list.widthProperty().subtract(2));
+        prefWidthProperty().bind(list.widthProperty().subtract(10));
     }
     
     @Override

@@ -120,6 +120,13 @@
 	-fx-background-color: #27BDD1;
 }
 
+.list-view .scroll-bar:horizontal .increment-arrow,
+.list-view .scroll-bar:horizontal .decrement-arrow,
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding: 0;
+}
+
 .list-cell {
     -fx-label-padding: 0 0 0 0;
     -fx-graphic-text-gap : 0;
@@ -153,7 +160,7 @@
 	-fx-background-color: derive(#DCDCDC, 50%);
 }
 
-.task-pane, .event-pane {
+.card-pane {
 	-fx-background-color: #DCDCDC;
 	-fx-border-width: 0 0 3px 0;
 	-fx-border-color: white;
