@@ -25,8 +25,8 @@
 }
 
 .label {
-    -fx-font-size: 14pt;
-    -fx-font-family: "Helvetica Light";
+    -fx-font-size: 12pt;
+    -fx-font-family: "Helvetica bold";
     -fx-line-spacing: -0.5em;
     -fx-text-fill: #555555;
     -fx-opacity: 0.9;
@@ -133,19 +133,20 @@
     -fx-padding: 0 0 0 0;
 }
 
-#titleLabel, #indexLabel, #dateIntervalLabel, #dueLabel, #tagsLabel, #recurrenceLabel {
+#titleLabel{
 	-fx-font-family: "Helvetica bold";
 	-fx-font-size: 14pt;
 	-fx-line-spacing: -0.5em;
+	-fx-text-fill:black;
 }
 
 #tagsLabel {
-	-fx-background-radius: 16px;
+	-fx-background-radius: 12px;
 	-fx-background-color: derive(#DCDCDC, 50%);
 }
 
 #recurrenceLabel {
-	-fx-background-radius: 16px;
+	-fx-background-radius: 12px;
 	-fx-background-color: derive(#1d1d1d, 60%); 
 	-fx-text-fill: derive(#DCDCDC, 80%);
 }
@@ -358,11 +359,11 @@
 }
 
 .error-command {
-    -fx-background-color: derive(red, 80%);
+    -fx-background-color: #e74c3c;
 }
 
 .error-result {
-	-fx-border-color: derive(red, 80%);
+	-fx-border-color: #e74c3c;
 }
 
 .tag-selector {
@@ -377,7 +378,7 @@
 }
 
 .recently-modified {
-	-fx-background-color: derive(red, 90%);
+	-fx-background-color: derive(#f1c40f,20%);
 }
 
 .finished {
