@@ -15,7 +15,14 @@ public interface ToDoListPanelHandle {
      * @return true if ToDoList are matched in both panel, else return false
      */
     public static boolean isBothListMatching(EventListPanelHandle eventListPanel, TaskListPanelHandle taskListPanel, ToDo... currentList){
-        return eventListPanel.isListMatching(currentList) && 
+        // Sleep to let the UI update
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return eventListPanel.isListMatching(currentList) &&
                 taskListPanel.isListMatching(eventListPanel.getNumberOfToDo(), currentList);
     }
 }
