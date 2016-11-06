@@ -8,6 +8,7 @@ import seedu.commando.model.Model;
 import seedu.commando.model.todo.ToDoListChange;
 import seedu.commando.model.todo.ToDo;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,6 +38,8 @@ public class FinishCommand extends Command {
         ToDoList finishedToDos = new ToDoList();
 
         // If to-do with the index is valid and not finished, mark it as finished, else throw error message and return
+		LocalDateTime datetimeFinished = LocalDateTime.now();
+
 		for (int index : toDoIndices) {
 			Optional<UiToDo> toDoToFinish = model.getUiToDoAtIndex(index);
 
@@ -48,7 +51,7 @@ public class FinishCommand extends Command {
 				try {
 					listToFinish.add(toDoToFinish.get());
 					// Mark as finished
-					finishedToDos.add(new ToDo(toDoToFinish.get()).setIsFinished(true));
+					finishedToDos.add(new ToDo(toDoToFinish.get()).setDateFinished(datetimeFinished));
 				} catch (IllegalValueException exception) {
 					return new CommandResult(exception.getMessage(), true);
 				}

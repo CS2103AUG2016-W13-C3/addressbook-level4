@@ -20,9 +20,8 @@ We are a team based in the [School of Computing, National University of Singapor
 	- [`find` command](https://cs2103aug2016-w13-c3.github.io/main/user#find)
 	- [`edit` command](https://cs2103aug2016-w13-c3.github.io/main/user#edit)
 	- [`help` command](https://cs2103aug2016-w13-c3.github.io/main/user#help)
-	- Deletion of tags or time constraints of to-do with `delete` command 
-	- Flexible parsing of datetime
-	- Drafted and Kept updating API
+	- Deletion of tags, time constraints and recurrence of to-dos with `delete` command [#98](https://github.com/CS2103AUG2016-W13-C3/main/issues/98)
+	- Flexible parsing of datetimes for formats: `from ... to ...` and `on ...`
 
 - Code written: [[functional code]](../collated/main/A0139697H.md) [[test code]](../collated/test/A0139697H.md) [[docs]](../collated/docs/A0139697H.md)
 
@@ -32,6 +31,7 @@ We are a team based in the [School of Computing, National University of Singapor
 	- Draw diagrams in developer guide 
 	- Did morphing of _Logic_ from _AddressBook_ for _CommanDo_ [#5](https://github.com/CS2103AUG2016-W13-C3/main/pull/5)
 	- Improved on content of user and developer guides
+	- Updated diagrams in developer guide
 
 -----
 
@@ -47,6 +47,7 @@ We are a team based in the [School of Computing, National University of Singapor
 	- Prettifying of datetime on GUI
 	- Splitting to _Events_ and _Tasks_ panels and layout of GUI [#61](https://github.com/CS2103AUG2016-W13-C3/main/pull/61)
 	- User-friendly feedback messages for invalid input [#115](https://github.com/CS2103AUG2016-W13-C3/main/pull/115)
+	- Usability enhancements of using <kbd>Tab</kbd> and arrow keys to switch focus between panels and command box, as well as allowing the user to navigate through his/her command history [#95](https://github.com/CS2103AUG2016-W13-C3/main/issues/95)
 
 - Code written: [[functional code]](../collated/main/A0139080J.md) [[test code]](../collated/test/A0139080J.md) [[docs]](../collated/docs/A0139080J.md)
 
@@ -62,7 +63,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 - Component in charge of: [Storage](https://cs2103aug2016-w13-c3.github.io/main/developer#storage-component)
 
-- Aspects/tools in charge of: UI prototypes(PhotoShop), JAXB (XML Binding)
+- Aspects/tools in charge of: UI prototypes (using Photoshop), JAXB (XML Binding)
 
 - Features implemented:
 	- Use of multiple indices in `finish`, `unfinish` and `delete` commands [#106](https://github.com/CS2103AUG2016-W13-C3/main/pull/106)
@@ -77,6 +78,7 @@ We are a team based in the [School of Computing, National University of Singapor
 	- Did morphing of _Storage_ from _AddressBook_ for _CommanDo_ [#3](https://github.com/CS2103AUG2016-W13-C3/main/pull/3)
 	- Improved developer guide based on feedback
 	- Improved overall coding style issues based on feedback from codacy
+	- Prepared sample data of more than 50 to-dos for testing
 
 -----
 
@@ -100,7 +102,7 @@ We are a team based in the [School of Computing, National University of Singapor
 	- Formatted developer guide appendices 
 	- Added use cases in developer guide
 	- Did morphing of _Model_ from _AddressBook_ for _CommanDo_ [#4](https://github.com/CS2103AUG2016-W13-C3/main/pull/4)
-	- Improved test coverage
+	- Improved test coverage to 90%
  
 -----
 

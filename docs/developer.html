@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿<!-- @@author A0139697H -->
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset='utf-8'>
@@ -15,7 +16,6 @@
 </head>
 
 <body>
-    <!-- @@author A0139080J -->
     <div id="container">
         <div class="inner">
             <header>
@@ -102,7 +102,6 @@
                     </ul>
                 </p>
 
-                <!-- @@author A0139697H -->
                 <h2 id="introduction">Introduction</h2>
 
                 <p><em>CommanDo</em> is a to-do list manager. It is designed to cater to the needs of people who type fast.  The user manage his/her to-do list by typing commands on a text input - just like in a Command Line Interface (CLI). To-dos are displayed on a graphical user interface (GUI), split into 2 panels of <em>Events</em> (To-dos with a date range) and <em>Tasks</em> (To-dos without a date range), as shown below:</p>
@@ -124,7 +123,7 @@
                     Our main target users (<em>Jim</em>) are characterised by people who...
                     <ul>
                         <li>Have most to-dos coming as emails</li>
-                        <li>Update their to-do list very often and desires speed in doing so</li>
+                        <li>Update their to-do list very often and desire speed in doing so</li>
                         <li>Want to capture the idea of deadlines in their to-dos</li>
                     </ul>
                 </p>
@@ -144,7 +143,6 @@
 
                 <p>The full list of features is outlined in our <a href="#appendix-a-user-stories">User Stories</a>. To ensure that the interface is user-friendly and the codebase stays maintainable, we also set ourselves some <a href="#appendix-c-non-functional-requirements">Non-Functional Requirements</a>.</p>
 
-                <!-- @@author A0139080J -->
                 <h2 id="setting-up">Setting Up</h2>
 
                 <h3 id="prerequisites">Prerequisites</h3>
@@ -190,7 +188,6 @@
                     </li>
                 </ol>
 	
-                <!-- @@author A0139697H -->	
                 <h2 id="architecture">Architecture</h2>
 
                 <p>This section explains the high level design of the application. The architecture of <em>CommanDo</em> is as follows:</p>
@@ -225,7 +222,7 @@
                 </ul>
 
                 <p>
-                    To minimize coupling and help with unit testing, the API of each component is defined by a single Java interface known publicly. This Java interface corresponds to the name of component (eg, <em>Logic</em> has the interface <code>Logic.java</code>). Each component then exposes its functionality using a concrete class implementing its interface, as listed below:
+                    To minimize coupling and help with unit testing, the API of each component is defined by a single Java interface known publicly. This Java interface corresponds to the name of component (e.g. <em>Logic</em> has the interface <code>Logic.java</code>). Each component then exposes its functionality using a concrete class implementing its interface, as listed below:
 
                     <div class="datagrid">
                         <table>
@@ -252,11 +249,11 @@
                         Note that for the <em>Model</em> component, besides the API defined by <code>Model.java</code>, it also contains data structures such as the <code>UserPrefs</code> and <code>ReadOnlyToDo</code> classes that the other components are dependent on.
                     </blockquote>
 
-                <p>Underlying all 4 components is the package <code>seedu.commando.commons</code>. It is a collection of utility classes and application constants that are used in all the components. We use <a href="#eventscenter">Event Driven Design</a> for components to communicate with one another, and manage logging through a centralized <a href="logscenter">Logs Center</a>.</p>
+                <p>Underlying all 4 components are the package <code>seedu.commando.commons</code>. It is a collection of utility classes and application constants that are used in all the components. We use <a href="#eventscenter">Event Driven Design</a> for components to communicate with one another, and manage logging through a centralized <a href="logscenter">Logs Center</a>.</p>
 
                 <h3 id="command-execution">What Happens in a Command Execution</h3>
 
-                <p>When the user types a command and presses <kbd class="light">Enter</kbd>, the <em>UI</em> calls the <code>execute(String)</code> method of <em>Logic</em> with the input string. <em>Logic</em> parses the input string amd determines the command type. Then, <em>Logic</em> would call methods of the <em>Model</em> to modify the to-do list, or post events to the <em>Events Center</em> (which would in turn trigger the relevant components to take action). Refer to the following diagram for the execution of command <code>>> add task</code>.</p>
+                <p>When the user types a command and presses <kbd class="light">Enter</kbd>, the <em>UI</em> calls the <code>execute(String)</code> method of <em>Logic</em> with the input string. <em>Logic</em> parses the input string and determines the command type. Then, <em>Logic</em> would call methods of the <em>Model</em> to modify the to-do list, or post events to the <em>Events Center</em> (which would in turn trigger the relevant components to take action). Refer to the following diagram for the execution of command <code>>> add task</code>.</p>
 
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/command-execution-sd.PNG" width="600">
@@ -301,7 +298,7 @@
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/logic-component.PNG" max-width="500">
                     <figcaption>Structure of <em>Logic</em> component</figcaption>
                 </figure>
-
+<!-- @@author A0139080J -->
                 <p>
                     The <em>Logic</em> component (package <code>seedu.commando.logic</code>) is in charge of:
 
@@ -331,7 +328,6 @@
                 <p>
                     The <code>DateTimeParser</code> class in charge of taking in an input string with <code>parseDateTime(String)</code>, and returning a <code>LocalDateTime</code> if the string represents a valid datetime. Within the class, it first validates and pre-processes the input string (using regex), then delegates the actual parsing to the <a href="http://natty.joestelmach.com/"><em>Natty</em></a> library. 
                 </p>
-				<!-- @@author A0122001M -->
                 <h2 id="model-component"><em>Model</em> Component</h2>
 
                 <figure>
@@ -396,7 +392,6 @@
                     All events should extend the <code>BaseEvent</code> class and be placed in package <code>seedu.commando.commons.events</code>.
                 </blockquote>
 				
-				<!-- @@author A0139080J -->
                 <h3 id="logscenter"><code>LogsCenter</code> and Logging</h3>
 
                 <p> We are using the <code>java.util.logging</code> package for logging. The <code>LogsCenter</code> class is used to manage the logging levels and logging destinations. The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level. </p>
@@ -534,7 +529,6 @@
                    </ul>
                </p>
 
-                <!-- @@author A0139697H -->
                 <h2 id="troubleshooting">Troubleshooting</h2>
 
                 <h3 id="faq">Frequently Asked Questions</h3>
@@ -601,6 +595,7 @@
                                 <td align="left">edit the time constraints of my to-dos</td>
                                 <td align="left">correct any typo or update to-dos' timings after they are postponed or confirmed</td>
                             </tr>
+<!-- @@author A0122001M -->
                             <tr>
                                 <td><code>* * *</code></td>
                                 <td align="left">user</td>
@@ -619,7 +614,6 @@
                                 <td align="left">mark my <em>Tasks</em> as done</td>
                                 <td align="left">dismiss pending <em>Tasks</em> that I have done</td>
                             </tr>
-                            <!-- @@author A0139080J -->
                             <tr>
                                 <td><code>* * *</code></td>
                                 <td align="left">user with many to-dos</td>
@@ -683,7 +677,7 @@
                             <tr>
                                 <td><code>* *</code></td>
                                 <td align="left">user</td>
-                                <td align="left">use command keywords (eg, "from", "to", "by") in titles of my to-dos</td>
+                                <td align="left">use command keywords (e.g. "from", "to", "by") in titles of my to-dos</td>
                                 <td align="left">avoid having to change how I write my to-do because of the command keywords</td>
                             </tr>
                             <tr>
@@ -737,7 +731,6 @@
                 </p>
 
                 <div class="pagebreak"> </div>
-                <!-- @@author A0122001M -->
                 <h3 id="appendix-b-use-cases">Appendix B: Use Cases</h3>
 
                 <p>In all the listed use cases, the <strong>System</strong> is our application and the <strong>Actor</strong> is the user.</p>
@@ -813,7 +806,7 @@
                     <li>2. Application adds the <em>Task</em> to the current to-do list and updates the GUI to reflect the changes.</li>
                     <li><i>Use case ends.</i></li>
                 </ul>
-
+<!-- @@author A0142230B -->
                 <span><strong>Extensions:</strong></span>
 
                 <ul class="use-case">
@@ -973,7 +966,6 @@
                     </ul>
                 </ul>
 
-                <!-- @@author A0139697H -->
 
                 <h3 id="appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</h3>
 

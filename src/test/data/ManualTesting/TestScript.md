@@ -1,20 +1,165 @@
-#Manual Testing Guidelines
+# Manual Testing Guidelines
 
-Please ensure that you are testing this application in an IDE. In the same folder as this file, there should be a sample data set named `SampleData.xml`.
-I will be referring to todos with a datetime interval as "events", with a deadline as "task with deadline", and without any datetimes as "floating task".
+You can find the sample data at `SampleData.xml` in the same folder as this document. Throughout this document, we will be referring to to-dos with a start and end datetime as _Events_. On the other hand, to-dos without any time constraints or with a single due date are referred to as _Tasks_. 
 
-##Importing
-To import the said data set for testing, first run the application.
-Type 
-```
-> import .\src\test\data\ManualTesting\SampleData.xml
-```
- and submit. (Press enter)
-You will see that there are 9 events and 16 tasks visible on the screen.
-Note that there are 50 todos (events and tasks) present in the data set.
+## Importing Sample Data
 
-##Datetime Formats
-Before you begin adding or editing todos with datetimes, have a quick brief on the formats of date and times accepted.
+To start doing manual scripted testing, follow these steps:
+
+1. Download `commando.jar` from our [releases](https://github.com/CS2103AUG2016-W13-C3/main/releases).
+2. Copy `commando.jar` in a directory that would be the home directory for _CommanDo_
+3. Double-click on `commando.jar`. You should have Java version `1.8.0_60` or later on your device - otherwise, download it [here](https://java.com/en/download/help/download_options.xml). You will notice that a `./data` folder would be created in the home directory for _CommanDo_ you chose.
+4. Download `SampleData.xml` [here](https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/src/test/data/ManualTesting/SampleData.xml) - this is our sample data file of more than 50 to-dos.
+5. Copy `SampleData.xml` into the newly created `./data` folder in the home directory.
+4. Switch back to _CommanDo_, type `>> import ./data/SampleData.xml` and hit <kbd>Enter</kbd>.
+5. You have just used the `import` command to import our sample to-do list into _CommanDo_. You will see that the 2 panels will be populated with to-dos. The to-dos visible are only those which are undone - you can type ` >> recall` to see all to-dos that are done.
+
+For more details on how _CommanDo_ works that is not described in this document, visit our [user guide](https://cs2103aug2016-w13-c3.github.io/main/user).
+
+## Viewing Help: `help` command
+
+Command to type | What should happen |
+------- | :--------------
+`>> help` | Our user guide will open up in a new window.
+`>> help add` | Our user guide will open up in a new window, automatically jumping to the section of "Adding To-Dos" with the `add` command
+`>> help cheatsheet` | Our user guide will open up in a new window, automatically jumping to the section of "Cheatsheet"
+
+## Searching through Undone To-Dos: `find` command
+
+In _CommanDo_, the default view is that every upcoming _Event_ is listed in the left panel and every unfinished _Task_ is listed in the right panel. To search through this list of undone to-dos, you use the `find` command:
+
+Command to type | What should happen |
+------- | :--------------
+`>> find final` | Only upcoming _Events_ and unfinished _Tasks_ with description or tags containing "final" will be listed, in chronological order.
+`>> find #2105` | Only upcoming _Events_ and unfinished _Tasks_ with a tag of "#2105" will be listed, in chronological order.
+`>> find` | All upcoming _Events_ and finished _Tasks_ will be listed, in chronological order (default view).
+
+## Browsing To-Dos that are Done: `recall` command
+
+Any _Event_ that is over, or any _Task_ that has been marked done will be hidden and archived from the next day onwards. To browse through these to-dos that are considered done that are not visible on the default view of _CommanDo_, you use the `recall` command:
+
+Command to type | What should happen |
+------- | :--------------
+`>> recall` | Only past _Events_ and finished _Tasks_ will be listed, in reverse chronological order.
+`>> recall 2105` | Only past _Events_ and finished _Tasks_ with description or tags containing "2105" will be listed, in reverse chronological order.
+`>> recall #homework` | Only past _Events_ and finished _Tasks_ with a tag "#2105" will be listed, in reverse chronological order.
+
+Type `>> find` to return to the default view of all upcoming _Events_ and unfinished _Tasks_.
+
+## Listing To-Dos Within Time Window: `list` command
+
+To browse through both done and undone to-dos within a specific time interval, you use the `list` command:
+
+Command to type | What should happen |
+------- | :--------------
+`>> list` | Shows all to-dos, done and undone.
+`>> list from today to next week` | Shows all _Events_ and _Tasks_ that have time windows or due dates falling within the period between the current day, 0000h, to the Sunday of the week after, 2359h.
+`>> list on dec` | Shows all  _Events_ and _Tasks_ that have time windows or due dates falling within the period between the current year's Dec 1, 0000h, to Dec 31, 2359h.
+
+Type `>> find` to return to the default view of all upcoming _Events_ and unfinished _Tasks_.
+
+## Adding Events: `add` command
+
+An _Event_ is a to-do happening within a time window. When an _Event_ is over, it will drop down to the bottom of the list, greyed out. On the next day, _CommanDo_ will hide it for you. For some to-dos, you might need to scroll down the _Events_ panel, possible by pressing <kbd>Tab</kbd> to switch focus to that panel and pressing the Down arrow key. 
+
+Command to type | What should happen |
+------- | :--------------
+`>> add wild party in hostel room from Dec 2016 to 1 Jan 2017` | A to-do will appear in the left panel, tinted yellow, which signifies that it is newly added. It will have the description "wild party in hostel room", accompanied by a time window of 31 Dec 2016, 0000h, to 1 Jan 2017, 2359h. If it doesn't appear, it could mean that it has past, and you'll need to type `>> recall` to view it.
+`>> add physics revision from tues 9.30pm to 10pm weekly #physics` | A to-do will appear in the left panel.  It will have the description "physics revision", accompanied by a time window of the current day's coming Tuesday 2130h to 2200h, tagged with "#physics" and a "Weekly" recurrence.
+`>> add tour with Jimmy on next Saturday` | A to-do will appear in the left panel. It will have the description "tour with Jimmy", accompanied by a time window of the current day's next Saturday 0000h to 2359h.
+
+## Adding Tasks: `add` command
+
+A _Task_, on the other hand, is an activity that can be done at your own time or by some due date. When you have completed a _Task_, you can mark it as done with the `finish` command.
+
+Command to type | What should happen |
+------- | :--------------
+`>> add shop for groceries: banana, pineapple, watermelon #housework` | A to-do will appear in the right panel. It will have the description "add shop for groceries: banana, pineapple, watermelon" and has the tag "#housework". You might also need to scroll down the _Tasks_ panel to see the to-do.
+`>> add finish FYP by tomorrow 2359h` | A to-do will appear in the right panel.  It will have the description "finish FYP", accompanied by a due date of the day after the current, 2359h.
+`>> add submit math homework by wed 2359h weekly` | A to-do will appear in the right panel. It will have the description "submit math homework", accompanied by a due date of the current day's coming Wednesday, 2359h, and have the recurrence "Weekly".
+
+## Deleting To-Dos and their Fields: `delete` command
+
+Command to type | What should happen |
+------- | :--------------
+`>> delete 1` | The to-do with the index of "1" will be deleted.
+`>> delete 1 4 5` | The to-dos with the indices of "1", "4" and "5" will be deleted.
+`>> delete 1 - 5` | The to-dos with the indices of "1", "2", "3", "4" and "5" will be deleted.
+`>> delete 1 time` | The to-do with the index of "1" will have its time window (if it's an _Event_) or due date (if it's a _Task_) removed. If the to-do is a _Task_ without a due date, there will be an error.
+`>> delete 1 tag` | The to-do with the index of "1" will have its tags removed. If the to-do is a to-do without tags, there will be an error.
+`>> delete 1 recurrence` | The to-do with the index of "1" will have its (only) recurrence removed, with its time window or due date preserved. If the to-do is without a recurrence, there will be an error.
+`>> delete 1 - 5 time tag` | The to-do with the index of "1", "2", "3", "4" and "5" will have its time constraints and tags removed. If any of the target to-dos do not have a time constraint or tag, there will be an error and no action will be taken.
+
+## Editing To-Dos: `edit` command
+
+Command to type | What should happen |
+------- | :--------------
+`>> edit 1 #projectABC` | The to-do with the index of "1" will have its tags (if any) replaced with a single tag "#projectABC".
+`>> edit 1 from today 14:00 to 16:00 #important #work` | The to-do with the index of "1" will have its time window changed to the current day 1400h to 1600h and replaces its tags (if any) by #important and #work. If the target to-do is a _Task_ with a due date, there will be an error.
+`>> edit 2 by 6 feb 2017` | The to-do with the index of "2" will have its due date changed (or added) to 6 Feb 2017, 2359h. If the target to-do is an _Event_ with a time window, there will be an error.
+
+## Marking Tasks as Done: `finish` command
+
+A _Task_ can be marked as done with the `finish` command. The to-do will initially be moved to the bottom of its list, greyed out. It is subsequently archived on the next day. As abovementioned, _Events_ will automatically be marked done and greyed out when the current datetime is after the end of their time window. Therefore, you cannot use the `finish` command on an _Event_.
+
+Command to type | What should happen |
+------- | :--------------
+`>> finish 1` | The to-do with the index of "1" will be marked as done, dropping down to the bottom of its list and greyed out. If the target to-do is an _Event_, or if the to-do is already a finished _Task_, there will be an error.
+`>> finish 1 4 5` | The to-dos with the indices of "1", "4" and "5" will be marked as done. If any of the target to-dos is an _Event_, or if any of the to-dos is already a finished _Task_ there will be an error and no action will be taken.
+
+## Marking Tasks as Not Done: `unfinish` command
+
+Command to type | What should happen |
+------- | :--------------
+`>> unfinish 1` | The to-do with the index of "1" will be marked as undone. If the target to-do is an _Event_, or if the to-do is already a undone _Task_, there will be an error.
+
+## Setting Save Location: `store` command
+
+Command to type | What should happen |
+------- | :--------------
+`>> store ./data/new.xml` | The save location for storing the to-do list data will be changed to `./data/new.xml` relative to your `commando.jar`, and latest to-do list data will be saved to that file. From then on, all changes to the to-do list will be saved to that path. If the file already exists, there will be an error.
+`>> store ./data/new.xml override` | The save location for storing the to-do list data will be changed to `./data/new.xml` relative to your `commando.jar`, and latest to-do list data will be saved to that file, overriding any existing file.
+
+## Exporting: `export` command
+
+Command to type | What should happen |
+------- | :--------------
+`>> export ./data/new.xml` | The latest to-do list data will be saved to `./data/new.xml` relative to your `commando.jar`. If the file already exists, there will be an error.
+`>> export ./data/new.xml override` | The latest to-do list data will be saved to `./data/new.xml` relative to your `commando.jar`, overriding any existing file.
+
+## Undoing: `undo` command
+
+Multiple `>> undo` can be used in succcession, only limited in your current session, which ends when you close the application.
+
+Command to type | What should happen |
+------- | :--------------
+`>> undo` | The most recent `add`, `edit`, `delete`, `clear` and `import` command would be reverted.
+
+## Redoing: `redo` command
+
+Multiple `>> redo` can be used in succcession, only limited in your current session, which ends when you close the application.
+
+Command to type | What should happen |
+------- | :--------------
+`>> redo` | The most recent `undo` command would be reverted.
+
+## Clearing To-Do List: `clear` command
+
+Multiple `>> redo` can be used in succcession, only limited in your current session, which ends when you close the application.
+
+Command to type | What should happen |
+------- | :--------------
+`>> clear` |  All to-dos, including those finished and archived, will be removed.
+
+## Exiting: `exit` command
+
+Command to type | What should happen |
+------- | :--------------
+`>> exit` |  _CommanDo_ closes.
+
+## Datetime Formats
+
+There is a quick brief on the formats of date and times accepted.
 
 For dates, you must follow this format : `Day of the month, Month, Year`. * `28/12/2018`, `3 feb 2019`
 
@@ -28,211 +173,4 @@ For times, you must follow either of these formats : `HH:MM`, `HHMMh`, `HHam/pm`
 
 The date must come before the time.
 
-##Adding
-To add an event or a task, you must start your command with a `add` keyword.
-
-###Events
-When adding events, the `from` and `to` keywords, or `on` keyword must be provided, followed by a suitable datetime format.
-
-```
-> add <description> from <start_datetime> to <end_datetime>
-> add <description> on <datetime>
-```
-
-* you must have the keywords `add`, `from` and `to` to tell the application to add an event.
-* the description must not be empty.
-* the datetimes must be valid. (See Datetime Formats)
-* the start datetime must be after the end datetime.
-
-An error will be thrown if any of the conditions are not met, along with detailed formats of the `add` command.
-
-###Tasks
-When adding tasks, the `by` keywords must be provided, followed by a suitable datetime format.
-
-```
-> add <description> by <end_datetime>
-```
-
-* the description must not be empty. (Like events)
-* `by <end_datetime>` is optional. You can add a task without a deadline. It becomes a floating task.
-* if the datetime is present, the datetime must be valid. (See Datetime Formats)
-
-###Recurrence
-Only events and tasks with deadlines can have recurrences. 
-
-* the recurrence keywords, `daily/weekly/monthly/yearly` are parsed as recurrence only if there are datetime(s) in the command.
-* the recurrence keywords must be added to the end of the command, right after the datetime.
-* the length of the event must not exceed the recurrence interval, or an error will be thrown.
-
-```
-> add <description> from <start_datetime> to <end_datetime> <recurrence>
-> add <description> by <end_datetime> <recurrence>
-```
-
-###Tagging
-Any todo can have tags.
-Tags will appear on the right side of the todo, to the left of the datetime if there is a datetime.
-
-* to indicate that the word is a tag, put a `#` in front of it, together.
-* to put multiple tags, separate them by spaces.
-* the tags must appear after both datetimes and recurrence, if either or both fields exist.
-
-```
-> add <description> from <start_datetime> to <end_datetime> <recurrence> #tag1 #tag2...
-> add <description> from by <end_datetime> <recurrence> #tag1 #tag2...
-```
-
-##Finding
-To search for todos containing substring(s), keyword(s), tag(s) or any combination of them, you need a `find` keyword.
-Note that this will only return todos that are not archived.
-
-* the search conditions can be in any order, as long as they are separated by spaces.
-
-```
-> find <substring> <keyword> <tag>
-```
-
-##Editing
-To edit any todo, you would just need the index, which is a number attached to each visible todo.
-The numbers will change with every modification to the visible lists.
-The order would be the visible events first, followed by visible tasks with deadlines, and visible floating tasks.
-Within this 3 groups, they are numbered in chronological order.
-
-###Changing Description
-To change the description of any todo, just provide a `edit` keyword at the start of your command.
-
-* the new description must not be empty, it will throw an error
-
-```
-> edit <index> <new_description>
-```
-
-###Changing Tags
-The general editing format applies to this as well.
-
-* all tags that are attached to the todo will be replaced by the new tags provided
-
-```
-> edit <index> <tags>
-```
-
-###Changing Datetimes and Recurrences
-The recurrence field cannot be edited directly; it must be edited along with the datetimes field.
-Floating tasks can be converted to events or deadlines by editing in the respective fields.
-
-* tasks with deadlines cannot be changed to an event directly, and vice versa.
-* to remove datetimes, please refer to the delete command, which is after this command.
-
-```
-> edit <index> from <start_datetime> to <end_datetime> <recurrence>
-> edit <index> by <end_datetime> <recurrence>
-```
-
-##Deleting
-To delete a todo, the `delete` keyword must be provided.
-Any editable fields, with the exception of description, can be deleted.
-
-###Deleting Tags
-Currently, all tags related to this particular todo will be deleted with this command.
-
-```
-> delete <index> tags
-```
-
-###Deleting Datetimes
-Recurrences are meaningless without datetime(s), and hence will be removed along with the datetime(s).
-
-```
-> delete <index> datetime
-```
-
-###Deleting Recurrences
-
-```
-> delete <index> recurrence
-```
-
-##Marking todos done
-To mark a todo done, the `finish` keyword must be provided.
-The todo will then be shifted to the bottom of the list and greyed out.
-
-* events cannot be marked done.
-* finished tasks cannot be marked finished again.
-
-```
-> finish <index>
-```
-
-##Marking todos not done
-To mark a todo not done, the `unfinish` keyword must be provided.
-
-* events cannot be marked not done.
-* unfinished tasks cannot be marked unfinished again.
-
-```
-> unfinish <index>
-```
-
-##Undo
-This command will rollback the latest change made to the todo list.
-The history of edits extend back to the start of this session.
-
-```
-> undo
-```
-
-##Redo
-Redo the last undo.
-
-```
-> redo
-```
-
-##Recall
-This command lists all todos that are already done.
-The format is similar to the search command.
-
-```
-> recall <substring> <keyword> <tag>
-```
-
-##List
-This command lists all todos, including todos that are already done. 
-
-```
-> list
-> list on <datetime>
-> list to <end_datetime>
-> list from <start_datetime>
-> list from <start_datetime> to <end_datetime>
-```
-
-##Export
-After making edits to the save file, you can export the data into another .xml file.
-If no full filepath is specified, it is taken as a relative filepath to the commanDo.jar file.
-Note that this does not change the default save location, as this command clones the save file in another location.
-
-```
-> export .\src\test\data\ManualTesting\newData.xml
-```
-
-##Store
-This command allows you to change the default save location.
-If the folders specified in the new filepath does not exist, they will be created.
-Note that the save file in the old save location remains.
-
-```
-> store .\src\test\data\ManualTesting\Test\newData.xml
-```
-
-##Help
-This command opens up a link to the user guide of this application.
-If a keyword is provided after the command keyword, the application will attempt to navigate to the header in the user guide.
-List of possible keywords include: ...
-
-* If the keyword does not exist, an error will be returned, showing the list of possible keywords you can provide.
-
-```
-> help
-> help <keyword>
-```
+Refer to the section on [supported datetime formats](https://cs2103aug2016-w13-c3.github.io/main/user#supported-date-time-formats) for more information.
