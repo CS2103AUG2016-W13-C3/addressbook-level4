@@ -104,13 +104,6 @@ public class FinishCommandTest extends CommanDoGuiTest {
         }
         commandBox.runCommand("finish " + startIndex + " to " + endIndex);
 
-        // Sleep to let the UI update
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         //confirm the list now contains all previous Todos except the deleted Todos
         assertTrue(ToDoListPanelHandle.isBothListMatching(eventListPanel, taskListPanel, expectedRemainder));
 
