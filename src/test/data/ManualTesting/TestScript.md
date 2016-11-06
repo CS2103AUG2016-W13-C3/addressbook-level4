@@ -18,7 +18,7 @@ For more details on how _CommanDo_ works that is not described in this document,
 
 ## Viewing Help: `help` command
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> help` | Our user guide will open up in a new window.
 `>> help add` | Our user guide will open up in a new window, automatically jumping to the section of "Adding To-Dos" with the `add` command
@@ -28,7 +28,7 @@ Command | What should happen |
 
 In _CommanDo_, the default view is that every upcoming _Event_ is listed in the left panel and every unfinished _Task_ is listed in the right panel. To search through this list of undone to-dos, you use the `find` command:
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> find final` | Only upcoming _Events_ and unfinished _Tasks_ with description or tags containing "final" will be listed, in chronological order.
 `>> find #2105` | Only upcoming _Events_ and unfinished _Tasks_ with a tag of "#2105" will be listed, in chronological order.
@@ -38,7 +38,7 @@ Command | What should happen |
 
 Any _Event_ that is over, or any _Task_ that has been marked done will be hidden and archived from the next day onwards. To browse through these to-dos that are considered done that are not visible on the default view of _CommanDo_, you use the `recall` command:
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> recall` | Only past _Events_ and finished _Tasks_ will be listed, in reverse chronological order.
 `>> recall 2105` | Only past _Events_ and finished _Tasks_ with description or tags containing "2105" will be listed, in reverse chronological order.
@@ -50,7 +50,7 @@ Type `>> find` to return to the default view of all upcoming _Events_ and unfini
 
 To browse through both done and undone to-dos within a specific time interval, you use the `list` command:
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> list` | Shows all to-dos, done and undone.
 `>> list from today to next week` | Shows all _Events_ and _Tasks_ that have time windows or due dates falling within the period between the current day, 0000h, to the Sunday of the week after, 2359h.
@@ -60,11 +60,11 @@ Type `>> find` to return to the default view of all upcoming _Events_ and unfini
 
 ## Adding Events: `add` command
 
-An _Event_ is a to-do happening within a time window. When an _Event_ is over, it will drop down to the bottom of the list, greyed out. On the next day, _CommanDo_ will hide it for you.
+An _Event_ is a to-do happening within a time window. When an _Event_ is over, it will drop down to the bottom of the list, greyed out. On the next day, _CommanDo_ will hide it for you. For some to-dos, you might need to scroll down the _Events_ panel, possible by pressing <kbd>Tab</kbd> to switch focus to that panel and pressing the Down arrow key. 
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
-`>> add wild party in hostel room from Dec 2016 to 1 Jan 2017` | A to-do will appear in the left panel, tinted yellow, which signifies that it is newly added. You might need to scroll down the _Events_ panel, possible by pressing <kbd>Tab</kbd> to switch focus to that panel and pressing the Down arrow key. It will have the description "wild party in hostel room", accompanied by a time window of 31 Dec 2016, 0000h, to 1 Jan 2017, 2359h. If it doesn't appear, it could mean that it has past, and you'll need to type `>> recall` to view it.
+`>> add wild party in hostel room from Dec 2016 to 1 Jan 2017` | A to-do will appear in the left panel, tinted yellow, which signifies that it is newly added. It will have the description "wild party in hostel room", accompanied by a time window of 31 Dec 2016, 0000h, to 1 Jan 2017, 2359h. If it doesn't appear, it could mean that it has past, and you'll need to type `>> recall` to view it.
 `>> add physics revision from tues 9.30pm to 10pm weekly #physics` | A to-do will appear in the left panel.  It will have the description "physics revision", accompanied by a time window of the current day's coming Tuesday 2130h to 2200h, tagged with "#physics" and a "Weekly" recurrence.
 `>> add tour with Jimmy on next Saturday` | A to-do will appear in the left panel. It will have the description "tour with Jimmy", accompanied by a time window of the current day's next Saturday 0000h to 2359h.
 
@@ -72,7 +72,7 @@ Command | What should happen |
 
 A _Task_, on the other hand, is an activity that can be done at your own time or by some due date. When you have completed a _Task_, you can mark it as done with the `finish` command.
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> add shop for groceries: banana, pineapple, watermelon #housework` | A to-do will appear in the right panel. It will have the description "add shop for groceries: banana, pineapple, watermelon" and has the tag "#housework". You might also need to scroll down the _Tasks_ panel to see the to-do.
 `>> add finish FYP by tomorrow 2359h` | A to-do will appear in the right panel.  It will have the description "finish FYP", accompanied by a due date of the day after the current, 2359h.
@@ -80,7 +80,7 @@ Command | What should happen |
 
 ## Deleting To-Dos and their Fields: `delete` command
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> delete 1` | The to-do with the index of "1" will be deleted.
 `>> delete 1 4 5` | The to-dos with the indices of "1", "4" and "5" will be deleted.
@@ -92,7 +92,7 @@ Command | What should happen |
 
 ## Editing To-Dos: `edit` command
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> edit 1 #projectABC` | The to-do with the index of "1" will have its tags (if any) replaced with a single tag "#projectABC".
 `>> edit 1 from today 14:00 to 16:00 #important #work` | The to-do with the index of "1" will have its time window changed to the current day 1400h to 1600h and replaces its tags (if any) by #important and #work. If the target to-do is a _Task_ with a due date, there will be an error.
@@ -102,27 +102,27 @@ Command | What should happen |
 
 A _Task_ can be marked as done with the `finish` command. The to-do will initially be moved to the bottom of its list, greyed out. It is subsequently archived on the next day. As abovementioned, _Events_ will automatically be marked done and greyed out when the current datetime is after the end of their time window. Therefore, you cannot use the `finish` command on an _Event_.
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> finish 1` | The to-do with the index of "1" will be marked as done, dropping down to the bottom of its list and greyed out. If the target to-do is an _Event_, or if the to-do is already a finished _Task_, there will be an error.
 `>> finish 1 4 5` | The to-dos with the indices of "1", "4" and "5" will be marked as done. If any of the target to-dos is an _Event_, or if any of the to-dos is already a finished _Task_ there will be an error and no action will be taken.
 
 ## Marking Tasks as Not Done: `unfinish` command
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> unfinish 1` | The to-do with the index of "1" will be marked as undone. If the target to-do is an _Event_, or if the to-do is already a undone _Task_, there will be an error.
 
 ## Setting Save Location: `store` command
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> store ./data/new.xml` | The save location for storing the to-do list data will be changed to `./data/new.xml` relative to your `commando.jar`, and latest to-do list data will be saved to that file. From then on, all changes to the to-do list will be saved to that path. If the file already exists, there will be an error.
 `>> store ./data/new.xml override` | The save location for storing the to-do list data will be changed to `./data/new.xml` relative to your `commando.jar`, and latest to-do list data will be saved to that file, overriding any existing file.
 
 ## Exporting: `export` command
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> export ./data/new.xml` | The latest to-do list data will be saved to `./data/new.xml` relative to your `commando.jar`. If the file already exists, there will be an error.
 `>> export ./data/new.xml override` | The latest to-do list data will be saved to `./data/new.xml` relative to your `commando.jar`, overriding any existing file.
@@ -131,7 +131,7 @@ Command | What should happen |
 
 Multiple `>> undo` can be used in succcession, only limited in your current session, which ends when you close the application.
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> undo` | The most recent `add`, `edit`, `delete`, `clear` and `import` command would be reverted.
 
@@ -139,7 +139,7 @@ Command | What should happen |
 
 Multiple `>> redo` can be used in succcession, only limited in your current session, which ends when you close the application.
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> redo` | The most recent `undo` command would be reverted.
 
@@ -147,13 +147,13 @@ Command | What should happen |
 
 Multiple `>> redo` can be used in succcession, only limited in your current session, which ends when you close the application.
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> clear` |  All to-dos, including those finished and archived, will be removed.
 
 ## Exiting: `exit` command
 
-Command | What should happen |
+Command to type | What should happen |
 ------- | :--------------
 `>> exit` |  _CommanDo_ closes.
 
