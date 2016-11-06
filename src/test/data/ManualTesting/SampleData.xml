@@ -4,6 +4,7 @@
         <title>CS2105 assignment 5</title>
         <dueDate>2016-11-02 12:00:00</dueDate>
         <dateCreated>2016-10-25 18:56:26</dateCreated>
+        <dueDateRecurrence>None</dueDateRecurrence>
         <tagged>2105</tagged>
         <tagged>homework</tagged>
     </toDos>
@@ -11,36 +12,31 @@
         <title>CS2105 assignment 6</title>
         <dueDate>2016-11-10 12:00:00</dueDate>
         <dateCreated>2016-10-25 18:56:58</dateCreated>
+        <dueDateRecurrence>None</dueDateRecurrence>
         <tagged>2105</tagged>
-        <tagged>homework</tagged>
-    </toDos>
-    <toDos>
-        <title>CS2106 assignment 4</title>
-        <dueDate>2016-10-28 12:00:00</dueDate>
-        <dateCreated>2016-10-25 19:00:05</dateCreated>
-        <tagged>2106</tagged>
         <tagged>homework</tagged>
     </toDos>
     <toDos>
         <title>CS2106 assignment 5</title>
         <dueDate>2016-11-12 12:00:00</dueDate>
         <dateCreated>2016-10-25 19:02:02</dateCreated>
+        <dueDateRecurrence>None</dueDateRecurrence>
         <tagged>2106</tagged>
         <tagged>homework</tagged>
     </toDos>
     <toDos>
         <title>gym workout</title>
-        <dateRangeStart>2016-10-26 18:00:00</dateRangeStart>
-        <dateRangeEnd>2016-10-26 19:00:00</dateRangeEnd>
+        <dateRangeStart>2016-11-06 18:00:00</dateRangeStart>
+        <dateRangeEnd>2016-11-06 19:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:03:20</dateCreated>
-        <recurrence>Daily</recurrence>
+        <dateRangeRecurrence>Daily</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>CS2103T tutorial</title>
-        <dateRangeStart>2016-10-26 13:00:00</dateRangeStart>
-        <dateRangeEnd>2016-10-26 14:00:00</dateRangeEnd>
+        <dateRangeStart>2016-11-09 13:00:00</dateRangeStart>
+        <dateRangeEnd>2016-11-09 14:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:06:03</dateCreated>
-        <recurrence>Weekly</recurrence>
+        <dateRangeRecurrence>Weekly</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>hall meeting</title>
@@ -48,15 +44,15 @@
         <dateRangeEnd>2016-10-11 21:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:07:34</dateCreated>
         <dateFinished>2016-10-11 21:00:00</dateFinished>
-        <recurrence>None</recurrence>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
         <tagged>hall</tagged>
     </toDos>
     <toDos>
         <title>CS2103T lecture</title>
-        <dateRangeStart>2016-10-28 14:00:00</dateRangeStart>
-        <dateRangeEnd>2016-10-28 16:00:00</dateRangeEnd>
+        <dateRangeStart>2016-11-11 14:00:00</dateRangeStart>
+        <dateRangeEnd>2016-11-11 16:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:10:55</dateCreated>
-        <recurrence>Weekly</recurrence>
+        <dateRangeRecurrence>Weekly</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>read Thinking in Java</title>
@@ -72,7 +68,7 @@
         <dateRangeStart>2016-11-25 17:00:00</dateRangeStart>
         <dateRangeEnd>2016-11-25 19:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:16:47</dateCreated>
-        <recurrence>None</recurrence>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
         <tagged>2105</tagged>
         <tagged>final</tagged>
     </toDos>
@@ -81,7 +77,7 @@
         <dateRangeStart>2016-11-26 15:00:00</dateRangeStart>
         <dateRangeEnd>2016-11-26 17:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:18:32</dateCreated>
-        <recurrence>None</recurrence>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
         <tagged>2106</tagged>
         <tagged>final</tagged>
     </toDos>
@@ -91,7 +87,7 @@
         <dateRangeEnd>2016-10-14 16:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:19:58</dateCreated>
         <dateFinished>2016-10-14 16:00:00</dateFinished>
-        <recurrence>None</recurrence>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
         <tagged>talk</tagged>
     </toDos>
     <toDos>
@@ -99,14 +95,15 @@
         <dateRangeStart>2016-10-26 10:00:00</dateRangeStart>
         <dateRangeEnd>2016-10-26 12:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:21:57</dateCreated>
-        <recurrence>None</recurrence>
+        <dateFinished>2016-10-26 12:00:00</dateFinished>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>geh final</title>
         <dateRangeStart>2016-11-30 11:00:00</dateRangeStart>
         <dateRangeEnd>2016-11-30 12:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:26:56</dateCreated>
-        <recurrence>None</recurrence>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
         <tagged>final</tagged>
         <tagged>geh</tagged>
     </toDos>
@@ -115,14 +112,16 @@
         <dateRangeStart>2016-10-30 09:00:00</dateRangeStart>
         <dateRangeEnd>2016-10-30 11:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:28:21</dateCreated>
-        <recurrence>None</recurrence>
+        <dateFinished>2016-10-30 11:00:00</dateFinished>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>dinner with Jim</title>
         <dateRangeStart>2016-10-26 18:00:00</dateRangeStart>
         <dateRangeEnd>2016-10-26 20:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:32:11</dateCreated>
-        <recurrence>None</recurrence>
+        <dateFinished>2016-10-26 20:00:00</dateFinished>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>buy shampoo</title>
@@ -140,7 +139,7 @@
         <dateRangeEnd>2016-10-20 18:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:55:28</dateCreated>
         <dateFinished>2016-10-20 18:00:00</dateFinished>
-        <recurrence>None</recurrence>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
         <tagged>talk</tagged>
     </toDos>
     <toDos>
@@ -149,12 +148,13 @@
         <dateRangeEnd>2016-10-22 16:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:56:39</dateCreated>
         <dateFinished>2016-10-22 16:00:00</dateFinished>
-        <recurrence>None</recurrence>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>CS2105 revision paper</title>
         <dueDate>2016-11-14 12:00:00</dueDate>
         <dateCreated>2016-10-25 19:57:57</dateCreated>
+        <dueDateRecurrence>None</dueDateRecurrence>
         <tagged>2105</tagged>
         <tagged>homework</tagged>
     </toDos>
@@ -163,21 +163,23 @@
         <dateRangeStart>2016-11-11 21:00:00</dateRangeStart>
         <dateRangeEnd>2016-11-11 22:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 19:59:38</dateCreated>
-        <recurrence>None</recurrence>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>go WOW concert</title>
         <dateRangeStart>2016-10-28 20:00:00</dateRangeStart>
         <dateRangeEnd>2016-10-28 22:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 20:05:15</dateCreated>
-        <recurrence>None</recurrence>
+        <dateFinished>2016-10-28 22:00:00</dateFinished>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>watch WTA final round</title>
         <dateRangeStart>2016-10-27 11:00:00</dateRangeStart>
         <dateRangeEnd>2016-10-27 15:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 20:06:48</dateCreated>
-        <recurrence>None</recurrence>
+        <dateFinished>2016-10-27 15:00:00</dateFinished>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>contact hall office to replace table</title>
@@ -188,16 +190,16 @@
         <dateRangeStart>2016-11-23 17:00:00</dateRangeStart>
         <dateRangeEnd>2016-11-23 19:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 20:09:52</dateCreated>
-        <recurrence>None</recurrence>
-        <tagged>final</tagged>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
         <tagged>1231</tagged>
+        <tagged>final</tagged>
     </toDos>
     <toDos>
         <title>ma2214 final</title>
         <dateRangeStart>2016-11-30 13:00:00</dateRangeStart>
         <dateRangeEnd>2016-11-30 15:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 20:11:08</dateCreated>
-        <recurrence>None</recurrence>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
         <tagged>2214</tagged>
         <tagged>final</tagged>
     </toDos>
@@ -206,7 +208,7 @@
         <dateRangeStart>2016-11-26 13:00:00</dateRangeStart>
         <dateRangeEnd>2016-11-26 15:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 20:11:43</dateCreated>
-        <recurrence>None</recurrence>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
         <tagged>2103</tagged>
         <tagged>final</tagged>
     </toDos>
@@ -216,7 +218,7 @@
         <dateRangeEnd>2016-10-15 12:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 20:12:56</dateCreated>
         <dateFinished>2016-10-15 12:00:00</dateFinished>
-        <recurrence>None</recurrence>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>improve code quality for commando</title>
@@ -232,7 +234,7 @@
         <dateRangeEnd>2016-10-12 23:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 20:15:16</dateCreated>
         <dateFinished>2016-10-12 23:00:00</dateFinished>
-        <recurrence>None</recurrence>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>revise for finals</title>
@@ -247,14 +249,15 @@
         <dateRangeStart>2016-11-01 14:00:00</dateRangeStart>
         <dateRangeEnd>2016-11-01 16:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 20:18:01</dateCreated>
-        <recurrence>None</recurrence>
+        <dateFinished>2016-11-01 16:00:00</dateFinished>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>mom's birthday</title>
         <dateRangeStart>2016-12-12 12:00:00</dateRangeStart>
         <dateRangeEnd>2016-12-12 12:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 20:22:38</dateCreated>
-        <recurrence>Yearly</recurrence>
+        <dateRangeRecurrence>Yearly</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>buy OREO</title>
@@ -270,14 +273,14 @@
         <dateRangeStart>2016-11-25 09:00:00</dateRangeStart>
         <dateRangeEnd>2016-11-25 09:30:00</dateRangeEnd>
         <dateCreated>2016-10-25 20:30:12</dateCreated>
-        <recurrence>Monthly</recurrence>
+        <dateRangeRecurrence>Monthly</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>run 5km</title>
-        <dateRangeStart>2016-10-28 20:00:00</dateRangeStart>
-        <dateRangeEnd>2016-10-28 22:00:00</dateRangeEnd>
+        <dateRangeStart>2016-11-11 20:00:00</dateRangeStart>
+        <dateRangeEnd>2016-11-11 22:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 20:33:11</dateCreated>
-        <recurrence>Weekly</recurrence>
+        <dateRangeRecurrence>Weekly</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>BBQ with Jim</title>
@@ -285,13 +288,14 @@
         <dateRangeEnd>2016-10-19 22:00:00</dateRangeEnd>
         <dateCreated>2016-10-25 20:33:57</dateCreated>
         <dateFinished>2016-10-19 22:00:00</dateFinished>
-        <recurrence>None</recurrence>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
     </toDos>
     <toDos>
         <title>CS2105 assignment 1</title>
         <dueDate>2016-10-11 12:00:00</dueDate>
         <dateCreated>2016-10-25 18:53:57</dateCreated>
         <dateFinished>2016-10-25 20:34:25</dateFinished>
+        <dueDateRecurrence>None</dueDateRecurrence>
         <tagged>2105</tagged>
         <tagged>homework</tagged>
     </toDos>
@@ -300,6 +304,7 @@
         <dueDate>2016-10-11 12:00:00</dueDate>
         <dateCreated>2016-10-25 20:23:37</dateCreated>
         <dateFinished>2016-10-25 20:34:25</dateFinished>
+        <dueDateRecurrence>None</dueDateRecurrence>
         <tagged>homework</tagged>
         <tagged>2101</tagged>
     </toDos>
@@ -308,6 +313,7 @@
         <dueDate>2016-10-13 12:00:00</dueDate>
         <dateCreated>2016-10-25 18:55:32</dateCreated>
         <dateFinished>2016-10-25 20:34:25</dateFinished>
+        <dueDateRecurrence>None</dueDateRecurrence>
         <tagged>2105</tagged>
         <tagged>homework</tagged>
     </toDos>
@@ -316,6 +322,7 @@
         <dueDate>2016-10-14 12:00:00</dueDate>
         <dateCreated>2016-10-25 18:59:05</dateCreated>
         <dateFinished>2016-10-25 20:34:25</dateFinished>
+        <dueDateRecurrence>None</dueDateRecurrence>
         <tagged>2106</tagged>
         <tagged>homework</tagged>
     </toDos>
@@ -324,6 +331,7 @@
         <dueDate>2016-10-17 12:00:00</dueDate>
         <dateCreated>2016-10-25 18:55:41</dateCreated>
         <dateFinished>2016-10-25 20:34:25</dateFinished>
+        <dueDateRecurrence>None</dueDateRecurrence>
         <tagged>2105</tagged>
         <tagged>homework</tagged>
     </toDos>
@@ -332,6 +340,7 @@
         <dueDate>2016-10-20 12:00:00</dueDate>
         <dateCreated>2016-10-25 18:59:26</dateCreated>
         <dateFinished>2016-10-25 20:34:25</dateFinished>
+        <dueDateRecurrence>None</dueDateRecurrence>
         <tagged>2106</tagged>
         <tagged>homework</tagged>
     </toDos>
@@ -340,6 +349,7 @@
         <dueDate>2016-10-24 12:00:00</dueDate>
         <dateCreated>2016-10-25 18:56:01</dateCreated>
         <dateFinished>2016-10-25 20:34:25</dateFinished>
+        <dueDateRecurrence>None</dueDateRecurrence>
         <tagged>2105</tagged>
         <tagged>homework</tagged>
     </toDos>
@@ -348,7 +358,41 @@
         <dueDate>2016-10-25 12:00:00</dueDate>
         <dateCreated>2016-10-25 20:24:14</dateCreated>
         <dateFinished>2016-10-25 20:34:25</dateFinished>
+        <dueDateRecurrence>None</dueDateRecurrence>
         <tagged>homework</tagged>
         <tagged>2101</tagged>
+    </toDos>
+    <toDos>
+        <title>medical checkup</title>
+        <dueDate>2016-11-29 23:59:00</dueDate>
+        <dateCreated>2016-11-06 10:28:28</dateCreated>
+        <dueDateRecurrence>None</dueDateRecurrence>
+    </toDos>
+    <toDos>
+        <title>apply for scholarship</title>
+        <dueDate>2016-12-31 23:59:00</dueDate>
+        <dateCreated>2016-11-06 10:51:47</dateCreated>
+        <dueDateRecurrence>None</dueDateRecurrence>
+    </toDos>
+    <toDos>
+        <title>christmas party</title>
+        <dateRangeStart>2016-12-25 21:00:00</dateRangeStart>
+        <dateRangeEnd>2016-12-25 23:59:00</dateRangeEnd>
+        <dateCreated>2016-11-06 10:57:14</dateCreated>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
+    </toDos>
+    <toDos>
+        <title>CS2106 assignment 4</title>
+        <dueDate>2016-10-28 12:00:00</dueDate>
+        <dateCreated>2016-10-25 19:00:05</dateCreated>
+        <dueDateRecurrence>None</dueDateRecurrence>
+        <tagged>2106</tagged>
+        <tagged>homework</tagged>
+    </toDos>
+    <toDos>
+        <title>do new year's resolutions</title>
+        <dueDate>2017-01-01 23:59:00</dueDate>
+        <dateCreated>2016-11-06 10:58:32</dateCreated>
+        <dueDateRecurrence>Yearly</dueDateRecurrence>
     </toDos>
 </todolist>
