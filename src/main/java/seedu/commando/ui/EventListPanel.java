@@ -72,6 +72,7 @@ public class EventListPanel extends UiPart {
             }
         });
 
+        Platform.runLater(() -> scrollbar = (ScrollBar) eventListView.lookup(".scroll-bar:vertical"));
         eventListView.setItems(eventsForUi);
         eventListView.setCellFactory(listView -> new ToDoListViewCell(eventListView, Card.Event));
     }
