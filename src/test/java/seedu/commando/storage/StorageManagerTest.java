@@ -30,7 +30,6 @@ public class StorageManagerTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private EventsCollector eventCollector;
     private File toDoListFile;
     private File userPrefsFile;
 
@@ -42,7 +41,6 @@ public class StorageManagerTest {
             toDoListFile.getAbsolutePath(),
             userPrefsFile.getAbsolutePath()
         );
-        eventCollector = new EventsCollector();
     }
 
     /*

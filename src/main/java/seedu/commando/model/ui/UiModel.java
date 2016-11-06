@@ -34,6 +34,26 @@ public class UiModel {
     private Model.FILTER_MODE filterMode = Model.FILTER_MODE.ALL;
 
     /**
+     * Predicate that filters to-dos based on filter mode.
+     */
+    private Predicate<ReadOnlyToDo> toDoFilterModePredicate = toDo -> {
+        switch (filterMode) {
+            case ALL:
+                return true;
+            case UNFINISHED:
+                // if unfinished mode but to-do is finished before the current day
+                return !toDo.isFinished()
+                    || (toDo.isFinished() && toDo.getDateFinished().get().toLocalDate().isEqual(LocalDate.now()));
+            case FINISHED:
+                // if finished mode but to-do is unfinished
+                return toDo.isFinished();
+            default:
+                assert false : "Should have covered all filter modes";
+                return false;
+        }
+    };
+
+    /**
      * Initializes with the given to-do list manager, setting its filter mode to UNFINISHED.
      *
      * @param toDoListManager the to-do list manager it tracks and grabs the list of to-dos from
@@ -350,26 +370,6 @@ public class UiModel {
     private boolean checkForTag(ReadOnlyToDo toDo, Tag tag) {
         return toDo.getTags().stream().anyMatch(toDoTag -> toDoTag.value.equalsIgnoreCase(tag.value));
     }
-
-    /**
-     * Predicate that filters to-dos based on filter mode.
-     */
-    private Predicate<ReadOnlyToDo> toDoFilterModePredicate = toDo -> {
-        switch (filterMode) {
-            case ALL:
-                return true;
-            case UNFINISHED:
-                // if unfinished mode but to-do is finished before the current day
-                return !toDo.isFinished()
-                    || (toDo.isFinished() && toDo.getDateFinished().get().toLocalDate().isEqual(LocalDate.now()));
-            case FINISHED:
-                // if finished mode but to-do is unfinished
-                return toDo.isFinished();
-            default:
-                assert false : "Should have covered all filter modes";
-                return false;
-        }
-    };
 
     /**
      * Returns whether a to-do matches a set of keywords and tags.

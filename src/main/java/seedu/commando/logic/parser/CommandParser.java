@@ -393,7 +393,8 @@ public class CommandParser {
     public List<Integer> extractIndicesList() throws IllegalValueException {
         final Matcher matcher = INDEXRANGE_PATTERN.matcher(input.trim());
         List<Integer> indices = new ArrayList<Integer>();
-        int firstInt = -1, secondInt = -1;
+        int firstInt = -1;
+        int secondInt = -1;
         Optional<Integer> aNumber;
 
         // Add the index range to a list of indices

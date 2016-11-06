@@ -28,14 +28,6 @@ public class DateTimePrettifierTest {
     private final int tomorrowMonth = now.plusDays(1).getMonthValue();
     private final int tomorrowDay = now.plusDays(1).getDayOfMonth();
     
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-    
     @Test
     public void prettifyDateTime_currentYear_dontShowYear() {
         // Should not display year
