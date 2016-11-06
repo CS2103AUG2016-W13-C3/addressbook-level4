@@ -91,13 +91,13 @@ public class TaskListPanel extends UiPart {
 
     protected void scrollDown() {
         if (isScrollBarPresent()) {
-            scrollbar.setValue(Math.min(scrollbar.getValue() + 0.2, 1));
+            Platform.runLater(() -> scrollbar.setValue(Math.min(scrollbar.getValue() + 0.2, 1)));
         }
     }
 
     protected void scrollUp() {
         if (isScrollBarPresent()) {
-            scrollbar.setValue(Math.max(scrollbar.getValue() - 0.2, 0));
+            Platform.runLater(() -> scrollbar.setValue(Math.max(scrollbar.getValue() - 0.2, 0)));
         }
     }
     // @@author
