@@ -53,25 +53,31 @@ To browse through both done and undone to-dos within a specific time interval, y
 Command | What should happen |
 ------- | :--------------
 `>> list` | Shows all to-dos, done and undone.
-`>> list from ` | Only past _Events_ and finished _Tasks_ with description or tags containing "2105" will be listed, in reverse chronological order.
-`>> recall #homework` | Only past _Events_ and finished _Tasks_ with a tag "#2105" will be listed, in reverse chronological order.
+`>> list from today to next week` | Shows all _Events_ and _Tasks_ that have time windows or due dates falling within the period between the current day, 0000h, to the Sunday of the week after, 2359h.
+`>> list on dec` | Shows all  _Events_ and _Tasks_ that have time windows or due dates falling within the period between the current year's Dec 1, 0000h, to Dec 31, 2359h.
 
 Type `>> find` to return to the default view of all upcoming _Events_ and unfinished _Tasks_
 
+## Adding Events: `add` command
 
-`>> add physics revision from tues 9.30pm to 10pm weekly #physics` | A to-do will appear in the left panel.  It will have the description "physics revision", accompanied by a time window labelled "21:30 to 22:00 on Tue 8 Nov", tagged with "#physics" and a "Weekly" recurrence.
-`>> add tour with Jimmy on next Saturday` | A to-do will appear in the left panel.  It will have the description "tour with Jimmy", accompanied by a time window labelled "21:30 to 22:00 on Tue 8 Nov".
-
-
-## Adding Events `add` command
-
-An _Event_ is a to-do happening within a time window. In _CommanDo_, by default, every upcoming _Event_ is listed in the left panel, in chronological order. When an _Event_ is over, it will drop down to the bottom of the list, greyed out. On the next day, _CommanDo_ will hide it for you.
+An _Event_ is a to-do happening within a time window. When an _Event_ is over, it will drop down to the bottom of the list, greyed out. On the next day, _CommanDo_ will hide it for you.
 
 Command | What should happen |
 ------- | :--------------
-`>> add wild party in hostel room from 31 Dec 2016 to 1 Jan 2017` | A to-do will appear in the left panel, tinted yellow, which signifies that it is newly added.  It will have the description "wild party in hostel room", accompanied by a time window labelled "00:00 on Sat 31 Dec 2016 to 23:59 on Sun 1 Jan 2017". If it doesn't appear, it means that it has past. 
-`>> add physics revision from tues 9.30pm to 10pm weekly #physics` | A to-do will appear in the left panel.  It will have the description "physics revision", accompanied by a time window labelled "21:30 to 22:00 on Tue 8 Nov", tagged with "#physics" and a "Weekly" recurrence.
-`>> add tour with Jimmy on next Saturday` | A to-do will appear in the left panel.  It will have the description "tour with Jimmy", accompanied by a time window labelled "21:30 to 22:00 on Tue 8 Nov".
+`>> add wild party in hostel room from Dec 2016 to 1 Jan 2017` | A to-do will appear in the left panel, tinted yellow, which signifies that it is newly added. You might need to scroll down the _Events_ panel, possible by pressing <kbd>Tab</kbd> to switch focus to that panel and pressing the Down arrow key. It will have the description "wild party in hostel room", accompanied by a time window of 31 Dec 2016, 0000h, to 1 Jan 2017, 2359h. If it doesn't appear, it could mean that it has past, and you'll need to type `>> recall` to view it.
+`>> add physics revision from tues 9.30pm to 10pm weekly #physics` | A to-do will appear in the left panel.  It will have the description "physics revision", accompanied by a time window of the current day's coming Tuesday 2130h to 2200h, tagged with "#physics" and a "Weekly" recurrence.
+`>> add tour with Jimmy on next Saturday` | A to-do will appear in the left panel. It will have the description "tour with Jimmy", accompanied by a time window of the current day's next Saturday 0000h to 2359h.
+
+## Adding Tasks: `add` command
+
+A _Task_, on the other hand, is an activity that can be done at your own time or by some due date. When you have completed a _Task_, you can mark it as done with the `finish` command.
+
+Command | What should happen |
+------- | :--------------
+`>> add shop for groceries: banana, pineapple, watermelon #housework` | A to-do will appear in the right panel. It will have the description "add shop for groceries: banana, pineapple, watermelon" and has the tag "#housework". You might also need to scroll down the _Tasks_ panel to see the to-do.
+`>> add finish FYP by tomorrow 2359h` | A to-do will appear in the right panel.  It will have the description "finish FYP", accompanied by a due date of the day after the current, 2359h.
+`>> add submit math homework by wednesday 2359h weekly` | A to-do will appear in the right panel. It will have the description "submit math homework", accompanied by a due date of the
+
 
 
 `>> help add` | Our user guide will open up in a new window, automatically jumping to the section of "Adding To-Dos" with the `add` command
