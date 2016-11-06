@@ -11,6 +11,7 @@ import seedu.commando.model.todo.DueDate;
 import seedu.commando.model.todo.Recurrence;
 import seedu.commando.model.todo.Tag;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +28,8 @@ public class CommandParserTest {
 
     private CommandParser commandParser = new CommandParser();
 
-    private static int nextYear = LocalDateTime.now().getYear() + 1;
+    private static int thisYear = LocalDateTime.now().getYear();
+    private static int nextYear = thisYear + 1;
 
     @Test
     public void extractText_emptyString_empty()  {
@@ -325,7 +327,7 @@ public class CommandParserTest {
         assertEquals(
             new DateRange(
                 LocalDateTime.now(),
-                LocalDateTime.of(2017, 1, 21, 0, 0)
+                LocalDateTime.of(2017, 1, 21, 23, 59)
             ),
             dateRange.get()
         );
@@ -344,6 +346,28 @@ public class CommandParserTest {
                 LocalDateTime.of(nextYear, 11, 1, 0, 0),
                 LocalDateTime.of(nextYear, 11, 1, 23, 59),
                 Recurrence.Weekly
+            ),
+            dateRange.get()
+        );
+        assertEquals(
+            "event", commandParser.extractText().orElse("")
+        );
+    }
+
+    @Test
+    public void extractTrailingSingleDateDateRange_withOnMonth_extractedWholeMonth() throws IllegalValueException {
+        commandParser.setInput("event on apr");
+        Optional<DateRange> dateRange = commandParser.extractTrailingSingleDateDateRange();
+        assertTrue(dateRange.isPresent());
+
+        // from april 1 to last day of april 2359h
+        assertEquals(
+            new DateRange(
+                LocalDateTime.of(thisYear, 4, 1, 0, 0),
+                LocalDateTime.of(
+                    thisYear, 4,
+                    LocalDate.of(thisYear, 5, 1).minusDays(1).getDayOfMonth(),
+                    23, 59)
             ),
             dateRange.get()
         );

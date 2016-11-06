@@ -49,7 +49,10 @@
                             <li><a href="#clear">Clearing To-Do List</a></li>
                             <li><a href="#exit">Exiting</a></li>
                         </ul>
-                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#troubleshooting">Troubleshooting</a></li>
+                        <ul id="second-layer">
+                            <li><a href="#faq">Frequently Asked Questions</a></li>
+                        </ul>
                         <li><a href="#cheatsheet">Cheatsheet</a></li>
                     </ul>
                 </p>
@@ -528,36 +531,38 @@
                 <span><strong>Command Format:</strong></span>
                 <pre class="command-format"><span class="inputstart">&gt;&gt;</span> exit</pre>
 
-                <h2 id="faq">FAQ</h2>
+                <h2 id="troubleshooting">Troubleshooting</h2>
 
-                <h3>1. Double-clicking on <code>commando.jar</code> doesn't open up <em>CommanDo</em> or gives an error.</h3>
+                <h3 id="faq">Frequently Asked Questions</h3>
+
+                <h4>1. Double-clicking on <code>commando.jar</code> doesn't open up <em>CommanDo</em> or gives an error.</h4>
 
                 <p>You'll need to install the latest version of Java. Refer to the <a target="_blank" href="https://java.com/en/download/help/download_options.xml">installation guide</a>.</p>
                 <p>On Windows, if you already have the latest verison of Java installed, you might need to right-click the file, click on the option <code>Open with</code>, and choose <em>Java</em>.</p>
 
-                <h3>2. How do I save my to-do list after modifying it?</h3>
+                <h4>2. How do I save my to-do list after modifying it?</h4>
 
                 <p>Your save file is immediately updated after every change. There is no need to save manually.</p>
 
                 <!-- @@author A0139697H -->
-                <h3>3. Is sharing across devices supported?</h3>
+                <h4>3. Is sharing across devices supported?</h4>
 
                 <p><em>CommanDo</em> doesn't directly support syncing of the to-do list across devices. Instead, use the <code>export</code> command to generate a save data file, transfer the file to another device, and use the <code>import</code> command on the 2nd device to import your to-do list from that save file. Alternatively, use a cloud-syncing service (e.g. <a href="dropbox.com">Dropbox</a>) and the <code>store</code> command to sync the to-do list automatically by setting the save location to the same file on both devices. </p>
 
-                <h3>4. I have some <em>Events</em> or <em>Tasks</em> that are not appearing!</h3>
+                <h4>4. I have some <em>Events</em> or <em>Tasks</em> that are not appearing!</h4>
 
                 <p><em>CommanDo</em> automatically hides <em>Events</em> that are already over and <em>Tasks</em> that are already marked done, to ensure that your to-do list is kept clean. To see these to-dos, use the <a href="#recall"><code>recall</code></a> or <a href="#list"><code>list</code></a> commands.</p>
 
-                <h3>5. I keep forgetting how to use certain commands.</h3>
+                <h4>5. I keep forgetting how to use certain commands.</h4>
 
                 <p>The <code>help</code> command can be used to quickly summon this guide or a relevant section of this guide when you need it. Alternatively, you can just try typing a random command - if it is invalid, <em>CommanDo</em> will display the correct command format for that command in the command feedback box just below the command input.</p>
 
-                <h3 id="supported-date-time-formats">6. What date & time formats can I use in my commands?</h3>
+                <h4 id="supported-date-time-formats">6. What date & time formats can I use in my commands?</h4>
 
                 <p><em>CommanDo</em> supports a wide variety of date and time formats, backed by the date parser library <a href="http://natty.joestelmach.com/" target="_blank">natty</a>. A valid datetime contains a valid date, a valid time, or a valid date and time. A sample of the accepted date & time formats are shown below:</p>
                 
                 <!-- @@author A0139080J -->
-                <h4>Valid Dates</h4>
+                <h5>Valid Dates</h5>
 
                 <div class="datagrid">
                     <table>
@@ -574,7 +579,7 @@
                                 <td>
                                     <code>10/2/2016</code> <em>(DD/MM/YYYY)</em>
                                 </td>
-                                <td><code>1 January 2016</code></td>
+                                <td><code>January 2016</code></td>
                                 <td><code>today</code></td>
                                 <td><code>coming fri</code></td>
                             </tr>
@@ -598,18 +603,19 @@
                                 <td></td>
                                 <td><code>3rd Apr</code></td>
                                 <td></td>
+                                <td><code>this feb</code></td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td><code>Sept 29</code></td>
                                 <td></td>
-                                <td></td>
+                                <td><code><em>x</em> days/weeks/months later/ago</code></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <h4>Valid Times</h4>
+                <h5>Valid Times</h5>
 
                 <div class="datagrid">
                     <table>

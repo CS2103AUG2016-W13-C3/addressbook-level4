@@ -510,10 +510,11 @@ public class CommandParser {
             return Optional.empty();
         }
 
-        Optional<LocalDateTime> date = dateTimeParser.parseDateTime(endDateString);
+        Optional<LocalDateTime> endDateTime
+            = dateTimeParser.parseEndDateTime(endDateString);
 
         // Invalid datetime
-        if (!date.isPresent()) {
+        if (!endDateTime.isPresent()) {
             return Optional.empty();
         }
 
@@ -521,7 +522,7 @@ public class CommandParser {
 
         try {
             // Return from now to the date end
-            DateRange dateRange = new DateRange(LocalDateTime.now(), date.get(), recurrence);
+            DateRange dateRange = new DateRange(LocalDateTime.now(), endDateTime.get(), recurrence);
             return Optional.of(dateRange);
         } catch (IllegalValueException e) {
             // Date range was invalid - should not treat it as date range then
@@ -554,7 +555,6 @@ public class CommandParser {
     }
 
     private Optional<DateRange> parseDateRangeWithSingleDate(String dateString, String recurrenceString) {
-
         if (dateString.isEmpty()) {
             return Optional.empty();
         }
@@ -580,13 +580,12 @@ public class CommandParser {
 
     private Optional<DueDate> parseDueDate(String dateString, String recurrenceString) {
         // Parse datetime and recurrence
-        Optional<LocalDateTime> date = dateTimeParser.parseDateTime(
-            dateString, LocalTime.of(23, 59)
-        );
+        Optional<LocalDateTime> datetime
+            = dateTimeParser.parseEndDateTime(dateString);
         Recurrence recurrence = parseRecurrence(recurrenceString);
 
-        if (date.isPresent()) {
-            return Optional.of(new DueDate(date.get(), recurrence));
+        if (datetime.isPresent()) {
+            return Optional.of(new DueDate(datetime.get(), recurrence));
         } else {
             return Optional.empty();
         }
