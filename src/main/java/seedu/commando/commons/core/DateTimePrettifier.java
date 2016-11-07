@@ -102,14 +102,24 @@ public class DateTimePrettifier {
             start += " " + startDateTime.getYear();
         }
 
-        if (sameYear && sameDay) {
+        if (sameYear && sameMonth) {
             // If same year and same month and same day
             // Display one month
-            end = "\n" + getDay(endDateTime) + " " + getMonth(endDateTime) + end;
+            end = " " + getMonth(endDateTime) + end;
         } else {
             // Display both months
-            start = " " + getDay(startDateTime) + " " + getMonth(startDateTime) + start;
-            end = " " + getDay(endDateTime) + " " + getMonth(endDateTime) + end;
+            start = " " + getMonth(startDateTime) + start;
+            end = " " + getMonth(endDateTime) + end;
+        }
+        
+        if (sameYear && sameMonth && sameDay) {
+            // If same year and same month and same day
+            // Display one month
+            end = "\n" + getDay(endDateTime) + end;
+        } else {
+            // Display both months
+            start = " " + getDay(startDateTime) + start;
+            end = " " + getDay(endDateTime) + end;
         }
 
         // If exactly the same date, start will be "", hence there is a need to
