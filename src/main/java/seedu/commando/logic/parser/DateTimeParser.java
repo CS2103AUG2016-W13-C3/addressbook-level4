@@ -30,8 +30,8 @@ public class DateTimeParser {
     private static final String MonthRegexString = "(0?[1-9])|10|11|12";
     private static final String DayOfMonthRegexString = "([12]\\d)|([3][01])|(0?[1-9])";
     private static final String Hours24RegexString = "(1\\d)|20|21|22|23|(0?\\d)";
-    private static final String Hours12RegexString = "11|12|(0?[1-9])";
-    private static final String MinutesRegexString = "([1234]\\d)|(5[0-9])|(0?\\d)";
+    private static final String Hours12RegexString = "10|11|12|(0?[1-9])";
+    private static final String MinutesRegexString = "([1234]\\d)|(5[0-9])|(0\\d)";
 
     private static final String YearRegexString = "(?<year>(" + FullYearRegexString + ")|(" + TwoDigitYearRegexString + "))";
 
@@ -224,21 +224,35 @@ public class DateTimeParser {
         ZoneId zoneId = ZoneOffset.systemDefault();
         LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zoneId);
 
-        // Check if date is inferred
-        if (dateGroup.isDateInferred() && lastLocalDate != null) {
-            localDateTime = LocalDateTime.of(lastLocalDate, localDateTime.toLocalTime());
-        }
+        localDateTime = handleInferredDate(dateGroup, localDateTime);
+        localDateTime = handleInferredTime(dateGroup, defaultTime, localDateTime);
+        localDateTime = resetSeconds(localDateTime);
 
+        // Remember last date parsed
+        lastLocalDate = localDateTime.toLocalDate();
+
+        return localDateTime;
+    }
+
+    private LocalDateTime resetSeconds(LocalDateTime localDateTime) {
+        // Reset seconds
+        localDateTime = localDateTime.withSecond(0).withNano(0);
+        return localDateTime;
+    }
+
+    private LocalDateTime handleInferredTime(DateGroup dateGroup, LocalTime defaultTime, LocalDateTime localDateTime) {
         // Check if time is inferred
         if (dateGroup.isTimeInferred()) {
             localDateTime = LocalDateTime.of(localDateTime.toLocalDate(), defaultTime);
         }
+        return localDateTime;
+    }
 
-        // Reset seconds
-        localDateTime = localDateTime.withSecond(0).withNano(0);
-
-        // Remember last date parsed
-        lastLocalDate = localDateTime.toLocalDate();
+    private LocalDateTime handleInferredDate(DateGroup dateGroup, LocalDateTime localDateTime) {
+        // Check if date is inferred
+        if (dateGroup.isDateInferred() && lastLocalDate != null) {
+            localDateTime = LocalDateTime.of(lastLocalDate, localDateTime.toLocalTime());
+        }
 
         return localDateTime;
     }
@@ -304,6 +318,19 @@ public class DateTimeParser {
         String dateString = dateMatcher.group().trim();
         dateString = handleDateWithSlashes(dateString, dateMatcher);
         dateString = handleDateTwoDigitYear(dateString, dateMatcher);
+        dateString = handleDateWithMonthWord(dateString, dateMatcher);
+        return dateString;
+    }
+
+    private String handleDateWithMonthWord(String dateString, Matcher dateMatcher) {
+        // Special case: for DateWithMonthWordRegexString format,
+        // If its just plain month, add an "coming"
+        if (ifMatcherUsesRegex(dateMatcher, DateWithMonthWordRegexString)) {
+            if (ifMatches(dateString.trim(), MonthWordRegexString)) {
+                return "coming " + dateString;
+            }
+        }
+
         return dateString;
     }
 
@@ -352,7 +379,8 @@ public class DateTimeParser {
                 }
             }
         } catch (IllegalArgumentException exception) {
-        } // no group with "year"
+            // no group with "year", it's okay
+        }
 
         return dateString;
     }

@@ -356,16 +356,16 @@ public class CommandParserTest {
 
     @Test
     public void extractTrailingSingleDateDateRange_withOnMonth_extractedWholeMonth() throws IllegalValueException {
-        commandParser.setInput("event on apr");
+        commandParser.setInput("event on apr 2013");
         Optional<DateRange> dateRange = commandParser.extractTrailingSingleDateDateRange();
         assertTrue(dateRange.isPresent());
 
-        // from april 1 to last day of april 2359h
+        // from april 1 to last day of april 2359h 2013
         assertEquals(
             new DateRange(
-                LocalDateTime.of(thisYear, 4, 1, 0, 0),
+                LocalDateTime.of(2013, 4, 1, 0, 0),
                 LocalDateTime.of(
-                    thisYear, 4,
+                    2013, 4,
                     LocalDate.of(thisYear, 5, 1).minusDays(1).getDayOfMonth(),
                     23, 59)
             ),

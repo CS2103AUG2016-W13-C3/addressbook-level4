@@ -344,6 +344,22 @@ public class DateTimeParserTest {
         );
     }
 
+
+    @Test
+    public void parseDateTime_monthOnly_parsedComingMonth() {
+        LocalDateTime ldt = now.withMonth(1).withDayOfMonth(1);
+        if (ldt.isBefore(now)) {
+            ldt = ldt.plusYears(1);
+        }
+
+        assertEquals(
+            LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
+            dateTimeParser.parseDateTime("jan").orElse(null)
+        );
+    }
+
     @Test
     public void parseDateTime_nextWeekMonthYear_parsed() {
         LocalDateTime ldt = now.plusWeeks(1);
