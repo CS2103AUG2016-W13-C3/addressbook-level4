@@ -29,6 +29,7 @@ public class EventCard extends UiPart {
     private static final int TITLE_PREF_HEIGHT = 30;
     private static final int TITLE_FONT_SIZE = 14;
     private boolean isFinished;
+    private int labelHeight = TITLE_PREF_HEIGHT;
 
     @FXML
     private HBox cardPane;
@@ -78,9 +79,10 @@ public class EventCard extends UiPart {
     public void resizeTitleLabelIfTooLong() {
         // Resize title if too long
         if (toDo.getTitle().value.length() > TITLE_LENGTH_BREAKPOINT) {
+        	labelHeight = (TITLE_PREF_HEIGHT + (toDo.getTitle().value.length() - TITLE_LENGTH_BREAKPOINT) / 2);
             titleLabel.setStyle(
                 "-fx-font-size: " + Math.max(MIN_FONT_SIZE, (TITLE_LENGTH_BREAKPOINT * TITLE_FONT_SIZE / toDo.getTitle().value.length())) + "pt;"
-                    + "-fx-pref-height: " + (TITLE_PREF_HEIGHT + (toDo.getTitle().value.length() - TITLE_LENGTH_BREAKPOINT) / 2) + "pt;"
+                    + "-fx-pref-height: " + labelHeight + "pt;"
             );
         } else {
             titleLabel.setStyle("-fx-font-size: " + TITLE_FONT_SIZE + "pt;");
@@ -130,6 +132,7 @@ public class EventCard extends UiPart {
 
             dateLabel.setText(DateTimePrettifier.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
             dateLabel.setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityBlue((int) startDayDifference));
+            dateLabel.setMinHeight(labelHeight);
         } else {
             containsDates = false;
             // hides the date label
