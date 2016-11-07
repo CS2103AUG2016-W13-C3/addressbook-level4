@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<todolist>
+    <toDos>
+        <title>launch project "GGame"</title>
+        <dueDate>2016-11-10 23:59:00</dueDate>
+        <dateCreated>2016-11-07 21:21:03</dateCreated>
+        <dueDateRecurrence>None</dueDateRecurrence>
+    </toDos>
+    <toDos>
+        <title>review project "Nowhere"</title>
+        <dueDate>2016-11-09 23:59:00</dueDate>
+        <dateCreated>2016-11-07 21:21:41</dateCreated>
+        <dueDateRecurrence>None</dueDateRecurrence>
+    </toDos>
+    <toDos>
+        <title>finish 2016 year summary</title>
+        <dueDate>2016-12-20 23:59:00</dueDate>
+        <dateCreated>2016-11-07 21:23:41</dateCreated>
+        <dueDateRecurrence>None</dueDateRecurrence>
+    </toDos>
+    <toDos>
+        <title>collect user feedback form</title>
+        <dueDate>2016-11-20 23:59:00</dueDate>
+        <dateCreated>2016-11-07 21:24:19</dateCreated>
+        <dueDateRecurrence>None</dueDateRecurrence>
+    </toDos>
+    <toDos>
+        <title>submit new year working plan</title>
+        <dueDate>2017-01-01 23:59:00</dueDate>
+        <dateCreated>2016-11-07 21:26:02</dateCreated>
+        <dueDateRecurrence>None</dueDateRecurrence>
+    </toDos>
+    <toDos>
+        <title>watch IRONMAN-5</title>
+        <dateCreated>2016-11-07 21:26:30</dateCreated>
+    </toDos>
+    <toDos>
+        <title>project conclude session</title>
+        <dateRangeStart>2016-11-10 08:00:00</dateRangeStart>
+        <dateRangeEnd>2016-11-10 10:00:00</dateRangeEnd>
+        <dateCreated>2016-11-07 21:27:40</dateCreated>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
+    </toDos>
+    <toDos>
+        <title>online interview</title>
+        <dateRangeStart>2016-11-21 16:00:00</dateRangeStart>
+        <dateRangeEnd>2016-11-21 18:00:00</dateRangeEnd>
+        <dateCreated>2016-11-07 21:31:04</dateCreated>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
+    </toDos>
+    <toDos>
+        <title>sharing session with new employees</title>
+        <dateRangeStart>2016-11-23 10:00:00</dateRangeStart>
+        <dateRangeEnd>2016-11-23 12:00:00</dateRangeEnd>
+        <dateCreated>2016-11-07 21:33:05</dateCreated>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
+    </toDos>
+    <toDos>
+        <title>meeting with John</title>
+        <dateRangeStart>2016-11-07 12:00:00</dateRangeStart>
+        <dateRangeEnd>2016-11-07 14:00:00</dateRangeEnd>
+        <dateCreated>2016-11-07 21:36:36</dateCreated>
+        <dateFinished>2016-11-07 14:00:00</dateFinished>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
+    </toDos>
+    <toDos>
+        <title>dinner with Jimmy in his house</title>
+        <dateRangeStart>2016-11-06 18:00:00</dateRangeStart>
+        <dateRangeEnd>2016-11-06 20:00:00</dateRangeEnd>
+        <dateCreated>2016-11-07 21:38:28</dateCreated>
+        <dateFinished>2016-11-06 20:00:00</dateFinished>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
+    </toDos>
+    <toDos>
+        <title>watch warrior vs thunder</title>
+        <dateRangeStart>2016-11-04 10:30:00</dateRangeStart>
+        <dateRangeEnd>2016-11-04 12:30:00</dateRangeEnd>
+        <dateCreated>2016-11-07 21:40:43</dateCreated>
+        <dateFinished>2016-11-04 12:30:00</dateFinished>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
+    </toDos>
+    <toDos>
+        <title>meeting with Mr.Tan</title>
+        <dateRangeStart>2016-11-03 12:00:00</dateRangeStart>
+        <dateRangeEnd>2016-11-03 14:00:00</dateRangeEnd>
+        <dateCreated>2016-11-07 21:41:27</dateCreated>
+        <dateFinished>2016-11-03 14:00:00</dateFinished>
+        <dateRangeRecurrence>None</dateRangeRecurrence>
+    </toDos>
+    <toDos>
+        <title>submit oversea traveling declaration</title>
+        <dueDate>2016-11-05 23:59:00</dueDate>
+        <dateCreated>2016-11-07 21:43:45</dateCreated>
+        <dateFinished>2016-11-07 21:44:05</dateFinished>
+        <dueDateRecurrence>None</dueDateRecurrence>
+    </toDos>
+    <toDos>
+        <title>analyse user survey</title>
+        <dueDate>2016-11-07 23:59:00</dueDate>
+        <dateCreated>2016-11-07 21:42:32</dateCreated>
+        <dateFinished>2016-11-07 21:44:05</dateFinished>
+        <dueDateRecurrence>None</dueDateRecurrence>
+    </toDos>
+</todolist>
