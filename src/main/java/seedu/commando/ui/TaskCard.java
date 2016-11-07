@@ -23,6 +23,10 @@ import seedu.commando.model.todo.Recurrence;
 public class TaskCard extends UiPart {
 
     private static final String FXML = "Card.fxml";
+    private static final int MIN_FONT_SIZE = 10;
+    private static final int TITLE_LENGTH_BREAKPOINT = 40;
+    private static final int TITLE_FONT_SIZE = 14;
+    private static final int TITLE_PREF_HEIGHT = 30;
     private boolean isFinished;
 
     @FXML
@@ -63,10 +67,24 @@ public class TaskCard extends UiPart {
         titleLabel.setText(toDo.getTitle().value);
         indexLabel.setText(String.valueOf(index));
 
+        resizeTitleLabelIfTooLong();
+
         setDateTimeLabel();
         setRecurrenceLabel();
         createTagLabels();
         checkContainsTagsAndDates();
+    }
+
+    public void resizeTitleLabelIfTooLong() {
+        // Resize title if too long
+        if (toDo.getTitle().value.length() > TITLE_LENGTH_BREAKPOINT) {
+            titleLabel.setStyle(
+                "-fx-font-size: " + Math.max(MIN_FONT_SIZE, (TITLE_LENGTH_BREAKPOINT * TITLE_FONT_SIZE / toDo.getTitle().value.length())) + "pt;"
+                + "-fx-pref-height: " + (TITLE_PREF_HEIGHT + (toDo.getTitle().value.length() - TITLE_LENGTH_BREAKPOINT) / 2) + "pt;"
+            );
+        } else {
+            titleLabel.setStyle("-fx-font-size: " + TITLE_FONT_SIZE + "pt;");
+        }
     }
 
     // @@author A0139080J

@@ -24,8 +24,10 @@ import java.time.temporal.ChronoUnit;
 public class EventCard extends UiPart {
 
     private static final String FXML = "Card.fxml";
-    public static final int MIN_FONT_SIZE = 10;
-    public static final int TITLE_LENGTH_BREAKPOINT = 70;
+    private static final int MIN_FONT_SIZE = 10;
+    private static final int TITLE_LENGTH_BREAKPOINT = 40;
+    private static final int TITLE_PREF_HEIGHT = 30;
+    private static final int TITLE_FONT_SIZE = 14;
     private boolean isFinished;
 
     @FXML
@@ -63,20 +65,26 @@ public class EventCard extends UiPart {
     @FXML
     public void initialize() {
         titleLabel.setText(toDo.getTitle().value);
-
-        // Resize title if too long
-        if (toDo.getTitle().value.length() > TITLE_LENGTH_BREAKPOINT) {
-            titleLabel.setStyle("-fx-font-size: " + Math.max(MIN_FONT_SIZE, (1000 / toDo.getTitle().value.length())) + "pt;");
-        } else {
-            titleLabel.setStyle("-fx-font-size: 14pt;");
-        }
-
         indexLabel.setText(String.valueOf(index));
+
+        resizeTitleLabelIfTooLong();
 
         setDateTimesLabels();
         setRecurrenceLabel();
         createTagLabels();
         checkContainsTagsAndDates();
+    }
+
+    public void resizeTitleLabelIfTooLong() {
+        // Resize title if too long
+        if (toDo.getTitle().value.length() > TITLE_LENGTH_BREAKPOINT) {
+            titleLabel.setStyle(
+                "-fx-font-size: " + Math.max(MIN_FONT_SIZE, (TITLE_LENGTH_BREAKPOINT * TITLE_FONT_SIZE / toDo.getTitle().value.length())) + "pt;"
+                    + "-fx-pref-height: " + (TITLE_PREF_HEIGHT + (toDo.getTitle().value.length() - TITLE_LENGTH_BREAKPOINT) / 2) + "pt;"
+            );
+        } else {
+            titleLabel.setStyle("-fx-font-size: " + TITLE_FONT_SIZE + "pt;");
+        }
     }
 
     // @@author A0139080J
