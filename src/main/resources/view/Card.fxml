@@ -34,9 +34,9 @@
             <Insets right="3.0" />
          </HBox.margin>
       </HBox>
-      <VBox fx:id="dateTagsPane" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+      <VBox fx:id="dateTagsPane" alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS" minWidth="180">
          <children>
-            <Label fx:id="dateLabel" alignment="CENTER_RIGHT" minWidth="200" style="-fx-line-spacing: -0.5em;" text="\$date">
+            <Label fx:id="dateLabel" alignment="CENTER_RIGHT" text="\$date">
                <padding>
                   <Insets right="5.0" />
                </padding>
