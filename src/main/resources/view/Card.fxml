@@ -42,7 +42,8 @@
                </padding>
                <VBox.margin>
                   <Insets bottom="3.0" />
-               </VBox.margin></Label>
+               </VBox.margin>
+            </Label>
             <FlowPane fx:id="tagsPane" alignment="TOP_RIGHT" columnHalignment="RIGHT" hgap="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWrapLength="200.0" vgap="3.0">
                <children>
                   <Label fx:id="recurrenceLabel" alignment="CENTER" maxHeight="-Infinity" minWidth="-Infinity" text="\$recurr" wrapText="true">

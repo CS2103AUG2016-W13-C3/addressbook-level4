@@ -42,7 +42,7 @@ public class ListCommand extends Command {
             return new CommandResult(String.format(Messages.LIST_COMMAND_NO_TODOS, getDateRangeString()));
         }
 
-        return new CommandResult(String.format(Messages.LIST_COMMAND, getDateRangeString().replaceAll("\\n", "")));
+        return new CommandResult(String.format(Messages.LIST_COMMAND, getDateRangeString().replaceAll("\\n", " ")));
     }
 
     private String getDateRangeString() {

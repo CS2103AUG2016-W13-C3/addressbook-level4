@@ -1,8 +1,5 @@
 package seedu.commando.ui;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,6 +14,9 @@ import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.Recurrence;
 import seedu.commando.model.todo.Tag;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 /**
  * A "card" that represents a single event. This will be shown in the
  * eventListViewPanel
@@ -24,6 +24,8 @@ import seedu.commando.model.todo.Tag;
 public class EventCard extends UiPart {
 
     private static final String FXML = "Card.fxml";
+    public static final int MIN_FONT_SIZE = 10;
+    public static final int TITLE_LENGTH_BREAKPOINT = 70;
     private boolean isFinished;
 
     @FXML
@@ -61,6 +63,14 @@ public class EventCard extends UiPart {
     @FXML
     public void initialize() {
         titleLabel.setText(toDo.getTitle().value);
+
+        // Resize title if too long
+        if (toDo.getTitle().value.length() > TITLE_LENGTH_BREAKPOINT) {
+            titleLabel.setStyle("-fx-font-size: " + Math.max(MIN_FONT_SIZE, (1000 / toDo.getTitle().value.length())) + "pt;");
+        } else {
+            titleLabel.setStyle("-fx-font-size: 14pt;");
+        }
+
         indexLabel.setText(String.valueOf(index));
 
         setDateTimesLabels();
@@ -124,7 +134,6 @@ public class EventCard extends UiPart {
      */
     private void checkContainsTagsAndDates() {
         if (!containsTags && !containsRecurrence) {
-            tagsPane.setManaged(false);
             if (!containsDates) {
                 dateTagsPane.setManaged(false);
             }
