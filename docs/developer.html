@@ -91,6 +91,7 @@
                             <li><a href="#quick-access-keyboard-shortcut">Quick Access Keyboard Shortcut</a></li>
                             <li><a href="#real-time-syntax-highlighting">Real-time Syntax Highlighting</a></li>
                         </ul>
+                        <div class="pagebreak"> </div>
                         <li><a href="#appendices">Appendices</a></li>
                         <ul id="second-layer">
                             <li><a href="#appendix-a-user-stories">Appendix A: User Stories</a></li>
@@ -220,7 +221,7 @@
                         <a href="#storage-component"><strong><em>Storage</em> Component</strong></a>: Reads data from and writes data to the file system (package <code>seedu.commando.storage</code>)
                     </li>
                 </ul>
-
+<div class="pagebreak"> </div>
                 <p>
                     To minimize coupling and help with unit testing, the API of each component is defined by a single Java interface known publicly. This Java interface corresponds to the name of component (e.g. <em>Logic</em> has the interface <code>Logic.java</code>). Each component then exposes its functionality using a concrete class implementing its interface, as listed below:
 
@@ -259,14 +260,14 @@
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/command-execution-sd.PNG" width="600">
                     <figcaption>Sequence diagram for executing command <code>>> add task</code></figcaption>
                 </figure>
-
+<div class="pagebreak"> </div>
                 <p>Typically, a command would modify the to-do list in the <em>Model</em> (<code>add</code>, <code>edit</code>, <code>delete</code>, etc). Within <em>Model</em>, as we have used JavaFX's <em>Observable</em> classes, the modification would trigger a call to the <em>UI</em> to update its view of the to-do list. On top of that, <em>Model</em> would post a <code>ToDoListChangedEvent</code> to the <em>Events Center</em>, which would trigger <em>Logic</em> to call the <code>saveToDoList(ReadOnlyToDoList)</code> method of <em>Storage</em>. Subsequently, when the to-do list is successfully saved to the file system, the event <code>ToDoListSavedEvent</code> would be posted to update the status bar in <em>UI</em>. Refer to the following diagram for a graphical walkthrough of this sequence.</p>
 
                 <figure>
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/to-do-list-changed-event-sd.PNG" width="800">
                     <figcaption>Sequence diagram for <em>to-do list changed event</em></figcaption>
                 </figure>
-
+<!-- @@author A0139080J -->
                 <h2 id="ui-component"><em>UI</em> Component</h2>
 
                 <figure>
@@ -298,7 +299,7 @@
                     <img src="https://raw.githubusercontent.com/CS2103AUG2016-W13-C3/main/master/docs/images/diagrams/logic-component.PNG" max-width="500">
                     <figcaption>Structure of <em>Logic</em> component</figcaption>
                 </figure>
-<!-- @@author A0139080J -->
+
                 <p>
                     The <em>Logic</em> component (package <code>seedu.commando.logic</code>) is in charge of:
 
@@ -310,7 +311,7 @@
                         <li>Relaying the data of <em>Model</em> to the <em>UI</em> through its methods of <code>getUiEvents()</code>, <code>getUiTasks()</code> and <code>getToDoList()</code>.</li>
                     </ul> 
                 </p>
-
+<div class="pagebreak"> </div>
                 <h3 id="execute-called">When <code>execute(String)</code> is Called</h3>
 
                 <p>
@@ -345,7 +346,7 @@
                         <li>Exposing <em>Observable</em> collections of <em>Events</em> and <em>Tasks</em> that are to be shown on the GUI, as well as the filtering, sorting and assigning of indices to these to-dos for the GUI.</li>
                     </ul>
                 </p>
-
+<div class="pagebreak"> </div>
                 <h3 id="changing-undoing-redoing">Changing, Undoing and Redoing the To-Do List</h3>
 
                 <p>
@@ -413,7 +414,7 @@
                         <code>FINE</code>: Details that are not usually noteworthy but may be useful in debugging (e.g. print the actual list instead of just its size).
                     </li>
                 </ul>
-
+<div class="pagebreak"> </div>
                 <h3 id="messages"><code>Messages</code></h3>
 
                 <p>
@@ -473,7 +474,7 @@
                     </li>
                 </ol>
 
-
+<!-- @@author A0122001M -->
                 <h2>
                     <a id="dev-ops" class="anchor" href="#dev-ops" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dev Ops
                 </h2>
@@ -595,7 +596,7 @@
                                 <td align="left">edit the time constraints of my to-dos</td>
                                 <td align="left">correct any typo or update to-dos' timings after they are postponed or confirmed</td>
                             </tr>
-<!-- @@author A0122001M -->
+
                             <tr>
                                 <td><code>* * *</code></td>
                                 <td align="left">user</td>
@@ -729,7 +730,7 @@
                         </li>
                     </ul>
                 </p>
-
+<!-- @@author A0142230B -->
                 <div class="pagebreak"> </div>
                 <h3 id="appendix-b-use-cases">Appendix B: Use Cases</h3>
 
@@ -795,7 +796,7 @@
                         <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
-
+<div class="pagebreak"> </div>
                 <h4>
                     <a id="uc02---add-to-do-item-task" class="anchor" href="#uc01---add-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC02 - Add a <em>Task</em>
                 </h4>
@@ -806,7 +807,7 @@
                     <li>2. Application adds the <em>Task</em> to the current to-do list and updates the GUI to reflect the changes.</li>
                     <li><i>Use case ends.</i></li>
                 </ul>
-<!-- @@author A0142230B -->
+
                 <span><strong>Extensions:</strong></span>
 
                 <ul class="use-case">
@@ -832,7 +833,7 @@
                         <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
-
+<div class="pagebreak"> </div>
                 <h4>
                     <a id="uc03---delete-to-do-item" class="anchor" href="#uc02---delete-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC03 - Delete an <em>Event</em> or <em>Task</em>
                 </h4>
@@ -869,7 +870,7 @@
                         <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
-
+<div class="pagebreak"> </div>
                 <h4>
                     <a id="uc04---find-to-do-items" class="anchor" href="#uc03---find-to-do-items" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC04 - Searching through upcoming <em>Events</em> and unfinished <em>Tasks</em>
                 </h4>
@@ -905,7 +906,7 @@
                         <li><i>Use case ends.</i></li>
                     </ul>
                 </ul>
-
+<div class="pagebreak"> </div>
                 <h4>
                     <a id="uc05---edit-to-do-item" class="anchor" href="#uc04---edit-to-do-item" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UC05 - Edit to-do item
                 </h4>
@@ -966,7 +967,7 @@
                     </ul>
                 </ul>
 
-
+<div class="pagebreak"> </div>
                 <h3 id="appendix-c-non-functional-requirements">Appendix C: Non Functional Requirements</h3>
 
                 <ol>
@@ -1006,7 +1007,7 @@
                         <strong>CRUD</strong>: Create, Read, Update and Delete.
                     </li>
                 </ul>
-
+<div class="pagebreak"> </div>
                 <h3 id="appendix-e-product-survey">Appendix E: Product Survey</h3>
 
                 <p>We tested a few existing to-do managers and analysed how much they would meet the needs of our main target user <em>Jim</em>:</p>
