@@ -159,15 +159,15 @@ Command to type | What should happen |
 
 ## Datetime Formats
 
-There is a quick brief on the formats of date and times accepted.
+Here is a quick brief on the formats of date and times accepted.
 
-For dates, you must follow this format : `Day of the month, Month, Year`. * `28/12/2018`, `3 feb 2019`
+For dates, you must follow this format: `Day of the month, Month, Year`. * `28/12/2018`, `3 feb 2019`
 
 * You may choose to leave out the year if the date is in the current year.
 * You may leave out the whole date if the date is today.
 * You may also state relative dates such as `Today`, `Yesterday`, `Tomorrow`, `next/last/coming <weekday/month/year>`.
 
-For times, you must follow either of these formats : `HH:MM`, `HHMMh`, `HHam/pm`. * `23:59`, `2350h`, `9am`
+For times, you must follow either of these formats: `HH:MM`, `HHMMh`, `HHam/pm`. * `23:59`, `2350h`, `9am`
 
 * You may state relative times such as `Morning`, `Afternoon`, `Evening`, `Night`, `Midnight`
 
