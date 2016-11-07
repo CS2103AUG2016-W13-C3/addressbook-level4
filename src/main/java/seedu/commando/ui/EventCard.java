@@ -1,21 +1,27 @@
 package seedu.commando.ui;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import seedu.commando.commons.core.DateTimePrettifier;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.Recurrence;
 import seedu.commando.model.todo.Tag;
-
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 /**
  * A "card" that represents a single event. This will be shown in the
@@ -24,10 +30,7 @@ import java.time.temporal.ChronoUnit;
 public class EventCard extends UiPart {
 
     private static final String FXML = "Card.fxml";
-    private static final int MIN_FONT_SIZE = 10;
-    private static final int TITLE_LENGTH_BREAKPOINT = 40;
     private static final int TITLE_PREF_HEIGHT = 30;
-    private static final int TITLE_FONT_SIZE = 14;
     private boolean isFinished;
     private int labelHeight = TITLE_PREF_HEIGHT;
 
@@ -35,6 +38,8 @@ public class EventCard extends UiPart {
     private HBox cardPane;
     @FXML
     private VBox dateTagsPane;
+    @FXML
+    private VBox descPane;
     @FXML
     private FlowPane tagsPane;
     @FXML
@@ -67,26 +72,33 @@ public class EventCard extends UiPart {
     public void initialize() {
         titleLabel.setText(toDo.getTitle().value);
         indexLabel.setText(String.valueOf(index));
-
-        resizeTitleLabelIfTooLong();
-
+        
+        final Text text = new Text(toDo.getTitle().value);
+        new Scene(new Group(text));
+        final double fullWidth = text.getLayoutBounds().getWidth();
+        final double lineHeight = text.getLayoutBounds().getHeight() + 10;
+        
+        titleLabel.widthProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
+                final double limitWidth = (getStartXCoord(dateLabel) - getEndXCoord(indexLabel));
+                titleLabel.setPrefWidth(limitWidth);
+                titleLabel.setPrefHeight(lineHeight * Math.ceil(fullWidth / limitWidth));
+                System.out.println("fullwidth: " + fullWidth + ", limitwidth: " + limitWidth + ", Desired Height: " + lineHeight * Math.ceil(fullWidth / limitWidth) + ", got height: " + titleLabel.getHeight());
+            }
+        });
+        
         setDateTimesLabels();
         setRecurrenceLabel();
         createTagLabels();
         checkContainsTagsAndDates();
     }
-
-    public void resizeTitleLabelIfTooLong() {
-        // Resize title if too long
-        if (toDo.getTitle().value.length() > TITLE_LENGTH_BREAKPOINT) {
-        	labelHeight = (TITLE_PREF_HEIGHT + (toDo.getTitle().value.length() - TITLE_LENGTH_BREAKPOINT) / 2);
-            titleLabel.setStyle(
-                "-fx-font-size: " + Math.max(MIN_FONT_SIZE, (TITLE_LENGTH_BREAKPOINT * TITLE_FONT_SIZE / toDo.getTitle().value.length())) + "pt;"
-                    + "-fx-pref-height: " + labelHeight + "pt;"
-            );
-        } else {
-            titleLabel.setStyle("-fx-font-size: " + TITLE_FONT_SIZE + "pt;");
-        }
+    
+    private double getEndXCoord(Node node) {
+        return node.localToScene(node.getBoundsInLocal()).getMaxX();
+    }
+    private double getStartXCoord(Node node) {
+        return node.localToScene(node.getBoundsInLocal()).getMinX();
     }
 
     // @@author A0139080J
@@ -99,7 +111,7 @@ public class EventCard extends UiPart {
                 Label label = new Label();
                 label.setText("#" + tag.value);
                 label.setId("tagsLabel");
-                label.setMaxWidth(200);
+                label.setMaxWidth(150);
                 label.getStyleClass().add("cell_big_label");
                 label.setAlignment(Pos.CENTER);
                 label.setPadding(new Insets(0, 3, 0, 3));
