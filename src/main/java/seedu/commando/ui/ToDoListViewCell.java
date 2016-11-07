@@ -1,6 +1,7 @@
 package seedu.commando.ui;
 
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import seedu.commando.model.ui.UiToDo;
 
@@ -8,15 +9,18 @@ import seedu.commando.model.ui.UiToDo;
 class ToDoListViewCell extends ListCell<UiToDo> {
 
     protected enum Card {
-        Event,
-        Task
+        Event, Task
     }
 
     private Card chosenCard;
 
-    public ToDoListViewCell(Card card) {
+    public ToDoListViewCell(ListView<UiToDo> list, Card card) {
         assert card != null;
         chosenCard = card;
+
+        // Sets the maximum width of EventCard or TaskCard to be always equals
+        // to the ListView containing it.
+        prefWidthProperty().bind(list.widthProperty().subtract(10));
     }
 
     @Override

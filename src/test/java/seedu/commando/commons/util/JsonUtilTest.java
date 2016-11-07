@@ -17,7 +17,6 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Tests JSON Read and Write
@@ -65,6 +64,6 @@ public class JsonUtilTest {
         
 
         thrown.expect(DataConversionException.class);
-        Optional<Integer> dummy = JsonUtil.readJsonFile("testJsonUtil.json", Integer.class);
+        JsonUtil.readJsonFile("testJsonUtil.json", Integer.class);
     }
 }

@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import seedu.commando.commons.core.DateTimePrettifier;
@@ -13,34 +16,41 @@ import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.Recurrence;
 
+/**
+ * A "card" that represents a single event. This will be shown in the
+ * taskListViewPanel
+ */
 public class TaskCard extends UiPart {
 
-    private static final String FXML = "TaskCard.fxml";
+    private static final String FXML = "Card.fxml";
+    private static final int MIN_FONT_SIZE = 10;
+    private static final int TITLE_LENGTH_BREAKPOINT = 40;
+    private static final int TITLE_FONT_SIZE = 14;
+    private static final int TITLE_PREF_HEIGHT = 30;
     private boolean isFinished;
+    private int labelHeight = TITLE_PREF_HEIGHT;
 
     @FXML
-    private HBox taskPane;
+    private HBox cardPane;
     @FXML
-    private HBox taskPaneInner;
+    private VBox dateTagsPane;
     @FXML
-    private VBox tagsPane;
-    @FXML
-    private VBox datePane;
+    private FlowPane tagsPane;
     @FXML
     private Label titleLabel;
     @FXML
     private Label indexLabel;
     @FXML
-    private Label dueLabel;
-    @FXML
-    private Label tagsLabel;
+    private Label dateLabel;
     @FXML
     private Label recurrenceLabel;
 
     private ReadOnlyToDo toDo;
     private int index;
+
     private boolean containsTags = true;
-    private boolean containsDate = true;
+    private boolean containsDates = true;
+    private boolean containsRecurrence = true;
 
     public TaskCard() {
     }
@@ -58,22 +68,45 @@ public class TaskCard extends UiPart {
         titleLabel.setText(toDo.getTitle().value);
         indexLabel.setText(String.valueOf(index));
 
+        resizeTitleLabelIfTooLong();
+
         setDateTimeLabel();
         setRecurrenceLabel();
-        checkTagsPane();
-        setTagLabel();
+        createTagLabels();
+        checkContainsTagsAndDates();
+    }
+
+    public void resizeTitleLabelIfTooLong() {
+        // Resize title if too long
+        if (toDo.getTitle().value.length() > TITLE_LENGTH_BREAKPOINT) {
+        	labelHeight = (TITLE_PREF_HEIGHT + (toDo.getTitle().value.length() - TITLE_LENGTH_BREAKPOINT) / 2);
+            titleLabel.setStyle(
+                "-fx-font-size: " + Math.max(MIN_FONT_SIZE, (TITLE_LENGTH_BREAKPOINT * TITLE_FONT_SIZE / toDo.getTitle().value.length())) + "pt;"
+                + "-fx-pref-height: " + labelHeight + "pt;"
+            );
+        } else {
+            titleLabel.setStyle("-fx-font-size: " + TITLE_FONT_SIZE + "pt;");
+        }
     }
 
     // @@author A0139080J
-    private void setTagLabel() {
+    /**
+     * Creates a variable number of labels and put them in the FlowPane tagsPane
+     */
+    private void createTagLabels() {
         if (!toDo.getTags().isEmpty()) {
-            String tags = "";
             for (Tag tag : toDo.getTags()) {
-                tags += "#" + tag.value + " ";
+                Label label = new Label();
+                label.setText("#" + tag.value);
+                label.setId("tagsLabel");
+                label.setMaxWidth(200);
+                label.getStyleClass().add("cell_big_label");
+                label.setAlignment(Pos.CENTER);
+                label.setPadding(new Insets(0, 3, 0, 3));
+
+                tagsPane.getChildren().add(label);
             }
-            tagsLabel.setText(tags);
         } else {
-            tagsLabel.setManaged(false);
             containsTags = false;
         }
     }
@@ -82,18 +115,9 @@ public class TaskCard extends UiPart {
         if (toDo.getDueDate().isPresent() && toDo.getDueDate().get().recurrence != Recurrence.None) {
             recurrenceLabel.setText(toDo.getDueDate().get().recurrence.toString());
         } else {
+            containsRecurrence = false;
+            // Hides the recurrence label
             recurrenceLabel.setManaged(false);
-            containsDate = false;
-        }
-    }
-
-    /**
-     * If both tags and recurrence are non-existent, hide the pane that contains
-     * them
-     */
-    private void checkTagsPane() {
-        if (!containsTags && !containsDate) {
-            tagsPane.setManaged(false);
         }
     }
 
@@ -107,11 +131,24 @@ public class TaskCard extends UiPart {
             final LocalDateTime due = toDo.getDueDate().get().value;
             final long dayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), due);
 
-            dueLabel.setText("by " + DateTimePrettifier.prettifyDateTime(due));
-            dueLabel.setStyle("-fx-text-fill: " + ToDoCardStyleManager.getDateProximityGreen((int) dayDifference));
+            dateLabel.setText("by " + DateTimePrettifier.prettifyDateTime(due));
+            dateLabel.setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityGreen((int) dayDifference));
         } else {
-            dueLabel.setManaged(false);
-            datePane.setManaged(false);
+            containsDates = false;
+            // hides the date label
+            dateLabel.setManaged(false);
+        }
+    }
+
+    /**
+     * Hides the pane containing tags and recurrence if both are not present
+     */
+    private void checkContainsTagsAndDates() {
+        if (!containsTags && !containsRecurrence) {
+            tagsPane.setManaged(false);
+            if (!containsDates) {
+                dateTagsPane.setManaged(false);
+            }
         }
     }
 
@@ -126,49 +163,35 @@ public class TaskCard extends UiPart {
         if (isFinished) {
             setFinishedState();
         }
-        return taskPane;
+        return cardPane;
     }
 
-    /**
-     * Every recently modified event will have a red border This includes
-     * modification via undo, edit, add
-     */
     private void setRecentlyModifiedState() {
-        taskPaneInner.setStyle(ToDoCardStyleManager.recentlyModifiedStateCSS);
+        CardStyleManager.addStyleAll("recently-modified", cardPane);
     }
 
-    /**
-     * Tints a finished event gray
-     */
     private void setFinishedState() {
-        taskPaneInner.setStyle(ToDoCardStyleManager.finishedStateContentCSS);
-        datePane.setStyle(ToDoCardStyleManager.finishedStateDateCSS);
-        indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
+        CardStyleManager.addStyleAll("finished", cardPane, dateTagsPane, indexLabel);
     }
 
-    /**
-     * Tints a hovered event a slight gray
-     */
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            taskPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateContentCSS);
-            indexLabel.setStyle(ToDoCardStyleManager.activateHoverStateIndexCSS);
+            CardStyleManager.addStyleAll("hover", cardPane, indexLabel);
         }
     }
 
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            taskPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateContentCSS);
-            indexLabel.setStyle(ToDoCardStyleManager.deactivateHoverStateIndexCSS);
+            CardStyleManager.removeStyleAll("hover", cardPane, indexLabel);
         }
     }
     // @@author
 
     @Override
     public void setNode(Node node) {
-        taskPane = (HBox) node;
+        cardPane = (HBox) node;
     }
 
     @Override

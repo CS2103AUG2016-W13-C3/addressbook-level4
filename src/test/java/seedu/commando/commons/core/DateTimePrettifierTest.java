@@ -17,8 +17,8 @@ public class DateTimePrettifierTest {
     
     private DateTimeFormatter formatDayOfWeek = DateTimeFormatter.ofPattern("EEE");
     private LocalDateTime now = LocalDateTime.now();
-    private LocalDateTime untilNever = LocalDateTime.MAX.withSecond(0).withNano(0);
-    private LocalDateTime sinceForever = LocalDateTime.MIN.withSecond(0).withNano(0);
+    private LocalDateTime untilNever = LocalDateTime.MAX;
+    private LocalDateTime sinceForever = LocalDateTime.MIN;
     
     private final int currentYear = now.getYear();
     private final int currentMonth = now.getMonthValue();
@@ -28,19 +28,11 @@ public class DateTimePrettifierTest {
     private final int tomorrowMonth = now.plusDays(1).getMonthValue();
     private final int tomorrowDay = now.plusDays(1).getDayOfMonth();
     
-    @Before
-    public void setup() {
-    }
-
-    @After
-    public void teardown() {
-    }
-    
     @Test
     public void prettifyDateTime_currentYear_dontShowYear() {
         // Should not display year
         final LocalDateTime date = LocalDateTime.of(currentYear, 2, 28, 23, 59);
-        assertEquals("23:59 on " + formatDayOfWeek.format(date) + " 28 Feb",
+        assertEquals("23:59 " + formatDayOfWeek.format(date) + " 28 Feb",
                 DateTimePrettifier.prettifyDateTime(date));
     }
     
@@ -48,7 +40,7 @@ public class DateTimePrettifierTest {
     public void prettifyDateTime_nonCurrentYear_showYear() {
         // Should display year
         final LocalDateTime date = LocalDateTime.of(currentYear - 1, 2, 28, 23, 59);
-        assertEquals("23:59 on " + formatDayOfWeek.format(date) + " 28 Feb " + (currentYear - 1),
+        assertEquals("23:59 " + formatDayOfWeek.format(date) + " 28 Feb " + (currentYear - 1),
                 DateTimePrettifier.prettifyDateTime(date));
     }
     
@@ -81,8 +73,8 @@ public class DateTimePrettifierTest {
         // Should not display any year
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, 3, 1, 12, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" +
-                     "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar",
+        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" +
+                     "12:30 " + formatDayOfWeek.format(dateTo) + " 1 Mar",
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -91,8 +83,8 @@ public class DateTimePrettifierTest {
         // Should display one year
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear - 1, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear - 1, 3, 1, 12, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" +
-                     "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear - 1),
+        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" +
+                     "12:30 " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear - 1),
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -101,8 +93,8 @@ public class DateTimePrettifierTest {
         // Should display both years
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 3, 1, 12, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb " + (currentYear) + " to\n" +
-                     "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear + 1),
+        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 28 Feb " + (currentYear) + " to\n" +
+                     "12:30 " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear + 1),
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -111,37 +103,57 @@ public class DateTimePrettifierTest {
         // Should display both years
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear - 1, 2, 28, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 3, 1, 12, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb " + (currentYear - 1) + " to\n" +
-                     "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear + 1),
+        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 28 Feb " + (currentYear - 1) + " to\n" +
+                     "12:30 " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear + 1),
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
     @Test
     public void prettifyDateTimeRange_sameYearDifferentMonth_showOneYearAndBothMonths() {
         // Should display one year and both months
-        final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 28, 12, 30);
-        final LocalDateTime dateTo = LocalDateTime.of(currentYear, 3, 1, 12, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" +
-                     "12:30 on " + formatDayOfWeek.format(dateTo) + " 1 Mar",
+        final LocalDateTime dateFrom = LocalDateTime.of(currentYear - 1, 2, 28, 12, 30);
+        final LocalDateTime dateTo = LocalDateTime.of(currentYear - 1, 3, 1, 12, 30);
+        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 28 Feb to\n" +
+                     "12:30 " + formatDayOfWeek.format(dateTo) + " 1 Mar " + (currentYear - 1),
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
     @Test
     public void prettifyDateTimeRange_sameYearSameMonthDifferentDay_showOneYearBothMonths() {
         // Should display one year and both month
-        final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 27, 12, 30);
-        final LocalDateTime dateTo = LocalDateTime.of(currentYear, 2, 28, 12, 30);
-        assertEquals("12:30 on " + formatDayOfWeek.format(dateFrom) + " 27 to\n" +
-                     "12:30 on " + formatDayOfWeek.format(dateTo) + " 28 Feb",
+        final LocalDateTime dateFrom = LocalDateTime.of(currentYear - 1, 2, 27, 12, 30);
+        final LocalDateTime dateTo = LocalDateTime.of(currentYear - 1, 2, 28, 12, 30);
+        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 27 to\n" +
+                     "12:30 " + formatDayOfWeek.format(dateTo) + " 28 Feb " + (currentYear - 1),
+                DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
+    }
+    
+    @Test
+    public void prettifyDateTimeRange_sameYearDifferentMonthSameDay_showOneYearBothMonths() {
+        // Should display one year and both month
+        final LocalDateTime dateFrom = LocalDateTime.of(currentYear - 1, 10, 10, 12, 30);
+        final LocalDateTime dateTo = LocalDateTime.of(currentYear - 1, 11, 10, 12, 30);
+        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 10 Oct to\n" +
+                     "12:30 " + formatDayOfWeek.format(dateTo) + " 10 Nov " + (currentYear - 1),
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
     @Test
     public void prettifyDateTimeRange_sameYearSameMonthSameDay_showOneYearOneMonthAndTwoTimes() {
         // Should display one year, one month and two times
-        final LocalDateTime dateFrom = LocalDateTime.of(currentYear, 2, 27, 12, 30);
-        final LocalDateTime dateTo = LocalDateTime.of(currentYear, 2, 27, 13, 30);
-        assertEquals("12:30 to 13:30 \non " + formatDayOfWeek.format(dateTo) + " 27 Feb",
+        final LocalDateTime dateFrom = LocalDateTime.of(currentYear - 1, 2, 27, 12, 30);
+        final LocalDateTime dateTo = LocalDateTime.of(currentYear - 1, 2, 27, 13, 30);
+        assertEquals("12:30 to 13:30\n" + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear - 1),
+                DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
+    }
+    
+    @Test
+    public void prettifyDateTimeRange_diffYearSameMonthSameDay_showTwoYearTwoMonthAndTwoTimes() {
+        // Should display one year, one month and two times
+        final LocalDateTime dateFrom = LocalDateTime.of(currentYear - 2, 2, 27, 12, 30);
+        final LocalDateTime dateTo = LocalDateTime.of(currentYear - 1, 2, 27, 13, 30);
+        assertEquals("12:30 " + formatDayOfWeek.format(dateFrom) + " 27 Feb " + (currentYear - 2) + " to\n" +
+                     "13:30 " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear - 1),
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -150,7 +162,7 @@ public class DateTimePrettifierTest {
         // Should display time and date
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear, currentMonth, currentDay, 13, 30);
-        assertEquals("12:30 to 13:30 Today",
+        assertEquals("12:30 to 13:30\nToday",
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -168,7 +180,7 @@ public class DateTimePrettifierTest {
         // Should display time and date
         final LocalDateTime dateFrom = LocalDateTime.of(currentYear, currentMonth, currentDay, 12, 30);
         final LocalDateTime dateTo = LocalDateTime.of(currentYear + 1, 2, 27, 13, 30);
-        assertEquals("12:30 Today to\n13:30 on " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear + 1),
+        assertEquals("12:30 Today to\n13:30 " + formatDayOfWeek.format(dateTo) + " 27 Feb " + (currentYear + 1),
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
     }
     
@@ -188,5 +200,16 @@ public class DateTimePrettifierTest {
         final LocalDateTime dateTo = untilNever;
         assertEquals("From 12:30 Today onwards",
                 DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo));
+    }
+
+    @Test
+    public void prettifyDateTimeRange_todayToNextYearToday_showTodayToNextYearToday() {
+        // Should display time, date, 
+        final LocalDateTime dateFrom = LocalDateTime.now().withHour(1).withMinute(0);
+        final LocalDateTime dateTo = LocalDateTime.now().withHour(1).withMinute(0).plusYears(1);
+        assertEquals(
+            "01:00 Today to\n01:00 " + DateTimeFormatter.ofPattern("EEE d MMM YYYY").format(dateTo),
+            DateTimePrettifier.prettifyDateTimeRange(dateFrom, dateTo)
+        );
     }
 }

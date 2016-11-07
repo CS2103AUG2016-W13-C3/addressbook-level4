@@ -11,10 +11,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -35,22 +32,22 @@ import java.util.logging.Logger;
 
 //@@author A0139080J
 /**
- * The Main Window. Provides the basic application layout containing
- * a menu bar and space where other JavaFX elements can be placed.
+ * The Main Window. Provides the basic application layout containing a menu bar
+ * and space where other JavaFX elements can be placed.
  */
 public class MainWindow extends UiPart {
     private static final Logger logger = LogsCenter.getLogger(MainWindow.class);
-    
+
     // Fixed variables
     private final String FXML = "MainWindow.fxml";
     private final String maximizeButtonSymbol = "⬜";
     private final String unMaximizeButtonSymbol = "❐";
-    
+
     // Variables that changes while the app is active
     private double currScreenXPos = 0;
     private double currScreenYPos = 0;
     private static boolean isMaximized;
-    
+
     private Logic logic;
     private String appName;
 
@@ -62,26 +59,28 @@ public class MainWindow extends UiPart {
     private CommandBox commandBox;
     private UserPrefs userPrefs;
     private HelpWindow helpWindow;
-    
+
     // Handles to elements of this Ui container
     private VBox rootLayout;
     private Scene scene;
 
-    // The three panes that will take turns to be in focus 
+    // The three panes that will take turns to be in focus
     // when the user presses 'Tab' repeatedly
     private TextField commandField;
     private ListView<UiToDo> eventListView;
     private ListView<UiToDo> taskListView;
+
     private enum FocusPanes {
         COMMANDFIELD, EVENTPANEL, TASKPANEL
     }
-    FocusPanes currentlyFocusedPane = FocusPanes.COMMANDFIELD;
-    
+
+    private FocusPanes currentlyFocusedPane = FocusPanes.COMMANDFIELD;
+
     // Key combinations
-    KeyCombination altH = KeyCodeCombination.keyCombination("Alt+H");
-    KeyCombination altC = KeyCodeCombination.keyCombination("Alt+C");
-    KeyCombination altM = KeyCodeCombination.keyCombination("Alt+M");
-    
+    private KeyCombination altH = KeyCodeCombination.keyCombination("Alt+H");
+    private KeyCombination altC = KeyCodeCombination.keyCombination("Alt+C");
+    private KeyCombination altM = KeyCodeCombination.keyCombination("Alt+M");
+
     @FXML
     private HBox titleBar;
     @FXML
@@ -148,50 +147,59 @@ public class MainWindow extends UiPart {
 
         // Configure the UI
         setTitle(appTitle);
-        
+
         // Icon and App size settings
         setIcon(Config.ApplicationIcon);
         setWindowDefaultSize(prefs);
-        
+
         scene = new Scene(rootLayout);
-        
+
         // Program is draggable through its titlebar
         setDraggable(titleBar);
         // Set keyboard shortcuts for certain functions
         setKeyboardShortcuts();
         // Programmatically focus certain panes through tab
-        // Arrow keys to navigate a listview when either event or task pane is focused
+        // Arrow keys to navigate a listview when either event or task pane is
+        // focused
         setTabAndArrowKeysNavigations();
-        
+
         primaryStage.setScene(scene);
-        helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl);
+        helpWindow = HelpWindow.load(primaryStage, Config.UserGuideUrl, Config.AboutUsUrl);
     }
 
-    void fillInnerParts() {
+    protected void fillInnerParts() {
         eventPanel = EventListPanel.load(primaryStage, getEventListPlaceholder(), logic.getUiEvents());
         taskPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getUiTasks());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
-        statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), userPrefs.getToDoListFilePath());
+        statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(),
+                userPrefs.getToDoListFilePath());
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
     }
-    
+
     protected void moreConfigurations() {
-        commandField = commandBox.getCommandField();
-        eventListView = eventPanel.getEventListView();
-        taskListView = taskPanel.getTaskListView();
+        extractMainNodes();
+
+        // Set focus to commandField when the application starts
         setFocusTo(commandField);
+
         disableSplitPaneResize();
         setAppName(appName);
     }
-    
+
+    private void extractMainNodes() {
+        commandField = commandBox.getCommandField();
+        eventListView = eventPanel.getEventListView();
+        taskListView = taskPanel.getTaskListView();
+    }
+
     private void setFocusTo(Node node) {
         node.requestFocus();
     }
-    
+
     private void disableSplitPaneResize() {
         splitPane.lookup(".split-pane-divider").setMouseTransparent(true);
     }
-    
+
     private AnchorPane getCommandBoxPlaceholder() {
         return commandBoxPlaceholder;
     }
@@ -219,15 +227,15 @@ public class MainWindow extends UiPart {
     private void setAppName(String appName) {
         appNameMenu.setText(appName);
     }
-    
+
     private void setTitle(String appTitle) {
         primaryStage.setTitle(appTitle);
-        
+
     }
 
     /**
-     * Sets the default size and coordinates based on user preferences.
-     * Also includes whether the app is previously maximized
+     * Sets the default size and coordinates based on user preferences. Also
+     * includes whether the app is previously maximized
      */
     protected void setWindowDefaultSize(UserPrefs prefs) {
         primaryStage.setHeight(prefs.getGuiSettings().getWindowHeight());
@@ -246,15 +254,14 @@ public class MainWindow extends UiPart {
      * Returns the current position of the main Window.
      */
     protected GuiSettings getCurrentGuiSetting() {
-        return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(), 
-                (int) primaryStage.getX(), (int) primaryStage.getY(), isMaximized);
+        return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(), (int) primaryStage.getX(),
+                (int) primaryStage.getY(), isMaximized);
     }
 
     /**
      * Sets the 3 keyboard shortcuts that trigger their respective functions:
-     * Alt + E = Exit the app
-     * Alt + H = Open help in window
-     * Alt + C = Open credits in window
+     * Alt + E = Exit the app Alt + H = Open help in window Alt + C = Open
+     * credits in window
      */
     private void setKeyboardShortcuts() {
         scene.getAccelerators().put(altH, new Runnable() {
@@ -276,7 +283,7 @@ public class MainWindow extends UiPart {
             }
         });
     }
-    
+
     /**
      * Pressing Tab will cycle between Event Panel, Task Panel and Command Box
      * Typing text will set focus automatically to the Command Box
@@ -287,7 +294,8 @@ public class MainWindow extends UiPart {
             public void handle(KeyEvent key) {
                 switch (key.getCode()) {
                 case UP:
-                    // If currently focused on Event Panel or Task Panel, scroll respectively
+                    // If currently focused on Event Panel or Task Panel, scroll
+                    // respectively
                     if (currentlyFocusedPane == FocusPanes.EVENTPANEL) {
                         eventPanel.scrollUp();
                     } else if (currentlyFocusedPane == FocusPanes.TASKPANEL) {
@@ -306,15 +314,18 @@ public class MainWindow extends UiPart {
                     }
                     break;
                 case TAB:
-                    // If tab is pressed, cycle through Event Panel, Task Panel and Command Box
+                    // If tab is pressed, cycle through Event Panel, Task Panel
+                    // and Command Box
                     cycleThroughFocusPanes();
                     key.consume();
                     break;
                 case CONTROL:
                 case ALT:
                 case SHIFT:
-                    // Nome of these keys should trigger the focus of commandfield
-                    // because sometimes you need to copy and paste or do other stuff
+                    // Nome of these keys should trigger the focus of
+                    // commandfield
+                    // because sometimes you need to copy and paste or do other
+                    // stuff
                     key.consume();
                     break;
                 case F11:
@@ -324,13 +335,23 @@ public class MainWindow extends UiPart {
                     commandBox.goUpSampleCommands();
                     break;
                 default:
-                    // Else, any other sutiable character is considered input to command box
+                    consumeKeyIfLeftOrRightAndFocusOnPanel(key);
+
+                    // Else, any other sutiable character is considered input to
+                    // command box
                     // and it will be in focus
                     currentlyFocusedPane = FocusPanes.COMMANDFIELD;
                     commandField.requestFocus();
                 }
             }
         });
+    }
+
+    private void consumeKeyIfLeftOrRightAndFocusOnPanel(KeyEvent key) {
+        if ((key.getCode() == KeyCode.LEFT || key.getCode() == KeyCode.RIGHT)
+                && currentlyFocusedPane != FocusPanes.COMMANDFIELD) {
+            key.consume();
+        }
     }
 
     /**
@@ -352,9 +373,9 @@ public class MainWindow extends UiPart {
             break;
         }
     }
-    
+
     /**
-     * Sets the whole applicaation to be draggable
+     * Sets the title bar to be draggable
      */
     private void setDraggable(Node node) {
         node.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -372,9 +393,10 @@ public class MainWindow extends UiPart {
             }
         });
     }
-    
+
     /**
-     * Toggles the app between two sizes. One being the default size, and the full screen size
+     * Toggles the app between two sizes. One being the default size, and the
+     * full screen size
      */
     @FXML
     protected void toggleWindowSize() {
@@ -390,7 +412,7 @@ public class MainWindow extends UiPart {
         isMaximized = !isMaximized;
         toggleSizeButtonSymbol();
     }
-    
+
     /**
      * Toggles the minimize / maximize button between two symbols.
      */
@@ -401,15 +423,15 @@ public class MainWindow extends UiPart {
             toggleSizeButton.setText(maximizeButtonSymbol);
         }
     }
-    
+
     /**
      * Opens the About Us page
      */
     @FXML
     private void handleCredits() {
-        helpWindow.visit(Config.AboutUsUrl);
+        helpWindow.visitAboutUs();
     }
-    
+
     /**
      * Minimizes the window
      */
@@ -417,7 +439,7 @@ public class MainWindow extends UiPart {
     private void setMinimized() {
         primaryStage.setIconified(true);
     }
-    
+
     @FXML
     private void handleHelp() {
         showHelpAtAnchor("");
@@ -431,11 +453,11 @@ public class MainWindow extends UiPart {
         primaryStage.show();
         initEventsCenter();
     }
-    
+
     private void initEventsCenter() {
         EventsCenter.getInstance().registerHandler(this);
     }
-    
+
     /**
      * Closes the application.
      */
@@ -446,7 +468,8 @@ public class MainWindow extends UiPart {
 
     @Subscribe
     public void handleToDoListSavedEvent(ToDoListSavedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Setting last updated status to " + LocalDateTime.now()));
+        logger.info(
+                LogsCenter.getEventHandlingLogMessage(event, "Setting last updated status to " + LocalDateTime.now()));
         statusBarFooter.setSyncStatus(LocalDateTime.now());
     }
 }

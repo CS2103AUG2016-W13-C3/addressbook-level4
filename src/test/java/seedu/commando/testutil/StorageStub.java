@@ -1,7 +1,6 @@
 package seedu.commando.testutil;
 
 import seedu.commando.commons.core.ComponentManager;
-import seedu.commando.commons.core.EventsCenter;
 import seedu.commando.commons.events.BaseEvent;
 import seedu.commando.commons.exceptions.DataConversionException;
 import seedu.commando.model.UserPrefs;

@@ -1,8 +1,5 @@
 package seedu.commando.logic.commands;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 import seedu.commando.commons.core.Messages;
 import seedu.commando.commons.exceptions.DataConversionException;
 import seedu.commando.commons.exceptions.IllegalValueException;
@@ -11,17 +8,29 @@ import seedu.commando.model.todo.ToDoListChange;
 import seedu.commando.storage.XmlFileStorage;
 import seedu.commando.storage.XmlSerializableToDoList;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
+//@@author A0142230B
+
+/**
+* Imports the to-do list from a destination file path.
+*/
 public class ImportCommand extends Command {
 
 	public static final String COMMAND_WORD = "import";
 
 	private String path;
-	//@@author A0142230B
+
+  /**
+   * Initializes a import command.
+   * @param inputPath file path of source data, non-null
+   */
 	public ImportCommand(String inputPath) {
 		assert inputPath != null;
 		this.path = inputPath;
 	}
-	//@@author A0142230B
+
 	/**
 	 * Asserts that {@code model} are non-null
 	 */
@@ -30,37 +39,36 @@ public class ImportCommand extends Command {
 		Model model = getModel();
 
 		File file = new File(path);
-		
+
 		// Check if the path has a file name to save
-		if (path.endsWith("\\")){
+		if (path.endsWith("\\")) {
 			return new CommandResult(Messages.MISSING_IMPORT_FILE, true);
 		}
 
 		// Check if the source file exists (should not);
-		if (!file.exists()){
-			return new CommandResult(Messages.IMPORT_COMMAND_FILE_NOT_EXIST, true);
+		else if (!file.exists()) {
+			return new CommandResult(String.format(Messages.IMPORT_COMMAND_FILE_NOT_EXIST, path), true);
 		}
 
-		// Read the toDoList from the import path
-        try {
-            XmlSerializableToDoList newXmlToDoList = XmlFileStorage.loadDataFromSaveFile(file);
+		else {
+			// Read the toDoList from the import path
+			try {
+				XmlSerializableToDoList newXmlToDoList = XmlFileStorage.loadDataFromSaveFile(file);
+				updateToDoList(model, newXmlToDoList);
+			} catch (FileNotFoundException e) {
+				return new CommandResult(String.format(Messages.IMPORT_COMMAND_FILE_NOT_EXIST, path), true);
+			} catch (DataConversionException e) {
+				return new CommandResult(String.format(Messages.IMPORT_COMMAND_INVALID_DATA, path), true);
+			} catch (IllegalValueException e) {
+				return new CommandResult(e.getMessage(), true);
+			}
 
-            model.changeToDoList(
-                new ToDoListChange(
-                    newXmlToDoList.getToDos(),
-                    model.getToDoList()
-                )
-            );
+			return new CommandResult(String.format(Messages.IMPORT_COMMAND, path));
+		}
+	}
 
-        } catch (FileNotFoundException e) {
-            return new CommandResult(Messages.IMPORT_COMMAND_FILE_NOT_EXIST, true);
-        } catch (DataConversionException e) {
-            return new CommandResult(Messages.IMPORT_COMMAND_INVALID_DATA, true);
-        } catch (IllegalValueException e) {
-            return new CommandResult(e.getMessage(), true);
-        }
-
-        return new CommandResult(String.format(Messages.IMPORT_COMMAND, path));
+	private void updateToDoList(Model model, XmlSerializableToDoList newXmlToDoList) throws IllegalValueException {
+		model.changeToDoList(new ToDoListChange(newXmlToDoList.getToDos(), model.getToDoList()));
 	}
 
 }

@@ -16,7 +16,7 @@ import seedu.commando.model.ui.UiToDo;
 import seedu.commando.ui.ToDoListViewCell.Card;
 
 /**
- * Panel containing the list of to-dos
+ * Panel that will contain the ListView of tasks
  */
 public class TaskListPanel extends UiPart {
 
@@ -58,11 +58,6 @@ public class TaskListPanel extends UiPart {
     private void configure(ObservableList<UiToDo> toDos) {
         setConnections(toDos);
         addToPlaceholder();
-        // @@author A0139080J
-        Platform.runLater(() -> {
-            scrollbar = (ScrollBar) taskListView.lookup(".scroll-bar:vertical");
-        });
-        // @@author
     }
 
     private void setConnections(ObservableList<UiToDo> tasks) {
@@ -71,11 +66,13 @@ public class TaskListPanel extends UiPart {
             @Override
             public void onChanged(Change<? extends UiToDo> c) {
                 Platform.runLater(() -> tasksForUi.setAll(tasks));
+                scrollbar = (ScrollBar) taskListView.lookup(".scroll-bar:vertical");
             }
         });
 
+        Platform.runLater(() -> scrollbar = (ScrollBar) taskListView.lookup(".scroll-bar:vertical"));
         taskListView.setItems(tasksForUi);
-        taskListView.setCellFactory(listView -> new ToDoListViewCell(Card.Task));
+        taskListView.setCellFactory(listView -> new ToDoListViewCell(taskListView, Card.Task));
     }
 
     private void addToPlaceholder() {
@@ -94,13 +91,13 @@ public class TaskListPanel extends UiPart {
 
     protected void scrollDown() {
         if (isScrollBarPresent()) {
-            scrollbar.setValue(Math.min(scrollbar.getValue() + 0.1, 1));
+            Platform.runLater(() -> scrollbar.setValue(Math.min(scrollbar.getValue() + 0.2, 1)));
         }
     }
 
     protected void scrollUp() {
         if (isScrollBarPresent()) {
-            scrollbar.setValue(Math.max(scrollbar.getValue() - 0.1, 0));
+            Platform.runLater(() -> scrollbar.setValue(Math.max(scrollbar.getValue() - 0.2, 0)));
         }
     }
     // @@author

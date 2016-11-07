@@ -9,6 +9,7 @@ import seedu.commando.commons.core.GuiSettings;
 import java.util.Objects;
 
 //@@author A0139697H
+
 /**
  * Represents the user's preferences.
  */
@@ -16,14 +17,17 @@ public class UserPrefs {
     private GuiSettings guiSettings = new GuiSettings();
     private StringProperty toDoListFilePath = new SimpleStringProperty(Config.DefaultToDoListFilePath);
 
-    public UserPrefs() {}
+    public UserPrefs() {
+    }
 
     public GuiSettings getGuiSettings() {
         return guiSettings;
     }
 
     /**
-     * @return an observable string for its to-do list file path
+     * Gets its to-do list file path,
+     *
+     * @return an observable string value of its to-do list file path.
      */
     public ObservableValue<String> getToDoListFilePath() {
         return toDoListFilePath;
@@ -45,6 +49,9 @@ public class UserPrefs {
         this.guiSettings = new GuiSettings(guiSettings);
     }
 
+    /**
+     * @see #setGuiSettings(GuiSettings)
+     */
     public void setGuiSettings(double width, double height, int x, int y, boolean isMaximized) {
         guiSettings = new GuiSettings(width, height, x, y, isMaximized);
     }
@@ -73,7 +80,9 @@ public class UserPrefs {
     }
 
     /**
-     * @return a {@link JsonObject} which fully defines this instance's state
+     * Gets a {@link JsonObject} that fully defines its current state.
+     *
+     * @return a json object that fully defines its state.
      */
     public JsonObject getJsonObject() {
         JsonObject jsonObject = new JsonObject();

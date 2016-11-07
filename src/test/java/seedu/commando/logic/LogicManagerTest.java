@@ -39,13 +39,13 @@ public class LogicManagerTest {
     private static Storage storage;
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         eventsCollector = new EventsCollector();
         logic = initLogic();
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         EventsCenter.clearSubscribers();
     }
 
@@ -70,18 +70,29 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void handleToDoListChangedEvent_toDoListChanged_eventsPosted() {
-        logic.handleToDoListChangedEvent(new ToDoListChangedEvent(new ToDoList()));
-        assertTrue(eventsCollector.hasCollectedEvent(StorageStub.ToDoListSavedEvent.class));
+    public void handleToDoListChangedEvent_toDoListChanged_eventsPosted() throws InterruptedException {
+        LogicManager spy = Mockito.spy(logic);
 
+        spy.handleToDoListChangedEvent(new ToDoListChangedEvent(new ToDoList()));
+
+        // Should try to save to-do list and get data saving exception after <= 1s
+        Mockito.verify(spy, Mockito.timeout(1000))
+            .saveToDoListToStorage(logic.getToDoList());
+        assertTrue(eventsCollector.hasCollectedEvent(StorageStub.ToDoListSavedEvent.class));
     }
     
     @Test
-    public void handleToDoListChangedEvent_mockStorage_throwsException() throws IOException {
+    public void handleToDoListChangedEvent_mockStorage_throwsException() throws IOException, InterruptedException {
         Storage mockedStorage = Mockito.mock(StorageManager.class);
         logic = new LogicManager(new ModelManager(), mockedStorage, new UserPrefs());
         Mockito.doThrow(new IOException()).when(mockedStorage).saveToDoList(new ToDoList());
-        logic.handleToDoListChangedEvent(new ToDoListChangedEvent(new ToDoList()));
+
+        ToDoListChangedEvent event = new ToDoListChangedEvent(new ToDoList());
+        logic.handleToDoListChangedEvent(event);
+
+        // Should try to save to-do list and get data saving exception after <= 1s
+        Mockito.verify(mockedStorage, Mockito.timeout(1000).atLeastOnce())
+            .saveToDoList(event.toDoList);
         assertTrue(eventsCollector.hasCollectedEvent(DataSavingExceptionEvent.class));
     }
 

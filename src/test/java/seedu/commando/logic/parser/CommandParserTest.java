@@ -2,8 +2,6 @@ package seedu.commando.logic.parser;
 
 import com.google.common.collect.Sets;
 import edu.emory.mathcs.backport.java.util.Collections;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -13,6 +11,7 @@ import seedu.commando.model.todo.DueDate;
 import seedu.commando.model.todo.Recurrence;
 import seedu.commando.model.todo.Tag;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +28,8 @@ public class CommandParserTest {
 
     private CommandParser commandParser = new CommandParser();
 
-    private static int nextYear = LocalDateTime.now().getYear() + 1;
+    private static int thisYear = LocalDateTime.now().getYear();
+    private static int nextYear = thisYear + 1;
 
     @Test
     public void extractText_emptyString_empty()  {
@@ -81,7 +81,7 @@ public class CommandParserTest {
     @Test
     public void extractInteger_noInteger_empty()  {
         commandParser.setInput("no index");
-        assertTrue(!commandParser.extractInteger().isPresent());
+        assertFalse(commandParser.extractInteger().isPresent());
         assertEquals("no index", commandParser.getInput());
     }
 
@@ -140,7 +140,7 @@ public class CommandParserTest {
 
         assertTrue(dueDate.isPresent());
         assertEquals(
-            new DueDate(LocalDateTime.of(2015, 11, 10, 0, 0)),
+            new DueDate(LocalDateTime.of(2015, 11, 10, 23, 59)),
             dueDate.get()
         );
 
@@ -162,9 +162,9 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_valid_extracted() throws IllegalValueException {
+    public void extractTrailingTwoSidedDateRange_valid_extracted() throws IllegalValueException {
         commandParser.setInput("from 10 Apr 2016 9am to 11 Jan 2018 10:28");
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = commandParser.extractTrailingTwoSidedDateRange();
         assertTrue(dateRange.isPresent());
         assertEquals(
             LocalDateTime.of(2016, 4, 10, 9, 0),
@@ -178,10 +178,10 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_invalidDates_empty() throws IllegalValueException {
+    public void extractTrailingTwoSidedDateRange_invalidDates_empty() throws IllegalValueException {
         commandParser.setInput("walk by the beach from 1 end to another");
         assertFalse(
-            commandParser.extractTrailingDueDate().isPresent()
+            commandParser.extractTrailingTwoSidedDateRange().isPresent()
         );
         assertEquals(
             "walk by the beach from 1 end to another", commandParser.extractText().orElse("")
@@ -189,9 +189,9 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_2DateRanges_onlyTrailingExtracted() throws IllegalValueException {
+    public void extractTrailingTwoSidedDateRange_2DateRanges_onlyTrailingExtracted() throws IllegalValueException {
         commandParser.setInput("walk by the beach from today to tomorrow from 28 Oct 2018 1200h to 29 Nov 2019 1300h");
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = commandParser.extractTrailingTwoSidedDateRange();
         assertTrue(dateRange.isPresent());
         assertEquals(
             new DateRange(
@@ -206,9 +206,9 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_onDate_extractedOnDate() throws IllegalValueException {
+    public void extractTrailingSingleDateDateRange_onDate_extractedOnDate() throws IllegalValueException {
         commandParser.setInput("event on 1/2/2011");
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = commandParser.extractTrailingSingleDateDateRange();
         assertTrue(dateRange.isPresent());
         assertEquals(
             new DateRange(
@@ -223,9 +223,9 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_onDateTime_extractedOnDateTime() throws IllegalValueException {
+    public void extractTrailingSingleDateDateRange_onDateTime_extractedOnDateTime() throws IllegalValueException {
         commandParser.setInput("event on 1/2/2011 9pm");
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = commandParser.extractTrailingSingleDateDateRange();
         assertTrue(dateRange.isPresent());
         assertEquals(
             new DateRange(
@@ -240,9 +240,9 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_onWithInvalidTime_notExtracted() throws IllegalValueException {
+    public void extractTrailingSingleDateDateRange_onWithInvalidTime_notExtracted() throws IllegalValueException {
         commandParser.setInput("event on 100");
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = commandParser.extractTrailingSingleDateDateRange();
         assertFalse(dateRange.isPresent());
         assertEquals(
             "event on 100", commandParser.extractText().orElse("")
@@ -250,9 +250,9 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_withOnFromTo_extractedTrailing() throws IllegalValueException {
+    public void extractTrailingSingleDateDateRange_withOnFromTo_extractedTrailing() throws IllegalValueException {
         commandParser.setInput("event from today to tomorrow on 1 Feb 2011 2359h");
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = commandParser.extractTrailingSingleDateDateRange();
         assertTrue(dateRange.isPresent());
         assertEquals(
             new DateRange(
@@ -267,9 +267,9 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_withFromTodayToTomorrow_extractedTrailing() throws IllegalValueException {
+    public void extractTrailingTwoSidedDateRange_withFromTodayToTomorrow_extractedTrailing() throws IllegalValueException {
         commandParser.setInput("event from today to tomorrow");
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = commandParser.extractTrailingTwoSidedDateRange();
         assertTrue(dateRange.isPresent());
         assertEquals(
             new DateRange(
@@ -284,10 +284,19 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_withFromOnly_extractedTrailing() throws IllegalValueException {
+    public void extractTrailingTwoSidedDateRange_withFromOnly_notExtracted() throws IllegalValueException {
         commandParser.setInput("event from today");
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
-        assertTrue(dateRange.isPresent());
+        Optional<DateRange> dateRange = commandParser.extractTrailingTwoSidedDateRange();
+        assertFalse(dateRange.isPresent());
+        assertEquals(
+            "event from today", commandParser.extractText().orElse("")
+        );
+    }
+
+    @Test
+    public void extractTrailingStartDateDateRange_withFromOnly_extracted() throws IllegalValueException {
+        commandParser.setInput("event from today");
+        Optional<DateRange> dateRange = commandParser.extractTrailingStartDateDateRange();
         assertEquals(
             new DateRange(
                 LocalDateTime.now().withHour(0).withMinute(0),
@@ -301,14 +310,24 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_withToOnly_extractedTrailing() throws IllegalValueException {
+    public void extractTrailingTwoSidedDateRange_withToOnly_notExtracted() throws IllegalValueException {
         commandParser.setInput("event to 21 Jan 2017");
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = commandParser.extractTrailingTwoSidedDateRange();
+        assertFalse(dateRange.isPresent());
+        assertEquals(
+            "event to 21 Jan 2017", commandParser.extractText().orElse("")
+        );
+    }
+
+    @Test
+    public void extractTrailingEndDateDateRange_withToOnly_extracted() throws IllegalValueException {
+        commandParser.setInput("event to 21 Jan 2017");
+        Optional<DateRange> dateRange = commandParser.extractTrailingEndDateDateRange();
         assertTrue(dateRange.isPresent());
         assertEquals(
             new DateRange(
-                LocalDateTime.MIN,
-                LocalDateTime.of(2017, 1, 21, 0, 0)
+                LocalDateTime.now(),
+                LocalDateTime.of(2017, 1, 21, 23, 59)
             ),
             dateRange.get()
         );
@@ -317,17 +336,38 @@ public class CommandParserTest {
         );
     }
 
-
     @Test
-    public void extractTrailingDateRange_withOnAndRecurrence_extracted() throws IllegalValueException {
+    public void extractTrailingSingleDateDateRange_withOnAndRecurrence_extracted() throws IllegalValueException {
         commandParser.setInput("event on 1/11/" + nextYear + " weekly");
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = commandParser.extractTrailingSingleDateDateRange();
         assertTrue(dateRange.isPresent());
         assertEquals(
             new DateRange(
                 LocalDateTime.of(nextYear, 11, 1, 0, 0),
                 LocalDateTime.of(nextYear, 11, 1, 23, 59),
                 Recurrence.Weekly
+            ),
+            dateRange.get()
+        );
+        assertEquals(
+            "event", commandParser.extractText().orElse("")
+        );
+    }
+
+    @Test
+    public void extractTrailingSingleDateDateRange_withOnMonth_extractedWholeMonth() throws IllegalValueException {
+        commandParser.setInput("event on apr 2013");
+        Optional<DateRange> dateRange = commandParser.extractTrailingSingleDateDateRange();
+        assertTrue(dateRange.isPresent());
+
+        // from april 1 to last day of april 2359h 2013
+        assertEquals(
+            new DateRange(
+                LocalDateTime.of(2013, 4, 1, 0, 0),
+                LocalDateTime.of(
+                    2013, 4,
+                    LocalDate.of(thisYear, 5, 1).minusDays(1).getDayOfMonth(),
+                    23, 59)
             ),
             dateRange.get()
         );
@@ -359,11 +399,25 @@ public class CommandParserTest {
         indices = commandParser.extractIndicesList();
         assertEquals("[2]", indices.toString());
     }
+    
+    @Test
+    public void isOverrideThenExtract_override_extracted() {
+    	commandParser.setInput("/ss/ss/ss.xml override");
+    	assertTrue(commandParser.isOverrideThenExtract());
+    	assertEquals("/ss/ss/ss.xml", commandParser.getInput());
+    }
+    
+    @Test
+    public void isOverrideThenExtract_overrideInMid_unchanged() {
+    	commandParser.setInput("/ss/ss/ss.xml override test");
+    	assertFalse(commandParser.isOverrideThenExtract());
+    	assertEquals("/ss/ss/ss.xml override test", commandParser.getInput());
+    }
 
     @Test
-    public void extractTrailingDateRange_recurrence_extracted() throws IllegalValueException {
+    public void extractTrailingTwoSidedDateRange_recurrence_extracted() throws IllegalValueException {
         commandParser.setInput("walk nowhere from 28 Oct 2018 1200h to 29 Nov 2018 1300h yearly");
-        Optional<DateRange> dateRange = commandParser.extractTrailingDateRange();
+        Optional<DateRange> dateRange = commandParser.extractTrailingTwoSidedDateRange();
         assertTrue(dateRange.isPresent());
         assertEquals(
             LocalDateTime.of(2018, 10, 28, 12, 0),
@@ -383,9 +437,9 @@ public class CommandParserTest {
     }
 
     @Test
-    public void extractTrailingDateRange_recurrenceInvalid_exceptionThrown() throws IllegalValueException {
+    public void extractTrailingTwoSidedDateRange_recurrenceInvalid_exceptionThrown() throws IllegalValueException {
         commandParser.setInput("walk nowhere from 28 Oct 2018 1200h to 29 Nov 2018 1300h daily");
         thrown.expect(IllegalValueException.class);
-        commandParser.extractTrailingDateRange();
+        commandParser.extractTrailingTwoSidedDateRange();
     }
 }

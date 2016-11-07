@@ -63,14 +63,16 @@ public class UiManager extends ComponentManager implements Ui {
 
     private void showFileOperationAlertAndWait(String description, String details, Throwable cause) {
         final String content = details + ":\n" + cause.toString();
-        showAlertDialogAndWait(AlertType.ERROR, "File Op Error", description, content);
+        if (mainWindow != null) {
+            showAlertDialogAndWait(AlertType.ERROR, "File Op Error", description, content);
+        }
     }
 
     private Image getImage(String imagePath) {
         return new Image(MainApp.class.getResourceAsStream(imagePath));
     }
 
-    void showAlertDialogAndWait(Alert.AlertType type, String title, String headerText, String contentText) {
+    private void showAlertDialogAndWait(Alert.AlertType type, String title, String headerText, String contentText) {
         showAlertDialogAndWait(mainWindow.getPrimaryStage(), type, title, headerText, contentText);
     }
 

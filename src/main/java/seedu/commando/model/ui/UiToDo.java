@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 
 //@@author A0139697H
+
 /**
  * Represents a to-do on the UI.
  */
@@ -88,7 +89,9 @@ public class UiToDo implements ReadOnlyToDo {
     /**
      * @return whether the to-do is newly added or edited.
      */
-    public boolean isNew() { return isNew; }
+    public boolean isNew() {
+        return isNew;
+    }
 
     public boolean isEvent() {
         return isEvent(this);

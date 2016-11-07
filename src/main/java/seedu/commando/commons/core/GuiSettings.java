@@ -4,8 +4,6 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javafx.stage.Screen;
-
 /**
  * A Serializable class that contains the GUI settings.
  */

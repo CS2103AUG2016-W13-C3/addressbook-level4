@@ -60,7 +60,7 @@ public abstract class CommanDoGuiTest {
     }
 
     @Before
-    public void setup() throws Exception {
+    public void setUp() throws Exception {
         FxToolkit.setupStage((stage) -> {
             mainGui = new MainGuiHandle(new GuiRobot(), stage);
             mainMenu = mainGui.getMainMenu();

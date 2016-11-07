@@ -16,7 +16,7 @@ public class DateTimeParserTest {
     private LocalDateTime now = LocalDateTime.now();
 
     @Before
-    public void setup() {
+    public void setUp() {
         dateTimeParser = new DateTimeParser();
     }
 
@@ -341,6 +341,22 @@ public class DateTimeParserTest {
             LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
                 10, 23),
             dateTimeParser.parseDateTime("3 weeks later 1023h").orElse(null)
+        );
+    }
+
+
+    @Test
+    public void parseDateTime_monthOnly_parsedComingMonth() {
+        LocalDateTime ldt = now.withMonth(1).withDayOfMonth(1);
+        if (ldt.isBefore(now)) {
+            ldt = ldt.plusYears(1);
+        }
+
+        assertEquals(
+            LocalDateTime.of(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(),
+                LocalTime.MIDNIGHT.getHour(),
+                LocalTime.MIDNIGHT.getMinute()),
+            dateTimeParser.parseDateTime("jan").orElse(null)
         );
     }
 

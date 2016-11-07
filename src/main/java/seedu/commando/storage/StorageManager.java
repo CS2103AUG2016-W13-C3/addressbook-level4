@@ -12,7 +12,8 @@ import java.util.Optional;
 import java.util.logging.Logger;
 //@@author A0142230B
 /**
- * Manages storage of data of to-do list in local storage
+ * Concrete implementation of {@link Storage} for the Storage component.
+ * Reads data from and writes data to the file system
  */
 public class StorageManager extends ComponentManager implements Storage {
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);

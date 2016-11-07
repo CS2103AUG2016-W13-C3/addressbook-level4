@@ -30,13 +30,13 @@ public class FinishCommandTest {
     private LocalDateTime now = LocalDateTime.now();
 
     @Before
-    public void setup() throws IOException {
+    public void setUp() throws IOException {
         logic = initLogic();
         eventsCollector = new EventsCollector();
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         EventsCenter.clearSubscribers();
     }
 
@@ -126,5 +126,35 @@ public class FinishCommandTest {
         CommandResult result = logic.execute("finish 1");
         assertTrue(result.hasError());
         assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+    }
+    
+    //@@author A0142230B
+    @Test
+    public void execute_finishMutipleTaskAndEvent_error() throws IllegalValueException {
+        logic.execute("add title1");
+        logic.execute("add title2 on 12/12");
+        logic.execute("add title3");
+
+        eventsCollector.reset();
+
+        CommandResult result = logic.execute("finish 1-3");
+        assertTrue(result.hasError());
+        assertFalse(wasToDoListChangedEventPosted(eventsCollector));
+        assertEquals(String.format(Messages.FINISH_COMMAND_CANNOT_FINISH_EVENT, "title2"), result.getFeedback());
+    }
+    
+    @Test
+    public void execute_deleteMutipleTasks_Finished() throws IllegalValueException {
+        logic.execute("add title1 by 12/12/2016 9pm");
+        logic.execute("add title2");
+        logic.execute("add title3");
+
+        eventsCollector.reset();
+
+        logic.execute("finish 1-3");
+        assertTrue(wasToDoListChangedEventPosted(eventsCollector));
+        assertToDoExists(logic, new ToDoBuilder("title1").withDueDate(LocalDateTime.of(2016,12,12,21,0)).build());
+        assertToDoExists(logic, new ToDoBuilder("title3").build());
+        assertToDoExists(logic, new ToDoBuilder("title2").build());
     }
 }

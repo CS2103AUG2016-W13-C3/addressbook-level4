@@ -17,17 +17,17 @@
 
 .event-pane-title-background, .task-pane-title-background {
 	-fx-background-color: derive(#1d1d1d, 20%);
-	-fx-border-color: derive(#1d1d1d, 20%);
 }
 
 .event-pane-title, .task-pane-title {
 	-fx-font-family: "Helvetica Light";
-	-fx-font-size: 32pt;
+	-fx-font-size: 30pt;
 }
 
-.label {
+.label, .label .content {
     -fx-font-size: 12pt;
-    -fx-font-family: "Helvetica Light";
+    -fx-font-family: "Helvetica bold";
+    -fx-line-spacing: -0.5em;
     -fx-text-fill: #555555;
     -fx-opacity: 0.9;
 }
@@ -47,7 +47,7 @@
 }
 
 .text-field {
-    -fx-font-size: 12pt;
+    -fx-font-size: 15pt;
     -fx-font-family: "Helvetica Semibold";
 }
 
@@ -117,69 +117,49 @@
 	-fx-background-color: #27BDD1;
 }
 
+.list-view .scroll-bar:horizontal .increment-arrow,
+.list-view .scroll-bar:horizontal .decrement-arrow,
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding: 0;
+}
+
 .list-cell {
     -fx-label-padding: 0 0 0 0;
     -fx-graphic-text-gap : 0;
     -fx-padding: 0 0 0 0;
 }
 
-.list-cell .label {
-    -fx-text-fill: #010504;
-}
-
-.cell_big_label {
-    -fx-font-size: 16px;
-    -fx-text-fill: #010504;
-}
-
-.cell_small_label {
-    -fx-font-size: 11px;
-    -fx-text-fill: #010504;
-}
-
-#indexLabel, #dateIntervalLabel, #dueLabel, #tagsLabel, #recurrenceLabel {
+#titleLabel{
 	-fx-font-family: "Helvetica bold";
+	-fx-text-fill:black;
 }
 
 #tagsLabel {
-	-fx-border-radius: 10px;
-	-fx-border-width: 2 2 2 2;
-	-fx-border-color: derive(#1d1d1d, 60%); 
-	-fx-background-radius: 10px;
-	-fx-background-color: derive(#DCDCDC, 30%);
+	-fx-background-radius: 12px;
+	-fx-background-color: derive(#DCDCDC, 50%);
 }
 
 #recurrenceLabel {
-	-fx-border-radius: 10px;
-	-fx-border-width: 2 2 2 2;
+	-fx-background-radius: 12px;
 	-fx-background-color: derive(#1d1d1d, 60%); 
-	-fx-background-radius: 10px;
-	-fx-border-color: derive(#DCDCDC, -80%);
 	-fx-text-fill: derive(#DCDCDC, 80%);
 }
 
 #indexLabel {
-	-fx-background-color: derive(#1d1d1d, 60%);
+	-fx-background-color: derive(#DCDCDC, -50%);
+	-fx-font-size: 14pt;
 	-fx-text-fill: #FFFFFF;
-	-fx-border-width: 0 2px 0 0;
-	-fx-border-color: derive(#1d1d1d, 40%);
 }
 
-#datePane {
-	-fx-background-color: derive(#DCDCDC, 30%);
-	-fx-border-color: derive(#DCDCDC, 20%);
+#eventListView, #taskListView {
+	-fx-background-color: derive(#DCDCDC, 50%);
 }
 
-.task-pane, .event-pane {
-	-fx-background-color: #FFFFFF;
-}
-
-.task-pane-inner, .event-pane-inner {
-	-fx-background-color: #DCDCDC; 
-    -fx-background-radius: 8px;
-    -fx-border-width: 2px;
-    -fx-border-radius: 3px;
-    -fx-border-color:  derive(#1d1d1d, 50%);
+.card-pane {
+	-fx-background-color: #DCDCDC;
+	-fx-border-width: 0 0 3px 0;
+	-fx-border-color: white;
 }
 
 .anchor-pane {
@@ -357,12 +337,6 @@
   -fx-background-color: transparent;
 }
 
-#cardPane {
-    -fx-background-color: transparent;
-    -fx-border-color: #d6d6d6;
-    -fx-border-width: 1 1 1 1;
-}
-
 #commandTypeLabel {
     -fx-font-size: 11px;
     -fx-text-fill: #F70D1A;
@@ -370,4 +344,35 @@
 
 #filterField, #personListPanel, #personWebpage {
     -fx-effect: innershadow(gaussian, black, 10, 0, 0, 0);
+}
+
+.error-command {
+    -fx-background-color: #e74c3c;
+}
+
+.error-result {
+	-fx-border-color: #e74c3c;
+}
+
+.tag-selector {
+    -fx-border-width: 1;
+    -fx-border-color: white;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+}
+
+.tooltip-text {
+    -fx-text-fill: white;
+}
+
+.recently-modified {
+	-fx-background-color: derive(#f1c40f,20%);
+}
+
+.finished {
+	-fx-background-color: derive(#1d1d1d, 95%);
+}
+
+.hover {
+	-fx-background-color: derive(#DCDCDC, 30%);
 }

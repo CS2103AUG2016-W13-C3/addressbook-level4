@@ -6,12 +6,15 @@ import seedu.commando.commons.events.logic.ExitAppRequestEvent;
 
 //@@author A0139697H
 /**
- * Terminates the program
+ * Terminates the program.
  */
 public class ExitCommand extends Command {
 
     public static final String COMMAND_WORD = "exit";
 
+    /**
+     * Initializes an exit command.
+     */
     public ExitCommand() {}
 
     @Override
@@ -19,6 +22,6 @@ public class ExitCommand extends Command {
         EventsCenter eventsCenter = getEventsCenter();
 
         eventsCenter.post(new ExitAppRequestEvent());
-        return new CommandResult(Messages.EXIT_APPLICATION);
+        return new CommandResult(Messages.EXIT_COMMAND);
     }
 }

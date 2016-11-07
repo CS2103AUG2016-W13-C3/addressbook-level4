@@ -1,49 +1,57 @@
 package seedu.commando.ui;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import seedu.commando.commons.core.DateTimePrettifier;
-import seedu.commando.model.todo.Tag;
 import seedu.commando.model.todo.DateRange;
 import seedu.commando.model.todo.ReadOnlyToDo;
 import seedu.commando.model.todo.Recurrence;
+import seedu.commando.model.todo.Tag;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+/**
+ * A "card" that represents a single event. This will be shown in the
+ * eventListViewPanel
+ */
 public class EventCard extends UiPart {
 
-    private static final String FXML = "EventCard.fxml";
+    private static final String FXML = "Card.fxml";
+    private static final int MIN_FONT_SIZE = 10;
+    private static final int TITLE_LENGTH_BREAKPOINT = 40;
+    private static final int TITLE_PREF_HEIGHT = 30;
+    private static final int TITLE_FONT_SIZE = 14;
     private boolean isFinished;
+    private int labelHeight = TITLE_PREF_HEIGHT;
 
     @FXML
-    private HBox eventPane;
+    private HBox cardPane;
     @FXML
-    private HBox eventPaneInner;
+    private VBox dateTagsPane;
     @FXML
-    private VBox tagsPane;
-    @FXML
-    private HBox datePane;
+    private FlowPane tagsPane;
     @FXML
     private Label titleLabel;
     @FXML
     private Label indexLabel;
     @FXML
-    private Label dateIntervalLabel;
-    @FXML
-    private Label endLabel;
-    @FXML
-    private Label tagsLabel;
+    private Label dateLabel;
     @FXML
     private Label recurrenceLabel;
 
     private ReadOnlyToDo toDo;
     private int index;
+
     private boolean containsTags = true;
-    private boolean containsDate = true;
+    private boolean containsDates = true;
+    private boolean containsRecurrence = true;
 
     public EventCard() {
     }
@@ -60,57 +68,86 @@ public class EventCard extends UiPart {
         titleLabel.setText(toDo.getTitle().value);
         indexLabel.setText(String.valueOf(index));
 
+        resizeTitleLabelIfTooLong();
+
         setDateTimesLabels();
         setRecurrenceLabel();
-        checkTagsPane();
-        setTagLabel();
+        createTagLabels();
+        checkContainsTagsAndDates();
     }
 
-    private void setTagLabel() {
-        if (!toDo.getTags().isEmpty()) {
-            String tags = "";
-            for (Tag tag : toDo.getTags()) {
-                tags += "#" + tag.value + " ";
-            }
-            tagsLabel.setText(tags);
+    public void resizeTitleLabelIfTooLong() {
+        // Resize title if too long
+        if (toDo.getTitle().value.length() > TITLE_LENGTH_BREAKPOINT) {
+        	labelHeight = (TITLE_PREF_HEIGHT + (toDo.getTitle().value.length() - TITLE_LENGTH_BREAKPOINT) / 2);
+            titleLabel.setStyle(
+                "-fx-font-size: " + Math.max(MIN_FONT_SIZE, (TITLE_LENGTH_BREAKPOINT * TITLE_FONT_SIZE / toDo.getTitle().value.length())) + "pt;"
+                    + "-fx-pref-height: " + labelHeight + "pt;"
+            );
         } else {
-            tagsLabel.setManaged(false);
-            containsTags = false;
+            titleLabel.setStyle("-fx-font-size: " + TITLE_FONT_SIZE + "pt;");
         }
     }
 
     // @@author A0139080J
+    /**
+     * Creates a variable number of labels and put them in a flowpane
+     */
+    private void createTagLabels() {
+        if (!toDo.getTags().isEmpty()) {
+            for (Tag tag : toDo.getTags()) {
+                Label label = new Label();
+                label.setText("#" + tag.value);
+                label.setId("tagsLabel");
+                label.setMaxWidth(200);
+                label.getStyleClass().add("cell_big_label");
+                label.setAlignment(Pos.CENTER);
+                label.setPadding(new Insets(0, 3, 0, 3));
+
+                tagsPane.getChildren().add(label);
+            }
+        } else {
+            containsTags = false;
+        }
+    }
+
     private void setRecurrenceLabel() {
         if (toDo.getDateRange().isPresent() && toDo.getDateRange().get().recurrence != Recurrence.None) {
             recurrenceLabel.setText(toDo.getDateRange().get().recurrence.toString());
         } else {
+            containsRecurrence = false;
+            // Hides the recurrence label
             recurrenceLabel.setManaged(false);
-            containsDate = false;
         }
     }
 
     /**
-     * If both tags and recurrence are non-existent, hide the pane that contains
-     * them
+     * The colour of the dates will become "more red" as the days pass. Also,
+     * when the date is over, the colour will be red.
      */
-    private void checkTagsPane() {
-        if (!containsTags && !containsDate) {
-            tagsPane.setManaged(false);
-        }
-    }
-
     private void setDateTimesLabels() {
         if (toDo.getDateRange().isPresent()) {
             final DateRange dateRange = toDo.getDateRange().get();
             final long startDayDifference = ChronoUnit.DAYS.between(LocalDateTime.now(), dateRange.startDate);
 
-            dateIntervalLabel.setText(DateTimePrettifier.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
-            dateIntervalLabel
-                    .setStyle("-fx-text-fill: " + ToDoCardStyleManager.getDateProximityBlue((int) startDayDifference));
+            dateLabel.setText(DateTimePrettifier.prettifyDateTimeRange(dateRange.startDate, dateRange.endDate));
+            dateLabel.setStyle("-fx-text-fill: " + CardStyleManager.getDateProximityBlue((int) startDayDifference));
+            dateLabel.setMinHeight(labelHeight);
         } else {
-            dateIntervalLabel.setManaged(false);
-            endLabel.setManaged(false);
-            datePane.setManaged(false);
+            containsDates = false;
+            // hides the date label
+            dateLabel.setManaged(false);
+        }
+    }
+
+    /**
+     * Hides the pane containing tags and recurrence if both are not present
+     */
+    private void checkContainsTagsAndDates() {
+        if (!containsTags && !containsRecurrence) {
+            if (!containsDates) {
+                dateTagsPane.setManaged(false);
+            }
         }
     }
 
@@ -125,49 +162,35 @@ public class EventCard extends UiPart {
         if (isFinished) {
             setFinishedState();
         }
-        return eventPane;
+        return cardPane;
     }
 
-    /**
-     * Every recently modified event will have a red border This includes
-     * modification via undo, edit, add
-     */
     private void setRecentlyModifiedState() {
-        eventPaneInner.setStyle(ToDoCardStyleManager.recentlyModifiedStateCSS);
+        CardStyleManager.addStyleAll("recently-modified", cardPane);
     }
 
-    /**
-     * Tints a finished event gray
-     */
     private void setFinishedState() {
-        eventPaneInner.setStyle(ToDoCardStyleManager.finishedStateContentCSS);
-        datePane.setStyle(ToDoCardStyleManager.finishedStateDateCSS);
-        indexLabel.setStyle(ToDoCardStyleManager.finishedStateIndexCSS);
+        CardStyleManager.addStyleAll("finished", cardPane, dateTagsPane, indexLabel);
     }
 
-    /**
-     * Tints a hovered event a slight gray
-     */
     @FXML
     private void activateHoverState() {
         if (!isFinished) {
-            eventPaneInner.setStyle(ToDoCardStyleManager.activateHoverStateContentCSS);
-            indexLabel.setStyle(ToDoCardStyleManager.activateHoverStateIndexCSS);
+            CardStyleManager.addStyleAll("hover", cardPane, indexLabel);
         }
     }
 
     @FXML
     private void deactivateHoverState() {
         if (!isFinished) {
-            eventPaneInner.setStyle(ToDoCardStyleManager.deactivateHoverStateContentCSS);
-            indexLabel.setStyle(ToDoCardStyleManager.deactivateHoverStateIndexCSS);
+            CardStyleManager.removeStyleAll("hover", cardPane, indexLabel);
         }
     }
     // @@author
 
     @Override
     public void setNode(Node node) {
-        eventPane = (HBox) node;
+        cardPane = (HBox) node;
     }
 
     @Override

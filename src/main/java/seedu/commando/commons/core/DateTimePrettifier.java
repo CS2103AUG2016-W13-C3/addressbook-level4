@@ -72,8 +72,8 @@ public class DateTimePrettifier {
         
         if (startIsYtdOrTdyOrTmr) {
             // If same day, don't display month and year
-            if (sameDay) {
-                return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + " "
+            if (sameDay && sameMonth && sameYear) {
+                return getTime(startDateTime) + " " + keywordTo + " " + getTime(endDateTime) + "\n"
                         + getDay(startDateTime);
             } else if (endIsYtdOrTdyOrTmr) {
                 return getTime(startDateTime) + " " + getDay(startDateTime) + " " + keywordTo + "\n"
@@ -103,7 +103,7 @@ public class DateTimePrettifier {
         }
 
         if (sameYear && sameMonth) {
-            // If same year and same month
+            // If same year and same month and same day
             // Display one month
             end = " " + getMonth(endDateTime) + end;
         } else {
@@ -111,11 +111,11 @@ public class DateTimePrettifier {
             start = " " + getMonth(startDateTime) + start;
             end = " " + getMonth(endDateTime) + end;
         }
-
+        
         if (sameYear && sameMonth && sameDay) {
             // If same year and same month and same day
             // Display one month
-            end = " \n" + getDay(endDateTime) + end;
+            end = "\n" + getDay(endDateTime) + end;
         } else {
             // Display both months
             start = " " + getDay(startDateTime) + start;
@@ -157,7 +157,7 @@ public class DateTimePrettifier {
         } else if (ld.isEqual(tomorrowDate)) {
             return keywordTomorrow;
         } else {
-            return "on " + formatDay.format(ldt);
+            return formatDay.format(ldt);
         }
     }
 

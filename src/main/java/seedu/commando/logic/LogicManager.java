@@ -1,6 +1,7 @@
 package seedu.commando.logic;
 
 import com.google.common.eventbus.Subscribe;
+import javafx.application.Platform;
 import seedu.commando.commons.core.ComponentManager;
 import seedu.commando.commons.core.LogsCenter;
 import seedu.commando.commons.core.Messages;
@@ -23,8 +24,10 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 //@@author A0139697H
+
 /**
- * Underlying logic in application
+ * Concrete implementation of {@link Logic} for the Logic component.
+ * Executes commands from the UI, using the API provided by Model and Storage.
  */
 public class LogicManager extends ComponentManager implements Logic {
     private final Logger logger = LogsCenter.getLogger(LogicManager.class);
@@ -38,6 +41,8 @@ public class LogicManager extends ComponentManager implements Logic {
         this.model = model;
         this.storage = storage;
         this.userPrefs = userPrefs;
+
+        saveToDoListToStorage(model.getToDoList());
     }
 
     @Override
@@ -45,26 +50,9 @@ public class LogicManager extends ComponentManager implements Logic {
         logger.info("User command: " + commandText + "");
 
         try {
-            Command command = commandFactory.build(commandText);
-
-            command.setEventsCenter(eventsCenter);
-            command.setModel(model);
-
-            return command.execute();
-        } catch (Command.NoEventsCenterException | Command.NoModelException exception) {
-            assert false; // There should always be EventsCenter or Model
-            return new CommandResult(exception.getMessage(), true);
+            return executeCommand(commandText);
         } catch (CommandFactory.InvalidCommandFormatException e) {
-
-            // If invalid command format, check if Messages has sample commands for that command
-            // Append to exception message if there is
-            Optional<String> commandFormatMessage = Messages.getCommandFormatMessage(e.command);
-            if (commandFormatMessage.isPresent()) {
-                return new CommandResult(e.getMessage() + "\n" + commandFormatMessage.get(), true);
-            } else {
-                return new CommandResult(e.getMessage(), true);
-            }
-
+            return getCommandResultForInvalidFormat(e);
         } catch (CommandFactory.UnknownCommandWordException e) {
             return new CommandResult(String.format(Messages.UNKNOWN_COMMAND, e.commandWord), true);
         } catch (CommandFactory.MissingCommandWordException e) {
@@ -88,38 +76,84 @@ public class LogicManager extends ComponentManager implements Logic {
     }
 
     /**
-     * Saves the current version of the to-do list to the hard disk
-     * at the default filepath
-     * Creates the data file if it is missing.
+     * Saves the to-do list to the file system with Storage.
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
+     *
+     * @param toDoList to-do list to save
      */
-    @Subscribe
-    public void handleToDoListChangedEvent(ToDoListChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
-
+    public void saveToDoListToStorage(ReadOnlyToDoList toDoList) {
         try {
-            storage.saveToDoList(event.toDoList);
+            storage.saveToDoList(toDoList);
         } catch (IOException e) {
             raise(new DataSavingExceptionEvent(e));
         }
     }
 
     /**
-     * Changes to-do list file path in user prefs and storage and saves the
-     * to-do data to that new file path with storage
+     * Called upon an event that the Model's to-do list has changed.
+     *
+     * In a separate thread, it saves the current version of the to-do list to the hard disk
+     * at the default to-do list filepath with Storage.
      */
     @Subscribe
-    public void handleToDoListFilePathRequestEvent(ToDoListFilePathChangeRequestEvent event){
+    public void handleToDoListChangedEvent(ToDoListChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
+
+        // Try to run on JavaFX UI thread to prevent lag. If not, just run on current thread.
+        try {
+            Platform.runLater(() -> saveToDoListToStorage(event.toDoList));
+        } catch (IllegalStateException e) {
+           saveToDoListToStorage(event.toDoList);
+        }
+    }
+
+    /**
+     * Called upon an event that the to-do list file path change has been requested.
+     *
+     * It changes to-do list file path in user prefs and storage.
+     * Then, in a separate thread, it saves the to-do data to that new file path with Storage.
+     */
+    @Subscribe
+    public void handleToDoListFilePathRequestEvent(ToDoListFilePathChangeRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
 
         storage.setToDoListFilePath(event.path);
+        userPrefs.setToDoListFilePath(event.path);
+
+        // Try to run on JavaFX UI thread to prevent lag. If not, just run on current thread.
+        try {
+            Platform.runLater(() -> saveToDoListToStorage(model.getToDoList()));
+        } catch (IllegalStateException e) {
+            saveToDoListToStorage(model.getToDoList());
+        }
+    }
+
+    private CommandResult getCommandResultForInvalidFormat(CommandFactory.InvalidCommandFormatException e) {
+        // If invalid command format, check if Messages has sample commands for that command
+        // Append to exception message if there is
+        Optional<String> commandFormatMessage = Messages.getCommandFormatMessage(e.command);
+        if (commandFormatMessage.isPresent()) {
+            return new CommandResult(e.getMessage() + "\n" + commandFormatMessage.get(), true);
+        } else {
+            return new CommandResult(e.getMessage(), true);
+        }
+    }
+
+    private CommandResult executeCommand(String commandText)
+        throws CommandFactory.InvalidCommandFormatException,
+        CommandFactory.UnknownCommandWordException,
+        CommandFactory.MissingCommandWordException {
+
+        Command command = commandFactory.build(commandText);
+
+        command.setEventsCenter(eventsCenter);
+        command.setModel(model);
 
         try {
-            storage.saveToDoList(model.getToDoList());
-        } catch (IOException exception) {
-            logger.warning("Failed to save to-do list data file: " + StringUtil.getDetails(exception));
+            return command.execute();
+        } catch (Command.NoEventsCenterException | Command.NoModelException exception) {
+            assert false : "there should always be EventsCenter or Model";
+            return new CommandResult(exception.getMessage(), true);
         }
-
-        userPrefs.setToDoListFilePath(event.path);
     }
 }
