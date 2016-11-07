@@ -30,7 +30,26 @@ public class CommandBox extends UiPart {
     private ArrayList<String> commandHistory;
     private int commandHistoryPointer;
     
-    private String[] commandExamples = new String[] { "1", "2", "3", "4", "5" };
+    private String[] commandExamples = new String[] { "add meeting with the big bad boss from 10/11/2016 14:30 to 16:30 #meeting",
+            "add Project Apocalypse by coming monday",
+            "add buy prawn, fishball, abalone, soupstock, etc #shopping #steamboat",
+            "add send Apocalypse progress report to big bad boss by friday weekly",
+            "add Christmas party on 26 dec 9pm",
+            "edit (meeting index) from 10/11/2016 14:30 to 16:30",
+            "edit (christmas party index) #potluck",
+            "delete (shopping index)",
+            "find party",
+            "delete (potluck index) tag",
+            "finish (weekly progress report index)",
+            "finish (multiple index)",
+            "recall",
+            "recall john",
+            "list on next week",
+            "list from 16 dec to 31 dec",
+            "store C://Dropbox/Jim/hisfile",
+            "help",
+            "help add",
+            "mn4b23m4289I*@$#KJkjk@KJ"};
     private int commandExamplesPointer = 0;
 
     @FXML
@@ -175,14 +194,14 @@ public class CommandBox extends UiPart {
     }
 
     /**
-     * Go down (PREVIOUS) command
+     * Go down (PREVIOUS) command (F11)
      */
     public void goDownSampleCommands() {
         commandTextField.setText(commandExamples[commandExamplesPointer = Math.max(commandExamplesPointer - 1, 0)]);
     }
 
     /**
-     * Go up (NEXT) command
+     * Go up (NEXT) command (F12)
      */
     public void goUpSampleCommands() {
         commandTextField.setText(commandExamples[commandExamplesPointer = Math.min(commandExamplesPointer + 1, 

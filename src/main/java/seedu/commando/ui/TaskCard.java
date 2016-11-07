@@ -24,7 +24,7 @@ public class TaskCard extends UiPart {
 
     private static final String FXML = "Card.fxml";
     private static final int MIN_FONT_SIZE = 10;
-    private static final int TITLE_LENGTH_BREAKPOINT = 40;
+    private static final int TITLE_LENGTH_BREAKPOINT = 60;
     private static final int TITLE_FONT_SIZE = 14;
     private static final int TITLE_PREF_HEIGHT = 30;
     private boolean isFinished;
