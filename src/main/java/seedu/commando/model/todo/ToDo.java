@@ -317,7 +317,7 @@ public class ToDo implements ReadOnlyToDo {
         // until it is not before the current date
         LocalDateTime startDate = dateRange.startDate;
         LocalDateTime endDate = dateRange.endDate;
-        while (!startDate.isAfter(dateUntil)) {
+        while (!endDate.isAfter(dateUntil)) {
             startDate = dateRange.recurrence.getNextDate(startDate);
             endDate = dateRange.recurrence.getNextDate(endDate);
         }
