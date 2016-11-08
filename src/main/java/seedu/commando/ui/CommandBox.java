@@ -33,7 +33,7 @@ public class CommandBox extends UiPart {
     private String[] commandExamples = new String[] { "add meeting with the big bad boss from 10/11/2016 14:00 to 16:00 #meeting",
             "add Project Apocalypse by coming monday",
             "add buy prawn, fishball, abalone, soupstock, etc #shopping #steamboat",
-            "add send Apocalypse progress report to big bad boss by friday weekly",
+            "add send Apocalypse progress report to big bad boss by coming friday",
             "add Christmas party on 26 dec 9pm",
             "edit 2 from 10/11/2016 14:30 to 16:30",
             "edit 5 #potluck",
