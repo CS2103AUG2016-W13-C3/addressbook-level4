@@ -50,7 +50,7 @@ public class CommandBox extends UiPart {
             "help",
             "help add",
             "mn4b23m4289I*@$#KJkjk@KJ"};
-    private int commandExamplesPointer = 0;
+    private int commandExamplesPointer = -1;
 
     @FXML
     private TextField commandTextField;
