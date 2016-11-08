@@ -37,7 +37,7 @@ public class CommandBox extends UiPart {
             "add Christmas party on 26 dec 9pm",
             "edit 2 from 10/11/2016 14:30 to 16:30",
             "edit 5 #potluck",
-            "delete 12",
+            "delete 13",
             "find party",
             "delete 1 tag", // Potluck
             "finish 8", // Weekly report
