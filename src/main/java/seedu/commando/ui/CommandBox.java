@@ -37,7 +37,7 @@ public class CommandBox extends UiPart {
             "add Christmas party on 26 dec 9pm",
             "edit 2 from 10/11/2016 14:30 to 16:30",
             "edit 5 #potluck",
-            "delete 13",
+            "delete 12",
             "find party",
             "delete 1 tag", // Potluck
             "finish 8", // Weekly report
@@ -46,7 +46,8 @@ public class CommandBox extends UiPart {
             "recall john",
             "list on next week",
             "list from 16 dec to 31 dec",
-            "store C://Dropbox/Jim/hisfile",
+            "list",
+            "store C://Jim/Dropbox/todos.xml",
             "help",
             "help add",
             "mn4b23m4289I*@$#KJkjk@KJ"};
