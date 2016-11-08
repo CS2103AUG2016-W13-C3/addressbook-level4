@@ -45,7 +45,7 @@ public class CommandBox extends UiPart {
             "recall",
             "recall john",
             "list on next week",
-            "list from 16 dec to 31 dec",
+            "list from 26 dec to 31 dec",
             "list",
             "store C://Jim/Dropbox/todos.xml",
             "help",
