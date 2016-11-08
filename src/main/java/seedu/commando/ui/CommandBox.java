@@ -30,18 +30,18 @@ public class CommandBox extends UiPart {
     private ArrayList<String> commandHistory;
     private int commandHistoryPointer;
     
-    private String[] commandExamples = new String[] { "add meeting with the big bad boss from 10/11/2016 14:30 to 16:30 #meeting",
+    private String[] commandExamples = new String[] { "add meeting with the big bad boss from 10/11/2016 14:00 to 16:00 #meeting",
             "add Project Apocalypse by coming monday",
             "add buy prawn, fishball, abalone, soupstock, etc #shopping #steamboat",
             "add send Apocalypse progress report to big bad boss by friday weekly",
             "add Christmas party on 26 dec 9pm",
-            "edit (meeting index) from 10/11/2016 14:30 to 16:30",
-            "edit (christmas party index) #potluck",
-            "delete (shopping index)",
+            "edit 2 from 10/11/2016 14:30 to 16:30",
+            "edit 5 #potluck",
+            "delete 13",
             "find party",
-            "delete (potluck index) tag",
-            "finish (weekly progress report index)",
-            "finish (multiple index)",
+            "delete 1 tag", // Potluck
+            "finish 8", // Weekly report
+            "finish 6 10 12", // Project nowhere, collect user feedback form, submit new year working plan
             "recall",
             "recall john",
             "list on next week",
