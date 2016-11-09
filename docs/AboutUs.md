@@ -28,7 +28,6 @@ We are a team based in the [School of Computing, National University of Singapor
 - Other major contributions:
 	- Team lead
 	- Set up Travis and Coveralls
-	- Draw diagrams in developer guide 
 	- Did morphing of _Logic_ from _AddressBook_ for _CommanDo_ [#5](https://github.com/CS2103AUG2016-W13-C3/main/pull/5)
 	- Improved on content of user and developer guides
 	- Updated diagrams in developer guide
