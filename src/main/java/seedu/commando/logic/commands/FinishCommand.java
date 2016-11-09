@@ -22,6 +22,7 @@ public class FinishCommand extends Command {
     public static final String COMMAND_WORD = "finish";
 
     public final List<Integer> toDoIndices;
+	private final LocalDateTime dateFinished;
 
     /**
      * Initializes a finish command.
@@ -29,7 +30,8 @@ public class FinishCommand extends Command {
      */
     public FinishCommand(List<Integer> toDoIndices) {
         this.toDoIndices = toDoIndices;
-    }
+		this.dateFinished = LocalDateTime.now();
+	}
 
     @Override
     public CommandResult execute() throws NoModelException {
@@ -37,21 +39,21 @@ public class FinishCommand extends Command {
         ToDoList listToFinish = new ToDoList();
         ToDoList finishedToDos = new ToDoList();
 
-        // If to-do with the index is valid and not finished, mark it as finished, else throw error message and return
-		LocalDateTime datetimeFinished = LocalDateTime.now();
-
 		for (int index : toDoIndices) {
 			Optional<UiToDo> toDoToFinish = model.getUiToDoAtIndex(index);
 
 			CommandResult errorResult = checkToDoFinishable(index, toDoToFinish);
 
+			// If to-do with the index is valid and not finished, mark it as finished, else throw error message and return
 			if (errorResult != null) {
 				return errorResult;
 			} else {
 				try {
 					listToFinish.add(toDoToFinish.get());
 					// Mark as finished
-					finishedToDos.add(new ToDo(toDoToFinish.get()).setDateFinished(datetimeFinished));
+					ToDo toDo = new ToDo(toDoToFinish.get());
+					finishToDo(toDo);
+					finishedToDos.add(toDo);
 				} catch (IllegalValueException exception) {
 					return new CommandResult(exception.getMessage(), true);
 				}
@@ -61,7 +63,16 @@ public class FinishCommand extends Command {
         return updateToDoListChange(model, listToFinish, finishedToDos);
     }
 
-    private String getToDoTitlesString(Model model) {
+	public void finishToDo(ToDo toDo) {
+		// Finish to-do at due date, if it has a due date and it's later than the date finished
+		if (toDo.getDueDate().isPresent() && toDo.getDueDate().get().value.isAfter(dateFinished)) {
+			toDo.setDateFinished(toDo.getDueDate().get().value);
+		} else {
+			toDo.setDateFinished(dateFinished);
+		}
+	}
+
+	private String getToDoTitlesString(Model model) {
         return toDoIndices.stream().map(
             toDoIndex -> model.getUiToDoAtIndex(toDoIndex).get().getTitle().toString()
         ).collect(Collectors.joining(", "));
