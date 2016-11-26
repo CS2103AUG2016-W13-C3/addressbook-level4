@@ -27,13 +27,6 @@ public class FinishCommandTest extends CommanDoGuiTest {
     }
     
     @Test
-    public void finishCommand_multipleIndices() {
-        //finish multiple items
-        ToDo[] currentList = td.getTypicalToDos();
-        assertFinishConsectiveSuccess(3, 4, currentList);
-    }
-    
-    @Test
     public void finishCommand_invalidIndex_reportError() {
         ToDo[] currentList = td.getTypicalToDos();
         int targetIndex = 4;
@@ -74,12 +67,6 @@ public class FinishCommandTest extends CommanDoGuiTest {
 
         //confirm the result message is correct
         assertResultMessage(String.format(Messages.FINISH_COMMAND, TodosToFinish.getTitle().toString()));
-        
-        //finish finished task
-        idx = 5;
-        commandBox.runCommand("finish " + idx);
-        assertResultMessage(String.format(Messages.FINISH_COMMAND_ALREADY_FINISHED, expectedRemainder[idx-1].getTitle().toString()));
-        
     }
     
     /**

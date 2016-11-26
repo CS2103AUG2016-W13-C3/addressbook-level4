@@ -26,17 +26,7 @@ public class RecallCommandTest extends CommanDoGuiTest {
         assertListSize(0);
         
         //go back to current list
-        commandBox.runCommand("find"); 
-
-        //recall when some items are finished
-        commandBox.runCommand("finish 4 5");
-        
-        //no results
-        assertRecallResult("recall titles", Sets.newHashSet("titles"), Collections.emptySet());
-        
-        //multiple results
-        assertRecallResult("recall title", Sets.newHashSet("title"), Collections.emptySet(), td.toDoItem5.setIsFinished(true), td.toDoItem1.setIsFinished(true));
-        assertRecallResult("recall #tag2", Collections.emptySet(), Sets.newHashSet("#tag2"), td.toDoItem5.setIsFinished(true));
+        commandBox.runCommand("find");
     }
 
     @Test
